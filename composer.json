@@ -1,0 +1,30 @@
+{
+  "name": "dearsina/ui",
+  "version": "0.0.1",
+  "dist": {
+    "url": "https://github.com/dearsina/ui/archive/master.zip",
+    "type": "zip"
+  },
+  "type": "library",
+  "description": "PHP UI classes built with Bootstrap.",
+  "keywords": ["ui","php", "bootstrap"],
+  "homepage": "https://github.com/dearsina/ui",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Sina Bahrami",
+      "email": "github@pixbox.co.uk",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": ">=7.0",
+    "vlucas/phpdotenv": "^3.3"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\UI\\": "src/",
+      "App\\UI\\Examples\\": "examples/"
+    }
+  }
+}
