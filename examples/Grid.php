@@ -8,7 +8,7 @@ class Grid {
 	function get_html(){
 		$grid = new \App\UI\Grid();
 		$grid->set("<div style='background-color:red;'>This is a string</div>");
-		$html .= $grid->get_html();
+		$html .= $grid->getHTML();
 
 		$html .= "<hr/>";
 
@@ -19,7 +19,7 @@ class Grid {
 				"background-color" => "green"
 			]
 		]);
-		$html .= $grid->get_html();
+		$html .= $grid->getHTML();
 
 		$html .= "<hr/>";
 
@@ -35,7 +35,7 @@ class Grid {
 				"background-color" => "cyan"
 			]
 		]]);
-		$html .= $grid->get_html();
+		$html .= $grid->getHTML();
 
 		$html .= "<hr/>";
 
@@ -59,7 +59,7 @@ class Grid {
 				"background-color" => "#006600"
 			]
 		]]);
-		$html .= $grid->get_html();
+		$html .= $grid->getHTML();
 
 		$html .= "<hr/>";
 
@@ -104,7 +104,7 @@ class Grid {
 				"background-color" => "#006600"
 			]
 		]]);
-		$html .= $grid->get_html();
+		$html .= $grid->getHTML();
 
 		$html .= "<hr/>";
 
@@ -122,7 +122,7 @@ class Grid {
 				"background-color" => "orange"
 			]
 		]]);
-		$html .= $grid->get_html();
+		$html .= $grid->getHTML();
 
 		$html .= "<hr/>";
 
@@ -136,7 +136,7 @@ class Grid {
 				"background-color" => "orange"
 			]
 		]]);
-		$html .= $grid->get_html();
+		$html .= $grid->getHTML();
 
 		$html .= "<hr/>";
 
@@ -167,7 +167,7 @@ class Grid {
 			]
 		]]);
 
-		$html .= $grid->get_html();
+		$html .= $grid->getHTML();
 
 		return $html;
 	}

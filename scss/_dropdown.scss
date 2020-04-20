@@ -1,0 +1,181 @@
+/**
+ * The dropdown caret (three bars actually).
+ */
+.dropdown-caret {
+  float:right !important;
+  cursor:pointer;
+  color:#444
+}
+
+.dropdown-menu {
+  padding: 0;
+}
+
+/**
+ * A single dropdown item.
+ */
+.dropdown-item {
+  //display: block;
+  //width: 100%;
+  padding: 0.25rem 0.75rem;
+  //clear: both;
+  //font-weight: 400;
+  //color: #212529;
+  //text-align: inherit;
+  //white-space: nowrap;
+  //background-color: transparent;
+  //border: 0;
+}
+
+/**
+ * Dropdown icons in card headers.
+ */
+.dropdown-menu .nav-right .fa,
+.dropdown-menu .nav-right .fab,
+.dropdown-menu .nav-right .fal,
+.dropdown-menu .nav-right .far,
+.dropdown-menu .nav-right .fas{
+  margin: 0 0.75rem;
+}
+
+.dropdown-menu .nav-right {
+  margin: 0;
+}
+
+.dropdown-menu .nav-right .parent > ul {
+  top: calc(100% - 30px);
+  right: calc(100% - .5rem);
+}
+
+/**
+ *
+ */
+.dropdown-menu .nav-right li {
+  display: block;
+  position: relative;
+  line-height: 30px;
+}
+
+/**
+ * Indicate an element is a parent
+ */
+.dropdown-menu .nav-right .parent > a {
+  &::after {
+    content: "‹";
+    float: right;
+    padding-right: 1rem;
+  }
+
+  //&:hover {
+  //  &::after {
+  //    content: "‹";
+  //    transform: rotate(-90deg);
+  //    float: right;
+  //    padding-right: 1rem;
+  //  }
+  //}
+}
+
+.dropdown-menu .parent li {
+  //background-color: #FFFFFF;
+}
+
+.dropdown-menu .nav-right li a {
+  display: block;
+  color: #000000;
+  text-decoration: none;
+  font-weight: 400;
+}
+
+.dropdown-menu .nav-right li a:hover {
+  background-color: #F0F0F0;
+  //transition: all 0.5s ease;
+  //Will make it feel sluggish
+}
+
+.dropdown-menu .parent > ul li {
+  line-height: 30px;
+  width: 100%;
+  min-width: 200px;
+}
+
+.dropdown-menu .parent > ul li a {
+  //color: #000000;
+  //padding: 0.3rem 1rem;
+  display: block;
+  border-bottom: .1pt solid #00000066;
+  &:last-child{
+    border-bottom: 0;
+  }
+}
+
+.dropdown-menu ul {
+  padding: 0.5rem 0 !important;
+}
+
+.dropdown-menu .nav-left ul ul, .dropdown-menu .nav-left ul ul ul {
+  left: 100%;
+  top: 0;
+}
+
+.dropdown-menu .nav-right ul ul, .dropdown-menu .nav-right ul ul ul {
+  right: 100%;
+  top: 0;
+}
+
+.dropdown-header {
+  line-height: 0.5;
+  text-align: center;
+}
+.dropdown-header span {
+  display: inline-block;
+  position: relative;
+}
+.dropdown-header span:before,
+.dropdown-header span:after {
+  content: "";
+  position: absolute;
+  height: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: .1px;
+  border-bottom-color: black;
+  opacity: .15;
+  top: 0;
+  width: 85%;
+}
+.dropdown-header span:before {
+  right: 100%;
+  margin-right: 10px;
+}
+.dropdown-header span:after {
+  left: 100%;
+  margin-left: 10px;
+}
+
+/**
+// Alternative solution
+
+h1 {
+    overflow: hidden;
+    text-align: center;
+}
+h1:before,
+h1:after {
+    background-color: #000;
+    content: "";
+    display: inline-block;
+    height: 1px;
+    position: relative;
+    vertical-align: middle;
+    width: 50%;
+    opacity: .15;
+}
+h1:before {
+    right: 0.5em;
+    margin-left: -50%;
+}
+h1:after {
+    left: 0.5em;
+    margin-right: -50%;
+}
+ */

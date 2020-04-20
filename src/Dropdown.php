@@ -26,11 +26,11 @@ class Dropdown {
 
 		# Is the caret disabled?
 		if($disabled){
-			$disabled = str::get_attr_tag("disabled", "disabled");
-			$style = str::get_attr_array($style, ["cursor" => "default"]);
+			$disabled = str::getAttrTag("disabled", "disabled");
+			$style = str::getAttrArrray($style, ["cursor" => "default"]);
 		}
 
-		$style_tag = str::get_attr_tag("style", $style);
+		$style_tag = str::getAttrTag("style", $style);
 
 		# The actual caret (three bars) symbol
 		$icon = Icon::generate([
@@ -85,28 +85,28 @@ EOF;
 
 			if($item['children']) {
 				//if the item has children
-				$item['class'] = str::get_attr_array($item['class'], "parent");
+				$item['class'] = str::getAttrArrray($item['class'], "parent");
 			}
 
 			# Add colour
 			if($item['colour']) {
-				$colour = str::get_attr_tag("class", "text-".str::translate_colour($item['colour']));
+				$colour = str::getAttrTag("class", "text-".str::translate_colour($item['colour']));
 			} else {
 				$colour = false;
 			}
 
 			if(!$href = href::generate($item)){
-				$href = str::get_attr_tag("href", "#");
+				$href = str::getAttrTag("href", "#");
 			}
 			$icon = Icon::generate($item['icon']);
 			$badge = Badge::generate($item['badge']);
 
 			if($item['disabled']){
 				$item['class'] = [$item['class'], "disabled"];
-				$href = str::get_attr_tag("href", "#");
+				$href = str::getAttrTag("href", "#");
 			}
-			$class = str::get_attr_tag("class", $item['class']);
-			$style = str::get_attr_tag("style", $item['style']);
+			$class = str::getAttrTag("class", $item['class']);
+			$style = str::getAttrTag("style", $item['style']);
 
 			$html .= "
 <li{$class}{$style}>
@@ -117,8 +117,8 @@ EOF;
 		}
 
 		# ul classes (applicable primarily to the top level)
-		$class = str::get_attr_tag("class", $ul['class']);
-		$style = str::get_attr_tag("style", $ul['style']);
+		$class = str::getAttrTag("class", $ul['class']);
+		$style = str::getAttrTag("style", $ul['style']);
 
 		return "<ul{$class}{$style}>{$html}</ul>";
 
@@ -143,7 +143,7 @@ EOF;
 		extract($button);
 
 		# The text can be colourised
-		$colour = str::get_colour($button['colour']);
+		$colour = str::getColour($button['colour']);
 
 		if($html){
 			//do nothing
@@ -154,11 +154,11 @@ EOF;
 		}
 
 		# Class
-		$class_array = str::get_attr_array($class, ["dropdown-header", "text-center", $colour], $only_class);
-		$class_tag = str::get_attr_tag("class", $class_array);
+		$class_array = str::getAttrArrray($class, ["dropdown-header", "text-center", $colour], $only_class);
+		$class_tag = str::getAttrTag("class", $class_array);
 
 		# Style
-		$style_tag = str::get_attr_tag("style", $style);
+		$style_tag = str::getAttrTag("style", $style);
 
 		return "<div{$class_tag}{$style_tag}><span>{$html}</span></div>";
 	}

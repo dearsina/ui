@@ -60,7 +60,7 @@ class Badge {
 				//if a generic version is NOT found
 				$a['title'] = strtoupper($array_or_string);
 			}
-		} else if (str::is_numeric_array($array_or_string)){
+		} else if (str::isNumericArray($array_or_string)){
 			//if there are more than one badge
 			foreach($array_or_string as $badge){
 				$badge_array[] = Badge::generate($badge);
@@ -76,7 +76,7 @@ class Badge {
 
 		extract($a);
 
-		$id = str::get_attr_tag("id", $id);
+		$id = str::getAttrTag("id", $id);
 
 		# Is the badge a link?
 		if($approve){
@@ -112,7 +112,7 @@ class Badge {
 			//for better spacing between icon and title
 		}
 
-		$class = str::get_attr_tag("class", [
+		$class = str::getAttrTag("class", [
 			"badge",
 			$pill ? "badge-pill" : "", //pill shape
 			"badge-{$colour}",
@@ -121,11 +121,11 @@ class Badge {
 			$class
 		]);
 
-		$style = str::get_attr_tag("style", $style);
-		$script = str::script_tag($script);
+		$style = str::getAttrTag("style", $style);
+		$script = str::getScriptTag($script);
 
 		$alt = $alt ? $alt : $desc;
-		$title_attr = str::get_attr_tag("title", strip_tags($alt ?: $title));
+		$title_attr = str::getAttrTag("title", strip_tags($alt ?: $title));
 
 		return /** @lang HTML */<<<EOF
 <{$tag_type}{$href}{$id}{$class}{$style}{$title_attr}>{$icon}{$title}</{$tag_type}>{$script}{$approve_script}

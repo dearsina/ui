@@ -8,14 +8,21 @@ use App\Common\str;
 class Grid {
 	private $grid;
 	private $unstackable;
+	private $formatter;
 
 	/**
 	 * Format and return content in a HTML grid.
-	 *
+	 * <code>
+	 * $grid = new Grid([
+	 * 	"unstackable" => FALSE, //If set to TRUE will make the grid unstackable on small screens
+	 * 	"formatter" => FALSE //If set to an anonymous function, will use that function to format the HTML per cell.
+	 * ]);
+	 * </code>
 	 * @param null $a
 	 */
 	public function __construct ($a = NULL) {
 		$this->unstackable = $a['unstackable'];
+		$this->formatter = $a['formatter'];
 	}
 
 	/**
@@ -53,28 +60,30 @@ class Grid {
 	 *
 	 * @return string
 	 */
-	private function get_row_html($rows){
+	private function getRowHTML($rows){
 		foreach($rows as $row){
 			if(!is_array($row)) {
-				$row_html = $this->get_col_html(["html" => $row]);
+				$row_html = $this->getColHTML(["html" => $row]);
 				$row = [];
-			} else if(str::is_numeric_array($row)){
-				$row_html = $this->get_col_html($row);
-			} else if (str::is_numeric_array($row['html'])){
-				$row_html = $this->get_col_html($row['html']);
+			} else if(str::isNumericArray($row)){
+				$row_html = $this->getColHTML($row);
+			} else if (str::isNumericArray($row['html'])){
+				$row_html = $this->getColHTML($row['html']);
+			} else if($row['html']){
+				$row_html = $this->getColHTML([$row['html']]);
 			} else {
-				$row_html = $this->get_col_html([$row['html']]);
+				$row_html = $this->getColHTML([$row]);
 			}
 
 			# ID
-			$id_tag = str::get_attr_tag("id", $row['id']);
+			$id_tag = str::getAttrTag("id", $row['id']);
 
 			# Class
-			$class_array = str::get_attr_array($row['class'], "row", $row['only_class']);
-			$class_tag = str::get_attr_tag("class", $class_array);
+			$class_array = str::getAttrArrray($row['class'], "row", $row['only_class']);
+			$class_tag = str::getAttrTag("class", $class_array);
 
 			# Style
-			$style_tag = str::get_attr_tag("style", $row['style']);
+			$style_tag = str::getAttrTag("style", $row['style']);
 
 			$html .= "<div{$id_tag}{$class_tag}{$style_tag}>{$row_html}</div>";
 		}
@@ -89,18 +98,21 @@ class Grid {
 	 *
 	 * @return string
 	 */
-	private function get_col_html($cols){
+	private function getColHTML($cols){
 		foreach($cols as $col){
 			//for each item in the row
 			if(!is_array($col)){
 				$col_html = $col;
 				$col  = [];
-			} else if(str::is_numeric_array($col)){
+			} else if(str::isNumericArray($col)){
 				//if it goes deeper (without other metadata)
-				$col_html = $this->get_row_html($col);
-			} else if(str::is_numeric_array($col['html'])){
+				$col_html = $this->getRowHTML($col);
+			} else if(str::isNumericArray($col['html'])) {
 				//if it goes deeper (with metadata)
-				$col_html = $this->get_row_html($col['html']);
+				$col_html = $this->getRowHTML($col['html']);
+			} else if ($this->formatter){
+				//If a custom formatter has been designated
+				$col_html = ($this->formatter)($col);
 			} else {
 				$col_html = $col['html'];
 			}
@@ -114,14 +126,14 @@ class Grid {
 			}
 
 			# ID
-			$id_tag = str::get_attr_tag("id", $col['id']);
+			$id_tag = str::getAttrTag("id", $col['id']);
 
 			# Class
-			$class_array = str::get_attr_array($col['class'], $col_width, $col['only_class']);
-			$class_tag = str::get_attr_tag("class", $class_array);
+			$class_array = str::getAttrArrray($col['class'], $col_width, $col['only_class']);
+			$class_tag = str::getAttrTag("class", $class_array);
 
 			# Styles
-			$style_tag = str::get_attr_tag("style", $col['style']);
+			$style_tag = str::getAttrTag("style", $col['style']);
 
 			$html .= "<div{$id_tag}{$class_tag}{$style_tag}>{$col_html}</div>";
 		}
@@ -136,14 +148,14 @@ class Grid {
 	 *
 	 * @return bool|string
 	 */
-	public function get_html($a = NULL){
+	public function getHTML($a = NULL){
 		$grid = $a ?: $this->grid;
 
 		if(!$grid){
 			return false;
 		}
 
-		$html = $this->get_row_html($grid);
+		$html = $this->getRowHTML($grid);
 		return $html;
 	}
 }

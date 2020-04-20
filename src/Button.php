@@ -237,9 +237,9 @@ class Button {
 			return false;
 		}
 
-		if(is_array($a) && !str::is_numeric_array($a)){
+		if(is_array($a) && !str::isNumericArray($a)){
 			$buttons[] = $a;
-		} else if(str::is_numeric_array($a)){
+		} else if(str::isNumericArray($a)){
 			$buttons = $a;
 		} else if(is_array($a)){
 			return Button::generate($a);
@@ -330,7 +330,7 @@ class Button {
 		}
 
 		# Does it have an icon?
-		if($svg = svg::generate($svg, "
+		if($svg = SVG::generate($svg, "
 		height: 1rem;
 		position: relative;
 		top: .2rem;
@@ -420,10 +420,10 @@ class Button {
 		}
 
 		# Class with override override
-		$class_array = str::get_attr_array($class, ["btn", "btn{$outline}-{$colour}", $right], $only_class);
+		$class_array = str::getAttrArrray($class, ["btn", "btn{$outline}-{$colour}", $right], $only_class);
 
 		# Style with override
-		$style_array = str::get_attr_array($style, false, $only_style);
+		$style_array = str::getAttrArrray($style, false, $only_style);
 
 		# Pulsating
 		if($pulsating){
@@ -431,7 +431,7 @@ class Button {
 		}
 
 		# Script
-		$script = str::script_tag($script);
+		$script = str::getScriptTag($script);
 
 		# Data attributes
 		if(is_array($data)){
@@ -448,12 +448,12 @@ class Button {
 			$span_post = "</span>";
 		}
 
-		$class_tag 		= str::get_attr_tag("class", $class_array);
-		$style_tag 		= str::get_attr_tag("style", $style_array);
-		$id_tag 		= str::get_attr_tag("id", $id);
-		$type_tag 		= str::get_attr_tag("type", $type);
-		$title_tag 		= str::get_attr_tag("title", $alt.$desc ? $alt.$desc : strip_tags($title));
-		$data_style_tag	= str::get_attr_tag("data-style", "slide-left");
+		$class_tag 		= str::getAttrTag("class", $class_array);
+		$style_tag 		= str::getAttrTag("style", $style_array);
+		$id_tag 		= str::getAttrTag("id", $id);
+		$type_tag 		= str::getAttrTag("type", $type);
+		$title_tag 		= str::getAttrTag("title", $alt.$desc ? $alt.$desc : strip_tags($title));
+		$data_style_tag	= str::getAttrTag("data-style", "slide-left");
 
 		$button_html = /** @lang HTML */<<<EOF
 {$wrapper_pre}
@@ -486,8 +486,8 @@ EOF;
 			foreach($children as $child){
 				$children_html .= self::generate($child);
 			}
-			$href = str::get_attr_tag("href", "#");
-			$class = str::get_attr_tag("class", "parent");
+			$href = str::getAttrTag("href", "#");
+			$class = str::getAttrTag("class", "parent");
 			return <<<EOF
 <li{$class}{$style}>
 	<a {$href}>{$icon}{$item['title']}{$badge}</a>
@@ -570,10 +570,10 @@ EOF;
 		# Class
 		$class[] = "pulsating-{$pulsating['colour']}";
 		$class[] = $pulsating['class'];
-		$class = str::get_attr_tag("class", $class);
+		$class = str::getAttrTag("class", $class);
 
 		# Style
-		$style = str::get_attr_tag("style", $pulsating['style']);
+		$style = str::getAttrTag("style", $pulsating['style']);
 
 		return ["<div{$class}{$style}>", "</div>"];
 	}

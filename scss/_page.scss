@@ -1,0 +1,79 @@
+/**
+ * Contains various page elements that hold everything together
+ */
+
+/**
+ * Main is the main UI element on the page
+ */
+main {
+  margin-top: #{$navbar-height}px;
+  padding-top: 20px;
+  font-size: 11pt;
+}
+
+main > .container {
+  max-width: unset;
+}
+
+/**
+ * h2-header is a special sub-set of the H2 HTML header
+ * specifically made for page headers.
+ */
+
+.h2-header {
+  font-weight: 300;
+  border-bottom: .01rem solid #ddd;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+}
+
+/**
+ * The right-side buffer of the page header icon.
+ */
+.h2-header > i {
+  margin-right: .75rem;
+}
+
+/**
+ * Pure CSS moving ellipsis.
+ */
+.ellipsis:after {
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: bottom;
+  -webkit-animation: ellipsis steps(4,end) 900ms infinite;
+  animation: ellipsis steps(4,end) 900ms infinite;
+  content: "\2026"; /* ascii code for the ellipsis character */
+  width: 0px;
+}
+
+@keyframes ellipsis {
+  to {
+    width: 1.25em;
+  }
+}
+
+@-webkit-keyframes ellipsis {
+  to {
+    width: 1.25em;
+  }
+}
+
+/**
+ * The page subtitle
+ */
+.subtitle {
+  font-size: 80%;
+  display:block;
+  margin-bottom: 1rem;
+}
+
+/**
+ * One level beyond text-muted, is text-quiet,
+ * for really quiet text.
+ */
+.text-quiet{
+  color: #CCC !important;
+  font-weight: 300;
+  font-style: italic;
+}

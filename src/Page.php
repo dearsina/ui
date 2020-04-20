@@ -112,7 +112,7 @@ class Page {
 		}
 
 		# ID
-		$id = str::get_attr_tag("id", $this->title['id']);
+		$id = str::getAttrTag("id", $this->title['id']);
 		
 		# Icon
 		$icon = Icon::generate($this->title['icon']);
@@ -121,7 +121,7 @@ class Page {
 		$svg = SVG::generate($this->title['svg'], "height:23px;");
 
 		# Colour
-		$colour = str::get_colour($this->title['colour']);
+		$colour = str::getColour($this->title['colour']);
 
 		# Badge
 		$badge = Badge::generate($this->title['badge']);
@@ -130,11 +130,11 @@ class Page {
 		$tag = $this->modal ? "span" : "h2";
 
 		# Class
-		$class_array = str::get_attr_array($this->title['class'], [$colour, "{$tag}-header"], $this->title['only_class']);
-		$class = str::get_attr_tag("class", $class_array);
+		$class_array = str::getAttrArrray($this->title['class'], [$colour, "{$tag}-header"], $this->title['only_class']);
+		$class = str::getAttrTag("class", $class_array);
 
 		# Style
-		$style = str::get_attr_tag("style", $this->title['style']);
+		$style = str::getAttrTag("style", $this->title['style']);
 		
 		return "<{$tag}{$id}{$class}{$style}>{$icon}{$svg} {$this->title['html']} {$badge}</{$tag}>";
 	}
@@ -151,7 +151,7 @@ class Page {
 		}
 
 		# ID
-		$id = str::get_attr_tag("id", $this->subtitle['id']);
+		$id = str::getAttrTag("id", $this->subtitle['id']);
 
 		# Icon
 		$icon = Icon::generate($this->subtitle['icon']);
@@ -160,17 +160,17 @@ class Page {
 		$svg = SVG::generate($this->subtitle['svg'], "height:23px;");
 
 		# Colour
-		$colour = str::get_colour($this->subtitle['colour']) ?: "text-muted";
+		$colour = str::getColour($this->subtitle['colour']) ?: "text-muted";
 
 		# Badge
 		$badge = Badge::generate($this->subtitle['badge']);
 
 		# Class
-		$class_array = str::get_attr_array($this->subtitle['class'], ["subtitle", $colour], $this->subtitle['only_class']);
-		$class = str::get_attr_tag("class", $class_array);
+		$class_array = str::getAttrArrray($this->subtitle['class'], ["subtitle", $colour], $this->subtitle['only_class']);
+		$class = str::getAttrTag("class", $class_array);
 
 		# Style
-		$style = str::get_attr_tag("style", $this->subtitle['style']);
+		$style = str::getAttrTag("style", $this->subtitle['style']);
 
 		return "<div{$id}{$class}{$style}>{$icon}{$svg} {$this->subtitle['html']} {$badge}</div>";
 	}
@@ -182,7 +182,7 @@ class Page {
 	 * @return mixed
 	 */
 	private function get_script () {
-		return str::script_tag($this->script);
+		return str::getScriptTag($this->script);
 	}
 
 	/**
