@@ -33,7 +33,7 @@ class Page {
 	public function __construct ($a = NULL) {
 		if(is_array($a)){
 			foreach($a as $key => $val){
-				$method = "set_$key";
+				$method = "set".ucwords($key);
 				if (method_exists($this, $method)) {
 					//if a custom setter method exists, use it
 					$this->$method($val);
@@ -46,7 +46,7 @@ class Page {
 		$this->grid = new Grid();
 	}
 	
-	function set_title($title){
+	function setTitle($title){
 		if($title === false){
 			$this->title = [];
 			return true;
@@ -61,7 +61,7 @@ class Page {
 		return true;
 	}
 
-	function set_subtitle($subtitle){
+	function setSubtitle($subtitle){
 		if($subtitle === false){
 			$this->subtitle = [];
 			return true;
@@ -76,7 +76,7 @@ class Page {
 		return true;
 	}
 	
-	function set_icon($icon){
+	function setIcon($icon){
 		if($icon === false){
 			$this->title['icon'] = [];
 			return true;
@@ -88,7 +88,7 @@ class Page {
 		return true;
 	}
 	
-	function set_svg($svg){
+	function setSvg($svg){
 		if($svg === false){
 			$this->title['svg'] = [];
 			return true;
@@ -105,7 +105,7 @@ class Page {
 	 *
 	 * @return bool|string
 	 */
-	private function get_title_html(){
+	private function getTitleHTML(){
 		if(!$this->title){
 			//Titles are optional
 			return false;
@@ -130,7 +130,7 @@ class Page {
 		$tag = $this->modal ? "span" : "h2";
 
 		# Class
-		$class_array = str::getAttrArrray($this->title['class'], [$colour, "{$tag}-header"], $this->title['only_class']);
+		$class_array = str::getAttrArray($this->title['class'], [$colour, "{$tag}-header"], $this->title['only_class']);
 		$class = str::getAttrTag("class", $class_array);
 
 		# Style
@@ -144,7 +144,7 @@ class Page {
 	 *
 	 * @return bool|string
 	 */
-	private function get_subtitle_html(){
+	private function getSubtitleHTML(){
 		if(!$this->subtitle){
 			//subtitles are optional
 			return false;
@@ -166,7 +166,7 @@ class Page {
 		$badge = Badge::generate($this->subtitle['badge']);
 
 		# Class
-		$class_array = str::getAttrArrray($this->subtitle['class'], ["subtitle", $colour], $this->subtitle['only_class']);
+		$class_array = str::getAttrArray($this->subtitle['class'], ["subtitle", $colour], $this->subtitle['only_class']);
 		$class = str::getAttrTag("class", $class_array);
 
 		# Style
@@ -181,7 +181,7 @@ class Page {
 	 *
 	 * @return mixed
 	 */
-	private function get_script () {
+	private function getScriptHTML () {
 		return str::getScriptTag($this->script);
 	}
 
@@ -192,7 +192,7 @@ class Page {
 	 * Skip a column by entering an empty (no html key) cell.
 	 *
 	 * <code>
-	 * $page->set_grid([
+	 * $page->setGrid([
 	 * 	"sm" => "",
 	 * 	"id" => "",
 	 * 	"html" => ""
@@ -203,16 +203,16 @@ class Page {
 	 *
 	 * @return bool
 	 */
-	public function set_grid($a){
+	public function setGrid($a){
 		return $this->grid->set($a);
 	}
 
-	public function get_html(){
+	public function getHTML(){
 		return <<<EOF
-{$this->get_script()}
-{$this->get_title_html()}
-{$this->get_subtitle_html()}
-{$this->grid->get_html()}
+{$this->getScriptHTML()}
+{$this->getTitleHTML()}
+{$this->getSubtitleHTML()}
+{$this->grid->getHTML()}
 EOF;
 
 	}

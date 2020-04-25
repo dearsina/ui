@@ -30,21 +30,21 @@ class Input extends Field {
 		$validation = self::getValidationTags($validation);
 
 		# Parent class
-		$parent_class_array = str::getAttrArrray($parent_class, "input-group", $only_parent_class);
+		$parent_class_array = str::getAttrArray($parent_class, "input-group", $only_parent_class);
 		$parent_class = str::getAttrTag("class", $parent_class_array);
 		
 		# Parent style
 		$parent_style = str::getAttrTag("style", $parent_style);
 
 		# Class
-		$class_array = str::getAttrArrray($class, ["form-control", $disabled_class], $only_class);
+		$class_array = str::getAttrArray($class, ["form-control", $disabled_class], $only_class);
 		$class = str::getAttrTag("class", $class_array);
 		
 		# Style
 		$style = str::getAttrTag("style", $style);
 
 		# Placeholder
-		$placeholder = str::getAttrTag("placeholder", self::getPlaceholder($placeholder));
+		$placeholder = str::getAttrTag("placeholder", self::getPlaceholder($placeholder, $name));
 
 		# Misc
 		$min = str::getAttrTag("min", $min);
@@ -71,9 +71,9 @@ class Input extends Field {
     {$icon}
     <input
     	id="{$id}"
-		type="$type"
-		name="$name"
-		value="$value"
+		type="{$type}"
+		name="{$name}"
+		value="{$value}"
     	{$class}
 		{$placeholder}
 		{$title}

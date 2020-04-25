@@ -1,22 +1,18 @@
 <?php
 
 
-namespace App\UI\Card;
+namespace App\UI;
 
 use App\Common\Common;
-
-use App\UI\Dropdown;
-use App\UI\Icon;
-use App\UI\Badge;
-use App\UI\Button;
-
-use app\common\listing;
-use app\common\progress;
 use App\Common\str;
 
 class Card extends Common {
 
 	private $id;
+	private $cardHeader;
+	private $cardBody;
+	private $cardFooter;
+	private $cardPost;
 
 	/**
 	 * Create a card
@@ -36,7 +32,7 @@ class Card extends Common {
 	 * 			"colour" => "red"
 	 * 		]]
 	 * 	],
-	 * 	"body" => $form->get_html(),
+	 * 	"body" => $form->getHTML(),
 	 * 	"footer" => "Don't have an account yet?",
 	 *
 	 * 	"id" => "", 	//The unique ID of this card div
@@ -71,19 +67,11 @@ class Card extends Common {
 		parent::__construct();
 
 		if(!is_array($a)){
-			$this->set_id();
+			$this->setId();
 			return true;
 		}
 
-		foreach($a as $key => $val){
-			$method = "set_$key";
-			if (method_exists($this, $method)) {
-				//if a custom setter method exists, use it
-				$this->$method($val);
-			} else {
-				$this->$key = $val;
-			}
-		}
+		$this->setAttr($a);
 
 		return true;
 	}
@@ -96,7 +84,11 @@ class Card extends Common {
 	 *
 	 * @return bool
 	 */
-	public function set_id($id = NULL){
+	public function setId($id = NULL){
+		if($id === false){
+			$this->id = false;
+			return true;
+		}
 		$this->id = $id ?: str::id("card");
 		return true;
 	}
@@ -109,28 +101,23 @@ class Card extends Common {
 	 *
 	 * @return bool
 	 */
-	public function set_header($a = NULL){
+	public function setHeader($a = NULL){
 		# Array
 		if(is_array($a)){
-			if($a['class'] && !is_array($a['class'])){
-				$a['class'] =  [$a['class']];
-			}
-			if($a['style'] && !is_array($a['style'])){
-				$a['style'] =  [$a['style']];
-			}
-			$this->card_header = $a;
+			$this->cardHeader = $a;
 			return true;
 		}
 
 		# Mixed
 		if ($a){
-			$this->card_header['title'] = $a;
+			$this->cardHeader['title'] = $a;
 			return true;
 		}
 
 		# Clear
-		if($a == false){
-			$this->card_header = [];
+		if($a === false){
+			$this->cardHeader = [];
+			return true;
 		}
 
 		return true;
@@ -141,33 +128,33 @@ class Card extends Common {
 	 *
 	 * @return bool|string
 	 */
-	public function get_header_html(){
-		if(!is_array($this->card_header)){
+	public function getHeaderHTML(){
+		if(!is_array($this->cardHeader)){
 			// Headers are optional
 			return false;
 		}
 
 		# Header buttons can also be defined outside of the header key when defining card vales.
-		$this->card_header['buttons'] = array_merge($this->card_header['buttons']?:[], $this->buttons?:[]);
+		$this->cardHeader['buttons'] = array_merge($this->cardHeader['buttons']?:[], $this->buttons?:[]);
 
 		# Add the required Bootstrap header class very first
-		$this->card_header['class'] = str::getAttrArrray($this->card_header['class'], "card-header", $this->card_header['only_class']);
+		$this->cardHeader['class'] = str::getAttrArray($this->cardHeader['class'], "card-header", $this->cardHeader['only_class']);
 
 		# Styles
-		$this->card_header['style'] = str::getAttrArrray($this->card_header['style'], NULL, $this->card_header['only_style']);
+		$this->cardHeader['style'] = str::getAttrArray($this->cardHeader['style'], NULL, $this->cardHeader['only_style']);
 
 		# Dropdown buttons
-		if($this->card_header['buttons']){
-			$buttons = Dropdown::generate($this->card_header);
+		if($this->cardHeader['buttons']){
+			$buttons = Dropdown::generate($this->cardHeader);
 		}
 
 		# Button(s) in a row
-		if(str::isNumericArray($this->card_header['button'])){
-			foreach($this->card_header['button'] as $b){
+		if(str::isNumericArray($this->cardHeader['button'])){
+			foreach($this->cardHeader['button'] as $b){
 				$button .= Button::generate($b);
 			}
-		} else if ($this->card_header['button']){
-			$button = Button::generate($this->card_header['button']);
+		} else if ($this->cardHeader['button']){
+			$button = Button::generate($this->cardHeader['button']);
 		}
 
 		if($button){
@@ -175,31 +162,31 @@ class Card extends Common {
 		}
 
 		# Accent
-		$this->card_header['class'][] = str::getColour($this->accent, "bg");
+		$this->cardHeader['class'][] = str::getColour($this->accent, "bg");
 
 		# Icon
-		$icon = Icon::generate($this->card_header['icon']);
+		$icon = Icon::generate($this->cardHeader['icon']);
 
 		# Badge
-		$badge = Badge::generate($this->card_header['badge']);
+		$badge = Badge::generate($this->cardHeader['badge']);
 
 		# ID
-		$id = str::getAttrTag("id", $this->card_header['id']);
+		$id = str::getAttrTag("id", $this->cardHeader['id']);
 
 		# Style
-		$style = str::getAttrTag("style", $this->card_header['style']);
+		$style = str::getAttrTag("style", $this->cardHeader['style']);
 
 		# Title colour
-		$class[] = str::getColour($this->card_header['colour']);
+		$class[] = str::getColour($this->cardHeader['colour']);
 
 		# Draggable
 		$class[] = $this->draggable ? "card-header-draggable" : false;
 
 		# Script
-		$script = str::getScriptTag($this->card_header['script']);
+		$script = str::getScriptTag($this->cardHeader['script']);
 
 		# The header title itself
-		$title = $this->card_header['header'].$this->card_header['title'].$this->card_header['html'];
+		$title = $this->cardHeader['header'].$this->cardHeader['title'].$this->cardHeader['html'];
 
 		# Title class
 		if(!empty(array_filter($class))){
@@ -208,7 +195,7 @@ class Card extends Common {
 		}
 
 		# The div class
-		$class = str::getAttrTag("class", $this->card_header['class']);
+		$class = str::getAttrTag("class", $this->cardHeader['class']);
 
 		return <<<EOF
 <div{$id}{$class}{$style}>
@@ -231,33 +218,33 @@ EOF;
 	 *
 	 * @return bool|string
 	 */
-	public function get_footer_html(){
-		if(!is_array($this->card_footer)){
+	public function getFooterHTML(){
+		if(!is_array($this->cardFooter)){
 			// Footers are optional
 			return false;
 		}
 
 		# Add the required Bootstrap footer class very first
-		$this->card_footer['class'] = str::getAttrArrray($this->card_footer['class'], "card-footer", $this->card_footer['only_class']);
+		$this->cardFooter['class'] = str::getAttrArray($this->cardFooter['class'], "card-footer", $this->cardFooter['only_class']);
 
 		# Styles
-		$this->card_footer['style'] = str::getAttrArrray($this->card_footer['style'], NULL, $this->card_footer['only_style']);
+		$this->cardFooter['style'] = str::getAttrArray($this->cardFooter['style'], NULL, $this->cardFooter['only_style']);
 
 		# Dropdown buttons
-		if($this->card_footer['buttons']){
-			$buttons = Dropdown::generate($this->card_footer);
+		if($this->cardFooter['buttons']){
+			$buttons = Dropdown::generate($this->cardFooter);
 		}
 
 		# Button(s) in a row
-		if(str::isNumericArray($this->card_footer['button'])){
-			foreach($this->card_footer['button'] as $b){
+		if(str::isNumericArray($this->cardFooter['button'])){
+			foreach($this->cardFooter['button'] as $b){
 				if(empty($b)){
 					continue;
 				}
 				$button .= Button::generate($b);
 			}
-		} else if ($this->card_footer['button']){
-			$button = Button::generate($this->card_footer['button']);
+		} else if ($this->cardFooter['button']){
+			$button = Button::generate($this->cardFooter['button']);
 		}
 
 		if($button){
@@ -265,35 +252,35 @@ EOF;
 		}
 
 		# Icon
-		$icon = Icon::generate($this->card_footer['icon']);
+		$icon = Icon::generate($this->cardFooter['icon']);
 
 		# Badge
-		$badge = Badge::generate($this->card_footer['badge']);
+		$badge = Badge::generate($this->cardFooter['badge']);
 
 		# ID
-		$id = str::getAttrTag("id", $this->card_footer['id']);
+		$id = str::getAttrTag("id", $this->cardFooter['id']);
 
 		# Style
-		$style = str::getAttrTag("style", $this->card_footer['style']);
+		$style = str::getAttrTag("style", $this->cardFooter['style']);
 
 		# Text colour
-		$class[] = str::getColour($this->card_footer['colour']);
+		$class[] = str::getColour($this->cardFooter['colour']);
 
 		# Draggable
 		$class[] = $this->draggable ? "card-footer-draggable" : false;
 
 		# Script
-		$script = str::getScriptTag($this->card_footer['script']);
+		$script = str::getScriptTag($this->cardFooter['script']);
 
 		# The div class
-		$class = str::getAttrTag("class", $this->card_footer['class']);
+		$class = str::getAttrTag("class", $this->cardFooter['class']);
 
 		return <<<EOF
 <div{$id}{$class}{$style}>
 	<div class="container">
   		<div class="row">
     		<div class="col-auto">
-    			{$icon}{$this->card_footer['html']}{$badge}
+    			{$icon}{$this->cardFooter['html']}{$badge}
     		</div>
     		<div class="col">
     			{$buttons}{$button}
@@ -306,6 +293,47 @@ EOF;
 	}
 
 	/**
+	 * Returns the post as HTML.
+	 *
+	 * @return bool|string
+	 */
+	public function getPostHTML(){
+		if(!is_array($this->cardPost)){
+			// Posts are optional
+			return false;
+		}
+
+		# ID
+		$id = str::getAttrTag("id", $this->cardPost['id']);
+
+		# Add the required Bootstrap post class very first
+		$class_array = str::getAttrArray($this->cardPost['class'], str::getColour($this->cardPost['colour']), $this->cardPost['only_class']);
+
+		# Styles
+		$style_array = str::getAttrArray($this->cardPost['style'], NULL, $this->cardPost['only_style']);
+
+		# Icon
+		$icon = Icon::generate($this->cardPost['icon']);
+
+		# Badge
+		$badge = Badge::generate($this->cardPost['badge']);
+
+		# Script
+		$script = str::getScriptTag($this->cardPost['script']);
+
+		$cells[] = [
+			"class" => $class_array,
+			"style" => $style_array,
+			"html" => "{$icon}{$this->cardPost['html']}{$badge}"
+		];
+		$html = Grid::generate($cells);
+
+		$class = str::getAttrTag("class", "card-post");
+
+		return "<div{$id}{$class}>{$html}</div>{$script}";
+	}
+
+	/**
 	 * Set the card footer.
 	 * Will replace existing footers.
 	 *
@@ -313,28 +341,53 @@ EOF;
 	 *
 	 * @return bool
 	 */
-	public function set_footer($a = NULL){
+	public function setFooter($a = NULL){
 		# Array
 		if(is_array($a)){
-			if($a['class'] && !is_array($a['class'])){
-				$a['class'] =  [$a['class']];
-			}
-			if($a['style'] && !is_array($a['style'])){
-				$a['style'] =  [$a['style']];
-			}
-			$this->card_footer = $a;
+			$this->cardFooter = $a;
 			return true;
 		}
 
 		# Mixed
 		if ($a){
-			$this->card_footer['html'] = $a;
+			$this->cardFooter['html'] = $a;
 			return true;
 		}
 
 		# Clear
-		if($a == false){
-			$this->card_footer = [];
+		if($a === false){
+			$this->cardFooter = [];
+			return true;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Set the card post.
+	 * Will replace existing posts.
+	 *
+	 * @param mixed $a Can be an array or a string, if set to false, will clear the post
+	 *
+	 * @return bool
+	 */
+	public function setPost($a = NULL){
+		# Array
+		if(is_array($a)){
+			$this->cardPost = $a;
+			return true;
+		}
+
+		# Mixed
+		if ($a){
+			$this->cardPost['html'] = $a;
+			return true;
+		}
+
+		# Clear
+		if($a === false){
+			$this->cardPost = [];
+			return true;
 		}
 
 		return true;
@@ -348,15 +401,9 @@ EOF;
 	 *
 	 * @return bool
 	 */
-	public function set_body($a = NULL){
+	public function setBody($a = NULL){
 		# Array
 		if(is_array($a)){
-			if($a['class'] && !is_array($a['class'])){
-				$a['class'] =  [$a['class']];
-			}
-			if($a['style'] && !is_array($a['style'])){
-				$a['style'] =  [$a['style']];
-			}
 			$a['id'] = $a['id'] ?: str::id("body");
 			$this->body = $a;
 			return true;
@@ -370,8 +417,9 @@ EOF;
 		}
 
 		# Clear
-		if($a == false){
+		if($a === false){
 			$this->body = [];
+			return true;
 		}
 
 		return true;
@@ -383,19 +431,20 @@ EOF;
 	 *
 	 * @return bool|string
 	 */
-	public function get_body_html(){
+	public function getBodyHTML(){
 		if(!$this->body){
 			return false;
 		}
 
 		if(is_array($this->body['html'])){
-			$this->body['html'] = listing::get_row($this->body['html'], $this->body['id']);
+			$grid = new Grid();
+			$this->body['html'] = $grid->getHTML($this->body['html']);
 		}
 
 		$id = str::getAttrTag("id", $this->body['id']);
 		$class = str::getAttrTag("class", ["card-body", $this->body['class']]);
 		$style = str::getAttrTag("style", $this->body['style']);
-		$progress = progress::generate($this->body['progress']);
+		$progress = Progress::generate($this->body['progress']);
 		$script = str::getScriptTag($this->body['script']);
 
 		return "<div{$class}{$id}{$style}>{$progress}{$this->body['html']}</div>{$script}";
@@ -408,34 +457,50 @@ EOF;
 	 *
 	 * @return bool|string
 	 */
-	private function get_id($as_tag = FALSE){
+	private function getId($as_tag = FALSE){
 		if($as_tag){
 			return str::getAttrTag("id", $this->id);
 		}
 		return $this->id;
 	}
 
+	function getHTML(){
+		$class_array = str::getAttrArray($this->class, "card", $this->only_class);
+		$class = str::getAttrTag("class", $class_array);
+		$style = str::getAttrTag("style", $this->style);
+		return /** @lang HTML */<<<EOF
+<div
+	{$this->getId(true)}
+	{$class}
+	{$style}
+>
+	{$this->getHeaderHTML()}
+	{$this->getBodyHTML()}
+	{$this->getFooterHTML()}
+	
+	{$this->getScriptHTML(true)}
+</div>
+	{$this->getPostHTML()}
+EOF;
+
+	}
+
 	/**
-	 * Return the class(es).
+	 * Returns all Javascript related to the card.
 	 *
-	 * @param bool $as_tag If set to TRUE return the classes as a HTML tag.
+	 * @param bool $as_tag If set, will return enclosed with script tag.
 	 *
 	 * @return bool|string
 	 */
-	private function getClass($as_tag = FALSE){
-		# Generate an array of all the classes to use
-		$class_array = array_filter([
-			"card",
-//				$this->get_accent(),
-//				$this->get_border(),
-			$this->class
-		]);
+	private function getScriptHTML($as_tag = FALSE){
+		$script = $this->script;
+		$script .= $this->getDraggableScript();
+		$script .= $this->getResizableScript();
 
 		if($as_tag){
-			return str::getAttrTag("class", $class_array);
+			return str::getScriptTag($script);
 		}
-
-		return implode(" ", $class_array);
+		return $script;
 	}
 
 	/**
@@ -445,7 +510,7 @@ EOF;
 	 *
 	 * @return bool|string
 	 */
-	private function get_draggable_script(){
+	private function getDraggableScript(){
 		if(!$this->draggable) {
 			return false;
 		}
@@ -469,8 +534,8 @@ $(document).ready(function(){
 	var custom_settings = {$custom_settings_json};
 	var settings = $.extend(default_settings, custom_settings);
 	
-	$('#{$this->get_id()}').draggable(settings);
-	$('#{$this->get_id()}').css("z-index", "9999");
+	$('#{$this->getId()}').draggable(settings);
+	$('#{$this->getId()}').css("z-index", "9999");
 });
 EOF;
 	}
@@ -482,7 +547,7 @@ EOF;
 	 *
 	 * @return bool|string
 	 */
-	private function get_resizable_script(){
+	private function getResizableScript(){
 		if($this->resizeable){
 			//If resizable has been written incorrectly
 			$this->resizable = $this->resizeable;
@@ -503,55 +568,6 @@ EOF;
 
 		$resizable_settings_json = json_encode($resizable_settings, JSON_PRETTY_PRINT);
 
-		return "$('#{$this->get_id()}').resizable({$resizable_settings_json});";
-	}
-
-	/**
-	 * Returns all Javascript related to the card.
-	 *
-	 * @param bool $as_tag If set, will return enclosed with script tag.
-	 *
-	 * @return bool|string
-	 */
-	private function get_script($as_tag = FALSE){
-		$script = $this->script;
-		$script .= $this->get_draggable_script();
-		$script .= $this->get_resizable_script();
-
-		if($as_tag){
-			return str::getScriptTag($script);
-		}
-		return $script;
-	}
-
-	/**
-	 * Returns the styles
-	 *
-	 * @param bool $as_tag
-	 *
-	 * @return bool|string
-	 */
-	private function get_style($as_tag = FALSE){
-		if($as_tag){
-			return str::getAttrTag("style", $this->style);
-		}
-		return $this->style;
-	}
-
-	function get_html(){
-		return /** @lang HTML */<<<EOF
-<div
-	{$this->get_id(true)}
-	{$this->getClass(true)}
-	{$this->get_style(true)}
->
-	{$this->get_header_html()}
-	{$this->get_body_html()}
-	{$this->get_footer_html()}
-	
-	{$this->get_script(true)}
-</div>
-EOF;
-
+		return "$('#{$this->getId()}').resizable({$resizable_settings_json});";
 	}
 }

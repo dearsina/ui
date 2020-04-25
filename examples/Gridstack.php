@@ -4,7 +4,7 @@
 namespace App\UI\Examples;
 
 class Gridstack {
-	function get_html(){
+	function getHTML(){
 		for($i = 0;$i < 10; $i++){
 			$buttons[] = [
 				"title" => "Title {$i}",
@@ -31,10 +31,10 @@ class Gridstack {
 		$html = /** @lang HTML */<<<EOF
 <div class="grid-stack">
   <div class="grid-stack-item" data-gs-x="0" data-gs-y="0" data-gs-width="4" data-gs-height="2" data-gs-id="card_id_1">
-    <div class="grid-stack-item-content">{$card->get_html()}</div>
+    <div class="grid-stack-item-content">{$card->getHTML()}</div>
   </div>
   <div class="grid-stack-item" data-gs-x="8" data-gs-y="3" data-gs-width="4" data-gs-height="4" data-gs-id="card_id_2">
-    <div class="grid-stack-item-content">{$card->get_html()}</div>
+    <div class="grid-stack-item-content">{$card->getHTML()}</div>
   </div>
 </div>
 <button onclick="lockgrid();">Lock</button>

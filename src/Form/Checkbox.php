@@ -52,7 +52,7 @@ class Checkbox extends Field implements FieldInterface{
 		$val['valdation'] = $validation;
 
 		# Adjust the label to fit the field
-		$val['parent_style'] = str::getAttrArrray($val['parent_style'],["margin" => "-1rem 0 0 0"], $val['only_parent_style']);
+		$val['parent_style'] = str::getAttrArray($val['parent_style'],["margin" => "-1rem 0 0 0"], $val['only_parent_style']);
 
 		return [
 			"id" => $id,
@@ -194,7 +194,7 @@ EOF;
 		extract($a);
 
 		# Parent class
-		$parent_class_array = str::getAttrArrray($parent_class, "input-group", $only_parent_class);
+		$parent_class_array = str::getAttrArray($parent_class, "input-group", $only_parent_class);
 		$parent_class_tag = str::getAttrTag("class", $parent_class_array);
 
 		# Parent style
@@ -213,7 +213,7 @@ EOF;
 		}
 		
 		# Class
-		$class_array = str::getAttrArrray($class, "magic-{$type}", $aonly_class);
+		$class_array = str::getAttrArray($class, "magic-{$type}", $aonly_class);
 		$class_tag = str::getAttrTag("class", $class_array);
 		
 		# Style

@@ -23,14 +23,14 @@ class Select extends Field implements FieldInterface {
 		$multiple = str::getAttrTag("multiple", $multiple ? "multiple" : false);
 
 		# Parent class
-		$parent_class_array = str::getAttrArrray($parent_class, ["form-group", $disabled_parent_class], $only_parent_class);
+		$parent_class_array = str::getAttrArray($parent_class, ["form-group", $disabled_parent_class], $only_parent_class);
 		$parent_class = str::getAttrTag("class", $parent_class_array);
 
 		# Parent style
 		$parent_style = str::getAttrTag("style", $parent_style);
 
 		# Class
-		$class_array = str::getAttrArrray($class, ["form-control", $disabled_class], $only_class);
+		$class_array = str::getAttrArray($class, ["form-control", $disabled_class], $only_class);
 		$class = str::getAttrTag("class", $class_array);
 
 		# Style

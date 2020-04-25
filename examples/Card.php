@@ -42,12 +42,12 @@ class Card {
 		}
 		return $button;
 	}
-	function get_html(){
+	function getHTML(){
 		$card = new \App\UI\Card\Card([
 			"body" => "This is the body."
 		]);
 
-		$html .= $card->get_html();
+		$html .= $card->getHTML();
 
 		$card = new \App\UI\Card\Card([
 			"header" => "This is the header",
@@ -58,7 +58,7 @@ class Card {
 			]
 		]);
 
-		$html .= $card->get_html();
+		$html .= $card->getHTML();
 
 		$card = new \App\UI\Card\Card([
 			"header" => [
@@ -77,7 +77,7 @@ class Card {
 			]
 		]);
 
-		$html .= $card->get_html();
+		$html .= $card->getHTML();
 
 		$card = new \App\UI\Card\Card([
 			"header" => [
@@ -94,7 +94,7 @@ class Card {
 			]
 		]);
 
-		$html .= $card->get_html();
+		$html .= $card->getHTML();
 
 		$card = new \App\UI\Card\Card([
 			"header" => [
@@ -131,7 +131,7 @@ class Card {
 			]
 		]);
 
-		$html .= $card->get_html();
+		$html .= $card->getHTML();
 
 		$card = new \App\UI\Card\Card([
 			"header" => [
@@ -145,7 +145,7 @@ class Card {
 			]
 		]);
 
-		$html .= $card->get_html();
+		$html .= $card->getHTML();
 
 		return $html;
 	}

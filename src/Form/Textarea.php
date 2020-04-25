@@ -27,7 +27,7 @@ class Textarea extends Field implements FieldInterface {
 		}
 
 		# Class
-		$class_array = str::getAttrArrray($class, ["form-control", $disabled_class], $only_class);
+		$class_array = str::getAttrArray($class, ["form-control", $disabled_class], $only_class);
 		$class = str::getAttrTag("class", $class_array);
 
 		# Style

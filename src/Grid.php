@@ -79,7 +79,7 @@ class Grid {
 			$id_tag = str::getAttrTag("id", $row['id']);
 
 			# Class
-			$class_array = str::getAttrArrray($row['class'], "row", $row['only_class']);
+			$class_array = str::getAttrArray($row['class'], "row", $row['only_class']);
 			$class_tag = str::getAttrTag("class", $class_array);
 
 			# Style
@@ -129,7 +129,7 @@ class Grid {
 			$id_tag = str::getAttrTag("id", $col['id']);
 
 			# Class
-			$class_array = str::getAttrArrray($col['class'], $col_width, $col['only_class']);
+			$class_array = str::getAttrArray($col['class'], $col_width, $col['only_class']);
 			$class_tag = str::getAttrTag("class", $class_array);
 
 			# Styles
@@ -157,5 +157,17 @@ class Grid {
 
 		$html = $this->getRowHTML($grid);
 		return $html;
+	}
+
+	/**
+	 * Static method to quickly return a grid.
+	 *
+	 * @param array $cells An array of grid cells
+	 *
+	 * @return string Returns HTML
+	 */
+	public static function generate(array $cells){
+		$grid = new Grid();
+		return $grid->getRowHTML($cells);
 	}
 }

@@ -24,6 +24,10 @@ class Icon {
 			"type" => "solid",
 			"name" => "ban"
 		],
+		"danger" => [
+			"type" => "solid",
+			"name" => "ban"
+		],
 		"success" => [
 			"type" => "solid",
 			"name" => "check"

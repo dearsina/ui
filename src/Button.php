@@ -420,10 +420,10 @@ class Button {
 		}
 
 		# Class with override override
-		$class_array = str::getAttrArrray($class, ["btn", "btn{$outline}-{$colour}", $right], $only_class);
+		$class_array = str::getAttrArray($class, ["btn", "btn{$outline}-{$colour}", $right], $only_class);
 
 		# Style with override
-		$style_array = str::getAttrArrray($style, false, $only_style);
+		$style_array = str::getAttrArray($style, false, $only_style);
 
 		# Pulsating
 		if($pulsating){

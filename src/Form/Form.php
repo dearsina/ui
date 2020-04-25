@@ -92,10 +92,10 @@ class Form {
 		$this->setScript($script, $only_script);
 
 		# Class
-		$this->class = str::getAttrArrray($class, [], $only_class);
+		$this->class = str::getAttrArray($class, [], $only_class);
 
 		# Style
-		$this->style = str::getAttrArrray($style, []);
+		$this->style = str::getAttrArray($style, []);
 
 		return true;
 	}

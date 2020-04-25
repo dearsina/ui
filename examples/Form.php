@@ -107,7 +107,7 @@ class Form implements ExampleInterface {
 			"footer" => "Footer",
 		]);
 
-		$card_array[] = $card->get_html();
+		$card_array[] = $card->getHTML();
 
 		$fields = [];
 
@@ -248,7 +248,7 @@ class Form implements ExampleInterface {
 			"footer" => "Footer",
 		]);
 
-		$card_array[] = $card->get_html();
+		$card_array[] = $card->getHTML();
 
 		$fields = [];
 
@@ -336,7 +336,7 @@ class Form implements ExampleInterface {
 			"footer" => "Footer",
 		]);
 
-		$card_array[] = $card->get_html();
+		$card_array[] = $card->getHTML();
 
 		$grid = new \App\UI\Grid();
 		$grid->set($card_array);

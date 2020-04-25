@@ -6,7 +6,7 @@ namespace App\UI\Form;
 
 use App\Common\str;
 
-class Hidden implements FieldInterface {
+class Hidden extends Field implements FieldInterface {
 
 	/**
 	 * A hidden field is treated like a normal field,
@@ -17,7 +17,7 @@ class Hidden implements FieldInterface {
 	public static function generateHTML (array $a) {
 		extract($a);
 		$id = str::getAttrTag("id", $id);
-		$type = str::getAttrTag("type", $type);
+		$type = str::getAttrTag("type", "hidden");
 		$name = str::getAttrTag("name", $name);
 		$value = str::getAttrTag("value", $value);
 		return "<input{$id}{$type}{$name}{$value}>";

@@ -254,7 +254,7 @@ EOF;
 	 *
 	 * @return bool|string
 	 */
-	public function get_html () {
+	public function getHTML () {
 		$html .= $this->generate_level1_html();
 		$html .= $this->generate_level2_html();
 		return $html;

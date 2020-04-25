@@ -27,7 +27,7 @@ class Dropdown {
 		# Is the caret disabled?
 		if($disabled){
 			$disabled = str::getAttrTag("disabled", "disabled");
-			$style = str::getAttrArrray($style, ["cursor" => "default"]);
+			$style = str::getAttrArray($style, ["cursor" => "default"]);
 		}
 
 		$style_tag = str::getAttrTag("style", $style);
@@ -79,13 +79,13 @@ EOF;
 
 			# If the items is a header
 			if($item['header']){
-				$html .= self::get_header_html($item);
+				$html .= self::getHeaderHTML($item);
 				continue;
 			}
 
 			if($item['children']) {
 				//if the item has children
-				$item['class'] = str::getAttrArrray($item['class'], "parent");
+				$item['class'] = str::getAttrArray($item['class'], "parent");
 			}
 
 			# Add colour
@@ -139,7 +139,7 @@ EOF;
 	 *
 	 * @return string
 	 */
-	static function get_header_html($button){
+	static function getHeaderHTML($button){
 		extract($button);
 
 		# The text can be colourised
@@ -154,7 +154,7 @@ EOF;
 		}
 
 		# Class
-		$class_array = str::getAttrArrray($class, ["dropdown-header", "text-center", $colour], $only_class);
+		$class_array = str::getAttrArray($class, ["dropdown-header", "text-center", $colour], $only_class);
 		$class_tag = str::getAttrTag("class", $class_array);
 
 		# Style

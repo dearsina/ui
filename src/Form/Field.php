@@ -115,7 +115,7 @@ class Field {
 		}
 		
 		# Class
-		$class_array = str::getAttrArrray($l['class'], "field-label", $l['only_class']);
+		$class_array = str::getAttrArray($l['class'], "field-label", $l['only_class']);
 		$class = str::getAttrTag("class", $class_array);
 
 		# Style
@@ -171,7 +171,7 @@ class Field {
 		$html = $l['html'];
 
 		# Class
-		$class_array = str::getAttrArrray($l['class'], "field-label", $l['only_class']);
+		$class_array = str::getAttrArray($l['class'], "field-label", $l['only_class']);
 		$class = str::getAttrTag("class", $class_array);
 
 		# Style
@@ -302,7 +302,7 @@ class Field {
 			$html = $desc;
 		}
 
-		$class_array = str::getAttrArrray($class, ["form-text", "text-muted"], $only_class);
+		$class_array = str::getAttrArray($class, ["form-text", "text-muted"], $only_class);
 		$class_tag = str::getAttrTag("class", $class_array);
 		$style_tag = str::getAttrTag("style", $style);
 
@@ -336,7 +336,7 @@ class Field {
 		$icon_title = $icon_array['title']? " {$icon_array['title']}" : false;
 
 		$colour = str::getColour($icon_array['colour']);
-		$span_class_array = str::getAttrArrray($colour, "input-group-text");
+		$span_class_array = str::getAttrArray($colour, "input-group-text");
 		$span_class_tag = str::getAttrTag("class", $span_class_array);
 
 		return "<div class=\"input-group-{$prepend_or_append}\"><span{$span_class_tag}>{$icon_html}{$icon_title}</span></div>";

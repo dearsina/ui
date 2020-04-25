@@ -5,7 +5,7 @@ namespace App\UI\Examples;
 
 
 class Grid {
-	function get_html(){
+	function getHTML(){
 		$grid = new \App\UI\Grid();
 		$grid->set("<div style='background-color:red;'>This is a string</div>");
 		$html .= $grid->getHTML();
