@@ -90,7 +90,7 @@ class Card extends Common {
 			return true;
 		}
 		$this->id = $id ?: str::id("card");
-		return true;
+		return $this->id;
 	}
 
 	/**
@@ -140,6 +140,9 @@ class Card extends Common {
 		# Add the required Bootstrap header class very first
 		$this->cardHeader['class'] = str::getAttrArray($this->cardHeader['class'], "card-header", $this->cardHeader['only_class']);
 
+		# Draggable
+		$this->cardHeader['class'][] = $this->draggable ? "card-header-draggable" : false;
+
 		# Styles
 		$this->cardHeader['style'] = str::getAttrArray($this->cardHeader['style'], NULL, $this->cardHeader['only_style']);
 
@@ -178,9 +181,6 @@ class Card extends Common {
 
 		# Title colour
 		$class[] = str::getColour($this->cardHeader['colour']);
-
-		# Draggable
-		$class[] = $this->draggable ? "card-header-draggable" : false;
 
 		# Script
 		$script = str::getScriptTag($this->cardHeader['script']);
@@ -457,7 +457,8 @@ EOF;
 	 *
 	 * @return bool|string
 	 */
-	private function getId($as_tag = FALSE){
+	private function getId($as_tag = NULL){
+		$this->id = $this->id ?: $this->setId();
 		if($as_tag){
 			return str::getAttrTag("id", $this->id);
 		}

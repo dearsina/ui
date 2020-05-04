@@ -20,6 +20,7 @@ class Select extends Field implements FieldInterface {
 		# Options
 		$options_html = self::getOptionsHTML($a);
 
+		# Multiple values allowed?
 		$multiple = str::getAttrTag("multiple", $multiple ? "multiple" : false);
 
 		# Parent class

@@ -25,6 +25,10 @@ class Recaptcha extends Field implements FieldInterface {
 			"name" => "recaptcha_response"
 		]);
 
+		if(!$a['action']){
+			throw new \Exception("Recaptha field is missing the action variable.");
+		}
+
 		return <<<EOF
 {$hiddenInput}
 <script>
@@ -32,7 +36,9 @@ $.getScript( "https://www.google.com/recaptcha/api.js?render={$_ENV['recaptcha_k
 .done(function( script, textStatus ) {
     const r = grecaptcha;
 	r.ready(function() {
-		r.execute('{$_ENV['recaptcha_key']}', {action: 'reset_password'}).then(function(token){
+		r.execute('{$_ENV['recaptcha_key']}', {
+		    action: '{$a['action']}'		
+		}).then(function(token){
 			$("#{$id}").val(token);
 			delete r;
 		});

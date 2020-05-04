@@ -27,6 +27,11 @@ use App\UI\Icon;
  * @package App\UI\Form
  */
 class Field {
+	/**
+	 * @param array|null $field
+	 * @link https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#autofill
+	 * @return bool|string
+	 */
 	public static function getHTML(array $field = NULL){
 		if(!$field){
 			return false;
