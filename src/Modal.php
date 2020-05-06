@@ -21,9 +21,12 @@ class Modal extends Common {
 	 * Create a modal
 	 * <code>
 	 * 	$modal = new modal([
-	 * 	"script" => "", //Javascript, without the script tag.
-	 * 	"size" => "", //small, large, xl
-	 * 	"dismiss" => true, //set to false if you don't want user to be able to easily dismiss modal
+	 * 	"id" => "id",
+	 * 	"size" => "xl",
+	 * 	"dismissable" => false,
+	 * 	"draggable" => true,
+	 * 	"resizable" => true,
+	 * 	"approve" => true,
 	 * 	"header" => [
 	 * 		"title" => "",	//If the header is just a string, it's assumed to be this key value
 	 * 		"html" => "",
@@ -112,8 +115,8 @@ class Modal extends Common {
 	 * @return bool|string
 	 */
 	public function getHeaderHTML(){
-		if(!is_array($this->modalHeader) && $this->dismissable === false){
-			// Only if no header information has been sent *and* the user has been prevented from making a choice
+		if(!is_array($this->modalHeader)){
+			// Headers are optional
 			return false;
 		}
 
@@ -396,23 +399,30 @@ EOF;
 	}
 
 	function getHTML(){
-		$default_class = "modal";
 		switch($this->size){
 		case 'xs':
-		case 'small': $default_class .= "-sm"; break;
-		case 'large': $default_class .= "-lg"; break;
-		case 'xl': $default_class .= "-xl"; break;
+		case 'small': $size = "modal-sm"; break;
+		case 'large': $size = "modal-lg"; break;
+		case 'xl': $size = "modal-xl"; break;
 		}
-		$class_array = str::getAttrArray($this->class, $default_class, $this->only_class);
+		$parent_class_array = str::getAttrArray($this->parent_class, "modal", $this->only_parent_class);
+		$parent_class = str::getAttrTag("class", $parent_class_array);
+		$parent_style = str::getAttrTag("style", $this->parent_style);
+		
+		$class_array = str::getAttrArray($this->class, ["modal-dialog","modal-dialog-centered", $size], $this->only_class);
 		$class = str::getAttrTag("class", $class_array);
 		$style = str::getAttrTag("style", $this->style);
+
 		return /** @lang HTML */<<<EOF
 <div
 	{$this->getId(true)}
-	{$class}
-	{$style}
+	{$parent_class}
+	{$parent_style}
 >
-    <div class="modal-dialog modal-dialog-centered">
+    <div
+    	{$class}
+		{$style}
+	>
         <div class="modal-content">
         	{$this->getHeaderHTML()}
 			{$this->getBodyHTML()}
@@ -446,14 +456,22 @@ EOF;
 		}
 		$settings_json = json_encode($settings, JSON_PRETTY_PRINT);
 
+		/**
+		 * Remove the backdrop once the modal is removed.
+		 * This is placed here because at times the modal
+		 * may be removed without being hidden first.
+		 * For example when the contents of the #ui-view
+		 * is refreshed.
+		 */
+
 		$script = /** @lang JavaScript */<<<EOF
 $('#{$this->getId()}').modal({$settings_json});
-
-// Once the modal is hidden, remove it
-$('#{$this->getId()}').on('hidden.bs.modal', function (e) {
-	$('#{$this->getId()}').remove();
+$('#{$this->getId()}').on("remove", function (e) {
+    let id = e.currentTarget.id;
+    $('#' + id + '-backdrop').fadeOut("fast", function(){
+		$('#' + id + '-backdrop').remove();        
+    });    
 });
-
 {$script}
 {$this->script}
 EOF;
@@ -462,6 +480,25 @@ EOF;
 			return str::getScriptTag($script);
 		}
 		return $script;
+
+		/* Alternative method, using MutationObserver
+		var x = new MutationObserver(function (e) {
+			if (e[0].removedNodes.length){
+				e[0].removedNodes.forEach(function(node){
+					if($(node).hasClass("modal")){
+						let id = node.id;
+						var_dump(id);
+						$('#' + id + '-backdrop').fadeOut("fast", function(){
+							$('#' + id + '-backdrop').remove();
+						});
+					}
+				})
+
+			}
+		});
+		x.observe(document.getElementById('ui-view'), { childList: true });
+		*/
+
 	}
 
 	/**
@@ -488,7 +525,8 @@ EOF;
 		}
 		else {
 			//if just set to true or any other object
-			$message = str::title("Are you sure you want to close?");
+			$title = "Close this window?";
+			$message = "Any changes you may have made, will be lost.";
 		}
 
 		# If the message contains line breaks, it will break JavaScript, remove
@@ -565,7 +603,6 @@ $(document).ready(function(){
 	var settings = $.extend(default_settings, custom_settings);
 	
 	$('#{$this->getId()}').draggable(settings);
-	$('#{$this->getId()}').css("z-index", "9999");
 });
 EOF;
 	}

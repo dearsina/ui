@@ -78,10 +78,8 @@ class Form {
 		$this->action = $action;
 		$this->rel_table = $rel_table;
 		$this->rel_id = $rel_id;
+		$this->callback = $callback;
 
-		# Callback
-		$this->hash->setCallback($callback);
-		
 		# Fields
 		$this->setFields($fields);
 		
@@ -265,7 +263,7 @@ EOF;
 	<input type="hidden" name="meta_action" value="{$this->action}"/>
 	<input type="hidden" name="meta_rel_table" value="{$this->rel_table}"/>
 	<input type="hidden" name="meta_rel_id" value="{$this->rel_id}"/>
-	<input type="hidden" name="callback" value="{$this->hash->getCallback()}"/>
+	<input type="hidden" name="callback" value="{$this->callback}"/>
 	<div class="listing">{$this->getFieldsHTML()}</div>
 	{$this->getButtonsHTML()}
 </form>

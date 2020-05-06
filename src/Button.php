@@ -300,7 +300,7 @@ class Button {
 		# Who is directing the button?
 		if($approve){
 			//if an approval dialogue is to prepend the action
-			$approve_script = Button::get_approve_script($a);
+			$approve_script = str::get_approve_script($a);
 			$href = "href=\"#\"";
 		} else {
 			$href = href::generate($a);

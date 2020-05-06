@@ -3,6 +3,8 @@
 namespace App\UI;
 
 use App\Common\href;
+use App\Common\SQL\Factory;
+use App\Common\SQL\mySQL;
 use App\Common\str;
 
 /**
@@ -237,11 +239,14 @@ EOF;
 	 * @return string
 	 */
 	static function get($rel_table){
-		$info = info::getInstance();
-		foreach($info->getInfo("icon") as $icon){
-			$icons[$icon['rel_table']] = $icon['icon'];
-		}
-
-		return $icons[$rel_table] ?: $rel_table;
+		$sql = Factory::getInstance();
+		$icon = $sql->select([
+			"table" => "icon",
+			"where" => [
+				"rel_table" => $rel_table
+			],
+			"limit" => 1
+		]);
+		return $icon['icon'] ?: $rel_table;
 	}
 }

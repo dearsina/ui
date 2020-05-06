@@ -18,13 +18,11 @@ class Page {
 	 * html constructor.
 	 *
 	 * <code>
-	 * $html = new html([
-	 * "title" => "Stripe",
-	 * "subtitle" => "Subtitle",
-	 * "icon" => [
-	 * 	"type" => "brand",
-	 * 	"name" => "stripe"
-	 * ]
+	 * $page = new Page([
+	 * 	"title" => "Stripe",
+	 * 	"subtitle" => "Subtitle",
+	 * 	"icon" => "icon",
+	 * 	"button" => $button
 	 * ]);
 	 * </code>
 	 *

@@ -442,7 +442,8 @@ EOF;
 		}
 
 		$id = str::getAttrTag("id", $this->body['id']);
-		$class = str::getAttrTag("class", ["card-body", $this->body['class']]);
+		$class_array = str::getAttrArray($this->body['class'], "card-body", $this->body['only_class']);
+		$class = str::getAttrTag("class", $class_array);
 		$style = str::getAttrTag("style", $this->body['style']);
 		$progress = Progress::generate($this->body['progress']);
 		$script = str::getScriptTag($this->body['script']);
@@ -477,6 +478,7 @@ EOF;
 >
 	{$this->getHeaderHTML()}
 	{$this->getBodyHTML()}
+	{$this->getRowsHTML()}
 	{$this->getFooterHTML()}
 	
 	{$this->getScriptHTML(true)}
@@ -484,6 +486,36 @@ EOF;
 	{$this->getPostHTML()}
 EOF;
 
+	}
+
+	public function getRowsHTML(){
+		if(!is_array($this->rows)){
+			return false;
+		}
+
+		if(!is_array($this->rows['rows'])){
+			throw new \Exception("Place the (actual) rows in a 'rows' sub array.");
+		}
+
+		foreach($this->rows['rows'] as $key => $val){
+			$left = [
+				"class" => "small",
+				"sm" => $this->rows['sm'],
+				"html" => $key
+			];
+			$rows[] = [$left, $val];
+		}
+
+		$html = Grid::generate($rows);
+
+		$id = str::getAttrTag("id", $this->rows['id']);
+		$class_array = str::getAttrArray($this->rows['class'], "container card-rows", $this->rows['only_class']);
+		$class = str::getAttrTag("class", $class_array);
+		$style = str::getAttrTag("style", $this->rows['style']);
+		$progress = Progress::generate($this->rows['progress']);
+		$script = str::getScriptTag($this->rows['script']);
+
+		return "<div{$class}{$id}{$style}>{$html}</div>{$script}";
 	}
 
 	/**

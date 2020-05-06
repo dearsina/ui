@@ -44,7 +44,7 @@ class Field {
 		$field = self::getRequiredValidation($field);
 
 		# Potential class name (based on the field type)
-		$class = "App\\UI\\Form\\".ucfirst($field['type']);
+		$class = str::getClassCase("App\\UI\\Form\\{$field['type']}");
 
 		if(class_exists($class)){
 			//If a custom input type field exists
