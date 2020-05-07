@@ -7,6 +7,7 @@ namespace App\UI\Navigation;
 use App\Common\href;
 use App\Common\str;
 use App\UI\Badge;
+use App\UI\Grid;
 use App\UI\Icon;
 
 /**
@@ -17,8 +18,12 @@ use App\UI\Icon;
  * @package App\UI\Navigation
  */
 class Horizontal {
-	public function __construct ($levels) {
+	private $levels;
+	private $footers;
+
+	public function __construct (?array $levels, ?array $footers) {
 		$this->levels = $levels;
+		$this->footers = $footers;
 	}
 
 	/**
@@ -26,7 +31,10 @@ class Horizontal {
 	 *
 	 * @return string
 	 */
-	public function getLevel1HTML(){
+	private function getLevel1HTML(){
+		if(empty($this->levels[1])){
+			return false;
+		}
 		$html .= "<div id=\"navbar-level1\">";
 		$html .= $this->getTitleHTML($this->levels[1]['title'], "navbar-level1-logo");
 		$html .= "<div id=\"navbar-level1-buttons\">";
@@ -40,7 +48,10 @@ class Horizontal {
 	 * Generates the level 2 navigation bar below level 1.
 	 * @return string
 	 */
-	public function getLevel2HTML(){
+	private function getLevel2HTML(){
+		if(empty($this->levels[2])){
+			return false;
+		}
 		$html .= "<div id=\"navbar-level2\" class=\"navbar navbar-expand-md navbar-dark\">";
 		$html .= $this->getTitleHTML($this->levels[2]['title'], "navbar-title");
 		$html .= "<div class=\"navbar-sidebar-toggle\" onClick=\"$('#ui-sidebar-right').toggleClass('show');$(this).toggleClass('show');\"><i class=\"fal fa-bars\"></i></div>";
@@ -145,9 +156,94 @@ EOF;
 	 *
 	 * @return string
 	 */
-	public function getHTML () {
+	public function getHTML () : string
+	{
 		$html .= $this->getLevel1HTML();
 		$html .= $this->getLevel2HTML();
 		return $html;
 	}
+
+	/**
+	 * Generates the HTML for the ui-footer.
+	 *
+	 * @return string
+	 */
+	public function getFooterHTML() : string
+	{
+		$html .= $this->getLevel2FooterHTML();
+		$html .= $this->getLevel1FooterHTML();
+		return $html;
+	}
+
+	/**
+	 * @return string
+	 */
+	private function getLevel2FooterHTML() : string
+	{
+		if(!$this->footers[2]){
+			return false;
+		}
+
+		foreach($this->footers[2] as $id => $col){
+			if($col['items']){
+				$items = "<ul>";
+				foreach($col['items'] as $item){
+					$href = href::generate($item);
+					$items .= "<li><a{$href}>{$item['title']}</a></li>";
+				}
+				$items .= "</ul>";
+			} else {
+				$items = false;
+			}
+
+			$col['html'] = "<h5>{$col['title']}</h5>{$col['html']}{$items}";
+
+			$cols[] = $col;
+		}
+
+		$grid = new Grid();
+
+		$grid->set($cols);
+
+		$html = <<<EOF
+<div class="footer-main">
+	<div class="container">
+		{$grid->getHTML()}	
+	</div>
+</div>
+EOF;
+
+		return $html;
+	}
+
+	/**
+	 * Like with the top navigation bar,
+	 * level 1 is smaller than level 2.
+	 *
+	 * @return string
+	 */
+	private function getLevel1FooterHTML() : string
+	{
+		if(!$this->footers[1]){
+			return false;
+		}
+
+		$grid = new Grid([
+			"unstackable" => true
+		]);
+
+		$grid->set($this->footers[1]);
+
+		$html = <<<EOF
+<div class="footer-footer">
+	<div class="container">
+		{$grid->getHTML()}	
+	</div>
+</div>
+EOF;
+
+		return $html;
+	}
+
+
 }
