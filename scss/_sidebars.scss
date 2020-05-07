@@ -1,0 +1,215 @@
+/**
+ *
+ */
+
+/* Mixins*/
+@mixin transition($transition-property, $transition-time, $method) {
+  -webkit-transition: $transition-property $transition-time $method;
+  -moz-transition: $transition-property $transition-time $method;
+  -ms-transition: $transition-property $transition-time $method;
+  -o-transition: $transition-property $transition-time $method;
+  transition: $transition-property $transition-time $method;
+}
+
+// Mobile ONLY
+@media screen and (max-width: map-get($grid-breakpoints, "md")) {
+  #ui-sidebar-right {
+    /** Background **/
+    background: hsla(223, 14%, 87%, 1);
+    //box-shadow: inset 14px 0px 5px -15px rgba(0,0,0,0.33);
+
+    //Padding top that matches the height of the nav bars
+    top: #{$navbar-height}px;
+    //z-index:1;
+
+    //Padding left-right to give content breathing room
+    //padding-left: 1rem;
+    //padding-right: 1rem;
+
+    position: fixed;
+    //top: 0;
+    height: 100%;
+    width: 80%;
+    right: -80%;
+    @include transition(right, .3s, ease-out);
+  }
+
+  #ui-sidebar-right.show{
+    right:0;
+    box-shadow: 0px 10px 15px 0px rgba(0, 0, 0, 0.33);
+  }
+
+  .wrapper {
+    width:100%;
+    @include transition(all, .3s, ease-out);
+    &.active {
+      width:85%;
+      #ui-sidebar-right {
+        right:0;
+      }
+    }
+  }
+}
+
+
+/* Style tweaks */
+//html,
+//body {
+//  overflow-x: hidden; /* Prevent scroll on narrow devices */
+//  height: 100%;
+//}
+//body {
+//  padding-top: 70px;
+//}
+
+
+/* Off Canvas */
+
+// Desktop
+//@media screen and (min-width: 768px) {
+//  #ui-sidebar-right {
+//    /** Background **/
+//    background: hsla(223, 14%, 87%, 1);
+//    box-shadow: inset 14px 0px 5px -15px rgba(0,0,0,0.33);
+//
+//    //Padding top matches that of the .wrapper
+//    padding-top: 85px;
+//
+//    //Padding left-right to give content breathing room
+//    padding-left: 1rem;
+//    padding-right: 1rem;
+//
+//    position: absolute;
+//    top: 0;
+//    height: 100%;
+//    width: 15%;
+//    right: -15%;
+//    @include transition(all, .3s, ease-out);
+//  }
+//
+//  .wrapper {
+//    width:100%;
+//    @include transition(all, .3s, ease-out);
+//    &.active {
+//      width:85%;
+//      #ui-sidebar-right {
+//        right:0;
+//      }
+//    }
+//  }
+//}
+
+//// Mobile
+//@media screen and (max-width: 767px) {
+//  #ui-sidebar-right {
+//    background: hsla(220, 14%, 90%, 1);
+//
+//    position: fixed;
+//    z-index: 5;
+//    opacity: .5;
+//    top: 0;
+//    height: 100%;
+//    width: 15%;
+//    right: -15%;
+//    @include transition(all, .3s, ease-out);
+//  }
+//
+//  .wrapper {
+//    width:100%;
+//    @include transition(all, .3s, ease-out);
+//    &.active {
+//      width: 100%;
+//      #ui-sidebar-right {
+//        width: 75%;
+//        right:0;
+//
+//        position: fixed;
+//        z-index: 5;
+//        opacity: .5;
+//      }
+//    }
+//  }
+//}
+
+//@media screen and (min-width: 768px) {
+//  .row-offcanvas {
+//    //position: relative;
+//    height:100%;
+//    right: 15%;
+//    @include transition(all, .3s, ease-out);
+//    &.active {
+//      right: 0; /* 3 columns */
+//      .content, .wrapper {
+//        width: 100%; /* 12 columns */
+//      }
+//    }
+//    .content, .wrapper {
+//      width: 85%; /* 9 columns */
+//      float: right;
+//      @include transition(all, .3s, ease-out);
+//    }
+//    #ui-sidebar-right {
+//      position: absolute;
+//      top: 0;
+//      width: 15%; /* 3 columns */
+//      right: -15%; /* 3 columns */
+//      height:100%;
+//    }
+//  }
+//}
+//
+//@media screen and (max-width: 767px) {
+//  .row-offcanvas {
+//    right: 0;
+//    //position: relative;
+//    height:100%;
+//    @include transition(all, .3s, ease-out);
+//    &.active {
+//      right: 50%; /* 6 columns */
+//    }
+//  }
+//  #ui-sidebar-right {
+//    position: absolute;
+//    top: 0;
+//    width: 50%; /* 6 columns */
+//    right: -50%; /* 6 columns */
+//    height:100%;
+//  }
+//}
+
+/* styling the sidebar and the toggle button */
+
+//.content, .wrapper {
+//  position: relative;
+//}
+
+//.sidebar {
+//  background: rgba(51, 122, 183, 0.09);
+//  padding: 10px 15px;
+//  margin-top:-20px;
+//  border-radius: 0 0 0 5px;
+//}
+//.btn-collapse {
+//  position: absolute;
+//  padding: 8px 12px;
+//  border-radius: 5px 5px 0 0;
+//  top: 20px;
+//  right: 0;
+//  margin-right: -24px;
+//  background: rgba(51, 122, 183, 0.09);
+//  transform: rotate(-90deg);
+//  @include transition(all, .3s, ease-out);
+//}
+//.row-offcanvas.active .btn-collapse {
+//  right: 0;
+//  margin-right: -8px;
+//  @include transition(all, .3s, ease-out);
+//
+//  i {
+//    transform: rotate(180deg);
+//  }
+//}
+
+//.wrapper {
+//  padding-top:0 !important;
+//}

@@ -1,0 +1,39 @@
+
+/**
+ * An extra small button.
+ */
+$btn-padding-y-xs:      .125rem;
+$btn-padding-x-xs:      .25rem;
+$btn-font-size-xs:      $font-size-xs;
+$btn-line-height-xs:    $line-height-xs;
+$btn-border-radius-xs:  $border-radius-xs;
+
+.btn-xs {
+  @include button-size($btn-padding-y-xs, $btn-padding-x-xs, $btn-font-size-xs, $btn-line-height-xs, $btn-border-radius-xs);
+}
+
+/**
+ * Undo the transitions added by the ladda JS
+ */
+.ladda-button, .ladda-button .ladda-spinner, .ladda-button .ladda-label {
+  -webkit-transition: none !important;
+  -moz-transition: none !important;
+  -ms-transition: none !important;
+  -o-transition: none !important;
+  transition: none !important;
+}
+
+/**
+ * Grey overrides
+ */
+.btn-outline-gray,
+.btn-outline-grey {
+  color: #999999;
+  border-color: #d9d9d9;
+}
+.btn-outline-gray:hover,
+.btn-outline-gray:hover {
+  color: #49505a;
+  background-color: #e9ecef;
+  border-color: #b9bec6;
+}

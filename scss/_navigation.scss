@@ -1,0 +1,535 @@
+
+/**
+ * The meta navigation bar on the very top of the screen
+ */
+#navbar-level1{
+  height: #{$navbar-level1-height}px;
+  background: $navbar-level1-bg;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: .5rem;
+  color:white;
+
+  box-shadow: 0px 1px 9px -5px rgb(0, 0, 0);
+}
+
+/**
+ * The logo that sits inside the navbar meta to the top right
+ */
+#navbar-level1-logo {
+  opacity: .75;
+  margin-left: 0.75rem;
+  text-decoration: none;
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  transition: all 0.5s;
+}
+
+/**
+ * Logo dimentions
+ */
+#navbar-level1-logo img {
+  height: 25px;
+  width: 60px;
+}
+
+/**
+ * The buttons to the very right on the meta navbar
+ */
+#navbar-level1-buttons{
+  float: right;
+  margin: 4px 5px;
+}
+
+#navbar-level1-buttons > * {
+  margin-left: 15px;
+}
+
+#navbar-level1-buttons > .nav-right > .parent > a:hover{
+  opacity: 1;
+}
+
+#navbar-level1-buttons > .nav-right > .parent > a{
+  opacity: .75;
+}
+
+/**
+ * Silly effect to make it shine slowly when hovering over it.
+ */
+#navbar-level1-logo:hover {
+  opacity: 1;
+
+  -webkit-animation: all 1.5s ease-in-out infinite alternate;
+  -moz-animation: all 1.5s ease-in-out infinite alternate;
+  animation: all 1.5s ease-in-out infinite alternate;
+}
+
+/**
+ * The main navigation bar below the meta bar
+ */
+#navbar-level2 {
+  height:#{$navbar-level2-height}px;
+  background: $navbar-level2-bg;
+  z-index:-1;
+  //box-shadow: 0px 5px 8px -5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px -1px 2px 2px rgba(0, 0, 0, .15);
+}
+
+/**
+ * The main title
+ */
+.navbar-title {
+  font-size: 1.25rem;
+  color:white;
+  margin-right: 2rem;
+  font-weight: 500;
+}
+
+/**
+ * Main title on hover
+ */
+.navbar-title:hover{
+  color:white;
+  text-decoration: none;
+}
+
+.navbar-sidebar-toggle{
+  color: white;
+  margin-right: -.25rem;
+  border: 1pt solid #00000000;
+  padding: 5px 10px;
+  border-radius: 0.25rem;
+}
+
+.navbar-sidebar-toggle.show{
+  color: #00000066;
+  border: 1pt solid #00000045;
+  padding: 5px 10px;
+  border-radius: 0.25rem;
+}
+
+/**
+ * Icons in the navigation menu
+ */
+nav li i{
+  margin-right: .75rem;
+}
+/**
+ * Exclude badges
+ */
+nav li .badge i{
+  margin-right: 0;
+}
+
+/**
+ * Desktop
+ */
+@media screen and (min-width: 768px) {
+  /**
+   * Keep the toggle hidden until it's needed
+   */
+  .navbar-sidebar-toggle {
+    display: none;
+  }
+
+  /**
+   * For the main navigation on the *left* side of the screen.
+   * This navigation will be moved to a sidebar on mobile view.
+   *
+   */
+  nav .nav-left > .parent {
+    margin-right: 1rem;
+    float: left;
+  }
+
+  .nav-left {
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav-left > li > a {
+    padding: .5rem;
+    /*background-color: #5588a3;*/
+  }
+
+  /**
+   * What happens when an element is hovered over
+   */
+  .nav-left .parent:hover > ul {
+    display: block;
+    position: absolute;
+    -webkit-animation: fadeIn 300ms;
+    animation: fadeIn 300ms;
+  }
+
+  /**
+   * A single navigation element
+   */
+  .nav-left .parent > ul {
+    display: none;
+
+    position: absolute;
+    z-index: 1000;
+    float: left;
+    min-width: 10rem;
+    padding: 0;
+    font-size: 1rem;
+    color: #212529;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: .25rem;
+    box-shadow: 0px 2px 10px -3px rgba(0, 0, 0, 0.25);
+  }
+
+  /**
+ * Rounded corners
+ */
+  .nav-left .parent > ul li:first-child,
+  .nav-left .parent > ul li:first-child:hover > a {
+    border-top-left-radius: .25rem;
+    border-top-right-radius: .25rem !important;
+  }
+
+  .nav-left .parent > ul li:last-child,
+  .nav-left .parent > ul li:last-child:hover > a {
+    border-bottom-left-radius: .25rem;
+    border-bottom-right-radius: .25rem;
+  }
+
+  .nav-left .parent > ul li a {
+    color: #000000;
+  }
+}
+
+.nav-right .parent > ul li a {
+  color: #000000;
+}
+
+/**
+ * For when menu items have badges
+ */
+.nav-right .parent > ul li a .badge{
+  float: right;
+  margin: 6px 0 0 0;
+}
+
+/**
+ * Disabled menu items.
+ * Expects the disabled class to be on the li belonging to the menu item
+ */
+.nav-right .parent > ul li.disabled a {
+  color: #DDDDDD;
+  cursor: default;
+}
+.nav-right .parent > ul li.disabled a .badge{
+  opacity: .25;
+}
+.nav-right .parent > ul li.disabled a:hover {
+  background-color: unset;
+  cursor: default;
+}
+
+/**
+* Rounded corners
+*/
+.nav-right .parent > ul li:first-child,
+.nav-right .parent > ul li:first-child:hover > a {
+  border-top-left-radius: .25rem;
+  border-top-right-radius: .25rem !important;
+}
+
+.nav-right .parent > ul li:last-child,
+.nav-right .parent > ul li:last-child:hover > a {
+  border-bottom-left-radius: .25rem;
+  border-bottom-right-radius: .25rem;
+}
+
+/**
+ * For navigation on the *right* side of the screen
+ */
+nav .nav-right {
+  margin: 0;
+  padding: 0;
+  float: right;
+}
+
+.nav-right > li > a {
+  //padding: .5rem;
+}
+
+.nav-right > li > a:hover {
+  /* formatting the top level link on hover*/
+  /* only for the time when the cursor is over the item */
+}
+
+.nav-right > .parent > ul {
+  right: 0;
+  /*top: calc(100% + .5rem);*/
+}
+
+/**
+ * What happens when an element is hovered over
+ */
+.nav-right .parent:hover > ul {
+  display: block;
+  position: absolute;
+  -webkit-animation: fadeIn 300ms;
+  animation: fadeIn 300ms;
+  width: max-content;
+}
+
+/**
+ * A single navigation element
+ */
+.nav-right .parent > ul {
+  display: none;
+
+  position: absolute;
+  z-index: 1000;
+  float: left;
+  min-width: 10rem;
+  padding: 0;
+  font-size: 1rem;
+  color: #212529;
+  text-align: left;
+  list-style: none;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: .25rem;
+  box-shadow: 0px 2px 10px -3px rgba(0, 0, 0, 0.25);
+}
+nav .parent
+{
+  display: block;
+  position: relative;
+  line-height: 30px;
+}
+
+/**
+ * How items on the right on level 1 are displayed
+ */
+.nav-right > .parent
+{
+  display: inline-block;
+  margin-left:1rem;
+  cursor: pointer;
+}
+
+nav .parent li
+{
+  background-color: #FFFFFF;
+}
+
+nav .parent a
+{
+  color: #FFFFFF;
+  text-decoration: none;
+}
+
+  /**
+   * Animation for when a menu or sub menu item appears.
+   */
+  @-webkit-keyframes fadeIn {
+    from {
+      opacity: 0;
+      margin-top: 5px;
+    }
+    to {
+      opacity: 1;
+      margin-top: 0;
+    }
+  }
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      margin-top: 5px;
+    }
+    to {
+      opacity: 1;
+      margin-top: 0;
+    }
+  }
+
+  /**
+   * Markers to indicate that the element is a "parent"
+   */
+  nav .nav-left .parent > ul > .parent > a:after {
+    content: "›";
+    float: right;
+  }
+
+  nav .nav-right .parent > ul > .parent > a:after {
+    content: "‹";
+    float: right;
+  }
+
+
+  nav .parent > ul li {
+    line-height: 30px;
+    width: 100%;
+    min-width: 200px;
+  }
+
+  nav .parent > ul li a {
+    //color: #000000;
+    padding: 0.3rem 1rem;
+    display: block;
+
+    border-bottom: .1pt solid #00000066;
+  }
+
+  nav .nav-left ul ul, nav .nav-left ul ul ul {
+    left: 100%;
+    top: 0;
+  }
+
+  nav .nav-right ul ul, nav .nav-right ul ul ul {
+    right: 100%;
+    top: 0;
+  }
+
+  nav .parent li a:hover {
+    background-color: #F0F0F0;
+  }
+
+  nav .expand {
+    font-size: 12px;
+    float: right;
+    margin-right: 5px;
+  }
+//}
+
+/**
+ * Mobile
+ */
+@media screen and (max-width: 767px) {
+  /**
+ * Only display the toggle when it's needed
+ */
+  .navbar-sidebar-toggle {
+    display: unset;
+  }
+
+  .nav-left a, nav label {
+    display: block;
+    padding: .85rem;
+    color: $white;
+    background-color: #151515;
+    box-shadow: inset 0 -1px #1d1d1d;
+    -webkit-transition: all .25s ease-in;
+    transition: all .25s ease-in;
+  }
+
+  .nav-left a:focus, .nav-left a:hover, .nav-left label:focus, .nav-left label:hover {
+    color: rgba(255, 255, 255, 0.5);
+    background: #030303;
+  }
+
+  .nav-left label {
+    cursor: pointer;
+  }
+
+  /**
+   * Styling first level lists items
+   */
+  .nav-left > .parent a, .nav-left > .parent label {
+    padding-left: 2rem;
+    background: #252525;
+    box-shadow: inset 0 -1px #373737;
+  }
+
+  .nav-left > .parent a:focus, .nav-left > .parent a:hover, .nav-left > .parent label:focus, .nav-left > .parent label:hover {
+    background: #131313;
+  }
+
+  /**
+   * Styling second level list items
+   */
+  .nav-left > .parent ul a,
+  .nav-left > .parent ul label {
+    padding-left: 4rem;
+    background: #353535;
+    box-shadow: inset 0 -1px #474747;
+  }
+
+  .nav-left > .parent ul a:focus,
+  .nav-left > .parent ul a:hover,
+  .nav-left > .parent ul label:focus,
+  .nav-left > .parent ul label:hover {
+    background: #232323;
+  }
+
+  /**
+   * Styling third level list items
+   */
+  .nav-left > .parent ul > .parent ul a,
+  .nav-left > .parent ul > .parent ul label {
+    padding-left: 6rem;
+    background: #454545;
+    box-shadow: inset 0 -1px #575757;
+  }
+
+  .nav-left > .parent ul > .parent ul a:focus,
+  .nav-left > .parent ul > .parent ul a:hover,
+  .nav-left > .parent ul > .parent ul label:focus,
+  .nav-left > .parent ul > .parent ul label:hover {
+    background: #333333;
+  }
+
+  /**
+   * Hide nested lists
+   */
+  /*.group-list, .sub-group-list, .sub-sub-group-list {*/
+  .nav-left .parent > ul {
+    height: 100%;
+    max-height: 0;
+    overflow: auto;
+    -webkit-transition: max-height .5s ease-in-out;
+    transition: max-height .5s ease-in-out;
+  }
+
+  /**
+   * Remove scrollbars for very long lists
+   */
+  .nav-left .parent > ul::-webkit-scrollbar {
+    width: 0px;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
+    display: none;  /*Safari and Chrome*/
+  }
+
+  .nav-left .parent:hover > ul{
+    max-height: max-content;
+  }
+
+  label > span {
+    float: right;
+    -webkit-transition: -webkit-transform .65s ease;
+    transition: transform .65s ease;
+  }
+
+  nav .nav-left .parent > ul > .parent > a:hover::after {
+    content: "›";
+    float: right;
+    -webkit-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    transform: rotate(90deg);
+  }
+
+  .nav__list input[type=checkbox]:checked + label > span {
+    -webkit-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    transform: rotate(90deg);
+  }
+
+  .nav-left li {
+    display: block;
+  }
+  .nav-left ul, ul.nav-left {
+    padding:0;
+  }
+}

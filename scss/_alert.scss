@@ -1,0 +1,31 @@
+.alert {
+  //box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 2px 2px 2px -2px rgba(0, 0, 0, 0.3);
+}
+
+/**
+ * Colour hues for the alert overrides
+ */
+$alert-color: (
+  "error":  0,
+  "danger": 0,
+  "info":   197
+);
+
+@each $alert-color, $value in $alert-color {
+  .alert-#{$alert-color} {
+    color: hsla($value, 70%, 35%, 1);
+    background-color: hsl($value, 80%, 90%);
+    border-color: hsl($value, 60%, 75%);
+  }
+}
+
+/**
+ * The <code> tag is often used as shorthand for monotype script in alerts
+ */
+code {
+  font-size: 90%;
+  font-weight: bold;
+  word-wrap: break-word;
+  color: unset;
+}

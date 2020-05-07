@@ -9,6 +9,13 @@ use App\Common\str;
 use App\UI\Button;
 use App\UI\Grid;
 
+/**
+ * Class Form
+ *
+ * Generates form HTML.
+ *
+ * @package App\UI\Form
+ */
 class Form {
 	/**
 	 * The ID of the form
@@ -45,6 +52,16 @@ class Form {
 	 * @var array
 	 */
 	private $style;
+
+	/**
+	 * Meta properties.
+	 * @var string
+	 */
+	private $action;
+	private $rel_table;
+	private $rel_id;
+	private $callback;
+
 
 	/**
 	 * Form constructor.
@@ -186,7 +203,12 @@ EOF;
 		return true;
 	}
 
-	private function setId($id){
+	/**
+	 * @param $id
+	 *
+	 * @return string
+	 */
+	private function setId($id = NULL){
 		$this->id = $id ?: str::id("form");
 		return $this->id;
 	}
@@ -227,7 +249,10 @@ EOF;
 		return $grid->getHTML($this->fields);
 	}
 
-	function getButtonsHTML(){
+	/**
+	 * @return bool|string
+	 */
+	public function getButtonsHTML(){
 		if (!$this->buttons) {
 			return false;
 		}
@@ -243,7 +268,10 @@ EOF;
 		return implode("&nbsp;", $buttons_html);
 	}
 
-	function getScriptHTML(){
+	/**
+	 * @return bool|string
+	 */
+	public function getScriptHTML(){
 		return str::getScriptTag($this->script);
 	}
 

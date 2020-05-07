@@ -1,0 +1,34 @@
+/**
+ * The page footer
+ */
+
+footer {
+  font-size: smaller;
+  color:white;
+  margin-top: 2rem;
+}
+
+footer ul {
+  list-style-type: none;
+  padding-left: 0;
+  line-height: 1.7;
+}
+
+.footer-main {
+  background-color: #606976;
+  padding: 2rem 1rem 1rem 1rem;
+}
+
+.footer-footer{
+  background-color: #393e46;
+  padding: 1rem 0;
+}
+
+footer a {
+  color: rgba(255, 255, 255, 0.50);
+}
+
+footer .copyright {
+  font-size: small;
+  color: rgba(255, 255, 255, 0.50);
+}

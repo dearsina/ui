@@ -1,0 +1,33 @@
+/**
+ * Ensure modal headers and footers are aligned with the body
+ */
+.modal-header,
+.modal-footer
+{
+  padding: 1rem 0;
+  border:none;
+}
+.modal-footer
+{
+  background: $card-header-footer-bg;
+}
+.modal-footer > * {
+  margin: 0.25rem 0;
+}
+
+/**
+ * Make modals look like cards
+ */
+.modal-content
+{
+  border:none;
+  box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+/**
+ * Make the header text stand out a little
+ */
+.modal-header
+{
+  font-weight: 600;
+}

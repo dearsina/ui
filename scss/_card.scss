@@ -1,0 +1,97 @@
+/**
+ * Bootstrap Card Overrides
+ */
+
+.card {
+  border: none;
+  margin-bottom: $spacer;
+  box-shadow: 1px 1px 2px 0 hsla(0, 0%, 0%, 0.2);
+}
+
+/**
+Great, deep box shadow for super floaty cards
+box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
+ */
+
+/**
+ * To be used for floating (jQuery UI draggable) cards
+ */
+.card-floating{
+  box-shadow: 2px 2px 15px 0px hsla(0, 0%, 0%, 0.3);
+}
+
+.card-header {
+  font-weight:500;
+  padding: $card-spacer-y;
+  border-bottom: unset;
+  background: $card-header-footer-bg;
+}
+
+/**
+ * Card headers and footers are divided into two sections,
+ * this prevents buttons to override the text and vice versa.
+ * The default padding of the container needs to stripped out,
+ * to avoid double padding.
+ */
+.card-header > .container,
+.card-footer > .container
+{
+  padding: 0;
+}
+
+.card-footer{
+  padding: $card-spacer-y;
+  border-top: unset;
+  background: $card-header-footer-bg;
+}
+
+.card-body {
+  padding: $card-spacer-y;
+}
+
+/**
+ * Used if several buttons are to be floated right
+ * in a card header or footer.
+ */
+.card-header .btn-float-right{
+  margin: -0.5rem 0 0.5rem 0;
+}
+.card-footer .btn-float-right
+{
+  margin: -0.5rem 0 0 0;
+}
+.card-header .btn-float-right .btn,
+.card-footer .btn-float-right .btn
+{
+  float: right !important;
+  line-height: 1;
+  margin: .5rem 0 0 .5rem;
+}
+
+/**
+ * Specifically for the icon top left in the header.
+ */
+.card-header > .container > .row > .col-auto > .fa,
+.card-header > .container > .row > .col-auto > .fab,
+.card-header > .container > .row > .col-auto > .fal,
+.card-header > .container > .row > .col-auto > .far,
+.card-header > .container > .row > .col-auto > .fas
+{
+  margin-right: 0.5rem;
+}
+
+/**
+ * Small text elements floating right below a card
+ */
+.card-post {
+  margin-top: -0.5rem;
+  padding: 0 .5rem;
+  margin-bottom: 1rem;
+}
+
+/**
+ * For the rows
+ */
+.card-rows {
+  padding: $card-spacer-y;
+}
