@@ -32,8 +32,12 @@ $btn-border-radius-xs:  $border-radius-xs;
   border-color: #d9d9d9;
 }
 .btn-outline-gray:hover,
-.btn-outline-gray:hover {
+.btn-outline-grey:hover {
   color: #49505a;
   background-color: #e9ecef;
   border-color: #b9bec6;
+}
+
+.btn-outline-dark:hover{
+  color: #ffffff !important;
 }

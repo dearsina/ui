@@ -213,9 +213,9 @@ class Button {
 	 *
 	 * @return bool|array
 	 */
-	static function get_array($a, $rel_table = false, $rel_id = false, $callback = false){
+	static function getArray($a, $rel_table = false, $rel_id = false, $callback = false){
 		if(is_array($a) && $a[0]){
-			return self::get_array($a[0],$a[1],$a[2],$a[3]);
+			return self::getArray($a[0],$a[1],$a[2],$a[3]);
 		}
 
 		if(!is_array($a)){
@@ -289,7 +289,7 @@ class Button {
 			return false;
 		}
 
-		$a = self::get_array($a, $rel_table, $rel_id, $callback);
+		$a = self::getArray($a, $rel_table, $rel_id, $callback);
 
 		if(!$a['id']){
 			$a['id'] = "button_".rand();

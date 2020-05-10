@@ -1,0 +1,29 @@
+.collapse-toggle {
+  cursor: pointer;
+}
+
+.collapse-toggle::after{
+  float: right;
+  font-family: "Font Awesome 5 Pro";
+  opacity:.25;
+
+  content: "\f077"; // Chevron up (indicating that you can close this)
+}
+
+.collapse-toggle:hover::after {
+  opacity: 1;
+}
+
+.collapse-toggle.collapsed::after{
+  content: "\f078"; // Chevron down (indicating that there is something "below")
+}
+
+/**
+ * When there are more than one collapsable item in the set,
+ * differentiate them by a little padding and a line.
+ */
+.accordion > .collapse-toggle:not(:first-child){
+  margin-top: .25rem;
+  padding-top: .25rem;
+  border-top: .5px solid #dee2e6;
+}

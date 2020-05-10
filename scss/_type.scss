@@ -2,3 +2,12 @@ smaller, .smaller {
   font-size: 90%;
   font-weight: 300;
 }
+
+.align-text-center {
+  text-align: center;
+  width: 100% !important;
+}
+
+.text-silent {
+  color: hsla(207, 7%, 86%, 1) !important;
+}

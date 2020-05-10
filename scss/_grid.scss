@@ -1,4 +1,42 @@
 /**
+ * The max screen width before it goes
+ * goes up a class.
+ */
+$grid-breakpoints: (
+        xs: 0,
+        sm: 576px,
+        md: 768px,
+        lg: 992px,
+        xl: 1200px,
+        // Additional, larger sizes for larger screens
+        2xl: 1440px,
+        3xl: 1620px,
+        4xl: 1860px,
+        5xl: 2040px,
+        6xl: 2280px,
+        7xl: 2460px,
+        8xl: 2700px
+);
+
+/**
+ * The corresponding container size.
+ */
+$container-max-widths: (
+        sm: 540px,
+        md: 720px,
+        lg: 960px,
+        xl: 1140px,
+        // Additional, larger sizes for larger screens
+        2xl: 1380px,
+        3xl: 1560px,
+        4xl: 1800px,
+        5xl: 1980px,
+        6xl: 2220px,
+        7xl: 2400px,
+        8xl: 2640px
+);
+
+/**
  * GridstackJS overrides.
  */
 

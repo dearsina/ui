@@ -1,0 +1,77 @@
+/**
+ * The table header
+ */
+.table-header {
+  font-weight: bold;
+  vertical-align: bottom;
+  border-bottom: 2px solid #dee2e6;
+}
+/**
+ * Only sortable headers get the cursor pointer.
+ */
+.table-sortable > .table-header {
+  cursor: pointer;
+}
+
+/**
+ * Template for the sort after
+ */
+.table-sortable > .table-header > div::after{
+  float: right;
+  font-family: "Font Awesome 5 Pro";
+}
+
+/**
+ * When user hovers over a column header
+ */
+.table-sortable > .table-header > div:hover::after {
+  content: "\f15d"; //A-Z
+  opacity: 1;
+}
+/**
+ * When a user hovers a column header that's already sorted ASC
+ */
+.table-sortable > .table-header > div.sorted-asc:hover::after {
+  content: "\f881"; //Z-A
+  opacity: 1;
+}
+/**
+ * When a user hovers a column header that's already sorted DESC
+ */
+.table-sortable > .table-header > div.sorted-desc:hover::after {
+  content: "\f15d"; //A-Z
+  opacity: 1;
+}
+
+/**
+ * When a column gets sorted ASC
+ */
+.table-sortable > .table-header > div.sorted-asc::after {
+  content: "\f15d"; //A-Z
+  opacity: .1;
+}
+/**
+ * When a column gets sorted DESC
+ */
+.table-sortable > .table-header > div.sorted-desc::after {
+  content: "\f881"; //Z-A
+  opacity: .1;
+}
+
+/**
+* The table body
+*/
+.table-body {
+  vertical-align: top;
+  border-top: 1px solid #dee2e6;
+  padding: 0.25rem;
+}
+
+/**
+ * The load more button at the bottom of the on demand table.
+ */
+.load-more-button {
+  margin: 0 auto;
+  display: table;
+  margin-top: 1rem;
+}

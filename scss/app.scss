@@ -51,6 +51,11 @@ $enable-rounded: true;
  */
 @import "colours";
 
+/**
+ * Needs to be loaded before the bootstrap SCSS,
+ * because it will influence variables there.
+ */
+@import "grid";
 
 /**
  * Bootstrap
@@ -62,6 +67,7 @@ $enable-rounded: true;
  * The order here also matters.
  */
 
+@import "accordion";
 @import "alert";
 @import "sidebars";
 @import "navigation";
@@ -74,10 +80,10 @@ $enable-rounded: true;
 @import "buttons";
 @import "form";
 @import "spinners";
+@import "table";
 @import "type";
 
-@import "gridstack";
-// Only strictly necessary if Gridstack is enabled
+
 
 @import "magic-check";
 // Custom magic-check CSS

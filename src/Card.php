@@ -199,7 +199,7 @@ class Card extends Common {
 
 		return <<<EOF
 <div{$id}{$class}{$style}>
-	<div class="container">
+	<div class="container-fluid">
   		<div class="row">
     		<div class="col-auto">
     			{$icon}{$title}{$badge}
@@ -277,7 +277,7 @@ EOF;
 
 		return <<<EOF
 <div{$id}{$class}{$style}>
-	<div class="container">
+	<div class="container-fluid">
   		<div class="row">
     		<div class="col-auto">
     			{$icon}{$this->cardFooter['html']}{$badge}

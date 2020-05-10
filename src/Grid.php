@@ -3,6 +3,7 @@
 
 namespace App\UI;
 
+use App\Common\href;
 use App\Common\str;
 
 class Grid {
@@ -110,9 +111,12 @@ class Grid {
 			} else if(str::isNumericArray($col['html'])) {
 				//if it goes deeper (with metadata)
 				$col_html = $this->getRowHTML($col['html']);
-			} else if ($this->formatter){
+			} else if ($this->formatter) {
 				//If a custom formatter has been designated
 				$col_html = ($this->formatter)($col);
+			} else if($col['accordion']){
+				//if the cell is an accordion
+				$col_html = Accordion::generate($col['accordion']);
 			} else {
 				$col_html = $col['html'];
 			}
@@ -135,7 +139,17 @@ class Grid {
 			# Styles
 			$style_tag = str::getAttrTag("style", $col['style']);
 
-			$html .= "<div{$id_tag}{$class_tag}{$style_tag}>{$col_html}</div>";
+			# Data value (used for sorting)
+			$data_value = str::getAttrTag("data-value", $col['value']);
+
+			# Hash, URI, onClick
+			if($href = href::generate($col)){
+				$tag = "a";
+			} else {
+				$tag = "div";
+			}
+
+			$html .= "<{$tag}{$href}{$id_tag}{$class_tag}{$style_tag}{$data_value}>{$col_html}</{$tag}>";
 		}
 
 		return $html;

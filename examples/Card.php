@@ -43,13 +43,13 @@ class Card {
 		return $button;
 	}
 	function getHTML(){
-		$card = new \App\UI\Card\Card([
+		$card = new \App\UI\Card([
 			"body" => "This is the body."
 		]);
 
 		$html .= $card->getHTML();
 
-		$card = new \App\UI\Card\Card([
+		$card = new \App\UI\Card([
 			"header" => "This is the header",
 			"body" => "This is the body.",
 			"footer" => [
@@ -60,7 +60,7 @@ class Card {
 
 		$html .= $card->getHTML();
 
-		$card = new \App\UI\Card\Card([
+		$card = new \App\UI\Card([
 			"header" => [
 				"colour" => "green",
 				"title" => "A card with two buttons in the header",
@@ -79,7 +79,7 @@ class Card {
 
 		$html .= $card->getHTML();
 
-		$card = new \App\UI\Card\Card([
+		$card = new \App\UI\Card([
 			"header" => [
 				"title" => "A card with an exceptionally longer header text that will encroach on the buttons",
 				"icon" => [
@@ -96,7 +96,7 @@ class Card {
 
 		$html .= $card->getHTML();
 
-		$card = new \App\UI\Card\Card([
+		$card = new \App\UI\Card([
 			"header" => [
 				"colour" => "green",
 				"title" => "A card with two buttons in the header",
@@ -133,7 +133,7 @@ class Card {
 
 		$html .= $card->getHTML();
 
-		$card = new \App\UI\Card\Card([
+		$card = new \App\UI\Card([
 			"header" => [
 				"title" => "Colours",
 			],
