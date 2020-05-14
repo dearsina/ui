@@ -31,12 +31,12 @@ class Badge {
 	 * Generates a badge based on an array of settings.
 	 * <code>
 	 * $html .= Badge::generate([
-	 * 	"hash" => "{$rel_table}/{$rel_id}",
-	 * 	"colour" => "grey",
-	 * 	"icon" => "chevron-left",
-	 * 	"title" => "Return",
-	 * 	"pill" => true,
-	 * 	"alt" => "Text appears when hover",
+	 *    "hash" => "{$rel_table}/{$rel_id}",
+	 *    "colour" => "grey",
+	 *    "icon" => "chevron-left",
+	 *    "title" => "Return",
+	 *    "pill" => true,
+	 *    "alt" => "Text appears when hover",
 	 * ]);
 	 * </code>
 	 *
@@ -48,6 +48,7 @@ class Badge {
 	 * @param $a array|string Array of settings or name of generic badge
 	 *
 	 * @return string
+	 * @throws \Exception
 	 */
 	static function generate($array_or_string = null){
 		if(!$array_or_string){
@@ -78,13 +79,11 @@ class Badge {
 
 		$id = str::getAttrTag("id", $id);
 
+		# Optional approval attributes
+		$approve_attr = str::getApproveAttr($a['approve']);
+
 		# Is the badge a link?
-		if($approve){
-			//if an approval dialogue is to prepend the action
-			$approve_script = Button::get_approve_script($a);
-			$href = "href=\"#\"";
-			$tag_type = "a";
-		} else if($href = href::generate($a)){
+		if($href = href::generate($a)){
 			//if the badge is to be a link
 			$tag_type = "a";
 		} else {
@@ -100,7 +99,7 @@ class Badge {
 		# What colour is the badge?
 		if(str::translate_colour($colour)){
 			$colour = str::translate_colour($colour);
-		} else if(self::is_hex_colour($colour)){
+		} else if(str::is_hex_colour($colour)){
 			$style .= "background-color:{$colour};";
 		} else {
 			$colour = "dark";
@@ -118,7 +117,8 @@ class Badge {
 			"badge-{$colour}",
 			$right ? "float-right" : "", //legacy shortcut
 			"text-light",
-			$class
+			$class,
+			$approve_attr ? "approve-decision" : ""
 		]);
 
 		$style = str::getAttrTag("style", $style);
@@ -128,7 +128,7 @@ class Badge {
 		$title_attr = str::getAttrTag("title", strip_tags($alt ?: $title));
 
 		return /** @lang HTML */<<<EOF
-<{$tag_type}{$href}{$id}{$class}{$style}{$title_attr}>{$icon}{$title}</{$tag_type}>{$script}{$approve_script}
+<{$tag_type}{$href}{$id}{$class}{$style}{$title_attr}{$approve_attr}>{$icon}{$title}</{$tag_type}>{$script}
 EOF;
 	}
 }

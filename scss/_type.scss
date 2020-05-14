@@ -11,3 +11,12 @@ smaller, .smaller {
 .text-silent {
   color: hsla(207, 7%, 86%, 1) !important;
 }
+
+/**
+ * For text that needs to stay on one line,
+ * with overflow hidden. Useful for mobile.
+ */
+.text-flat {
+  overflow: hidden;
+  white-space: nowrap;
+}

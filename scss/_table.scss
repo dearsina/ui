@@ -28,6 +28,16 @@
   content: "\f15d"; //A-Z
   opacity: 1;
 }
+
+/**
+ * If a column is not sortable.
+ */
+.table-sortable > .table-header > div.sorted-ignore {
+  cursor: initial;
+}
+.table-sortable > .table-header > div.sorted-ignore::after {
+  content: ""; //A-Z
+}
 /**
  * When a user hovers a column header that's already sorted ASC
  */

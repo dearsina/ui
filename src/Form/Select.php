@@ -5,6 +5,7 @@ namespace App\UI\Form;
 
 
 use App\Common\str;
+use App\UI\Icon;
 
 class Select extends Field implements FieldInterface {
 
@@ -157,7 +158,7 @@ EOF;
 			$options_array[] = [
 				"value" => $option_value,
 				"title" => $option_title,
-				"selected" => $selected
+				"selected" => $selected,
 			];
 		}
 

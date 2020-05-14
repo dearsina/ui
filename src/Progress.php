@@ -53,9 +53,13 @@ class Progress {
 			$colour = self::COLOUR;
 		}
 
+		if($label !== false){
+			$label = $label ?: $width;
+		}
+
 		return /** @lang HTML */<<<EOF
 <div id="bar" class="progress" style="height: {$height};">
-	<div class="bar progress-bar progress-bar-striped bg-{$colour}" style="width: {$width};"></div>
+	<div class="bar progress-bar progress-bar-striped bg-{$colour}" style="width: {$width};">{$label}</div>
 </div>
 EOF;
 	}

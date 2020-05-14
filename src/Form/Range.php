@@ -31,6 +31,7 @@ class Range extends Field implements FieldInterface {
 	 */
 	public static function generateHTML (array $a) {
 		$a['script'] = self::getRangeScript($a);
+		$a['value'] = $a['value'] === NULL ? ($a['default'] ?: $a['min']) : $a['value'];
 		return Input::generateHTML($a);
 	}
 

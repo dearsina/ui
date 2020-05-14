@@ -52,25 +52,6 @@ box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 
 }
 
 /**
- * Used if several buttons are to be floated right
- * in a card header or footer.
- */
-.card-header .btn-float-right{
-  margin: -0.5rem 0 0.5rem 0;
-}
-.card-footer .btn-float-right
-{
-  margin: -0.5rem 0 0 0;
-}
-.card-header .btn-float-right .btn,
-.card-footer .btn-float-right .btn
-{
-  float: right !important;
-  line-height: 1;
-  margin: .5rem 0 0 .5rem;
-}
-
-/**
  * Specifically for the icon top left in the header.
  */
 .card-header > .container > .row > .col-auto > .fa,

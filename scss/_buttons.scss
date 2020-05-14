@@ -41,3 +41,55 @@ $btn-border-radius-xs:  $border-radius-xs;
 .btn-outline-dark:hover{
   color: #ffffff !important;
 }
+
+/**
+ * Used if several buttons are to be floated right
+ * in a modal header or footer.
+ */
+.modal .btn-float-right{
+  float: right !important;
+  //width: 100%;
+}
+.modal-header .btn-float-right{
+  margin: -0.5rem 0 0.5rem 0;
+}
+.modal-footer .btn-float-right
+{
+  margin: -0.5rem 0 0 0;
+}
+.modal-header .btn-float-right .btn,
+.modal-footer .btn-float-right .btn
+{
+  //line-height: 1;
+  margin: .5rem 0 0 .5rem;
+}
+/**
+ *
+ */
+.modal-footer .btn-float-right .btn i{
+  padding: 4px 0;
+}
+
+/**
+ * Used if several buttons are to be floated right
+ * in a card header or footer.
+ */
+.card-header .btn-float-right{
+  margin: -0.5rem 0 0.5rem 0;
+}
+.card-footer .btn-float-right
+{
+  margin: -0.5rem 0 0 0;
+}
+.card .btn-float-right .btn
+{
+  float: right !important;
+  line-height: 1;
+  margin: .5rem 0 0 .5rem;
+}
+
+.card .btn-float-right .btn:not(:hover),
+.modal .btn-float-right .btn:not(:hover)
+{
+  border-color: $border-color;
+}

@@ -146,23 +146,8 @@ class Card extends Common {
 		# Styles
 		$this->cardHeader['style'] = str::getAttrArray($this->cardHeader['style'], NULL, $this->cardHeader['only_style']);
 
-		# Dropdown buttons
-		if($this->cardHeader['buttons']){
-			$buttons = Dropdown::generate($this->cardHeader);
-		}
-
-		# Button(s) in a row
-		if(str::isNumericArray($this->cardHeader['button'])){
-			foreach($this->cardHeader['button'] as $b){
-				$button .= Button::generate($b);
-			}
-		} else if ($this->cardHeader['button']){
-			$button = Button::generate($this->cardHeader['button']);
-		}
-
-		if($button){
-			$button = "<div class=\"btn-float-right\">{$button}</div>";
-		}
+		# Dropdown buttons and/or button(s) in a row
+		$buttons = str::getButtons($this->cardHeader);
 
 		# Accent
 		$this->cardHeader['class'][] = str::getColour($this->accent, "bg");
@@ -205,7 +190,7 @@ class Card extends Common {
     			{$icon}{$title}{$badge}
     		</div>
     		<div class="col">
-    			{$buttons}{$button}
+    			{$buttons}
     		</div>
     	</div>
 	</div>{$script}

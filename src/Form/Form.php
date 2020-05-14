@@ -61,6 +61,7 @@ class Form {
 	private $rel_table;
 	private $rel_id;
 	private $callback;
+	private $modal;
 
 
 	/**
@@ -96,6 +97,9 @@ class Form {
 		$this->rel_table = $rel_table;
 		$this->rel_id = $rel_id;
 		$this->callback = $callback;
+
+		# Is it in a modal?
+		$this->modal = $modal;
 
 		# Fields
 		$this->setFields($fields);
@@ -242,11 +246,42 @@ EOF;
 		$this->setFields($fields);
 
 		$grid = new Grid([
-			"formatter" => function($field){
+			"formatter" => function(&$field){
 				return Field::getHTML($field);
 			}
 		]);
 		return $grid->getHTML($this->fields);
+	}
+
+	/**
+	 * Prepares form buttons for being used in modals.
+	 * If the modal flag is set to true, will move the buttons
+	 * to the footer to make the modal more aesthetically pleasing.
+	 *
+	 * Needs to be here instead in the Button() class, because it uses
+	 * many form attributes.
+	 *
+	 * @param $a
+	 */
+	private function prepareButtonsForModals(&$a){
+		if(str::isNumericArray($a)){
+			foreach($a as $id => $button){
+				$this->prepareButtonsForModals($a[$id]);
+			}
+		}
+
+		if(str::isAssociativeArray($a)){
+			if($a['type'] == "submit"){
+				$a['form'] = $this->getId();
+			}
+		}
+
+		if(is_string($a)){
+			if($a = Button::GENERIC[$a]){
+				Button::localise($a, $this->rel_table, $this->rel_id, $this->callback);
+				$this->prepareButtonsForModals($a);
+			}
+		}
 	}
 
 	/**
@@ -257,15 +292,41 @@ EOF;
 			return false;
 		}
 
-		if(str::isNumericArray($this->buttons)){
-			foreach($this->buttons as $button){
-				$buttons_html[] = Button::generate($button);
-			}
-		} else {
-			$buttons_html[] = Button::generate($this->buttons);
+		if($this->modal){
+			$this->prepareButtonsForModals($this->buttons);
 		}
 
-		return implode("&nbsp;", $buttons_html);
+		if(str::isNumericArray($this->buttons)){
+			foreach($this->buttons as $button){
+//				if(is_array($button) && $button['type'] == "submit"){
+//					$button['form'] = $this->getId();
+//				}
+				$buttons_array[] = Button::generate($button);
+			}
+		} else {
+//			if(is_array($this->buttons) && $this->buttons['type'] == "submit"){
+//				$this->buttons['form'] = $this->getId();
+//			}
+			$buttons_array[] = Button::generate($this->buttons);
+		}
+
+		$buttons_html = implode("&nbsp;", $buttons_array);
+
+		if($this->modal){
+			$buttons_html = <<<EOF
+</div>
+<div class="modal-footer">
+	<div class="container">
+		<div class="btn-float-right">
+			{$buttons_html}
+		</div>
+	</div>
+</div>
+<div style="display: none;">
+EOF;
+		}
+
+		return $buttons_html;
 	}
 
 	/**

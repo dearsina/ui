@@ -3,11 +3,13 @@
 
 namespace App\UI\Examples;
 
+use App\Common\Common;
+use App\Common\Example\ExampleInterface;
 use Ramsey\Uuid\Codec\TimestampFirstCombCodec;
 use Ramsey\Uuid\Generator\CombGenerator;
 use Ramsey\Uuid\UuidFactory;
 
-class Form implements ExampleInterface {
+class Form extends Common implements ExampleInterface {
 
 	private function getKeyValues($max_i){
 		for($i = 0; $i < $max_i; $i++){
@@ -16,7 +18,7 @@ class Form implements ExampleInterface {
 		return $pair;
 	}
 
-	public function getHTML () {
+	public function getHTML ($a = NULL) {
 		$desc = "Lorem ipsum dolor amet, consectetur adipiscing elit. Etiam consectetur aliquet aliquet. Interdum et malesuada fames ac ante ipsum primis in faucibus.";
 
 		$factory = new UuidFactory();
@@ -101,7 +103,7 @@ class Form implements ExampleInterface {
 			"buttons" => ["save", "cancel"]
 		]);
 
-		$card = new \App\UI\Card\Card([
+		$card = new \App\UI\Card([
 			"header" => "I am in need",
 			"body" => $form->getHTML(),
 			"footer" => "Footer",
@@ -135,7 +137,8 @@ class Form implements ExampleInterface {
 //			"suffix" => "%",
 			"min_colour" => [255,0,0],
 			"max_colour" => [0,255,0],
-			"value" => $estimate !== null ? $estimate : .5,
+//			"default" => 10,
+			"value" => $estimate,
 			"col" => 5,
 			"col_class" => "col-margin-tight",
 			"col_style" => "padding-left: .5rem;padding-right: 0;",
@@ -154,7 +157,8 @@ class Form implements ExampleInterface {
 			"suffix" => "%",
 			"min_colour" => [255,0,0],
 			"max_colour" => [0,255,0],
-			"value" => $estimate !== null ? $estimate : .5,
+			"default" => .5,
+			"value" => $estimate,
 			"col" => 5,
 			"col_class" => "col-margin-tight",
 			"col_style" => "padding-left: .5rem;padding-right: 0;",
@@ -242,7 +246,7 @@ class Form implements ExampleInterface {
 			"buttons" => ["save", "cancel"]
 		]);
 
-		$card = new \App\UI\Card\Card([
+		$card = new \App\UI\Card([
 			"header" => "I am in need",
 			"body" => $form->getHTML(),
 			"footer" => "Footer",
@@ -330,7 +334,7 @@ class Form implements ExampleInterface {
 			"buttons" => ["save", "cancel"]
 		]);
 
-		$card = new \App\UI\Card\Card([
+		$card = new \App\UI\Card([
 			"header" => "I am in need",
 			"body" => $form->getHTML(),
 			"footer" => "Footer",
@@ -341,6 +345,6 @@ class Form implements ExampleInterface {
 		$grid = new \App\UI\Grid();
 		$grid->set($card_array);
 
-		return $grid->getHTML();
+		$this->output->html($grid->getHTML());
 	}
 }

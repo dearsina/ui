@@ -132,6 +132,9 @@ class Grid {
 			# ID
 			$id_tag = str::getAttrTag("id", $col['id']);
 
+			# Icon
+			$icon = Icon::generate($col['icon']);
+
 			# Class
 			$class_array = str::getAttrArray($col['class'], $col_width, $col['only_class']);
 			$class_tag = str::getAttrTag("class", $class_array);
@@ -141,6 +144,10 @@ class Grid {
 
 			# Data value (used for sorting)
 			$data_value = str::getAttrTag("data-value", $col['value']);
+			$data = str::getDataAttr($col['data']);
+
+			# Buttons
+			$buttons = str::getButtons($col);
 
 			# Hash, URI, onClick
 			if($href = href::generate($col)){
@@ -149,7 +156,7 @@ class Grid {
 				$tag = "div";
 			}
 
-			$html .= "<{$tag}{$href}{$id_tag}{$class_tag}{$style_tag}{$data_value}>{$col_html}</{$tag}>";
+			$html .= "<{$tag}{$href}{$id_tag}{$class_tag}{$style_tag}{$data_value}{$data}>{$icon}{$buttons}{$col_html}</{$tag}>";
 		}
 
 		return $html;

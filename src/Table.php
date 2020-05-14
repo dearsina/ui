@@ -23,10 +23,13 @@ class Table {
 			return false;
 		}
 
+		$options['id'] =  $options['id'] ?: str::id("table");
+
 		extract($options);
 
-		$id = str::getAttrTag("id", $id ?: str::id("table"));
+		$id = str::getAttrTag("id",$id);
 		$class_tag = str::getAttrArray($class, $sortable !== false ? "table-sortable" : "");
+		// You can make the whole table not sortable by adding "sortable => false" in the options array
 		$class = str::getAttrTag("class", $class_tag);
 		$style = str::getAttrTag("style", $style);
 		$script = str::getScriptTag($script);
@@ -35,21 +38,16 @@ class Table {
 		$grid = array_merge(["unstackable" => true], $grid ?: []);
 
 		$grid = new Grid($grid);
+
+		# Header row (if it's not be ignored)
 		if(!$ignore_header){
-			foreach($rows[0] as $key => $row){
-				# The header row inherits the class, style and the col length (sm) of the table rows
-				$header_cols[] = [
-					"html" => $key,
-					"sm" => $row['sm'],
-					"class" => $row['class'],
-					"style" => $row['style'],
-				];
-			}
 			$grid->set([
 				"class" => "table-header",
-				"html" => $header_cols
+				"html" => self::generateHeaderRow($rows, $options)
 			]);
 		}
+
+		# Table rows
 		foreach($rows as $row){
 			$grid->set([
 				"class" => "table-body",
@@ -64,6 +62,48 @@ class Table {
 EOF;
 	}
 
+	/**
+	 * Generates the (optional) header row.
+	 *
+	 * @param $rows
+	 * @param $options
+	 *
+	 * @return mixed
+	 */
+	private static function generateHeaderRow($rows, $options){
+		extract($options);
+
+		foreach($rows[0] as $key => $row){
+
+			$row = is_array($row) ? $row : ["html" => $row];
+
+			# The default class for a header row
+			$default= ["text-flat"];
+
+			if($row['sortable'] !== false){
+				//If the column is not explicitly set to not sortable
+				$data['col'] =  $row['col_name'] ?: $key;
+				//If a column name has been set, use it, otherwise, use the key
+			} else {
+				$data = [];
+				$default[] = "sorted-ignore";
+				// You can make individual columns not sortable by adding the "sortable => false" to a cell
+			}
+
+			$header_class = str::getAttrArray($row['header_class'], $default);
+
+			# The header row inherits the class, style and the col length (sm) of the table rows
+			$header_cols[] = [
+				"html" => $key,
+				"sm" => $row['sm'],
+				"class" => $header_class,
+				"style" => $row['header_style'],
+				"data" => $data
+			];
+		}
+		return $header_cols;
+	}
+
 	public static function onDemand(array $a){
 		extract($a);
 
@@ -73,10 +113,11 @@ EOF;
 
 		$a['id'] = $id ?: str::id("table");
 		$id = str::getAttrTag("id", $a['id'] );
-		$class = str::getAttrTag("class", $class);
+		$class_array = str::getAttrArray($class, "table-ondemand", $only_class);
+		$class = str::getAttrTag("class", $class_array);
 		$style_class = str::getAttrArray($style, [], $only_style);
 		$style = str::getAttrTag("style", $style_class);
-		$script = str::getScriptTag(self::getOnDemandScript($a));
+		$data_attr = self::getOnDemandAttr($a);
 
 		$button = Button::generate([
 			"basic" => true,
@@ -88,7 +129,7 @@ EOF;
 		]);
 
 		return <<<EOF
-<div{$id}{$class}{$style}>
+<div{$id}{$class}{$style}{$data_attr}>
 <div class="table-container"></div>
 {$button}
 {$script}
@@ -97,13 +138,13 @@ EOF;
 	}
 
 	/**
-	 * The onDemand script.
+	 * Gets the data-attrs for the onDemand element
 	 *
 	 * @param $a
 	 *
 	 * @return string
 	 */
-	private static function getOnDemandScript($a){
+	private static function getOnDemandAttr($a){
 		foreach($a as $key => $val){
 			if($key == 'hash'){
 				continue;
@@ -112,13 +153,16 @@ EOF;
 			unset($a[$key]);
 		}
 		$a['hash']['vars']['start'] = 0;
-		$a_json = json_encode($a, JSON_PRETTY_PRINT);
 
-		return /** @lang JavaScript */ <<<EOF
-$.onDemand["{$a['hash']['vars']['id']}"] = $a_json;
-onDemandRequest("{$a['hash']['vars']['id']}");
-EOF;
+		/**
+		 * If you want to fire appear event for elements
+		 * which are close to viewport but are not visible
+		 * yet, you may add data attributes appear-top-offset
+		 * and appear-left-offset to DOM nodes.
+		 */
+		$a['appear-top-offset'] = 300;
 
+		return str::getDataAttr($a);
 	}
 
 	/**
@@ -171,11 +215,24 @@ EOF;
 		# UrlDEcode the variables
 		$vars = str::urldecode($vars);
 
-		# The (default) assumption is that all vars are where clauses.
-		$start = $vars['start'];
-		$length = $vars['length'];
-		unset($vars['start'], $vars['length']);
-		// In case columns are called start or length
+		# The (default) assumption is that all vars are where clauses, except:
+		foreach(["start", "length", "order_by_col", "order_by_dir"] as $key){
+			if(!$vars[$key]){
+				continue;
+			}
+			$$key = $vars[$key];
+			//for reference
+
+			# Report the metadata back for reference
+			$output->set_var($key, $vars[$key]);
+
+			unset($vars[$key]);
+			// We remove them because all other vars are being fed as where cols
+		}
+
+		# The start value grows for every request
+		$output->set_var('start', $start + $length);
+
 		$base_query['where'] = array_merge($base_query['where'] ?: [], $vars ?: []);
 
 		$count_query = $base_query;
@@ -184,7 +241,16 @@ EOF;
 		# Get the total results
 		if(!$start){
 			// If this is the first batch (we only need to do this once)
-			$output->set_var('total_results',$sql->select($count_query));
+
+			if(!$total_results = $sql->select($count_query)){
+				//If no rows can be found
+				$output->set_var('total_results',0);
+				$output->set_var('start',1);
+				$output->set_var("rows", "<i class=\"text-silent\">No rows found</i>");
+				return true;
+			}
+
+			$output->set_var('total_results',$total_results);
 			$ignore_header = is_bool($ignore_header) ? $ignore_header : false;
 			//if the variable is already set, will not re-set or change it
 		} else {
@@ -193,12 +259,14 @@ EOF;
 			//if the variable is already set, will not re-set or change it
 		}
 
-		$output->set_var('length', $length);
-		$output->set_var('start', $start + $length);
-
 		$rows_query = $base_query;
 		$rows_query['start'] = $start;
 		$rows_query['length'] = $length;
+
+		if($order_by_col && $order_by_dir){
+			//only if a col and dir have been given, otherwise use default
+			$rows_query['order_by'] = [$order_by_col => $order_by_dir];
+		}
 
 		$rows = $sql->select($rows_query);
 
@@ -216,7 +284,7 @@ EOF;
 		}
 
 		# Due to the data being loaded piecemeal, it is not sortable
-		$a['sortable'] = false;
+//		$a['sortable'] = false;
 
 		$output->set_var("rows", self::generate($rows, $a, $ignore_header));
 	}

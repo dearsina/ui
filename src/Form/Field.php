@@ -32,10 +32,23 @@ class Field {
 	 * @link https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#autofill
 	 * @return bool|string
 	 */
-	public static function getHTML(array $field = NULL){
-		if(!$field){
+	public static function getHTML(array &$a = NULL){
+		if(!$a){
 			return false;
 		}
+
+		$field = $a;
+
+		/**
+		 * As this variable is being fed to the Grid,
+		 * we need to strip away a lot of attributes
+		 * we don't want double applied (both here,
+		 * and in the Grid).
+		 */
+		unset($a['id']);
+		unset($a['icon']);
+		unset($a['class']);
+		unset($a['style']);
 
 		# Evert field must have an ID
 		$field['id'] = $field['id'] ?: str::id($field['type']);

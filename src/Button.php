@@ -30,6 +30,41 @@ class Button {
 			"title" => "Save",
 			"type" => "submit",
 		],
+
+		"cancel_md" => [
+			"title" => "Cancel",
+			"colour" => "grey",
+			"basic" => true,
+			"data" => [
+				"dismiss" => "modal"
+			],
+			"class" => "float-right"
+		],
+
+		"close_md" => [
+			"title" => "Close",
+			"colour" => "grey",
+			"basic" => true,
+			"data" => [
+				"dismiss" => "modal"
+			],
+			"class" => "float-right"
+		],
+
+		"remove_md" => [
+			"title" => "Remove rel_table",
+			"basic" => true,
+			"colour" => "red",
+			"icon" => "trash",
+			"approve" => "remove this rel_table",
+			"hash" => "rel_table/rel_id/remove/callback/",
+			"class" => "float-right",
+			"data" => [
+				"dismiss" => "modal"
+			]
+		],
+
+		// Legacy //
 		"next" => [
 			"colour" => "primary",
 			"icon" => [
@@ -71,35 +106,7 @@ class Button {
 			"colour" => "grey",
 			"basic" => true
 		],
-		"cancel_md" => [
-			"title" => "Cancel",
-			"colour" => "grey",
-			"basic" => true,
-			"data" => [
-				"dismiss" => "modal"
-			],
-			"class" => "float-right"
-		],
-		"close_md" => [
-			"title" => "Close",
-			"colour" => "grey",
-			"basic" => true,
-			"data" => [
-				"dismiss" => "modal"
-			]
-		],
-		"remove_md" => [
-			"alt" => "Remove rel_table",
-			"basic" => true,
-			"colour" => "red",
-			"icon" => "trash",
-			"approve" => "remove this rel_table",
-			"hash" => "rel_table/rel_id/remove/callback/",
-			"class" => "float-right",
-			"data" => [
-				"dismiss" => "modal"
-			]
-		],
+
 		"match" => [
 			"alt" => "In sync",
 			"colour" => "green",
@@ -188,7 +195,7 @@ class Button {
 			$a[$key] = str_replace("rel_table",	 $rel_table, $a[$key]);
 			$a[$key] = str_replace("rel_id", $rel_id, $a[$key]);
 			if($callback){
-				$callback = strpos($callback,'/') !== false ? urlencode($callback) : $callback;
+				$callback = str::urlencode($callback);
 				$a[$key] = str_replace("callback/",	"callback/".$callback, 	$a[$key]);
 			} else {
 				$a[$key] = str_replace("callback/",	"", $a[$key]);
@@ -214,7 +221,7 @@ class Button {
 	 * @return bool|array
 	 */
 	static function getArray($a, $rel_table = false, $rel_id = false, $callback = false){
-		if(is_array($a) && $a[0]){
+		if(str::isNumericArray($a)){
 			return self::getArray($a[0],$a[1],$a[2],$a[3]);
 		}
 
@@ -268,20 +275,22 @@ class Button {
 	 * Generates a button based on an array of settings
 	 * <code>
 	 * $html .= Button::generate([
-	 * 	"hash" => "{$rel_table}/{$rel_id}",
-	 * 	"basic" => true,
-	 * 	"colour" => "grey",
-	 * 	"icon" => "chevron-left",
-	 * 	"title" => "Return",
-	 * 	"subtitle" => "Go back",
-	 * 	"alt" => "Text appears when hover",
+	 *    "hash" => "{$rel_table}/{$rel_id}",
+	 *    "basic" => true,
+	 *    "colour" => "grey",
+	 *    "icon" => "chevron-left",
+	 *    "title" => "Return",
+	 *    "subtitle" => "Go back",
+	 *    "alt" => "Text appears when hover",
 	 * ]);
 	 * </code>
-	 * @param array|string $a Array of settings or name of generic button
-	 * @param string|bool $rel_table Optional, if a generic button with localisation has been chosen.
-	 * @param string|bool $rel_id  Optional, if a generic button with localisation has been chosen.
+	 *
+	 * @param array|string $a         Array of settings or name of generic button
+	 * @param string|bool  $rel_table Optional, if a generic button with localisation has been chosen.
+	 * @param string|bool  $rel_id    Optional, if a generic button with localisation has been chosen.
 	 *
 	 * @return string
+	 * @throws \Exception
 	 */
 	static function generate($a, $rel_table = false, $rel_id = false, $callback = false){
 		if(!$a){
@@ -300,11 +309,11 @@ class Button {
 		# Who is directing the button?
 		if($approve){
 			//if an approval dialogue is to prepend the action
-			$approve_script = str::get_approve_script($a);
-			$href = "href=\"#\"";
-		} else {
-			$href = href::generate($a);
+			$approve_attr = str::getApproveAttr($a['approve']);
+			$approve_class = "approve-decision";
 		}
+
+		$href = href::generate($a);
 
 		# OnClicks aren't treated as true buttons, fix it
 		if($onClick){
@@ -420,25 +429,29 @@ class Button {
 		}
 
 		# Class with override override
-		$class_array = str::getAttrArray($class, ["btn", "btn{$outline}-{$colour}", $right], $only_class);
+		$class_array = str::getAttrArray($class, ["btn", "btn{$outline}-{$colour}", $right, $approve_class], $only_class);
 
 		# Style with override
 		$style_array = str::getAttrArray($style, false, $only_style);
 
 		# Pulsating
 		if($pulsating){
-			list($wrapper_pre, $wrapper_post) = self::pulsating($pulsating);
+			[$wrapper_pre, $wrapper_post] = self::pulsating($pulsating);
 		}
+
+		# Form submit buttons
+		$form = str::getAttrTag("form", $form);
 
 		# Script
 		$script = str::getScriptTag($script);
 
 		# Data attributes
-		if(is_array($data)){
-			foreach($data as $attr => $val){
-				$data_attributes .= "data-{$attr}=\"$val\" ";
-			}
-		}
+//		if(is_array($data)){
+//			foreach($data as $attr => $val){
+//				$data_attributes .= "data-{$attr}=\"$val\" ";
+//			}
+//		}
+		$data_attributes = str::getDataAttr($data);
 
 		if($ladda !== false && !$url && !$children){
 			//if Ladda has not explicitly been set to false and
@@ -470,6 +483,8 @@ class Button {
 {$disabled}
 {$multiple}
 {$data_attributes}
+{$approve_attr}
+{$form}
 >{$span_pre}
 {$icon}{$svg}
 {$title}
@@ -479,7 +494,6 @@ class Button {
 </{$tag_type}>
 {$wrapper_post}
 {$script}
-{$approve_script}
 EOF;
 
 		if(is_array($children)){

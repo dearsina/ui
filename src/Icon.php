@@ -56,9 +56,13 @@ class Icon {
 		case 'regular': return 'far'; break;
 		case 'far': return 'far'; break;
 
+		case 'duotone': return 'fad'; break;
+		case 'fad': return 'fad'; break;
+
 		case 'solid': return 'fas'; break;
 		case 'bold': return 'fas'; break;
 		case 'thick': return 'fas'; break;
+		case 'full': return 'fas'; break;
 		case 'fas': return 'fas'; break;
 
 		case 'light': return 'fal'; break;

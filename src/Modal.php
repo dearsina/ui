@@ -183,19 +183,10 @@ class Modal extends Common {
 		# The div class
 		$class = str::getAttrTag("class", $this->modalHeader['class']);
 
-		# Dismiss button top right
-		if($this->approve){
-			//if the dismissable has to be approved
-			$close = "onClick=\"{$this->getId()}Hide();\"";
-		} else {
-			//if a simple close is suffient
-			$close = "data-dismiss=\"modal\"";
-		}
-
 		# If the modal can be dismissed
 		if($this->dismissable !== false){
 			$dismiss = <<<EOF
-<button type="button" class="close" {$close} aria-label="Close">
+<button type="button" class="close" data-dismiss="modal" aria-label="Close" title="Close this window">
 	<span aria-hidden="true">&times;</span>
 </button>
 EOF;
@@ -279,16 +270,22 @@ EOF;
 		# The div class
 		$class = str::getAttrTag("class", $this->modalFooter['class']);
 
+		# Only include left side if it has values (or a custom ID)
+		if($left = $icon.$this->modalFooter['html'].$badge || $id){
+			$left = "<div class=\"col-auto\">{$left}</div>";
+		}
+
+		# Only include right side if it has values (buttons)
+		if($right = $buttons.$button){
+			$right = "<div class=\"col\">{$right}</div>";
+		}
+
 		return <<<EOF
 <div{$id}{$class}{$style}>
 	<div class="container">
   		<div class="row">
-    		<div class="col-auto">
-    			{$icon}{$this->modalFooter['html']}{$badge}
-    		</div>
-    		<div class="col">
-    			{$buttons}{$button}
-    		</div>
+    		{$left}
+    		{$right}    		
     	</div>
 	</div>{$script}
 </div>
@@ -401,7 +398,9 @@ EOF;
 	function getHTML(){
 		switch($this->size){
 		case 'xs':
+		case 's':
 		case 'small': $size = "modal-sm"; break;
+		case 'lg':
 		case 'large': $size = "modal-lg"; break;
 		case 'xl': $size = "modal-xl"; break;
 		}
@@ -436,43 +435,31 @@ EOF;
 	}
 
 	/**
-	 * Returns all Javascript related to the modal.
+	 * Returns all Javascript settings related to the modal.
 	 *
 	 * @param bool $as_tag If set, will return enclosed with script tag.
 	 *
 	 * @return bool|string
 	 */
 	private function getScriptHTML($as_tag = FALSE){
-		# Add user enabled features
-		$script .= $this->getApproveScript();
-		$script .= $this->getDraggableScript();
-		$script .= $this->getResizableScript();
-		//Placed before as they amy influence the modal settings
-
 		# Modal settings
-		$settings['show'] = true;
+		$modal['show'] = true;
 		if($this->dismissable === false){
-			$settings['backdrop'] = "static";
+			$modal['backdrop'] = "static";
 		}
+
+		$settings = [
+			"settings" => $modal,
+			"draggable" => $this->getDraggableSettings(),
+			"resizable" => $this->getResizableSettings(),
+			"approve" => $this->getApproveSettings(),
+		];
+
 		$settings_json = json_encode($settings, JSON_PRETTY_PRINT);
 
-		/**
-		 * Remove the backdrop once the modal is removed.
-		 * This is placed here because at times the modal
-		 * may be removed without being hidden first.
-		 * For example when the contents of the #ui-view
-		 * is refreshed.
-		 */
-
 		$script = /** @lang JavaScript */<<<EOF
-$('#{$this->getId()}').modal({$settings_json});
-$('#{$this->getId()}').on("remove", function (e) {
-    let id = e.currentTarget.id;
-    $('#' + id + '-backdrop').fadeOut("fast", function(){
-		$('#' + id + '-backdrop').remove();        
-    });    
-});
-{$script}
+$.modal["{$this->getId()}"] = {$settings_json}
+showModal("{$this->getId()}");
 {$this->script}
 EOF;
 
@@ -480,33 +467,14 @@ EOF;
 			return str::getScriptTag($script);
 		}
 		return $script;
-
-		/* Alternative method, using MutationObserver
-		var x = new MutationObserver(function (e) {
-			if (e[0].removedNodes.length){
-				e[0].removedNodes.forEach(function(node){
-					if($(node).hasClass("modal")){
-						let id = node.id;
-						var_dump(id);
-						$('#' + id + '-backdrop').fadeOut("fast", function(){
-							$('#' + id + '-backdrop').remove();
-						});
-					}
-				})
-
-			}
-		});
-		x.observe(document.getElementById('ui-view'), { childList: true });
-		*/
-
 	}
 
 	/**
 	 * If set, closing of the modal will need approval by the user.
 	 *
-	 * @return bool|string
+	 * @return array|bool
 	 */
-	private function getApproveScript(){
+	private function getApproveSettings(){
 		if(!$this->approve){
 			return false;
 		}
@@ -537,38 +505,18 @@ EOF;
 		$type = str::translate_approve_colour($colour);
 		$button_colour = str::getColour($colour, "btn");
 
-		return /** @lang ECMAScript 6 */ <<<EOF
-$('#{$this->getId()}').on('hidePrevented.bs.modal', function (e) {
-	{$this->getId()}Hide();
-});
-function {$this->getId()}Hide(){
-    	$.confirm({
-		animateFromElement: false,
-		escapeKey: true,
-		backgroundDismiss: true,
-		closeIcon: true,
-		type: "{$type}",
-		theme: "material",
-		icon: "{$icon_class}",
-		title: "{$title}",
-		content: "{$message}",
-		buttons: {
-			confirm: {
-				text: "Yes", // text for button
-				btnClass: "{$button_colour}", // class for the button
-				keys: ["enter"], // keyboard event for button
-				action: function(){
-					$('#{$this->getId()}').modal('hide');
-				}
-			},
-			cancel: function () {
-				//Close
-			},
-		}
-	});
-}
-EOF;
-
+		return [
+			"type" => $type,
+			"icon" => $icon_class,
+			"title" => $title,
+			"content" => $message,
+			"btnClass" => $button_colour,
+//			"buttons" => [
+//				"confirm" => [
+//					"btnClass" => $button_colour
+//				]
+//			]
+		];
 	}
 
 	/**
@@ -576,35 +524,19 @@ EOF;
 	 * and if so, will return Javascript that
 	 * allows the modal to be draggable using jQuery UI.
 	 *
-	 * @return bool|string
+	 * @return array|bool
 	 */
-	private function getDraggableScript(){
+	private function getDraggableSettings()
+	{
 		if(!$this->draggable) {
 			return false;
 		}
 
 		if(is_array($this->draggable)){
-			$custom_settings_json = json_encode($this->draggable);
+			return $this->draggable;
 		} else {
-			$custom_settings_json = "{}";
+			return [];
 		}
-
-		return /** @lang ECMAScript 6 */ <<<EOF
-$(document).ready(function(){
-	var default_settings = {
-		handle: ".modal-header-draggable",
-		scroll: false,
-		start: function(event, ui){
-	  		$(ui.helper).css('width', $(event.target).width() + "px");
-	   }
-	};
-	
-	var custom_settings = {$custom_settings_json};
-	var settings = $.extend(default_settings, custom_settings);
-	
-	$('#{$this->getId()}').draggable(settings);
-});
-EOF;
 	}
 
 	/**
@@ -612,9 +544,10 @@ EOF;
 	 * and if so, will return Javascript that
 	 * allows the modal to be resizable using jQuery UI.
 	 *
-	 * @return bool|string
+	 * @return array|bool
 	 */
-	private function getResizableScript(){
+	private function getResizableSettings()
+	{
 		if($this->resizeable){
 			//If resizable has been written incorrectly
 			$this->resizable = $this->resizeable;
@@ -627,14 +560,7 @@ EOF;
 			"handles" => "se",
 		];
 
-		if(is_array($this->resizable)){
-			$resizable_settings = array_merge($default_settings, $this->resizable);
-		} else {
-			$resizable_settings = $default_settings;
-		}
-
-		$resizable_settings_json = json_encode($resizable_settings, JSON_PRETTY_PRINT);
-
-		return "$('#{$this->getId()} .modal-content').resizable({$resizable_settings_json});";
+		# Merge and return default settings with (optional) custom settings
+		return array_merge($default_settings, is_array($this->resizable) ? $this->resizable : []);
 	}
 }

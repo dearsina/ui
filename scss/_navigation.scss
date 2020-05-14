@@ -331,6 +331,10 @@ nav .parent a
   text-decoration: none;
 }
 
+.nav-left > .parent > a:hover{
+  cursor:default;
+}
+
   /**
    * Animation for when a menu or sub menu item appears.
    */
