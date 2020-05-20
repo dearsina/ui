@@ -64,6 +64,14 @@ class Button {
 			]
 		],
 
+		"return" => [
+			"hash" => -1,
+			"icon" => "chevron-left",
+			"title" => "Return",
+			"class" => "reset",
+			"basic" => true,
+		],
+
 		// Legacy //
 		"next" => [
 			"colour" => "primary",
@@ -91,14 +99,6 @@ class Button {
 			],
 			"title" => "Update",
 			"onClick" => "$(this).closest('form').submit();"
-		],
-		"return" => [
-			"hash" => -1,
-			"icon" => "chevron-left",
-			"title" => "Return",
-			"class" => "reset",
-			"basic" => true,
-			"style" => "margin-top:1rem;"
 		],
 		"cancel" => [
 			"onClick" => "window.history.back();",

@@ -14,7 +14,7 @@ class Input extends Field {
 		extract(self::getInputType($type));
 
 		# Label
-		$label = self::getLabel($label, $name, $id);
+		$label = self::getLabel($label ?: $title, $name, $id);
 
 		# Icons
 		$icon = self::getIcon($icon, "prepend");

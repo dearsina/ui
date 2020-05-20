@@ -4,7 +4,10 @@
 namespace App\UI\Examples;
 
 
-class Card {
+use App\Common\Common;
+use App\Common\Example\ExampleInterface;
+
+class Card extends Common implements ExampleInterface {
 	function buttons_in_all_colours(){
 		$colours = [
 			"primary",
@@ -37,12 +40,44 @@ class Card {
 			$button[] = [
 				"colour" => $colour,
 				"title" => $colour,
-				"hash" => "#"
+				"hash" => "#",
+				"basic" => rand(0,1) == 1
 			];
 		}
 		return $button;
 	}
-	function getHTML(){
+
+	function dropdown_buttons(){
+		return [[
+			"title" => "Coloured title",
+			"colour" => "warning",
+			"icon" => "user",
+			"hash" => [
+				"rel_table" => "rel_table"
+			]
+		],[
+			"header" => "Header",
+			"colour" => "success",
+			"style" => [
+				"text-transform" => "uppercase"
+			]
+		],[
+			"title" => "Another title",
+			"icon" => "trash",
+			"hash" => [
+				"rel_table" => "rel_table"
+			]
+		],
+			true
+		,[
+			"title" => "Another title",
+			"icon" => "trash",
+			"hash" => [
+				"rel_table" => "rel_table"
+			]
+		]];
+	}
+	public function getHTML ($a = NULL) {
 		$card = new \App\UI\Card([
 			"body" => "This is the body."
 		]);
@@ -50,7 +85,10 @@ class Card {
 		$html .= $card->getHTML();
 
 		$card = new \App\UI\Card([
-			"header" => "This is the header",
+			"header" => [
+				"title" => "This is the header",
+				"buttons" => $this->dropdown_buttons()
+			],
 			"body" => "This is the body.",
 			"footer" => [
 				"html" => "This is the footer.",
@@ -108,26 +146,7 @@ class Card {
 			"body" => "This is the body.",
 			"footer" => [
 				"html" => "This is the footer.",
-				"buttons" => [[
-					"title" => "Coloured title",
-					"colour" => "warning",
-					"icon" => "user",
-					"hash" => [
-						"rel_table" => "rel_table"
-					]
-				],[
-					"header" => "Header",
-					"colour" => "success",
-					"style" => [
-						"text-transform" => "uppercase"
-					]
-				],[
-					"title" => "Another title",
-					"icon" => "trash",
-					"hash" => [
-						"rel_table" => "rel_table"
-					]
-				]]
+				"buttons" => $this->dropdown_buttons()
 			]
 		]);
 
@@ -147,6 +166,9 @@ class Card {
 
 		$html .= $card->getHTML();
 
-		return $html;
+		$grid = new \App\UI\Grid();
+		$grid->set($html);
+
+		$this->output->html($grid->getHTML());
 	}
 }

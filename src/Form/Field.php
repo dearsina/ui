@@ -43,7 +43,7 @@ class Field {
 		 * As this variable is being fed to the Grid,
 		 * we need to strip away a lot of attributes
 		 * we don't want double applied (both here,
-		 * and in the Grid).
+		 * and in the Grid column).
 		 */
 		unset($a['id']);
 		unset($a['icon']);

@@ -85,3 +85,43 @@
   display: table;
   margin-top: 1rem;
 }
+
+.table-body .author {
+  font-size: smaller;
+  font-style: italic;
+  float: left;
+  margin: .5rem 0;
+  width: 100%;
+}
+
+/**
+ * Sortable tables
+ */
+
+/**
+ * The handlebar icon is
+ * the three lines, and they're
+ * auto-generated.
+ */
+.sortable-handlebars {
+  display: flex;
+  align-items: center;
+  max-width: 3.5rem;
+}
+.sortable-handlebars::after{
+  font-family: "Font Awesome 5 Pro";
+  content: "\f0c9"; //Hamburger bars
+}
+
+/**
+ * When an element is grabbed, it changes
+ * background colour. The dragging div
+ * is also hidden as it's superfluous in
+ * its current context.
+ */
+.sortable-chosen{
+  background-color: aliceblue;
+}
+.sortable-drag{
+  opacity: 0;
+}

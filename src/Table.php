@@ -27,12 +27,21 @@ class Table {
 
 		extract($options);
 
+		if($order){
+			foreach($rows as $key => $row){
+				$rows[$key] = self::getSortableRow($row);
+			}
+			$script = str::getScriptTag(self::getSortableScript($options));
+		} else {
+			$script = str::getScriptTag($script);
+		}
+
+
 		$id = str::getAttrTag("id",$id);
 		$class_tag = str::getAttrArray($class, $sortable !== false ? "table-sortable" : "");
 		// You can make the whole table not sortable by adding "sortable => false" in the options array
 		$class = str::getAttrTag("class", $class_tag);
 		$style = str::getAttrTag("style", $style);
-		$script = str::getScriptTag($script);
 
 		# Tables are unstackable by design
 		$grid = array_merge(["unstackable" => true], $grid ?: []);
@@ -41,18 +50,18 @@ class Table {
 
 		# Header row (if it's not be ignored)
 		if(!$ignore_header){
+			$row = $rows[0]['html'] ?: $rows[0];
 			$grid->set([
-				"class" => "table-header",
-				"html" => self::generateHeaderRow($rows, $options)
+				"row_class" => "table-header",
+				"html" => self::generateHeaderRow($row, $options)
 			]);
 		}
 
 		# Table rows
 		foreach($rows as $row){
-			$grid->set([
-				"class" => "table-body",
-				"html" => array_values($row)
-			]);
+			$row['html'] = array_values($row['html'] ?: $row);
+			$row['row_class'] = str::getAttrArray($row['row_class'], "table-body", $row['only_row_class']);
+			$grid->set($row);
 		}
 
 		return <<<EOF
@@ -70,19 +79,19 @@ EOF;
 	 *
 	 * @return mixed
 	 */
-	private static function generateHeaderRow($rows, $options){
+	private static function generateHeaderRow($row, $options){
 		extract($options);
 
-		foreach($rows[0] as $key => $row){
+		foreach($row as $key => $col){
 
-			$row = is_array($row) ? $row : ["html" => $row];
+			$col = is_array($col) ? $col : ["html" => $col];
 
 			# The default class for a header row
 			$default= ["text-flat"];
 
-			if($row['sortable'] !== false){
+			if($col['sortable'] !== false){
 				//If the column is not explicitly set to not sortable
-				$data['col'] =  $row['col_name'] ?: $key;
+				$data['col'] =  $col['col_name'] ?: $key;
 				//If a column name has been set, use it, otherwise, use the key
 			} else {
 				$data = [];
@@ -90,18 +99,87 @@ EOF;
 				// You can make individual columns not sortable by adding the "sortable => false" to a cell
 			}
 
-			$header_class = str::getAttrArray($row['header_class'], $default);
+			$header_class = str::getAttrArray($col['header_class'], $default);
 
 			# The header row inherits the class, style and the col length (sm) of the table rows
 			$header_cols[] = [
 				"html" => $key,
-				"sm" => $row['sm'],
+				"sm" => $col['sm'],
 				"class" => $header_class,
-				"style" => $row['header_style'],
+				"style" => $col['header_style'],
 				"data" => $data
 			];
 		}
 		return $header_cols;
+	}
+
+	/**
+	 * Relying on the SortableJS library.
+	 * TODO Move to app.js
+	 *
+	 * @param array $a
+	 * @link https://github.com/SortableJS/Sortable
+	 * @return string
+	 */
+	private static function getSortableScript(array $a){
+		extract($a);
+
+		return /** @lang JavaScript */ <<<EOF
+var el = document.getElementById('{$id}');
+var sortable = new Sortable(el, {
+	handle: ".sortable-handlebars",
+	draggable: ".draggable",
+ 	// dataIdAttr: 'data-id',
+ 	ghostClass: "sortable-ghost",  // Class name for the drop placeholder
+	chosenClass: "sortable-chosen",  // Class name for the chosen item
+	dragClass: "sortable-drag",  // Class name for the dragging item
+	onEnd: function (evt) {
+		ajaxCall("reorder", "{$rel_table}", evt.item.dataset.id, {
+		    "old_index": evt.oldIndex,
+		    "new_index": evt.newIndex,
+		    // "order": sortable.toArray()
+		});
+	}
+});
+{$script}
+EOF;
+
+	}
+
+	private static function getSortableRow($row){
+		if(!key_exists("order", $row)){
+			throw new \Exception("To prepare a sortable table, an order key must be included per row.");
+		}
+
+		$order = $row['order'];
+		unset($row['order']);
+
+		if(!key_exists("id", $row)){
+			throw new \Exception("To prepare a sortable table, an id key must be included per row.");
+		}
+
+		$id = $row['id'];
+		unset($row['id']);
+
+		$order = [
+			"#" => [
+				"class" => "sortable-handlebars",
+				"sm" => 1,
+				"header_style" => [
+					"max-width" => "3.5rem"
+				]
+			]
+		];
+
+		$row = [
+			"row_class" => "draggable",
+			"row_data" => [
+				"id" => $id,
+			],
+			"html" => array_merge($order, $row)
+		];
+
+		return $row;
 	}
 
 	public static function onDemand(array $a){

@@ -56,6 +56,7 @@ class Grid {
 
 	/**
 	 * Formats and returns the HTML of one row (with one or many cells).
+	 * To format (id/class/style) a row, prefix the attr with "row_".
 	 *
 	 * @param $rows
 	 *
@@ -77,16 +78,19 @@ class Grid {
 			}
 
 			# ID
-			$id_tag = str::getAttrTag("id", $row['id']);
+			$id_tag = str::getAttrTag("id", $row['row_id']);
 
 			# Class
-			$class_array = str::getAttrArray($row['class'], "row", $row['only_class']);
+			$class_array = str::getAttrArray($row['row_class'], "row", $row['only_row_class']);
 			$class_tag = str::getAttrTag("class", $class_array);
 
 			# Style
-			$style_tag = str::getAttrTag("style", $row['style']);
+			$style_tag = str::getAttrTag("style", $row['row_style']);
 
-			$html .= "<div{$id_tag}{$class_tag}{$style_tag}>{$row_html}</div>";
+			# Data
+			$data = str::getDataAttr($row['row_data']);
+
+			$html .= "<div{$id_tag}{$class_tag}{$style_tag}{$data}>{$row_html}</div>";
 		}
 
 		return $html;

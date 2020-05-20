@@ -49,6 +49,21 @@
       }
     }
   }
+
+  /**
+   * The menu underneath a parent,
+   * overrides the full screen settings.
+   */
+  .nav-left .parent:hover > ul
+  {
+    max-height: unset;
+    height: auto;
+  }
+
+  nav .parent > ul li
+  {
+    max-width: unset;
+  }
 }
 
 

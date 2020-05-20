@@ -124,8 +124,8 @@
 }
 
 .dropdown-header {
-  line-height: 0.5;
-  text-align: center;
+  line-height: 0.5 !important;
+  //text-align: center;
 }
 .dropdown-header span {
   display: inline-block;

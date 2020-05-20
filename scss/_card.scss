@@ -28,6 +28,17 @@ box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 
 }
 
 /**
+ * Give the main card icon in the header
+ * a little breathing room.
+ */
+.card-header .card-title i:first-of-type{
+  margin-right: .5rem;
+}
+.card-title{
+  margin-bottom: 0; //Undoing Bootstrap
+}
+
+/**
  * Card headers and footers are divided into two sections,
  * this prevents buttons to override the text and vice versa.
  * The default padding of the container needs to stripped out,
@@ -77,4 +88,28 @@ box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 
  */
 .card-rows {
   padding: $card-spacer-y;
+}
+
+.card-body > * {
+  width: -webkit-fill-available;
+  width: -moz-fill-available;
+  width: fill-available;
+}
+
+/**
+ * Set the body class to col-scroll to
+ * enable col-scrolling in one of the columns.
+ */
+.card-body.col-scroll
+{
+  display: flex;
+}
+
+/**
+ * Identifies the column to enable col-scrolling.
+ */
+.card-body .col-scroll
+{
+  overflow-y: auto;
+  max-height: 100%;
 }

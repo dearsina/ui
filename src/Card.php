@@ -186,7 +186,7 @@ class Card extends Common {
 <div{$id}{$class}{$style}>
 	<div class="container-fluid">
   		<div class="row">
-    		<div class="col-auto">
+    		<div class="col-auto card-title">
     			{$icon}{$title}{$badge}
     		</div>
     		<div class="col">
@@ -390,20 +390,20 @@ EOF;
 		# Array
 		if(is_array($a)){
 			$a['id'] = $a['id'] ?: str::id("body");
-			$this->body = $a;
+			$this->cardBody = $a;
 			return true;
 		}
 
 		# Mixed
 		if ($a){
-			$this->body['html'] = $a;
-			$this->body['id'] = str::id("body");
+			$this->cardBody['html'] = $a;
+			$this->cardBody['id'] = str::id("body");
 			return true;
 		}
 
 		# Clear
 		if($a === false){
-			$this->body = [];
+			$this->cardBody = [];
 			return true;
 		}
 
@@ -417,23 +417,23 @@ EOF;
 	 * @return bool|string
 	 */
 	public function getBodyHTML(){
-		if(!$this->body){
+		if(!$this->cardBody){
 			return false;
 		}
 
-		if(is_array($this->body['html'])){
+		if(is_array($this->cardBody['html'])){
 			$grid = new Grid();
-			$this->body['html'] = $grid->getHTML($this->body['html']);
+			$this->cardBody['html'] = $grid->getHTML($this->cardBody['html']);
 		}
 
-		$id = str::getAttrTag("id", $this->body['id']);
-		$class_array = str::getAttrArray($this->body['class'], "card-body", $this->body['only_class']);
+		$id = str::getAttrTag("id", $this->cardBody['id']);
+		$class_array = str::getAttrArray($this->cardBody['class'], "card-body", $this->cardBody['only_class']);
 		$class = str::getAttrTag("class", $class_array);
-		$style = str::getAttrTag("style", $this->body['style']);
-		$progress = Progress::generate($this->body['progress']);
-		$script = str::getScriptTag($this->body['script']);
+		$style = str::getAttrTag("style", $this->cardBody['style']);
+		$progress = Progress::generate($this->cardBody['progress']);
+		$script = str::getScriptTag($this->cardBody['script']);
 
-		return "<div{$class}{$id}{$style}>{$progress}{$this->body['html']}</div>{$script}";
+		return "<div{$class}{$id}{$style}>{$progress}{$this->cardBody['html']}</div>{$script}";
 	}
 
 	/**

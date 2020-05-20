@@ -100,6 +100,9 @@
   border: 1pt solid #00000000;
   padding: 5px 10px;
   border-radius: 0.25rem;
+
+  right: 1.3rem;
+  position: absolute;
 }
 
 .navbar-sidebar-toggle.show{
@@ -143,13 +146,21 @@ nav li .badge i{
     float: left;
   }
 
+  .nav-left > .parent,
+  .nav-left > .parent > a
+  {
+    color: #ffffff;
+  }
+
   .nav-left {
     margin: 0;
     padding: 0;
   }
 
-  .nav-left > li > a {
-    padding: .5rem;
+  .nav-left > li > a,
+  .nav-left > li > div
+  {
+    padding: 0 .5rem;
     /*background-color: #5588a3;*/
   }
 
@@ -327,85 +338,94 @@ nav .parent li
 
 nav .parent a
 {
-  color: #FFFFFF;
+  //color: #FFFFFF;
   text-decoration: none;
 }
 
-.nav-left > .parent > a:hover{
+/**
+ * If they are not a link themselves,
+ * only portals to their children,
+ * change the cursor to a pointer
+ */
+.nav-left > .parent > div{
   cursor:default;
 }
 
   /**
    * Animation for when a menu or sub menu item appears.
    */
-  @-webkit-keyframes fadeIn {
-    from {
-      opacity: 0;
-      margin-top: 5px;
-    }
-    to {
-      opacity: 1;
-      margin-top: 0;
-    }
+@-webkit-keyframes fadeIn {
+  from {
+    opacity: 0;
+    margin-top: 5px;
   }
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      margin-top: 5px;
-    }
-    to {
-      opacity: 1;
-      margin-top: 0;
-    }
+  to {
+    opacity: 1;
+    margin-top: 0;
   }
+}
 
-  /**
-   * Markers to indicate that the element is a "parent"
-   */
-  nav .nav-left .parent > ul > .parent > a:after {
-    content: "›";
-    float: right;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    margin-top: 5px;
   }
-
-  nav .nav-right .parent > ul > .parent > a:after {
-    content: "‹";
-    float: right;
+  to {
+    opacity: 1;
+    margin-top: 0;
   }
+}
+
+/**
+ * Markers to indicate that the element is a "parent"
+ */
+nav .nav-left .parent > ul > .parent > a:after {
+  content: "›";
+  float: right;
+}
+
+nav .nav-right .parent > ul > .parent > a:after {
+  content: "‹";
+  float: right;
+}
 
 
-  nav .parent > ul li {
-    line-height: 30px;
-    width: 100%;
-    min-width: 200px;
-  }
+nav .parent > ul li {
+  line-height: 30px;
+  width: 100%;
+  min-width: 200px;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 300px;
+}
 
-  nav .parent > ul li a {
-    //color: #000000;
-    padding: 0.3rem 1rem;
-    display: block;
+nav .parent > ul li a {
+  //color: #000000;
+  padding: 0.3rem 1rem;
+  display: block;
+  font-weight: 400;
+  border-bottom: .1pt solid #00000066;
+}
 
-    border-bottom: .1pt solid #00000066;
-  }
+nav .nav-left ul ul, nav .nav-left ul ul ul {
+  left: 100%;
+  top: 0;
+}
 
-  nav .nav-left ul ul, nav .nav-left ul ul ul {
-    left: 100%;
-    top: 0;
-  }
+nav .nav-right ul ul, nav .nav-right ul ul ul {
+  right: 100%;
+  top: 0;
+}
 
-  nav .nav-right ul ul, nav .nav-right ul ul ul {
-    right: 100%;
-    top: 0;
-  }
+nav .parent li a:hover {
+  background-color: #F0F0F0;
+}
 
-  nav .parent li a:hover {
-    background-color: #F0F0F0;
-  }
-
-  nav .expand {
-    font-size: 12px;
-    float: right;
-    margin-right: 5px;
-  }
+nav .expand {
+  font-size: 12px;
+  float: right;
+  margin-right: 5px;
+}
 //}
 
 /**
@@ -419,7 +439,10 @@ nav .parent a
     display: unset;
   }
 
-  .nav-left a, nav label {
+  .nav-left a,
+  .nav-left div,
+  nav label
+  {
     display: block;
     padding: .85rem;
     color: $white;
@@ -441,7 +464,10 @@ nav .parent a
   /**
    * Styling first level lists items
    */
-  .nav-left > .parent a, .nav-left > .parent label {
+  .nav-left > .parent a,
+  .nav-left > .parent div,
+  .nav-left > .parent label
+  {
     padding-left: 2rem;
     background: #252525;
     box-shadow: inset 0 -1px #373737;
@@ -536,4 +562,11 @@ nav .parent a
   .nav-left ul, ul.nav-left {
     padding:0;
   }
+}
+
+.nav-dropdown {
+  padding: .2rem 0 0 .5rem !important;
+}
+.nav-dropdown > a > i{
+  margin: 0;
 }

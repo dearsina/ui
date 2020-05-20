@@ -56,9 +56,19 @@ class Form extends Common implements ExampleInterface {
 		];
 
 		$fields[] = [
+			"id" => "this-has-an-id",
 			"type" => "select",
-			"name" => "somedropdown",
-			"placeholder" => "PllAAcc",
+			"name" => "selectwithid",
+			"placeholder" => "With ID",
+			"options" => $this->getKeyValues(30),
+//			"value" => 4,
+			"required" => true
+		];
+
+		$fields[] = [
+			"type" => "select",
+			"name" => "selectwithoutid",
+			"placeholder" => "Without ID",
 			"options" => $this->getKeyValues(30),
 //			"value" => 4,
 			"required" => true

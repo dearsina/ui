@@ -56,13 +56,13 @@ class Checkbox extends Field implements FieldInterface{
 
 		return [
 			"id" => $id,
+			"script" => self::getLabelScript($id, $val['id']),
 			'label' => [
 				"style" => [
 					"width" => "100%"
 				],
 				"html" => Field::getHTML($val)
-			],
-			"script" => self::getLabelScript($id, $val['id'])
+			]
 		];
 	}
 
@@ -77,9 +77,12 @@ class Checkbox extends Field implements FieldInterface{
 	 * The assumption here is that if the label field has a value selected,
 	 * That option is the "right" one.
 	 *
+	 * @param string $parent_id
+	 * @param string $label_id
+	 *
 	 * @return string
 	 */
-	private static function getLabelScript($parent_id, $label_id){
+	private static function getLabelScript(string $parent_id, string $label_id){
 		return /** @lang JavaScript */
 			<<<EOF
 $(document).ready(function() {

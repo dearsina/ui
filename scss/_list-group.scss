@@ -1,0 +1,13 @@
+/**
+ * Give icons breathing room.
+ */
+.list-group > * > i:first-of-type{
+  margin-right: 1rem;
+}
+
+/**
+ * Bootstrap fix
+ */
+.list-group-item-action {
+  width: auto;
+}

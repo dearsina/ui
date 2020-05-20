@@ -9,7 +9,7 @@ use App\UI\Grid;
 
 class Accordion implements ExampleInterface {
 
-	public function getHTML ()
+	public function getHTML ($a = NULL)
 	{
 		$long_body = "Lorem ipsum dolor amet, consectetur adipiscing elit. Etiam consectetur aliquet aliquet. Interdum et malesuada fames ac ante ipsum primis in faucibus. Lorem ipsum dolor amet, consectetur adipiscing elit. Etiam consectetur aliquet aliquet.";
 		$rows[] = [

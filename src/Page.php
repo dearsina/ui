@@ -22,7 +22,6 @@ class Page {
 	 * 	"title" => "Stripe",
 	 * 	"subtitle" => "Subtitle",
 	 * 	"icon" => "icon",
-	 * 	"button" => $button
 	 * ]);
 	 * </code>
 	 *

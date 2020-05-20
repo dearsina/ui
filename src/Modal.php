@@ -13,6 +13,7 @@ class Modal extends Common {
 	private $modalFooter;
 	private $modalPost;
 
+	protected $icon;
 	protected $draggable;
 	protected $resizable;
 	protected $approve;
@@ -154,7 +155,10 @@ class Modal extends Common {
 		$this->modalHeader['class'][] = str::getColour($this->accent, "bg");
 
 		# Icon
-		$icon = Icon::generate($this->modalHeader['icon']);
+		if(!$icon = Icon::generate($this->modalHeader['icon'])){
+			//the icon attribute can either be in the header or in the main modal
+			$icon = Icon::generate($this->icon);
+		}
 
 		# Badge
 		$badge = Badge::generate($this->modalHeader['badge']);
@@ -196,7 +200,7 @@ EOF;
 <div{$id}{$class}{$style}>
 	<div class="container">
   		<div class="row">
-    		<div class="col-auto">
+    		<div class="col-auto modal-title">
     			{$icon}{$title}{$badge}
     		</div>
     		<div class="col">
@@ -271,7 +275,7 @@ EOF;
 		$class = str::getAttrTag("class", $this->modalFooter['class']);
 
 		# Only include left side if it has values (or a custom ID)
-		if($left = $icon.$this->modalFooter['html'].$badge || $id){
+		if(($left = $icon.$this->modalFooter['html'].$badge) || $id){
 			$left = "<div class=\"col-auto\">{$left}</div>";
 		}
 
@@ -334,21 +338,21 @@ EOF;
 	public function setBody($a = NULL){
 		# Array
 		if(is_array($a)){
-			$a['id'] = $a['id'] ?: str::id("body");
-			$this->body = $a;
+			$this->modalBody = $a;
+			$this->modalBody['id'] = $this->modalBody['id'] ?: str::id("body");
 			return true;
 		}
 
 		# Mixed
 		if ($a){
-			$this->body['html'] = $a;
-			$this->body['id'] = str::id("body");
+			$this->modalBody['html'] = $a;
+			$this->modalBody['id'] = str::id("body");
 			return true;
 		}
 
 		# Clear
 		if($a === false){
-			$this->body = [];
+			$this->modalBody = [];
 			return true;
 		}
 
@@ -362,22 +366,21 @@ EOF;
 	 * @return bool|string
 	 */
 	public function getBodyHTML(){
-		if(!$this->body){
+		if(!$this->modalBody){
 			return false;
 		}
 
-		if(is_array($this->body['html'])){
-			$grid = new Grid();
-			$this->body['html'] = $grid->getHTML($this->body['html']);
+		if(is_array($this->modalBody['html'])){
+			$this->modalBody['html'] = Grid::generate($this->modalBody['html']);
 		}
 
-		$id = str::getAttrTag("id", $this->body['id']);
-		$class = str::getAttrTag("class", ["modal-body", $this->body['class']]);
-		$style = str::getAttrTag("style", $this->body['style']);
-		$progress = Progress::generate($this->body['progress']);
-		$script = str::getScriptTag($this->body['script']);
+		$id = str::getAttrTag("id", $this->modalBody['id']);
+		$class = str::getAttrTag("class", ["modal-body", $this->modalBody['class']]);
+		$style = str::getAttrTag("style", $this->modalBody['style']);
+		$progress = Progress::generate($this->modalBody['progress']);
+		$script = str::getScriptTag($this->modalBody['script']);
 
-		return "<div{$class}{$id}{$style}>{$progress}{$this->body['html']}</div>{$script}";
+		return "<div{$class}{$id}{$style}>{$progress}{$this->modalBody['html']}</div>{$script}";
 	}
 
 	/**
@@ -400,6 +403,7 @@ EOF;
 		case 'xs':
 		case 's':
 		case 'small': $size = "modal-sm"; break;
+		case 'l':
 		case 'lg':
 		case 'large': $size = "modal-lg"; break;
 		case 'xl': $size = "modal-xl"; break;
@@ -408,15 +412,18 @@ EOF;
 		$parent_class = str::getAttrTag("class", $parent_class_array);
 		$parent_style = str::getAttrTag("style", $this->parent_style);
 		
-		$class_array = str::getAttrArray($this->class, ["modal-dialog","modal-dialog-centered", $size], $this->only_class);
+		$class_array = str::getAttrArray($this->class, ["modal-dialog","modal-dialog-centered", "modal-dialog-scrollable", $size], $this->only_class);
 		$class = str::getAttrTag("class", $class_array);
 		$style = str::getAttrTag("style", $this->style);
+
+		$data = str::getDataAttr($this->getModalDataAttr(), true);
 
 		return /** @lang HTML */<<<EOF
 <div
 	{$this->getId(true)}
 	{$parent_class}
 	{$parent_style}
+	{$data}
 >
     <div
     	{$class}
@@ -435,6 +442,26 @@ EOF;
 	}
 
 	/**
+	 * Returns all the modal settings as an array
+	 * to be fed to the data attribute generator.
+	 *
+	 * @return array
+	 */
+	private function getModalDataAttr(){
+		$modal['show'] = true;
+		if($this->dismissable === false){
+			$modal['backdrop'] = "static";
+		}
+
+		return [
+			"settings" => $modal,
+			"draggable" => $this->getDraggableSettings(),
+			"resizable" => $this->getResizableSettings(),
+			"approve" => $this->getApproveSettings(),
+		];
+	}
+
+	/**
 	 * Returns all Javascript settings related to the modal.
 	 *
 	 * @param bool $as_tag If set, will return enclosed with script tag.
@@ -442,27 +469,6 @@ EOF;
 	 * @return bool|string
 	 */
 	private function getScriptHTML($as_tag = FALSE){
-		# Modal settings
-		$modal['show'] = true;
-		if($this->dismissable === false){
-			$modal['backdrop'] = "static";
-		}
-
-		$settings = [
-			"settings" => $modal,
-			"draggable" => $this->getDraggableSettings(),
-			"resizable" => $this->getResizableSettings(),
-			"approve" => $this->getApproveSettings(),
-		];
-
-		$settings_json = json_encode($settings, JSON_PRETTY_PRINT);
-
-		$script = /** @lang JavaScript */<<<EOF
-$.modal["{$this->getId()}"] = {$settings_json}
-showModal("{$this->getId()}");
-{$this->script}
-EOF;
-
 		if($as_tag){
 			return str::getScriptTag($script);
 		}
@@ -479,6 +485,11 @@ EOF;
 			return false;
 		}
 
+		# If approval is only required if there is a change to a form
+		if($this->approve === "change"){
+			$this->approve = ["change" => true];
+		}
+
 		# If an approval to close the script is required, it cannot be dismissable
 		$this->dismissable = false;
 
@@ -491,11 +502,11 @@ EOF;
 			$colour = "grey";
 			$message = str::title("Are you sure you want to {$this->approve}?");
 		}
-		else {
-			//if just set to true or any other object
-			$title = "Close this window?";
-			$message = "Any changes you may have made, will be lost.";
-		}
+//		else {
+//			//if just set to true or any other object
+//			$title = "Close this window?";
+//			$message = "Any changes you may have made, will be lost.";
+//		}
 
 		# If the message contains line breaks, it will break JavaScript, remove
 		$message = str_replace(["\r\n","\r","\n"], " ", $message);
@@ -505,18 +516,19 @@ EOF;
 		$type = str::translate_approve_colour($colour);
 		$button_colour = str::getColour($colour, "btn");
 
-		return [
+		# For this method, we _do_ want to remove empty values
+		return str::array_filter_recursive([
+			"change" => $change,
 			"type" => $type,
 			"icon" => $icon_class,
 			"title" => $title,
 			"content" => $message,
-			"btnClass" => $button_colour,
-//			"buttons" => [
-//				"confirm" => [
-//					"btnClass" => $button_colour
-//				]
-//			]
-		];
+			"buttons" => [
+				"confirm" => [
+					"btnClass" => $button_colour
+				]
+			]
+		]);
 	}
 
 	/**
@@ -556,11 +568,7 @@ EOF;
 			return false;
 		}
 
-		$default_settings = [
-			"handles" => "se",
-		];
-
-		# Merge and return default settings with (optional) custom settings
-		return array_merge($default_settings, is_array($this->resizable) ? $this->resizable : []);
+		# Even if there are no custom settings, we still need to return an array
+		return is_array($this->resizable) ? $this->resizable : [];
 	}
 }

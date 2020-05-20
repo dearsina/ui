@@ -32,3 +32,38 @@
   font-weight: 600;
   background: $card-header-footer-bg;
 }
+
+/**
+ * Give the main modal icon in the header
+ * a little breathing room.
+ */
+.modal-header .modal-title i:first-of-type{
+  margin-right: .5rem;
+}
+//.modal-title{
+//  margin-bottom: 0; //Undoing Bootstrap
+//}
+
+.modal-body > * {
+  width: -webkit-fill-available;
+  width: -moz-fill-available;
+  width: fill-available;
+}
+
+/**
+ * Set the body class to col-scroll to
+ * enable col-scrolling in one of the columns.
+ */
+.modal-body.col-scroll
+{
+  display: flex;
+}
+
+/**
+ * Identifies the column to enable col-scrolling.
+ */
+.modal-body .col-scroll
+{
+  overflow-y: auto;
+  max-height: 100%;
+}

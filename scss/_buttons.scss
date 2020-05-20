@@ -66,7 +66,9 @@ $btn-border-radius-xs:  $border-radius-xs;
 /**
  *
  */
-.modal-footer .btn-float-right .btn i{
+.modal-footer .btn-float-right .btn i,
+form .btn i
+{
   padding: 4px 0;
 }
 
@@ -88,8 +90,13 @@ $btn-border-radius-xs:  $border-radius-xs;
   margin: .5rem 0 0 .5rem;
 }
 
-.card .btn-float-right .btn:not(:hover),
-.modal .btn-float-right .btn:not(:hover)
+/**
+ * Outlined buttons are by default still too loud.
+ * By making their border colour almost invisible,
+ * they are made quieter.
+ */
+.card .btn-float-right *[class*="btn-outline-"]:not(:hover),
+.modal .btn-float-right *[class*="btn-outline-"]:not(:hover)
 {
   border-color: $border-color;
 }

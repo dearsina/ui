@@ -10,8 +10,8 @@
 /**
  * Only by loading these two, can we edit the theme colours by variable
  */
-@import "../../../bootstrap-4.4.1/scss/_functions.scss";
-@import "../../../bootstrap-4.4.1/scss/_variables.scss";
+@import "../../../bootstrap-4.5.0/scss/_functions.scss";
+@import "../../../bootstrap-4.5.0/scss/_variables.scss";
 
 /**
  * Bootstrap variable overrides
@@ -58,9 +58,9 @@ $enable-rounded: true;
 @import "grid";
 
 /**
- * Bootstrap
+ * Bootstrap 4.5
  */
-@import "../../../bootstrap-4.4.1/scss/bootstrap";
+@import "../../../bootstrap-4.5.0/scss/bootstrap";
 
 /**
  * Custom CSS.
@@ -69,15 +69,17 @@ $enable-rounded: true;
 
 @import "accordion";
 @import "alert";
-@import "sidebars";
+@import "buttons";
+@import "badge";
 @import "navigation";
+@import "sidebars";
 @import "dropdown";
 @import "footer";
 @import "help";
 @import "card";
+@import "list-group";
 @import "modal";
 @import "page";
-@import "buttons";
 @import "form";
 @import "spinners";
 @import "table";

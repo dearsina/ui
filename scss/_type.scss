@@ -1,3 +1,11 @@
+/**
+ * The colour of links.
+ */
+a{
+  color: map-get($theme-colors, "primary");
+}
+
+
 smaller, .smaller {
   font-size: 90%;
   font-weight: 300;
@@ -11,6 +19,21 @@ smaller, .smaller {
 .text-silent {
   color: hsla(207, 7%, 86%, 1) !important;
 }
+/**
+ * For when text is displayed as headline and body copy.
+ * This is the header.
+ */
+.text-header{
+  font-weight:600;
+}
+/**
+ * This is the description
+ */
+.text-desc {
+  color: $gray-600;
+  font-weight:300;
+  font-style: italic;
+}
 
 /**
  * For text that needs to stay on one line,
@@ -19,4 +42,39 @@ smaller, .smaller {
 .text-flat {
   overflow: hidden;
   white-space: nowrap;
+}
+
+.code-mute {
+  //background: #f9f9f9;
+  //padding: 1rem;
+  //box-shadow: inset 0px 0px 4px 0px rgba(0, 0, 0, 0.2);
+}
+
+/**
+ * When you hover over code in a table, it pops out.
+ */
+.table-body .code-mute:hover{
+  background: white;
+  z-index: 999;
+  position: absolute;
+  padding: 1rem;
+  margin: -1rem;
+
+  background: $card-header-footer-bg;
+  box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+/**
+ * Hide scroll bars for big chunks of code
+ */
+.code-mute > pre {
+  overflow: hidden;
+}
+
+/**
+ * Overriding the normal code formatting
+ */
+.code-mute > pre > code{
+  font-weight: normal !important;
+  font-size: smaller;
 }

@@ -16,7 +16,7 @@ class Select extends Field implements FieldInterface {
 		extract($a);
 		
 		# Label
-		$label = self::getLabel($label, $name, $id);
+		$label = self::getLabel($label ?: $title, $name, $id);
 
 		# Options
 		$options_html = self::getOptionsHTML($a);
@@ -37,9 +37,6 @@ class Select extends Field implements FieldInterface {
 
 		# Style
 		$style = str::getAttrTag("style", $style);
-
-		# Placeholder
-		$placeholder = str::getAttrTag("placeholder", self::getPlaceholder($placeholder));
 
 		# Validation
 		$validation = self::getValidationTags($validation);

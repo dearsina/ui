@@ -212,12 +212,23 @@ class Icon {
 
 		extract(Icon::getArray($icon_array));
 
-		if(!$class[] = Icon::getClass($icon_array)){
+		if(!$default[] = Icon::getClass($icon_array)){
 			return false;
 		}
 		if($colour = str::translate_colour($colour)){
-			$class[] = " text-{$colour}";
+			$default[] = " text-{$colour}";
 		}
+
+		if($approve){
+			//if an approval dialogue is to prepend the action
+			$id = $id ?: str::id("icon");
+			// We'll need an ID
+
+			$approve_attr = str::getApproveAttr($a['approve']);
+			$default[] = "approve-decision";
+		}
+
+		$class_array = str::getAttrArray($class, $default, $only_class);
 
 		$title = str::getAttrTag("title", $alt ?: $title);
 
@@ -226,12 +237,13 @@ class Icon {
 			$a_post = "</a>";
 		}
 
+		$id = str::getAttrTag("id", $id);
 		$style = str::getAttrTag("style", $style);
 		$transform = str::getAttrTag("data-fa-transform", $transform);
-		$class = str::getAttrTag("class", $class);
+		$class = str::getAttrTag("class", $class_array);
 
 		return <<<EOF
-{$a_pre}<i{$class}{$style}{$transform}{$title} aria-hidden="true"></i>{$a_post}
+{$a_pre}<i{$id}{$class}{$style}{$transform}{$title}{$approve_attr} aria-hidden="true"></i>{$a_post}
 EOF;
 	}
 
