@@ -78,3 +78,18 @@ smaller, .smaller {
   font-weight: normal !important;
   font-size: smaller;
 }
+
+.clipboard::after
+{
+  content: "\f0c5";
+  font-family: "Font Awesome 5 Pro";
+  font-size: small;
+  margin: 0 0.2rem;
+  opacity: .5;
+}
+
+.clipboard:hover::after
+{
+  opacity: 1;
+  cursor: pointer;
+}

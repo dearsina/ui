@@ -90,6 +90,8 @@ class Dropdown {
 			# Disabled element?
 			if($item['disabled']){
 				$default_class[] = "disabled";
+				$tag = "div";
+				$href = false;
 			}
 
 			# Approval needed?

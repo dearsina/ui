@@ -110,7 +110,7 @@ class Field {
 	 *
 	 * @return bool|string
 	 */
-	static function getLabel($label, $name, $id){
+	static function getLabel($label, $title, $name, $id){
 		if($label === false){
 			return false;
 		}
@@ -119,6 +119,8 @@ class Field {
 			$l = $label;
 		} else if ($label){
 			$l['title'] = $label;
+		} else if ($title){
+			$l['title'] = $title;
 		} else {
 			$l = [];
 		}
@@ -166,7 +168,9 @@ class Field {
 	}
 	
 	static function getCheckboxLabel($label, $desc, $name, $id){
-		if(is_array($label)) {
+		if($label === false){
+			$l['title'] = "";
+		} else if(is_array($label)) {
 			$l = $label;
 		} else if ($label){
 			$l['title'] = $label;
@@ -209,13 +213,16 @@ class Field {
 			$tag = "label";
 		}
 
+		# Alt
+		$alt = str::getAttrTag("title", $l['alt']);
+
 		# Id
 		$id = str::getAttrTag("for", $id);
 
 		# Description
 		$desc = self::getDesc($l['desc']);
 
-		return "<{$tag}{$href}{$id}{$class}{$style}>{$icon}{$title}{$html}{$badge}{$desc}</{$tag}>";
+		return "<{$tag}{$href}{$id}{$class}{$style}{$alt}>{$icon}{$title}{$html}{$badge}{$desc}</{$tag}>";
 		
 	}
 

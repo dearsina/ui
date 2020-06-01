@@ -16,7 +16,7 @@ class Textarea extends Field implements FieldInterface {
 		extract($a);
 
 		# Label
-		$label = self::getLabel($label ?: $title, $name, $id);
+		$label = self::getLabel($label, $title, $name, $id);
 
 		$rows = $rows ?: 2;
 

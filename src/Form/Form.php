@@ -110,6 +110,9 @@ class Form {
 		# Script
 		$this->setScript($script, $only_script);
 
+		# Encryption required?
+		$this->setEncrypt($encrypt);
+
 		# Class
 		$this->class = str::getAttrArray($class, [], $only_class);
 
@@ -204,6 +207,79 @@ EOF;
 			$this->fields[] = $fields;
 		}
 		
+		return true;
+	}
+
+	/**
+	 * If form fields are to be encrypted before being sent,
+	 * include a "encrypt" => [] with names of all the fields.
+	 *
+	 * This is to prevent the unencrypted field value from being stored in
+	 * access logs, error logs and audit trails.
+	 *
+	 * @param null $encrypt
+	 *
+	 * @return bool
+	 */
+	public function setEncrypt($encrypt = NULL){
+		if(!$encrypt){
+			return false;
+		}
+		$encrypt = is_array($encrypt) ? $encrypt : [$encrypt];
+
+		# Create a key pair (public and private keys)
+		$keypair = sodium_crypto_box_keypair();
+
+		# Grab a hex of the public key
+		$public_key = sodium_bin2hex(sodium_crypto_box_publickey($keypair));
+
+		# Store the key pair in a session variable
+		$_SESSION['pgp'][$public_key] = $keypair;
+
+		# Store the public key as a form field
+		$this->setFields([
+			"type" => "hidden",
+			"name" => "meta_public_key",
+			"value" => $public_key
+		]);
+
+		# Store the names of the fields to encrypt, as its own form field
+		$this->setFields([
+			"type" => "hidden",
+			"name" => "meta_encrypt",
+			"value" => json_encode($encrypt)
+		]);
+	}
+
+	/**
+	 * Given an array of vars (returned from a form),
+	 * will decrypt those fields that require it.
+	 *
+	 * Assumes the user who instigated the form is the same
+	 * that is asking for decryption, as the keys are stored
+	 * in the $_SESSION.
+	 * @param $vars
+	 *
+	 * @return bool
+	 * @throws \Exception
+	 */
+	public static function decryptVars(&$vars) : bool
+	{
+		# Ensure there are vars to be decrypted
+		if(!$vars['meta_public_key'] || !$vars['meta_encrypt']){
+			//If there is nothing to be decrypted
+			return true;
+		}
+
+		# Ensure the key is valid
+		if(!$_SESSION['pgp'][$vars['meta_public_key']]){
+			throw new \Exception("The associated private key cannot be found. This is either because your public key is invalid or has expired. Please refresh the form and try again.");
+		}
+
+		# For each variable, decrypt and save the value
+		foreach(json_decode($vars['meta_encrypt'], true) as $key){
+			$vars[$key] = sodium_crypto_box_seal_open(sodium_hex2bin($vars[$key]), $_SESSION['pgp'][$vars['meta_public_key']]);
+		}
 		return true;
 	}
 

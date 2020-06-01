@@ -14,7 +14,7 @@ class Input extends Field {
 		extract(self::getInputType($type));
 
 		# Label
-		$label = self::getLabel($label ?: $title, $name, $id);
+		$label = self::getLabel($label, $title, $name, $id);
 
 		# Icons
 		$icon = self::getIcon($icon, "prepend");
@@ -63,6 +63,9 @@ class Input extends Field {
 		# Script
 		$script = str::getScriptTag($script);
 
+		# $data
+		$data = str::getDataAttr($data);
+
 		return /** @lang HTML */
 			<<<EOF
 <div class="form-group">
@@ -85,6 +88,7 @@ class Input extends Field {
 		{$disabled}
 		{$validation}
 		{$checked}
+		{$data}
     />
     <div class="input-group-addon form-control-feedback hidden"><i class="far fa-fw"></i></div>
     {$icon_suffix}

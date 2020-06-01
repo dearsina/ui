@@ -125,7 +125,7 @@ EOF;
 	private static function getMultiCheckboxHTML($a){
 		extract($a);
 
-		$parent_label = self::getLabel($parent_label, $name, $id);
+		$parent_label = self::getLabel($parent_label, $parent_title, $name, $id);
 		$parent_desc = self::getDesc($parent_desc);
 
 		foreach($options as $key => $val){

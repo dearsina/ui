@@ -52,7 +52,8 @@ class Table {
 		if(!$ignore_header){
 			$row = $rows[0]['html'] ?: $rows[0];
 			$grid->set([
-				"row_class" => "table-header",
+				"row_class" => str::getAttrArray($row['header_class'], "table-header", $row['only_header_class']),
+				"row_style" => $row['header_style'],
 				"html" => self::generateHeaderRow($row, $options)
 			]);
 		}

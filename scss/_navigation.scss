@@ -9,7 +9,7 @@
   left: 0;
   width: 100%;
   padding: .5rem;
-  color:white;
+  color: white;
 
   box-shadow: 0px 1px 9px -5px rgb(0, 0, 0);
 }
@@ -17,7 +17,7 @@
 /**
  * The logo that sits inside the navbar meta to the top right
  */
-#navbar-level1-logo {
+.navbar-level1-logo {
   opacity: .75;
   margin-left: 0.75rem;
   text-decoration: none;
@@ -26,10 +26,17 @@
   transition: all 0.5s;
 }
 
+a.navbar-level1-logo,
+a.navbar-level1-logo:hover,
+{
+  color: white;
+  text-decoration: none;
+}
+
 /**
  * Logo dimentions
  */
-#navbar-level1-logo img {
+.navbar-level1-logo img {
   height: 25px;
   width: 60px;
 }
@@ -57,7 +64,7 @@
 /**
  * Silly effect to make it shine slowly when hovering over it.
  */
-#navbar-level1-logo:hover {
+.navbar-level1-logo:hover {
   opacity: 1;
 
   -webkit-animation: all 1.5s ease-in-out infinite alternate;
@@ -223,7 +230,9 @@ nav li .badge i{
 /**
  * For when menu items have badges
  */
-.nav-right .parent > ul li a .badge{
+.nav-right .parent > ul li a .badge,
+.nav-right .parent > ul li div .badge
+{
   float: right;
   margin: 6px 0 0 0;
 }
@@ -232,14 +241,14 @@ nav li .badge i{
  * Disabled menu items.
  * Expects the disabled class to be on the li belonging to the menu item
  */
-.nav-right .parent > ul li.disabled a {
+.nav-right .parent > ul li .disabled {
   color: #DDDDDD;
   cursor: default;
 }
-.nav-right .parent > ul li.disabled a .badge{
+.nav-right .parent > ul li .disabled .badge{
   opacity: .25;
 }
-.nav-right .parent > ul li.disabled a:hover {
+.nav-right .parent > ul li .disabled:hover {
   background-color: unset;
   cursor: default;
 }
@@ -379,12 +388,12 @@ nav .parent a
 /**
  * Markers to indicate that the element is a "parent"
  */
-nav .nav-left .parent > ul > .parent > a:after {
+nav .nav-left .parent > ul > .parent > div:after {
   content: "›";
   float: right;
 }
 
-nav .nav-right .parent > ul > .parent > a:after {
+nav .nav-right .parent > ul > .parent > div:after {
   content: "‹";
   float: right;
 }
@@ -394,12 +403,14 @@ nav .parent > ul li {
   line-height: 30px;
   width: 100%;
   min-width: 200px;
-  overflow: hidden;
+  //overflow: hidden; This will prevent grand children
   white-space: nowrap;
   max-width: 300px;
 }
 
-nav .parent > ul li a {
+nav .parent > ul li > a,
+nav .parent > ul li > div
+{
   //color: #000000;
   padding: 0.3rem 1rem;
   display: block;
@@ -566,7 +577,17 @@ nav .expand {
 
 .nav-dropdown {
   padding: .2rem 0 0 .5rem !important;
+  width: 0;
 }
 .nav-dropdown > a > i{
   margin: 0;
+}
+
+/**
+ * So that the top level buttons don't hide the bars when hovered over.
+ */
+.card nav .nav-right,
+.modal nav .nav-right
+{
+  padding-right: 1.5rem;
 }

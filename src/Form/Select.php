@@ -16,7 +16,7 @@ class Select extends Field implements FieldInterface {
 		extract($a);
 		
 		# Label
-		$label = self::getLabel($label ?: $title, $name, $id);
+		$label = self::getLabel($label, $title, $name, $id);
 
 		# Options
 		$options_html = self::getOptionsHTML($a);
@@ -165,20 +165,20 @@ EOF;
 	private static function getSelectScript($a){
 		extract($a);
 		
-		$placeholder = self::getPlaceholder($placeholder);
-		$class = str::getAttrTag( false, $class);
-		
+		$class_array = str::getAttrArray($class, "select2js", $only_class);
+
+		$settings['containerCssClass'] = str::getAttrTag( false, $class_array);
+		$settings['placeholder'] = self::getPlaceholder($placeholder);
+		$settings['ajax'] = $ajax;
+		$settings['value'] = $value;
+		$settings_json = json_encode(array_filter($settings));
+
 		return /** @lang JavaScript */<<<EOF
-$(document).ready(function() {
-    $("#{$id}").select2({
-        containerCssClass: "select2js{$class}",
-    	placeholder: '{$placeholder}',
-  		allowClear: true,
-    }).on("change", function (e) {
-	  $(this).valid();
-	  {$onChange}
+$("#{$id}").select2(select2Settings({$settings_json}))
+	.on("change", function (e) {
+		$(this).valid();
+		{$onChange}
 	});
-});
 {$script}
 EOF;
 	}

@@ -139,6 +139,9 @@ class Grid {
 			# Icon
 			$icon = Icon::generate($col['icon']);
 
+			# Copy
+			$copy = Copy::generate($col['copy'], $col_html);
+
 			# Class
 			$class_array = str::getAttrArray($col['class'], $col_width, $col['only_class']);
 			$class_tag = str::getAttrTag("class", $class_array);
@@ -160,7 +163,7 @@ class Grid {
 				$tag = "div";
 			}
 
-			$html .= "<{$tag}{$href}{$id_tag}{$class_tag}{$style_tag}{$data_value}{$data}>{$icon}{$buttons}{$col_html}</{$tag}>";
+			$html .= "<{$tag}{$href}{$id_tag}{$class_tag}{$style_tag}{$data_value}{$data}>{$icon}{$buttons}{$col_html}{$copy}</{$tag}>";
 		}
 
 		return $html;

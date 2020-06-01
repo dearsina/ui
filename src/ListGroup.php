@@ -16,10 +16,9 @@ class ListGroup {
 	 * 	"html" => "Complex",
 	 * 	"colour" => "info",
 	 * 	"badge" => "999",
-	 * 	"hash" => "rel_table"
+	 * 	"hash" => "rel_table",
 	 * 	"active" => true,
 	 * 	"disabled" => true,
-	 * 	"hash" => "rel_table"
 	 * ],
 	 * 	"Simple"
 	 * ];

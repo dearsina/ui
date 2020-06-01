@@ -6,6 +6,9 @@
   border: none;
   margin-bottom: $spacer;
   box-shadow: 1px 1px 2px 0 hsla(0, 0%, 0%, 0.2);
+
+  /** The box-shadow used by Stripe */
+  // box-shadow: rgba(60, 66, 87, 0.12) 0px 7px 14px 0px, rgba(0, 0, 0, 0.12) 0px 3px 6px 0px;
 }
 
 /**
@@ -88,6 +91,15 @@ box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 
  */
 .card-rows {
   padding: $card-spacer-y;
+}
+.card-rows .row:not(:first-child)
+{
+  padding-top: .5rem;
+}
+.card-rows .row:not(:last-child)
+{
+  border-bottom: .1px solid $border-color;
+  padding-bottom: .5rem;
 }
 
 .card-body > * {

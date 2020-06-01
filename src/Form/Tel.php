@@ -32,7 +32,7 @@ class Tel extends Field implements FieldInterface {
 		$b['name'] = $a['name'];
 		$a['name'] = false;
 
-		$a['script'] = self::getScript($a, $b);
+		$a['data'] = self::getTelSettings($b['id']);
 		return Input::generateHTML($a).Hidden::generateHTML($b);
 	}
 
@@ -40,40 +40,22 @@ class Tel extends Field implements FieldInterface {
 	 * Get the user's geolocation,
 	 * uses the country as the default country for the
 	 * telephone number international prefix.
+	 * @param string $value_field_id
 	 *
-	 * @param array $a The field used for the UI
-	 * @param array $b The hidden field used to keep the cleaned up international number
-	 *
-	 * @return string
+	 * @return array
 	 */
-	private static function getScript(array $a, array $b){
+	private static function getTelSettings(string $value_field_id): array
+	{
 		$user = new User();
 		$geolocation = $user->getGeolocation();
-		$preferredCountries = array_values(array_unique(["us", "gb", "us", $geolocation['country_code']]));
-		sort($preferredCountries);
-		$preferredCountries_json = json_encode($preferredCountries);
-		return /** @lang JavaScript */<<<EOF
-$("#{$a['id']}").intlTelInput({
-	initialCountry: "{$geolocation['country_code']}",
-	preferredCountries: {$preferredCountries_json},
-	utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.0/js/utils.js"
-});
-var handleChange = function() {
-    if($("#{$a['id']}").intlTelInput("isValidNumber")){
-        //if the number conforms to the country format
-        $("#{$b['id']}").val($("#{$a['id']}").intlTelInput("getNumber"));
-        //Add it to the field that will carry the value
-    } else {
-        //If the number is incorrect
-        $("#{$b['id']}").val("");
-        //Remove it from the field that will cary the value
-    }
-};
-
-// listen to "keyup", but also "change" to update when the user selects a country
-$("#{$a['id']}").on('change', handleChange);
-$("#{$a['id']}").on('keyup', handleChange);
-EOF;
-
+		return [
+			"value_field_id" => $value_field_id,
+			"settings" => [
+				"initialCountry" => $geolocation['country_code'],
+				"preferredCountries" => [
+					$geolocation['country_code']
+				]
+			]
+		];
 	}
 }

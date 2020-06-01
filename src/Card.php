@@ -307,8 +307,8 @@ EOF;
 		$script = str::getScriptTag($this->cardPost['script']);
 
 		$cells[] = [
-			"class" => $class_array,
-			"style" => $style_array,
+			"row_class" => $class_array,
+			"row_style" => $style_array,
 			"html" => "{$icon}{$this->cardPost['html']}{$badge}"
 		];
 		$html = Grid::generate($cells);
@@ -422,8 +422,7 @@ EOF;
 		}
 
 		if(is_array($this->cardBody['html'])){
-			$grid = new Grid();
-			$this->cardBody['html'] = $grid->getHTML($this->cardBody['html']);
+			$this->cardBody['html'] = Grid::generate($this->cardBody['html']);
 		}
 
 		$id = str::getAttrTag("id", $this->cardBody['id']);

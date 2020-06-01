@@ -95,6 +95,15 @@
 }
 
 /**
+ * Give the table icon in a cell
+ * a little breathing room.
+ */
+.table-body > .col > i:first-of-type,
+{
+  margin-right: .5rem;
+}
+
+/**
  * Sortable tables
  */
 

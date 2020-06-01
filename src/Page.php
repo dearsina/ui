@@ -173,6 +173,16 @@ class Page {
 	}
 
 	/**
+	 * Returns a container for heads-up messages.
+	 *
+	 * @return string
+	 */
+	private function getHeadsUpHTML(): string
+	{
+		return "<div class=\"headsup\"></div>";
+	}
+
+	/**
 	 * Get the page Javascript,
 	 * encased in a script tag.
 	 *
@@ -209,6 +219,7 @@ class Page {
 {$this->getScriptHTML()}
 {$this->getTitleHTML()}
 {$this->getSubtitleHTML()}
+{$this->getHeadsUpHTML()}
 {$this->grid->getHTML()}
 EOF;
 
