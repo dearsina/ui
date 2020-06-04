@@ -5,6 +5,10 @@ namespace App\UI;
 
 use App\Common\str;
 
+/**
+ * Class Countdown
+ * @package App\UI
+ */
 class Countdown {
 
 	/**
@@ -14,6 +18,8 @@ class Countdown {
 	 * <code>
 	 * Countdown::generate([
 	 * 	"id" => , //A div ID
+	 * 	"class" => , //Optional additional classes
+	 * 	"style" => , //optional style
 	 * 	"datetime" => , //A (mySQL) datetime string
 	 * 	"modify" => , //A string modifying the datetime
 	 * 	"pre" => , //Text that goes before the timer
@@ -67,6 +73,16 @@ class Countdown {
 		# Precision
 		$settings["precision"] = $precision;
 
+		# ID (optional)
+		$id = str::getAttrTag("id", $id);
+
+		# Class
+		$class_array = str::getAttrArray($class, "countdown", $only_class);
+		$class = str::getAttrTag("class", $class_array);
+
+		# Style
+		$style = str::getAttrTag("style", $style);
+
 		$data_array = [
 			"settings" => $settings,
 			"utc" => $dt->format("Y-m-d H:i:s\\Z"),
@@ -78,6 +94,8 @@ class Countdown {
 			"restart" => $restart
 		];
 		$data_attr = str::getDataAttr($data_array);
-		return "<span class=\"countdown\"{$data_attr}></span>";
+
+
+		return "<span{$id}{$class}{$style}{$data_attr}></span>";
 	}
 }

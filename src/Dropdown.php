@@ -6,6 +6,10 @@ namespace App\UI;
 use App\Common\href;
 use App\Common\str;
 
+/**
+ * Class Dropdown
+ * @package App\UI
+ */
 class Dropdown {
 	/**
 	 * Generates a dropdown button,
@@ -13,8 +17,8 @@ class Dropdown {
 	 *
 	 * Primerally used by cards.
 	 *
-	 * @param $buttons
-	 *`
+	 * @param $a
+	 *
 	 * @return string
 	 */
 	static function generate($a){
@@ -44,6 +48,8 @@ class Dropdown {
 	 * @param null $ul
 	 *
 	 * @return bool|string
+	 * @throws \Exception
+	 * @throws \Exception
 	 */
 	public static function getMultiLevelItemsHTML($items, $ul = NULL){
 		if(!is_array($items)){

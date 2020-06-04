@@ -45,7 +45,7 @@ class Badge {
 	 * Badge::generate([$badgeA, $badgeB, ..., $badgeN]);
 	 * </code>
 	 *
-	 * @param $a array|string Array of settings or name of generic badge
+	 * @param null $array_or_string
 	 *
 	 * @return string
 	 * @throws \Exception

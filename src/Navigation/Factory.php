@@ -4,13 +4,17 @@
 namespace App\UI\Navigation;
 
 
+/**
+ * Class Factory
+ * @package App\UI\Navigation
+ */
 class Factory {
 	/**
 	 * Generate a particular type of navigation and footer
 	 *
 	 * @param string     $type
 	 * @param array|null $levels
-	 * @param array|null $footer
+	 * @param array|null $footers
 	 *
 	 * @return Horizontal
 	 */

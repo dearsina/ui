@@ -6,6 +6,10 @@ namespace App\UI\Form;
 
 use App\Common\str;
 
+/**
+ * Class Range
+ * @package App\UI\Form
+ */
 class Range extends Field implements FieldInterface {
 
 	/**
@@ -28,6 +32,10 @@ class Range extends Field implements FieldInterface {
 	 * "min_colour" => [255,0,0], //Start colour (R,G,B)
 	 * "max_colour" => [0,255,0], //End colour (R,G,B)
 	 * </code>
+	 *
+	 * @param array $a
+	 *
+	 * @return string
 	 */
 	public static function generateHTML (array $a) {
 		$a['script'] = self::getRangeScript($a);

@@ -5,8 +5,11 @@ namespace App\UI\Form;
 
 
 use App\Common\str;
-use App\UI\Icon;
 
+/**
+ * Class Select
+ * @package App\UI\Form
+ */
 class Select extends Field implements FieldInterface {
 
 	/**
@@ -112,7 +115,7 @@ EOF;
 	 * @param      $a
 	 * @param bool $matched Will be set to TRUE if at least one option is selected.
 	 *
-	 * @return bool
+	 * @return array|bool
 	 */
 	private static function getOptionsArray($a, &$matched = false){
 		extract($a);
@@ -162,6 +165,11 @@ EOF;
 		return $options_array;
 	}
 
+	/**
+	 * @param $a
+	 *
+	 * @return string
+	 */
 	private static function getSelectScript($a){
 		extract($a);
 		

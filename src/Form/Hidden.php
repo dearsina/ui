@@ -6,6 +6,10 @@ namespace App\UI\Form;
 
 use App\Common\str;
 
+/**
+ * Class Hidden
+ * @package App\UI\Form
+ */
 class Hidden extends Field implements FieldInterface {
 
 	/**
@@ -13,6 +17,10 @@ class Hidden extends Field implements FieldInterface {
 	 * in that it gets a place in the grid,
 	 * which may result in empty columns if it's not
 	 * placed on a row by itself.
+	 *
+	 * @param array $a
+	 *
+	 * @return string
 	 */
 	public static function generateHTML (array $a) {
 		extract($a);

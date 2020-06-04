@@ -4,9 +4,18 @@
 namespace App\UI\Form;
 
 use App\Common\str;
-use App\UI\Icon;
 
+/**
+ * Class Input
+ * @package App\UI\Form
+ */
 class Input extends Field {
+	/**
+	 * @param $a
+	 *
+	 * @return string
+	 * @throws \Exception
+	 */
 	static function generateHTML($a){
 		extract($a);
 		

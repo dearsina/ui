@@ -7,20 +7,24 @@ namespace App\UI;
 use App\Common\href;
 use App\Common\str;
 
+/**
+ * Class ListGroup
+ * @package App\UI
+ */
 class ListGroup {
 	/**
 	 * Given an array of items,
 	 * and metadata, produce a list-group.
 	 * <code>
 	 * $items = [[
-	 * 	"html" => "Complex",
-	 * 	"colour" => "info",
-	 * 	"badge" => "999",
-	 * 	"hash" => "rel_table",
-	 * 	"active" => true,
-	 * 	"disabled" => true,
+	 *    "html" => "Complex",
+	 *    "colour" => "info",
+	 *    "badge" => "999",
+	 *    "hash" => "rel_table",
+	 *    "active" => true,
+	 *    "disabled" => true,
 	 * ],
-	 * 	"Simple"
+	 *    "Simple"
 	 * ];
 	 *
 	 * # Simple
@@ -28,15 +32,17 @@ class ListGroup {
 	 *
 	 * # Complex
 	 * ListGroup::generate([
-	 * 	"item" => $items,
-	 * 	"flush" => true,
-	 * 	"horizontal" => true
+	 *    "item" => $items,
+	 *    "flush" => true,
+	 *    "horizontal" => true
 	 * ]);
 	 * </code>
 	 *
 	 * @param array $a
 	 *
 	 * @return string
+	 * @throws \Exception
+	 * @throws \Exception
 	 */
 	public static function generate(array $a) : string
 	{

@@ -6,6 +6,10 @@ namespace App\UI;
 use App\Common\href;
 use App\Common\str;
 
+/**
+ * Class Grid
+ * @package App\UI
+ */
 class Grid {
 	private $grid;
 	private $unstackable;
@@ -183,8 +187,7 @@ class Grid {
 			return false;
 		}
 
-		$html = $this->getRowHTML($grid);
-		return $html;
+		return $this->getRowHTML($grid);
 	}
 
 	/**

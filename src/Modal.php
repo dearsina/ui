@@ -6,17 +6,30 @@ namespace App\UI;
 use App\Common\Common;
 use App\Common\str;
 
+/**
+ * Class Modal
+ * @package App\UI
+ */
 class Modal extends Common {
 	private $id;
 	private $modalHeader;
 	private $modalBody;
 	private $modalFooter;
-	private $modalPost;
 
 	protected $icon;
 	protected $draggable;
 	protected $resizable;
 	protected $approve;
+	protected $dismissible;
+	protected $style;
+	protected $only_class;
+	protected $class;
+	protected $parent_class;
+	protected $parent_style;
+	protected $size;
+	protected $accent;
+	protected $buttons;
+	protected $only_parent_class;
 
 	/**
 	 * Create a modal
@@ -24,7 +37,7 @@ class Modal extends Common {
 	 * 	$modal = new modal([
 	 * 	"id" => "id",
 	 * 	"size" => "xl",
-	 * 	"dismissable" => false,
+	 * 	"dismissible" => false,
 	 * 	"draggable" => true,
 	 * 	"resizable" => true,
 	 * 	"approve" => true,
@@ -114,6 +127,8 @@ class Modal extends Common {
 	 * Returns the header as HTML.
 	 *
 	 * @return bool|string
+	 * @throws \Exception
+	 * @throws \Exception
 	 */
 	public function getHeaderHTML(){
 		if(!is_array($this->modalHeader)){
@@ -188,7 +203,7 @@ class Modal extends Common {
 		$class = str::getAttrTag("class", $this->modalHeader['class']);
 
 		# If the modal can be dismissed
-		if($this->dismissable !== false){
+		if($this->dismissible !== false){
 			$dismiss = <<<EOF
 <button type="button" class="close" data-dismiss="modal" aria-label="Close" title="Close this window">
 	<span aria-hidden="true">&times;</span>
@@ -216,6 +231,8 @@ EOF;
 	 * Returns the footer as HTML.
 	 *
 	 * @return bool|string
+	 * @throws \Exception
+	 * @throws \Exception
 	 */
 	public function getFooterHTML(){
 		if(!is_array($this->modalFooter)){
@@ -398,6 +415,9 @@ EOF;
 		return $this->id;
 	}
 
+	/**
+	 * @return string
+	 */
 	function getHTML(){
 		switch($this->size){
 		case 'xs':
@@ -449,7 +469,7 @@ EOF;
 	 */
 	private function getModalDataAttr(){
 		$modal['show'] = true;
-		if($this->dismissable === false){
+		if($this->dismissible === false){
 			$modal['backdrop'] = "static";
 		}
 
@@ -490,8 +510,8 @@ EOF;
 			$this->approve = ["change" => true];
 		}
 
-		# If an approval to close the script is required, it cannot be dismissable
-		$this->dismissable = false;
+		# If an approval to close the script is required, it cannot be dismissible
+		$this->dismissible = false;
 
 		if(is_array($this->approve)){
 			//the most common way
@@ -560,9 +580,9 @@ EOF;
 	 */
 	private function getResizableSettings()
 	{
-		if($this->resizeable){
+		if($this->resizable){
 			//If resizable has been written incorrectly
-			$this->resizable = $this->resizeable;
+			$this->resizable = $this->resizable;
 		}
 		if(!$this->resizable) {
 			return false;

@@ -5,14 +5,28 @@ namespace App\UI;
 
 use App\Common\Common;
 use App\Common\str;
+use Exception;
 
+/**
+ * Class Card
+ * @package App\UI
+ */
 class Card extends Common {
 
-	private $id;
-	private $cardHeader;
-	private $cardBody;
-	private $cardFooter;
-	private $cardPost;
+	public $id;
+	public $cardHeader;
+	public $cardBody;
+	public $cardFooter;
+	public $cardPost;
+	public $resizable;
+	public $draggable;
+	public $script;
+	public $rows;
+	public $only_class;
+	public $class;
+	public $accent;
+	public $buttons;
+	public $style;
 
 	/**
 	 * Create a card
@@ -127,6 +141,8 @@ class Card extends Common {
 	 * Returns the header as HTML.
 	 *
 	 * @return bool|string
+	 * @throws Exception
+	 * @throws Exception
 	 */
 	public function getHeaderHTML(){
 		if(!is_array($this->cardHeader)){
@@ -202,6 +218,8 @@ EOF;
 	 * Returns the footer as HTML.
 	 *
 	 * @return bool|string
+	 * @throws Exception
+	 * @throws Exception
 	 */
 	public function getFooterHTML(){
 		if(!is_array($this->cardFooter)){
@@ -281,6 +299,8 @@ EOF;
 	 * Returns the post as HTML.
 	 *
 	 * @return bool|string
+	 * @throws Exception
+	 * @throws Exception
 	 */
 	public function getPostHTML(){
 		if(!is_array($this->cardPost)){
@@ -380,7 +400,7 @@ EOF;
 
 	/**
 	 * Set the card body.
-	 * Will replace existing bodys.
+	 * Will replace existing bodies.
 	 *
 	 * @param mixed $a Can be an array or a string, if set to false, will clear the body
 	 *
@@ -450,6 +470,10 @@ EOF;
 		return $this->id;
 	}
 
+	/**
+	 * @return string
+	 * @throws Exception
+	 */
 	function getHTML(){
 		$class_array = str::getAttrArray($this->class, "card", $this->only_class);
 		$class = str::getAttrTag("class", $class_array);
@@ -472,13 +496,17 @@ EOF;
 
 	}
 
+	/**
+	 * @return bool|string
+	 * @throws Exception
+	 */
 	public function getRowsHTML(){
 		if(!is_array($this->rows)){
 			return false;
 		}
 
 		if(!is_array($this->rows['rows'])){
-			throw new \Exception("Place the (actual) rows in a 'rows' sub array.");
+			throw new Exception("Place the (actual) rows in a 'rows' sub array.");
 		}
 
 		foreach($this->rows['rows'] as $key => $val){
@@ -496,7 +524,6 @@ EOF;
 		$class_array = str::getAttrArray($this->rows['class'], "container card-rows", $this->rows['only_class']);
 		$class = str::getAttrTag("class", $class_array);
 		$style = str::getAttrTag("style", $this->rows['style']);
-		$progress = Progress::generate($this->rows['progress']);
 		$script = str::getScriptTag($this->rows['script']);
 
 		return "<div{$class}{$id}{$style}>{$html}</div>{$script}";
@@ -565,9 +592,9 @@ EOF;
 	 * @return bool|string
 	 */
 	private function getResizableScript(){
-		if($this->resizeable){
+		if($this->resizable){
 			//If resizable has been written incorrectly
-			$this->resizable = $this->resizeable;
+			$this->resizable = $this->resizable;
 		}
 		if(!$this->resizable) {
 			return false;

@@ -6,6 +6,10 @@ namespace App\UI\Form;
 use App\Common\str;
 use App\Common\User\User;
 
+/**
+ * Class Tel
+ * @package App\UI\Form
+ */
 class Tel extends Field implements FieldInterface {
 
 	/**

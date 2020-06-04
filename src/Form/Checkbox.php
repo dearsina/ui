@@ -6,9 +6,17 @@ namespace App\UI\Form;
 
 use App\Common\str;
 
+/**
+ * Class Checkbox
+ * @package App\UI\Form
+ */
 class Checkbox extends Field implements FieldInterface{
 	/**
 	 * Generates the HTML for one to many checkboxes.
+	 *
+	 * @param array $a
+	 *
+	 * @return string
 	 */
 	public static function generateHTML (array $a) {
 		if(!is_array($a['values']) && $a['value']){
@@ -28,8 +36,9 @@ class Checkbox extends Field implements FieldInterface{
 	 * @param $val
 	 * @param $type
 	 *
+	 * @param $validation
 	 * @return array
-	 */
+*/
 	private static function getLabelArray($val, $type, $validation){
 		# Label is just a string (not an array)
 		if(!is_array($val)){
@@ -48,8 +57,8 @@ class Checkbox extends Field implements FieldInterface{
 		# The ID of the child field
 		$val['id'] = $val['id'] ?: str::id($val['type']);
 
-		# The label field inherits the valdation of the parent
-		$val['valdation'] = $validation;
+		# The label field inherits the validation of the parent
+		$val['validation'] = $validation;
 
 		# Adjust the label to fit the field
 		$val['parent_style'] = str::getAttrArray($val['parent_style'],["margin" => "-1rem 0 0 0"], $val['only_parent_style']);
@@ -121,6 +130,9 @@ EOF;
 	 * They share some common attributes.
 	 *
 	 * @param $a
+	 *
+	 * @return string
+	 * @return string
 	 */
 	private static function getMultiCheckboxHTML($a){
 		extract($a);
@@ -216,7 +228,7 @@ EOF;
 		}
 		
 		# Class
-		$class_array = str::getAttrArray($class, "magic-{$type}", $aonly_class);
+		$class_array = str::getAttrArray($class, ["magic-{$type}", $disabled_class], $aonly_class);
 		$class_tag = str::getAttrTag("class", $class_array);
 		
 		# Style

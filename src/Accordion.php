@@ -23,21 +23,23 @@ class Accordion {
 	 *
 	 * <code>
 	 * Accordion::generate([
-	 * 	"header" => "Header",
-	 * 	"body" => "Body",
+	 *    "header" => "Header",
+	 *    "body" => "Body",
 	 * ]);
 	 *
 	 * Accordion::generate([[
-	 * 	"header" => "Header",
-	 * 	"body" => "Body",
+	 *    "header" => "Header",
+	 *    "body" => "Body",
 	 * ],[
-	 * 	"header" => "Header",
-	 * 	"body" => "Body",
+	 *    "header" => "Header",
+	 *    "body" => "Body",
 	 * ]]);
 	 * </code>
+	 *
 	 * @param array|null $a
 	 *
 	 * @return bool|string
+	 * @throws Exception
 	 */
 	public static function generate(?array $a){
 		if(!is_array($a)){
@@ -133,10 +135,12 @@ EOF;
 	 * The body of an accordion element.
 	 *
 	 * @param array|string $a
-	 * @param string      $data_target_id This element's ID.
-	 * @param string|null $data_parent_id The accordion parent's ID that this collapsable belongs to.
+	 * @param string       $data_target_id This element's ID.
+	 * @param string|null  $data_parent_id The accordion parent's ID that this collapsable belongs to.
 	 *
 	 * @return string
+	 * @throws Exception
+	 * @throws Exception
 	 */
 	private static function generateBodyHTML($a, string $data_target_id, ?string $data_parent_id) : string
 	{

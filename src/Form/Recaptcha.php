@@ -6,6 +6,10 @@ namespace App\UI\Form;
 
 use App\Common\str;
 
+/**
+ * Class Recaptcha
+ * @package App\UI\Form
+ */
 class Recaptcha extends Field implements FieldInterface {
 
 	/**
@@ -34,7 +38,7 @@ class Recaptcha extends Field implements FieldInterface {
 <script>
 $.getScript( "https://www.google.com/recaptcha/api.js?render={$_ENV['recaptcha_key']}" )
 .done(function( script, textStatus ) {
-    const r = grecaptcha;
+    var r = grecaptcha;
 	r.ready(function() {
 		r.execute('{$_ENV['recaptcha_key']}', {
 		    action: '{$a['action']}'		

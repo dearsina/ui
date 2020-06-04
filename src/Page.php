@@ -6,9 +6,14 @@ namespace App\UI;
 
 use App\Common\str;
 
+/**
+ * Class Page
+ * @package App\UI
+ */
 class Page {
 	private $title;
 	private $subtitle;
+	private $script;
 	/**
 	 * @var Grid
 	 */
@@ -40,9 +45,15 @@ class Page {
 			}
 		}
 
+
 		$this->grid = new Grid();
 	}
-	
+
+	/**
+	 * @param $title
+	 *
+	 * @return bool
+	 */
 	function setTitle($title){
 		if($title === false){
 			$this->title = [];
@@ -58,6 +69,11 @@ class Page {
 		return true;
 	}
 
+	/**
+	 * @param $subtitle
+	 *
+	 * @return bool
+	 */
 	function setSubtitle($subtitle){
 		if($subtitle === false){
 			$this->subtitle = [];
@@ -72,7 +88,12 @@ class Page {
 		$this->subtitle["html"] = $subtitle;
 		return true;
 	}
-	
+
+	/**
+	 * @param $icon
+	 *
+	 * @return bool
+	 */
 	function setIcon($icon){
 		if($icon === false){
 			$this->title['icon'] = [];
@@ -84,7 +105,12 @@ class Page {
 		$this->title['icon'] = $icon;
 		return true;
 	}
-	
+
+	/**
+	 * @param $svg
+	 *
+	 * @return bool
+	 */
 	function setSvg($svg){
 		if($svg === false){
 			$this->title['svg'] = [];
@@ -101,6 +127,8 @@ class Page {
 	 * Return the title string + icon, wrapped in a title tag and colourised.
 	 *
 	 * @return bool|string
+	 * @throws \Exception
+	 * @throws \Exception
 	 */
 	private function getTitleHTML(){
 		if(!$this->title){
@@ -123,23 +151,22 @@ class Page {
 		# Badge
 		$badge = Badge::generate($this->title['badge']);
 
-		# Tag
-		$tag = $this->modal ? "span" : "h2";
-
 		# Class
-		$class_array = str::getAttrArray($this->title['class'], [$colour, "{$tag}-header"], $this->title['only_class']);
+		$class_array = str::getAttrArray($this->title['class'], [$colour, "h2-header"], $this->title['only_class']);
 		$class = str::getAttrTag("class", $class_array);
 
 		# Style
 		$style = str::getAttrTag("style", $this->title['style']);
 		
-		return "<{$tag}{$id}{$class}{$style}>{$icon}{$svg} {$this->title['html']} {$badge}</{$tag}>";
+		return "<h2{$id}{$class}{$style}>{$icon}{$svg} {$this->title['html']} {$badge}</h2>";
 	}
 
 	/**
 	 * Get the page subtitle.
 	 *
 	 * @return bool|string
+	 * @throws \Exception
+	 * @throws \Exception
 	 */
 	private function getSubtitleHTML(){
 		if(!$this->subtitle){
@@ -214,6 +241,9 @@ class Page {
 		return $this->grid->set($a);
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getHTML(){
 		return <<<EOF
 {$this->getScriptHTML()}

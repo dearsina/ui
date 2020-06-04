@@ -6,11 +6,18 @@ namespace App\UI\Form;
 
 use App\Common\str;
 
+/**
+ * Class Textarea
+ * @package App\UI\Form
+ */
 class Textarea extends Field implements FieldInterface {
 
 	/**
 	 * Returns a textarea HTML.
-	 * 
+	 *
+	 * @param array $a
+	 *
+	 * @return string
 	 */
 	public static function generateHTML (array $a) {
 		extract($a);
@@ -59,6 +66,7 @@ class Textarea extends Field implements FieldInterface {
 		{$placeholder}
 		{$title}
 		{$disabled}
+		{$autocomplete}
 		{$validation}
 	>{$value}</textarea>
 	{$desc}

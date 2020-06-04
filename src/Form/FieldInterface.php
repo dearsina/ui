@@ -4,9 +4,13 @@
 namespace App\UI\Form;
 
 
+/**
+ * Interface FieldInterface
+ * @package App\UI\Form
+ */
 interface FieldInterface {
 	/**
-	 * @inheritDoc Generates the HTML for this field type.
+	 *
 	 *
 	 * @param array $a
 	 *

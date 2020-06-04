@@ -22,6 +22,12 @@ class Horizontal {
 	private $levels;
 	private $footers;
 
+	/**
+	 * Horizontal constructor.
+	 *
+	 * @param array|null $levels
+	 * @param array|null $footers
+	 */
 	public function __construct (?array $levels, ?array $footers) {
 		$this->levels = $levels;
 		$this->footers = $footers;
@@ -68,7 +74,12 @@ class Horizontal {
 	 *
 	 * @param $a
 	 *
+	 * @param $default_class
+	 *
 	 * @return bool|string
+	 * @throws \Exception
+	 * @throws \Exception
+	 * @throws \Exception
 	 */
 	private function getTitleHTML($a, $default_class){
 		if(!$a){
@@ -206,15 +217,13 @@ class Horizontal {
 
 		$grid->set($cols);
 
-		$html = <<<EOF
+		return <<<EOF
 <div class="footer-main">
 	<div class="container">
 		{$grid->getHTML()}	
 	</div>
 </div>
 EOF;
-
-		return $html;
 	}
 
 	/**
@@ -235,15 +244,13 @@ EOF;
 
 		$grid->set($this->footers[1]);
 
-		$html = <<<EOF
+		return <<<EOF
 <div class="footer-footer">
 	<div class="container">
 		{$grid->getHTML()}	
 	</div>
 </div>
 EOF;
-
-		return $html;
 	}
 
 

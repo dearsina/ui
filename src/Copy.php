@@ -6,6 +6,10 @@ namespace App\UI;
 
 use App\Common\str;
 
+/**
+ * Class Copy
+ * @package App\UI
+ */
 class Copy {
 	/**
 	 * Returns copy button for the text asked to copy.

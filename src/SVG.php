@@ -4,6 +4,10 @@
 namespace App\UI;
 
 
+/**
+ * Class SVG
+ * @package App\UI
+ */
 class SVG {
 	/**
 	 * Generate an SVG object container.

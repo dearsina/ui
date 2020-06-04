@@ -215,8 +215,10 @@ class Button {
 	 * name, rel_table, rel_id in an array, instead of writing out the whole button each time.
 	 *
 	 * @param string|array $a
-	 * @param bool $rel_table
-	 * @param bool $rel_id
+	 * @param bool         $rel_table
+	 * @param bool         $rel_id
+	 *
+	 * @param bool         $callback
 	 *
 	 * @return bool|array
 	 */
@@ -239,6 +241,12 @@ class Button {
 		return $a;
 	}
 
+	/**
+	 * @param $a
+	 *
+	 * @return bool|string
+	 * @throws \Exception
+	 */
 	static function multi($a){
 		if(!$a){
 			return false;
@@ -258,10 +266,6 @@ class Button {
 
 		foreach($buttons as $id => $button){
 			if(is_array($button)){
-				if($id){
-//					$button['style'] .= "margin-left:.5rem;";
-					//margin between multiple buttons
-				}
 				$html .= Button::generate($button);
 			} else {
 				$html .= $button;
@@ -289,6 +293,7 @@ class Button {
 	 * @param string|bool  $rel_table Optional, if a generic button with localisation has been chosen.
 	 * @param string|bool  $rel_id    Optional, if a generic button with localisation has been chosen.
 	 *
+	 * @param bool         $callback
 	 * @return string
 	 * @throws \Exception
 	 */
@@ -446,11 +451,6 @@ class Button {
 		$script = str::getScriptTag($script);
 
 		# Data attributes
-//		if(is_array($data)){
-//			foreach($data as $attr => $val){
-//				$data_attributes .= "data-{$attr}=\"$val\" ";
-//			}
-//		}
 		$data_attributes = str::getDataAttr($data);
 
 		if($ladda !== false && !$url && !$children){
@@ -540,19 +540,24 @@ EOF;
 		}
 
 		if($type == 'file'){
+			$for_tag = str::getAttrTag("for", $id);
 			$button_html = /** @lang HTML */<<<EOF
 <{$tag_type}
-	id="{$id}"
+	{$id_tag}
 	{$href}
 	{$name}
 	{$value}
-	type="{$type}"
+	{$type_tag}
 	data-style="slide-left"
 	style="display:none;"
-	title="{$html_title}"
+	{$title_tag}
 	{$disabled}
 	{$multiple}>
-<label for="{$id}" class="{$class_string} ladda-button" style="margin: -3px 0 0 0;">
+<label
+	{$for_tag}
+	{$class_tag}
+	style="margin: -3px 0 0 0;"
+>
 	<span class="ladda-label">
 		{$icon}{$svg}
 		{$title}
@@ -568,6 +573,11 @@ EOF;
 		return $button_html;
 	}
 
+	/**
+	 * @param $a
+	 *
+	 * @return bool|string[]
+	 */
 	static function pulsating($a){
 		if(!$a){
 			return false;

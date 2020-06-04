@@ -8,15 +8,24 @@ use App\Common\Output;
 use App\Common\SQL\Factory;
 use App\Common\str;
 
+/**
+ * Class Table
+ * @package App\UI
+ */
 class Table {
 	/**
 	 * Given an output from a SQL request, formats as a table,
 	 * with sortable column headers.
 	 *
-	 * @param            $rows Array from SQL results
+	 * @param            $rows    Array from SQL results
 	 * @param array|null $options ID, class, style, script
 	 *
+	 * @param bool|null  $ignore_header
+	 *
 	 * @return bool|string
+	 * @throws \Exception
+	 * @throws \Exception
+	 * @throws \Exception
 	 */
 	public static function generate($rows, ?array $options = [], ?bool $ignore_header = NULL){
 		if(empty($rows)){
@@ -75,7 +84,7 @@ EOF;
 	/**
 	 * Generates the (optional) header row.
 	 *
-	 * @param $rows
+	 * @param $row
 	 * @param $options
 	 *
 	 * @return mixed
@@ -147,13 +156,23 @@ EOF;
 
 	}
 
+	/**
+	 * @param $row
+	 *
+	 * @return array
+	 * @throws \Exception
+	 */
 	private static function getSortableRow($row){
-		if(!key_exists("order", $row)){
-			throw new \Exception("To prepare a sortable table, an order key must be included per row.");
-		}
+//		if(!key_exists("order", $row)){
+//			throw new \Exception("To prepare a sortable table, an order key must be included per row.");
+//		}
+//
+//		$order = $row['order'];
+		/** We don't seem to need any of this */
 
-		$order = $row['order'];
+		# We need to unset the order number, cause we don't actually use it anywhere
 		unset($row['order']);
+
 
 		if(!key_exists("id", $row)){
 			throw new \Exception("To prepare a sortable table, an id key must be included per row.");
@@ -183,6 +202,12 @@ EOF;
 		return $row;
 	}
 
+	/**
+	 * @param array $a
+	 *
+	 * @return string
+	 * @throws \Exception
+	 */
 	public static function onDemand(array $a){
 		extract($a);
 
@@ -280,7 +305,8 @@ EOF;
 	 *
 	 * @return bool
 	 */
-	public static function managePageRequest(array $a, ?array $base_query, ?object $row_handler){
+	public static function managePageRequest(array $a, ?array $base_query, ?object $row_handler): bool
+	{
 		extract($a);
 
 		$output = Output::getInstance();
@@ -366,5 +392,7 @@ EOF;
 //		$a['sortable'] = false;
 
 		$output->set_var("rows", self::generate($rows, $a, $ignore_header));
+
+		return true;
 	}
 }

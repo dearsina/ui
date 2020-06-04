@@ -221,7 +221,8 @@ EOF;
 	 *
 	 * @return bool
 	 */
-	public function setEncrypt($encrypt = NULL){
+	public function setEncrypt($encrypt = NULL): bool
+	{
 		if(!$encrypt){
 			return false;
 		}
@@ -249,6 +250,8 @@ EOF;
 			"name" => "meta_encrypt",
 			"value" => json_encode($encrypt)
 		]);
+
+		return true;
 	}
 
 	/**
@@ -362,6 +365,8 @@ EOF;
 
 	/**
 	 * @return bool|string
+	 * @throws \Exception
+	 * @throws \Exception
 	 */
 	public function getButtonsHTML(){
 		if (!$this->buttons) {

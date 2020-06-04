@@ -28,9 +28,10 @@ use App\UI\Icon;
  */
 class Field {
 	/**
-	 * @param array|null $field
-	 * @link https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#autofill
+	 * @param array|null $a
+	 *
 	 * @return bool|string
+	 * @link https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#autofill
 	 */
 	public static function getHTML(array &$a = NULL){
 		if(!$a){
@@ -104,11 +105,15 @@ class Field {
 	 * or an array (for more complex labels),
 	 * and the ID of the field this label is for.
 	 *
-	 * @param array|string	$label
-	 * @param string 		$name
-	 * @param int|string	$id
+	 * @param array|string $label
+	 * @param              $title
+	 * @param string       $name
+	 * @param int|string   $id
 	 *
 	 * @return bool|string
+	 * @throws \Exception
+	 * @throws \Exception
+	 * @throws \Exception
 	 */
 	static function getLabel($label, $title, $name, $id){
 		if($label === false){
@@ -166,19 +171,28 @@ class Field {
 
 		return "<{$tag}{$href}{$id}{$class}{$style}>{$icon}{$title}{$html}{$badge}{$desc}</{$tag}>";
 	}
-	
+
+	/**
+	 * @param $label
+	 * @param $desc
+	 * @param $name
+	 * @param $id
+	 *
+	 * @return string
+	 * @throws \Exception
+	 */
 	static function getCheckboxLabel($label, $desc, $name, $id){
 		if($label === false){
 			$l['title'] = "";
 		} else if(is_array($label)) {
 			$l = $label;
 		} else if ($label){
-			$l['title'] = $label;
+			$l['html'] = $label;
 		} else {
 			$l = [];
 		}
 
-		# Embedd the desc into the label
+		# Embed the desc into the label
 		$l['desc'] = $l['desc'] ?: $desc;
 
 		# If no icon, title, badge or HTML has been supplied, use the name
@@ -296,6 +310,13 @@ class Field {
 		return $a;
 	}
 
+	/**
+	 * @param $button
+	 * @param $type
+	 *
+	 * @return bool|string
+	 * @throws \Exception
+	 */
 	static function getButton($button, $type){
 		if(!$button){
 			//if no button has been requested
@@ -316,6 +337,11 @@ class Field {
 		return Button::generate($button_array);
 	}
 
+	/**
+	 * @param $desc
+	 *
+	 * @return bool|string
+	 */
 	static function getDesc($desc){
 		if(!$desc){
 			return false;
@@ -336,8 +362,12 @@ class Field {
 
 	/**
 	 * Icon for input fields.
-	 * 
-	 * @param $icon
+	 *
+	 * @param        $icon
+	 * @param string $prepend_or_append
+	 *
+	 * @return bool|string*@return bool|string
+	 * @return bool|string
 	 */
 	static function getIcon($icon, $prepend_or_append = "prepend"){
 		if(!$icon){

@@ -5,6 +5,10 @@ namespace App\UI;
 
 use App\Common\str;
 
+/**
+ * Class Progress
+ * @package App\UI
+ */
 class Progress {
 	/**
 	 * Default
