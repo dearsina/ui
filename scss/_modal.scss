@@ -1,4 +1,15 @@
 /**
+ * Experimental, add blur,
+ * reduce the background opacity (make it lighter)
+ */
+.modal {
+  backdrop-filter: blur(2px);
+}
+.modal-backdrop.show {
+  opacity: 0.2;
+}
+
+/**
  * Ensure modal headers and footers are aligned with the body
  */
 .modal-header,

@@ -240,6 +240,7 @@ EOF;
 
 		# Button(s) in a row
 		if(str::isNumericArray($this->cardFooter['button'])){
+			$this->cardFooter['button'] = array_reverse($this->cardFooter['button']);
 			foreach($this->cardFooter['button'] as $b){
 				if(empty($b)){
 					continue;

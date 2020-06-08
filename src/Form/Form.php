@@ -378,6 +378,7 @@ EOF;
 		}
 
 		if(str::isNumericArray($this->buttons)){
+			$this->buttons = array_reverse($this->buttons);
 			foreach($this->buttons as $button){
 //				if(is_array($button) && $button['type'] == "submit"){
 //					$button['form'] = $this->getId();
