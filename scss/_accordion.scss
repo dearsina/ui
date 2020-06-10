@@ -27,3 +27,10 @@
   padding-top: .25rem;
   border-top: .5px solid #dee2e6;
 }
+
+/**
+ * So that when you hover over the header and it's truncated, you can see all of it.
+ */
+.collapse-toggle.text-flat:hover {
+  overflow: unset;
+}

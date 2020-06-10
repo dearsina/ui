@@ -100,3 +100,15 @@ form .btn i
 {
   border-color: $border-color;
 }
+
+/**
+ * Success (green) coloured button overrides
+ */
+.btn-outline-success:hover {
+  color: #fff !important; // On hover, make the text white
+}
+.btn-outline-success:not(:disabled):not(.disabled):active,
+.btn-outline-success:not(:disabled):not(.disabled).active,
+.show > .btn-outline-success.dropdown-toggle {
+  color: #000; // On click make the text black
+}

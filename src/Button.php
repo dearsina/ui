@@ -320,9 +320,12 @@ class Button {
 
 		$href = href::generate($a);
 
+		# Style with override
+		$style_array = str::getAttrArray($style, false, $only_style);
+
 		# OnClicks aren't treated as true buttons, fix it
 		if($onClick){
-			$style .= "cursor:pointer;";
+			$style_array["cursor"] = "pointer";
 		}
 
 		# Is it a basic button?
@@ -420,7 +423,7 @@ class Button {
 			$outline = "-outline";
 			$disabled = "disabled=\"disabled\"";
 			$tag_type = "button";
-			$style .= "cursor: default;";
+			$style_array["cursor"] = "default";
 		}
 
 		# Size
@@ -435,9 +438,6 @@ class Button {
 
 		# Class with override override
 		$class_array = str::getAttrArray($class, ["btn", "btn{$outline}-{$colour}", $right, $approve_class], $only_class);
-
-		# Style with override
-		$style_array = str::getAttrArray($style, false, $only_style);
 
 		# Pulsating
 		if($pulsating){

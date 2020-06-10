@@ -73,8 +73,8 @@ class Countdown {
 		# Precision
 		$settings["precision"] = $precision;
 
-		# ID (optional)
-		$id = str::getAttrTag("id", $id);
+		# ID
+		$id = $id ?: str::id("countdown");
 
 		# Class
 		$class_array = str::getAttrArray($class, "countdown", $only_class);
@@ -95,7 +95,36 @@ class Countdown {
 		];
 		$data_attr = str::getDataAttr($data_array);
 
+		$pause_play = Button::generate([
+			"alt" => "Pause/restart the counter",
+			"icon" => "pause",
+			"basic" => true,
+			"colour" => "grey",
+			"onClick" => "countdownStopStart.call(this);",
+			"size" => "xs",
+			"ladda" => false
+		]);
 
-		return "<span{$id}{$class}{$style}{$data_attr}></span>";
+		if($callback){
+			//if something happens after the countdown finishes
+			$refresh = Button::generate([
+				"alt" => "Refresh now",
+				"icon" => "recycle",
+				"basic" => true,
+				"colour" => "grey",
+				"onClick" => "countdownRestart.call(this);",
+				"size" => "xs",
+				"ladda" => false
+			]);
+		}
+
+		$id = str::getAttrTag("id", $id);
+
+		return <<<EOF
+<div class="countdown-wrapper">
+	<div{$id}{$class}{$style}{$data_attr}></div>
+	<div class="btn-group" role="group">{$pause_play}{$refresh}</div>
+</div>
+EOF;
 	}
 }

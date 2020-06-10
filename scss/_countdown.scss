@@ -1,0 +1,12 @@
+.countdown {
+  margin-bottom: .5rem
+}
+.countdown-wrapper > .btn-group {
+  display: none;
+  margin: 0 0 -100%;
+  z-index: 9;
+  background: $card-header-footer-bg;
+}
+.countdown-wrapper:hover > .btn-group {
+  display: inline-flex;
+}

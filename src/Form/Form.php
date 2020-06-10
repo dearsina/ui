@@ -378,17 +378,10 @@ EOF;
 		}
 
 		if(str::isNumericArray($this->buttons)){
-			$this->buttons = array_reverse($this->buttons);
 			foreach($this->buttons as $button){
-//				if(is_array($button) && $button['type'] == "submit"){
-//					$button['form'] = $this->getId();
-//				}
 				$buttons_array[] = Button::generate($button);
 			}
 		} else {
-//			if(is_array($this->buttons) && $this->buttons['type'] == "submit"){
-//				$this->buttons['form'] = $this->getId();
-//			}
 			$buttons_array[] = Button::generate($this->buttons);
 		}
 
