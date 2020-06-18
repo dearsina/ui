@@ -15,9 +15,10 @@ class Select extends Field implements FieldInterface {
 	/**
 	 * @inheritDoc
 	 */
-	public static function generateHTML (array $a) {
+	public static function generateHTML (array $a)
+	{
 		extract($a);
-		
+
 		# Label
 		$label = self::getLabel($label, $title, $name, $id);
 
@@ -34,6 +35,12 @@ class Select extends Field implements FieldInterface {
 		# Parent style
 		$parent_style = str::getAttrTag("style", $parent_style);
 
+		# Disabled
+		if($disabled){
+			$disabled = str::getAttrTag("disabled", "disabled");
+			$disabled_class = "disabled";
+		}
+
 		# Class
 		$class_array = str::getAttrArray($class, ["form-control", $disabled_class], $only_class);
 		$class = str::getAttrTag("class", $class_array);
@@ -47,8 +54,11 @@ class Select extends Field implements FieldInterface {
 		# Description
 		$desc = self::getDesc($desc);
 
+		# Settings
+		$data = self::getSelectData($a);
+
 		# Script
-		$script = str::getScriptTag(self::getSelectScript($a));
+		$script = str::getScriptTag($a['script']);
 
 		return /** @lang HTML */ <<<EOF
 <div{$parent_class}{$parent_style}>
@@ -62,6 +72,7 @@ class Select extends Field implements FieldInterface {
 		{$style}
 		{$disabled}
 		{$validation}
+		{$data}
 	>
 	{$options_html}
 	</select>
@@ -69,6 +80,53 @@ class Select extends Field implements FieldInterface {
 </div>
 {$script}
 EOF;
+	}
+
+	private static function getSelectData (array &$a): string
+	{
+		extract($a);
+		$class_array = str::getAttrArray($class, "select2js", $only_class);
+		$settings['containerCssClass'] = str::getAttrTag(false, $class_array);
+		$settings['placeholder'] = self::getPlaceholder($placeholder);
+		$settings['ajax'] = $ajax;
+		$settings['value'] = $value;
+		$settings['tags'] = $tags; // Allows a user to enter their own value
+		return str::getDataAttr([
+			"settings" => $settings,
+			"parent" => $parent,
+			"onChange" => self::getOnChange($a)
+		]);
+	}
+
+	/**
+	 * If this element has an onChange script,
+	 * create a wrapper for it and in conjunction with the
+	 * form.js script, attach the wrapper to a trigger.
+	 *
+	 * @param array $a
+	 *
+	 * @return bool|string
+	 */
+	private static function getOnChange (array &$a)
+	{
+		extract($a);
+		$script = $onChange ?: $onchange;
+
+		if (!$script) {
+			return false;
+		}
+
+		# Generate an arbirary name for the onChange function
+		$id = str::id("function");
+
+		# Append the function to the script key
+		$a['script'] .= <<<EOF
+function {$id}(e){
+	{$script}
+}
+EOF;
+		# Return the arbitrary function name so that it's added the change listener
+		return $id;
 	}
 
 	/**
@@ -79,7 +137,8 @@ EOF;
 	 *
 	 * @return bool|string
 	 */
-	private static function getOptionsHTML($a){
+	private static function getOptionsHTML ($a)
+	{
 		extract($a);
 		$matched = false;
 		$options_array = self::getOptionsArray($a, $matched);
@@ -95,11 +154,11 @@ EOF;
 			//This way, the dropdown defaults to the placeholder
 		}
 
-		if(empty($options_array)){
+		if (empty($options_array)) {
 			return false;
 		}
 
-		foreach($options_array as $option){
+		foreach ($options_array as $option) {
 			$value = str::getAttrTag("value", $option['value']);
 			$selected = $option['selected'] ? " selected" : false;
 			$options_html .= "<option{$value}{$selected}>{$option['title']}</option>";
@@ -117,13 +176,14 @@ EOF;
 	 *
 	 * @return array|bool
 	 */
-	private static function getOptionsArray($a, &$matched = false){
+	private static function getOptionsArray ($a, &$matched = false)
+	{
 		extract($a);
 
 		if (is_array($value)) {
 			//Many values
 			$value_array = $value;
-		} else if($value){
+		} else if ($value) {
 			//One value
 			$value_array = [$value];
 		} else {
@@ -131,7 +191,7 @@ EOF;
 			$value_array = [];
 		}
 
-		if(!is_array($options)){
+		if (!is_array($options)) {
 			return false;
 		}
 
@@ -163,31 +223,5 @@ EOF;
 		}
 
 		return $options_array;
-	}
-
-	/**
-	 * @param $a
-	 *
-	 * @return string
-	 */
-	private static function getSelectScript($a){
-		extract($a);
-		
-		$class_array = str::getAttrArray($class, "select2js", $only_class);
-
-		$settings['containerCssClass'] = str::getAttrTag( false, $class_array);
-		$settings['placeholder'] = self::getPlaceholder($placeholder);
-		$settings['ajax'] = $ajax;
-		$settings['value'] = $value;
-		$settings_json = json_encode(array_filter($settings));
-
-		return /** @lang JavaScript */<<<EOF
-$("#{$id}").select2(select2Settings({$settings_json}))
-	.on("change", function (e) {
-		$(this).valid();
-		{$onChange}
-	});
-{$script}
-EOF;
 	}
 }

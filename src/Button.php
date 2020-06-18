@@ -423,6 +423,7 @@ class Button {
 			$outline = "-outline";
 			$disabled = "disabled=\"disabled\"";
 			$tag_type = "button";
+			$disabled_class = "disabled";
 			$style_array["cursor"] = "default";
 		}
 
@@ -437,7 +438,7 @@ class Button {
 		}
 
 		# Class with override override
-		$class_array = str::getAttrArray($class, ["btn", "btn{$outline}-{$colour}", $right, $approve_class], $only_class);
+		$class_array = str::getAttrArray($class, ["btn", "btn{$outline}-{$colour}", $right, $approve_class, $disabled_class], $only_class);
 
 		# Pulsating
 		if($pulsating){

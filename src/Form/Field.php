@@ -4,6 +4,7 @@
 namespace App\UI\Form;
 
 use App\Common\href;
+use App\Common\SQL\Factory;
 use App\Common\str;
 use App\UI\Badge;
 use App\UI\Button;
@@ -132,11 +133,11 @@ class Field {
 
 		# If no icon, title, badge or HTML has been supplied, use the name
 		if(!count(array_intersect(["title", "icon", "html", "badge"], array_keys($l)))){
-			$l['title'] = $name;
+			$l['title'] = str::title($name);
 		}
 
 		if($l['title']){
-			$title = "<b>".str::title($l['title'])."</b>";
+			$title = "<b>{$l['title']}</b>";
 		}
 		
 		# Class
@@ -395,5 +396,34 @@ class Field {
 		$span_class_tag = str::getAttrTag("class", $span_class_array);
 
 		return "<div class=\"input-group-{$prepend_or_append}\"><span{$span_class_tag}>{$icon_html}{$icon_title}</span></div>";
+	}
+
+	/**
+	 * Given a select query, and the names of the id and title columns,
+	 * run the query, if results are found, return the results in an id=>title array.
+	 *
+	 * @param mixed       $select
+	 * @param string      $id_column
+	 * @param string|null $title_column
+	 *
+	 * @return array
+	 */
+	public static function getOptions ($select, string $id_column, ?string $title_column = NULL): array
+	{
+		if(!$title_column){
+			$title_column = $id_column;
+		}
+
+		$sql = Factory::getInstance();
+
+		if(!$rows = $sql->select($select)){
+			return [];
+		}
+
+		foreach($rows as $row){
+			$options[$row[$id_column]] = $row[$title_column];
+		}
+
+		return $options;
 	}
 }

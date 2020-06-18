@@ -38,8 +38,11 @@ $btn-border-radius-xs:  $border-radius-xs;
   border-color: #b9bec6;
 }
 
-.btn-outline-dark:hover{
+.btn-outline-dark:not(.disabled):hover{
   color: #ffffff !important;
+}
+.btn-outline-dark.disabled:hover{
+  border-color: $border-color;
 }
 
 /**
@@ -87,7 +90,7 @@ form .btn i
 {
   float: right !important;
   line-height: 1;
-  margin: .5rem 0 0 .5rem;
+  margin: .25rem 0 .25rem .5rem;
 }
 
 /**

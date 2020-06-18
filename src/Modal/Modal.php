@@ -1,10 +1,17 @@
 <?php
 
 
-namespace App\UI;
+namespace App\UI\Modal;
 
 use App\Common\Common;
 use App\Common\str;
+use App\UI\Badge;
+use App\UI\Button;
+use App\UI\Dropdown;
+use App\UI\Grid;
+use App\UI\Icon;
+use App\UI\Progress;
+use Exception;
 
 /**
  * Class Modal
@@ -19,6 +26,7 @@ class Modal extends Common {
 	protected $icon;
 	protected $draggable;
 	protected $resizable;
+	protected $resizeable;
 	protected $approve;
 	protected $dismissible;
 	protected $style;
@@ -127,8 +135,8 @@ class Modal extends Common {
 	 * Returns the header as HTML.
 	 *
 	 * @return bool|string
-	 * @throws \Exception
-	 * @throws \Exception
+	 * @throws Exception
+	 * @throws Exception
 	 */
 	public function getHeaderHTML(){
 		if(!is_array($this->modalHeader)){
@@ -232,8 +240,8 @@ EOF;
 	 * Returns the footer as HTML.
 	 *
 	 * @return bool|string
-	 * @throws \Exception
-	 * @throws \Exception
+	 * @throws Exception
+	 * @throws Exception
 	 */
 	public function getFooterHTML(){
 		if(!is_array($this->modalFooter)){
@@ -419,6 +427,7 @@ EOF;
 
 	/**
 	 * @return string
+	 * @throws Exception
 	 */
 	function getHTML(){
 		switch($this->size){
@@ -582,9 +591,9 @@ EOF;
 	 */
 	private function getResizableSettings()
 	{
-		if($this->resizable){
+		if($this->resizeable){
 			//If resizable has been written incorrectly
-			$this->resizable = $this->resizable;
+			$this->resizable = $this->resizeable;
 		}
 		if(!$this->resizable) {
 			return false;
