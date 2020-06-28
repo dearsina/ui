@@ -55,20 +55,22 @@ class Textarea extends Field implements FieldInterface {
 		$validation = self::getValidationTags($validation);
 
 		return /** @lang HTML */ <<<EOF
-<div class="form-group">
+<div class="mb-3">
 	{$label}
-	<textarea
-		id="{$id}"
-		name="{$name}"
-		rows="{$rows}"
-		{$class}
-		{$style}
-		{$placeholder}
-		{$title}
-		{$disabled}
-		{$autocomplete}
-		{$validation}
-	>{$value}</textarea>
+	<div class="input-group">
+		<textarea
+			id="{$id}"
+			name="{$name}"
+			rows="{$rows}"
+			{$class}
+			{$style}
+			{$placeholder}
+			{$title}
+			{$disabled}
+			{$autocomplete}
+			{$validation}
+		>{$value}</textarea>
+	</div>
 	{$desc}
 	{$script}
 </div>

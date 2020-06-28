@@ -26,8 +26,8 @@ class Input extends Field {
 		$label = self::getLabel($label, $title, $name, $id);
 
 		# Icons
-		$icon = self::getIcon($icon, "prepend");
-		$icon_suffix = self::getIcon($icon_suffix, "append");
+		$icon = self::getIcon($icon);
+		$icon_suffix = self::getIcon($icon_suffix);
 
 		# Disabled
 		if($disabled){
@@ -77,35 +77,34 @@ class Input extends Field {
 
 		return /** @lang HTML */
 			<<<EOF
-<div class="form-group">
-  {$label}
-  <div{$parent_class}{$parent_style}>
-    {$icon}
-    <input
-    	id="{$id}"
-		type="{$type}"
-		name="{$name}"
-		value="{$value}"
-    	{$class}
-		{$placeholder}
-		{$title}
-		{$style}
-		{$min}
-		{$max}
-		{$step}
-		{$autocomplete}
-		{$disabled}
-		{$validation}
-		{$checked}
-		{$data}
-    />
-    <div class="input-group-addon form-control-feedback hidden"><i class="far fa-fw"></i></div>
-    {$icon_suffix}
-    {$button}
-  </div>
-  {$desc}
-  {$script}
-</div>
+{$label}
+<div class="mb-3">
+	<div{$parent_class}{$parent_style}>
+		{$icon}
+		<input
+			id="{$id}"
+			type="{$type}"
+			name="{$name}"
+			value="{$value}"
+			{$class}
+			{$placeholder}
+			{$title}
+			{$style}
+			{$min}
+			{$max}
+			{$step}
+			{$autocomplete}
+			{$disabled}
+			{$validation}
+			{$checked}
+			{$data}
+		/>
+		{$icon_suffix}
+		{$button}	
+	</div>
+	{$desc}
+	{$script}
+</div>	
 EOF;
 	}
 }

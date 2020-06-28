@@ -2,13 +2,17 @@
  * Contains various page elements that hold everything together
  */
 
+body {
+  height:100%;
+}
+
 /**
  * Main is the main UI element on the page
  */
 main {
-  margin-top: #{$navbar-height}px;
+  margin-top: $navbar-height;
   padding-top: 20px;
-  font-size: 11pt;
+  flex: 1 0 auto;
 }
 
 main > .container {
@@ -31,10 +35,7 @@ main > .container {
  * The right-side buffer of the page header icon.
  */
 .h2-header > i {
-  margin-right: .75rem;
-
   font-weight: 300;
-  //messes with FontAwesome
 }
 
 /**

@@ -20,17 +20,63 @@ form {
   //line-height: 38px !important;
 }
 
+.form-control {
+  //font-size: 10pt;
+  //No need for this
+
+  border-width: $form-item-border-width;
+}
+
+.input-group-text{
+  background-color: $header-footer-bg;
+  border-width: $form-item-border-width;
+}
+
+/**
+ * The description part of a label.
+ */
+.label-desc
+{
+  display: block;
+}
+
+/**
+ * Make sure the checkbox labels have the right cursor.
+ */
+.form-check > .field-label {
+  cursor: pointer;
+}
+
+.field-label
+{
+  margin-bottom: .25rem;
+}
+.field-label > b
+{
+  font-weight: 500;
+}
+
 /**
  * Fix so that the select2.js select box fits in to Bootstrap 4.x
  */
 .select2js{
   border-radius: .25rem !important;
   padding: 0 !important;
-  border: 1px solid #e1e6ef !important;
+  border: $form-item-border-width solid #e1e6ef !important;
   min-height: calc(2.0625rem + 2px) !important;
 }
+
+/**
+ * For when the select2js dropdown is in a radio or checkbox.
+ */
+.field-label .select2
+{
+  margin-top: 0.7rem;
+}
+
+
 .select2-dropdown{
-  border: 1px solid #e1e6ef !important;
+  border: $form-item-border-width solid #e1e6ef !important;
 }
 .select2js .select2-selection__rendered{
   border-radius: 0 !important;
@@ -51,6 +97,7 @@ form {
 }
 .select2-container{
   width:100% !important;
+  //margin-bottom: 1rem;
 }
 
 /**
@@ -74,10 +121,23 @@ form {
 }
 
 /**
+ * Can probably be taken away once Bootstrap 5
+ * is launched and this bugfix is no longer needed.
+ */
+.is-invalid
+{
+  border-color: map-get($theme-colors, "danger");
+  border-radius: 0.25rem !important;
+}
+
+/**
  * so that the jQuery validation error message is bolder.
+ * and placed correctly.
  */
 .invalid-feedback{
   font-weight: 600;
+  //margin-top: -0.75rem;
+  //padding-bottom: .75rem;
 }
 
 
@@ -86,30 +146,37 @@ form {
  * own input border management, and sets a border radius
  * on all input elements.
  */
-input {
-  border-radius: $input-border-radius !important;
-}
-
-.input-group-prepend + input {
-  border-top-left-radius: unset !important;
-  border-bottom-left-radius: unset !important;
-}
+//input {
+//  border-radius: $input-border-radius !important;
+//}
+//
+//.input-group-prepend + input {
+//  border-top-left-radius: unset !important;
+//  border-bottom-left-radius: unset !important;
+//}
 
 /**
  * So that icons suffixed to an input field
  * look nice. Not sure why this isn't default.
  */
-.input-group-append {
-  z-index: 1;
-  margin-left: -5px;
-}
+//.input-group-append {
+//  z-index: 1;
+//  margin-left: -5px;
+//}
 
 /**
  * Rangeslider background
  */
 .rangeslider{
-  background: map-get($theme-colors, "grey");
+  background: map-get($theme-colors, "light");
   margin-top:.5rem;
+}
+/**
+ * Add additional margin on the bottom of range sliders
+ */
+.input-group-range
+{
+  margin-bottom: 3rem !important;
 }
 /** Range button formatting **/
 .rangeslider__handle {
@@ -154,7 +221,7 @@ input {
   width: 100%;
 }
 .rangeslider, .rangeslider__fill{
-  border-radius: 10px;
+  border-radius: 10px !important;
   box-shadow: inset 1px 1px 2px 0 rgba(0, 0, 0, 0.2);
 }
 
@@ -170,7 +237,7 @@ input {
 }
 .iti {
   width: 100%; //Or else it will not stretch all the way out
-  margin-bottom: -0.7rem; //For some reason there is (superfluous) buffer underneath the element
+  //margin-bottom: -0.7rem; //For some reason there is (superfluous) buffer underneath the element
 }
 
 .iti__country-list {

@@ -165,7 +165,7 @@ EOF;
 		$parent_script = str::getScriptTag($parent_script);
 
 		return /** @lang HTML */<<<EOF
-<div class="form-group">
+<div class="mb-3">
 	{$parent_label}{$parent_desc}
 	{$options_html}
 </div>
@@ -192,7 +192,7 @@ EOF;
 
 		$html = self::getCheckboxHTML($a);
 		return /** @lang HTML */<<<EOF
-<div class="form-group">
+<div class="mb-3">
 	{$html}
 </div>
 EOF;
@@ -209,7 +209,7 @@ EOF;
 		extract($a);
 
 		# Parent class
-		$parent_class_array = str::getAttrArray($parent_class, "input-group", $only_parent_class);
+		$parent_class_array = str::getAttrArray($parent_class, "form-check", $only_parent_class);
 		$parent_class_tag = str::getAttrTag("class", $parent_class_array);
 
 		# Parent style
@@ -228,7 +228,8 @@ EOF;
 		}
 		
 		# Class
-		$class_array = str::getAttrArray($class, ["magic-{$type}", $disabled_class], $aonly_class);
+//		$class_array = str::getAttrArray($class, ["magic-{$type}", $disabled_class], $aonly_class);
+		$class_array = str::getAttrArray($class, ["form-check-input", $disabled_class], $aonly_class);
 		$class_tag = str::getAttrTag("class", $class_array);
 		
 		# Style

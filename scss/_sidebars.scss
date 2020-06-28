@@ -19,7 +19,7 @@
     //box-shadow: inset 14px 0px 5px -15px rgba(0,0,0,0.33);
 
     //Padding top that matches the height of the nav bars
-    top: #{$navbar-height}px;
+    top: $navbar-height;
     //z-index:1;
 
     //Padding left-right to give content breathing room

@@ -29,3 +29,12 @@ code {
   word-wrap: break-word;
   color: unset;
 }
+
+/**
+ * Give dismissable (in container) alerts
+ * a larger title.
+ */
+.alert-dismissible strong
+{
+  font-size: 11pt;
+}

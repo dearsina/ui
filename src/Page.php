@@ -14,6 +14,30 @@ class Page {
 	private $title;
 	private $subtitle;
 	private $script;
+	private $button;
+
+	/**
+	 * @return mixed
+	 */
+	public function getButtonHTML ()
+	{
+		return Button::generate($this->button);
+	}
+
+	/**
+	 * @param mixed $button
+	 */
+	public function setButton ($button): void
+	{
+		if(str::isNumericArray($button)){
+			foreach($button as $b){
+				$this->button[] = $b;
+			}
+		} else {
+			$this->button[] = $button;
+		}
+	}
+
 	/**
 	 * @var Grid
 	 */
@@ -249,6 +273,7 @@ class Page {
 {$this->getScriptHTML()}
 {$this->getTitleHTML()}
 {$this->getSubtitleHTML()}
+{$this->getButtonHTML()}
 {$this->getHeadsUpHTML()}
 {$this->grid->getHTML()}
 EOF;

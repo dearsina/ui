@@ -5,6 +5,7 @@ namespace App\UI\Navigation;
 
 
 use App\Common\href;
+use App\Common\Img;
 use App\Common\str;
 use App\UI\Badge;
 use App\UI\Dropdown;
@@ -90,16 +91,21 @@ class Horizontal {
 			$a = ["title" => $a];
 		}
 
+        extract($a);
+
 		if($href = href::generate($a)){
 			$tag = "a";
 		} else {
 			$tag = "span";
 		}
-		$img = $src ? "<img src=\"{$src}\">" : false;
-		$id = str::getAttrTag("id", $a['id'], str::id($default_class));
+
+		$img = Img::generate($a);
+
+		$id = str::getAttrTag("id", $a['id']);
 		$icon = Icon::generate($a['icon']);
 		$title = $a['title'];
 		$badge = Badge::generate($a['badge']);
+
 		$class_array = str::getAttrArray($a['class'], $default_class, $a['only_class']);
 		$class = str::getAttrTag("class", $class_array);
 		$style = str::getAttrTag("style", $a['style']);

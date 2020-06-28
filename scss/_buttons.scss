@@ -5,11 +5,10 @@
 $btn-padding-y-xs:      .125rem;
 $btn-padding-x-xs:      .25rem;
 $btn-font-size-xs:      $font-size-xs;
-$btn-line-height-xs:    $line-height-xs;
 $btn-border-radius-xs:  $border-radius-xs;
 
 .btn-xs {
-  @include button-size($btn-padding-y-xs, $btn-padding-x-xs, $btn-font-size-xs, $btn-line-height-xs, $btn-border-radius-xs);
+  @include button-size($btn-padding-y-xs, $btn-padding-x-xs, $btn-font-size-xs, $btn-border-radius-xs);
 }
 
 /**

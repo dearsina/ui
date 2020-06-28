@@ -114,7 +114,7 @@ class Badge {
 		$class = str::getAttrTag("class", [
 			"badge",
 			$pill ? "badge-pill" : "", //pill shape
-			"badge-{$colour}",
+			"bg-{$colour}",
 			$right ? "float-right" : "", //legacy shortcut
 			"text-light",
 			$class,

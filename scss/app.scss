@@ -1,47 +1,16 @@
 /**
- * Fonts
+ * Load the Bootstrap functions and variables first,
+ * so that we can override them, before loading
+ * the main Bootstrap styles.
  */
-//@import url('https://fonts.googleapis.com/css?family=Tajawal:200,300,400,500,700,800,900');
-//very nice, good arabic support, but larger sizes not so nice
-
-@import url('https://fonts.googleapis.com/css?family=Barlow:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i');
-//Similar to the DIN font family, very tidy
-
-/**
- * Only by loading these two, can we edit the theme colours by variable
- */
-@import "../../../bootstrap-4.5.0/scss/_functions.scss";
-@import "../../../bootstrap-4.5.0/scss/_variables.scss";
+@import "../../../bootstrap-5.0.0-alpha1/scss/_functions.scss";
+@import "../../../bootstrap-5.0.0-alpha1/scss/_variables.scss";
 
 /**
- * Bootstrap variable overrides
+ * Our overrides and own settings that will influence
+ * the main Bootstrap styles.
  */
-$font-family-sans-serif: "Barlow";
-$font-family-base: "Barlow";
-
-/**
- * The height of the navigation bars
- */
-$navbar-level1-height: 40;
-$navbar-level2-height: 50;
-$navbar-height: $navbar-level1-height + $navbar-level2-height;
-
-/**
- * The padding afforded to cards by default
- */
-$card-spacer-y: 1rem;
-
-/**
- * General definitions of extra-small items (input, button, etc)
- */
-$border-radius-xs:  .15rem !default;
-$font-size-xs:      $font-size-base * .75;
-$line-height-xs:    1.25;
-
-/**
- * Doesn't work?
- */
-$enable-rounded: true;
+@import "variables";
 
 /**
  * All colour variables.
@@ -52,6 +21,7 @@ $enable-rounded: true;
 @import "colours";
 
 /**
+*
  * Needs to be loaded before the bootstrap SCSS,
  * because it will influence variables there.
  */
@@ -59,11 +29,15 @@ $enable-rounded: true;
 
 /**
  * Bootstrap 4.5
+ * Finally we load the Bootstrap CSS factory
+ * with a combination of their variables,
+ * and our own.
  */
-@import "../../../bootstrap-4.5.0/scss/bootstrap";
+@import "../../../bootstrap-5.0.0-alpha1/scss/bootstrap";
 
 /**
  * Custom CSS.
+ * This stuff overrides what comes out of the Bootstrap factory.
  * The order here also matters.
  */
 
@@ -85,8 +59,3 @@ $enable-rounded: true;
 @import "spinners";
 @import "table";
 @import "type";
-
-
-
-@import "magic-check";
-// Custom magic-check CSS

@@ -1,17 +1,23 @@
-
+/**
+ * All icons in the navigation must be thin
+ */
+nav i
+{
+  font-weight: 100 !important;
+}
 /**
  * The meta navigation bar on the very top of the screen
  */
 #navbar-level1{
-  height: #{$navbar-level1-height}px;
+  height: $navbar-level1-height;
   background: $navbar-level1-bg;
   top: 0;
   left: 0;
   width: 100%;
-  padding: .5rem;
+  padding: .7rem;
   color: white;
 
-  box-shadow: 0px 1px 9px -5px rgb(0, 0, 0);
+  //box-shadow: 0px 1px 9px -5px rgb(0, 0, 0);
 }
 
 /**
@@ -19,11 +25,25 @@
  */
 .navbar-level1-logo {
   opacity: .75;
-  margin-left: 0.75rem;
+  margin-left: 0.25rem;
   text-decoration: none;
   -webkit-transition: all 0.5s;
   -moz-transition: all 0.5s;
   transition: all 0.5s;
+}
+
+/**
+ * If an SVG image is used in the logo,
+ * and the logo is a link, it needs some
+ * special properties to ensure the link works.
+ */
+a.navbar-level1-logo {
+  position: absolute;
+  z-index: 1;
+}
+a.navbar-level1-logo > object {
+  position: relative;
+  z-index: -1;
 }
 
 a.navbar-level1-logo,
@@ -34,11 +54,12 @@ a.navbar-level1-logo:hover,
 }
 
 /**
- * Logo dimentions
+ * Logo image dimensions
  */
-.navbar-level1-logo img {
+.navbar-level1-logo > img,
+.navbar-level1-logo > object {
   height: 25px;
-  width: 60px;
+  width: 75px;
 }
 
 /**
@@ -76,11 +97,13 @@ a.navbar-level1-logo:hover,
  * The main navigation bar below the meta bar
  */
 #navbar-level2 {
-  height:#{$navbar-level2-height}px;
-  background: $navbar-level2-bg;
+  height:$navbar-level2-height;
+  background: #FFFFFF; //$navbar-level2-bg;
   z-index:-1;
   //box-shadow: 0px 5px 8px -5px rgba(0, 0, 0, 0.2);
-  box-shadow: 0px -1px 2px 2px rgba(0, 0, 0, .15);
+  //box-shadow: 0px -1px 2px 2px rgba(0, 0, 0, .15);
+  border-bottom: .1px solid $border-color;
+  padding-left: .5rem;
 }
 
 /**
@@ -156,7 +179,7 @@ nav li .badge i{
   .nav-left > .parent,
   .nav-left > .parent > a
   {
-    color: #ffffff;
+    color: map-get($theme-colors, "black");
   }
 
   .nav-left {

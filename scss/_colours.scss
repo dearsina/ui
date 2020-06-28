@@ -1,50 +1,86 @@
 /**
+ * Theme
+ * @link https://coolors.co/004f80-0c1a1e-1f2c32-394146-d8e2e9-f8fafb
+ */
+
+// Brand colour
+$french-blue: hsl(203, 100%, 36%);
+
+$grays: (
+  "100": hsl(210, 20%, 98%), //cultured
+  "200": hsl(210, 30%, 98%), //skimmed
+  "300": hsl(206, 30%, 95%), //alice-light
+  "400": hsl(205, 28%, 88%), //alice blue
+  "500": hsl(203, 5%, 65%), //faded
+  "600": $gray-600,
+  "700": hsl(203, 10%, 25%), //charcoal
+  "800": hsl(199, 23%, 16%), //gunmetal
+  "900": hsl(193, 43%, 8%) //rich-black-fogra-29
+);
+
+// Buttons
+$info-colour: hsl(196, 80%, 48%);
+$success-colour: hsl(142, 78%, 36%);
+$danger-colour: hsl(358, 71%, 46%);
+$orange-colour: hsl(19, 88%, 54%);
+$warning-colour: hsl(50, 97%, 57%);
+
+/**
+ * UI element colours
+ */
+$navbar-level1-bg:  map-get($grays, "800");
+$navbar-level2-bg:  $white;
+$footer-level1-bg:  map-get($grays, "800");
+$footer-level2-bg:  map-get($grays, "700");
+$body-bg:           map-get($grays, "100");
+$border-color:      map-get($grays, "400");
+$header-footer-bg:  map-get($grays, "200");
+
+/**
  * All the button, etc. colours.
  * To add additional colours, add them to the list here.
  * Ideally, give semantic names, then (colour) descriptive names.
  */
 $theme-colors: (
-  "primary":    #3377cc, //$primary,
-  "secondary":  #ff4c4c, //$secondary,
+        "primary":  $french-blue, //#3377cc,
+        "secondary":  #ff4c4c, //$secondary,
 
-  "success":    $success,
-  "info":       #0080b3, //$info,
-  "warning":    $warning,
-  "danger":     $danger,
-  "light":      $light,
-  "dark":       #606976, //$dark,
+        "success":  $success-colour,
+        "info":     $info-colour, //#0080b3,
+        "warning":  $warning-colour,
+        "danger":   $danger-colour,
 
-  "navy":	  #001f3f,
-  "blue":	  #0074d9,
-  "aqua":	  #7fdbff,
-  "teal":	  #39cccc,
-  "olive":	  #3d9970,
-  "green":	  #2ecc40,
-  "lime":	  #01ff70,
-  "yellow":	  #ffdc00,
-  "orange":	  #ff851b,
-  "red":	  #ff4136,
-  "maroon":	  #85144b,
-  "fuchsia":  #f012be,
-  "purple":	  #b10dc9,
+        "navy":	    #001f3f,
+        "blue":	    #0074d9,
+        "aqua":	    #7fdbff,
+        "teal":	    #39cccc,
+        "olive":    #3d9970,
+        "green":    #2ecc40,
+        "lime":	    #01ff70,
+        "yellow":   #ffdc00,
+        "orange":   #ff851b,
+        "red":	    #ff4136,
+        "maroon":   #85144b,
+        "fuchsia":  #f012be,
+        "purple":   #b10dc9,
 
-  "black":	  #111111,
-  "gray":	  #999999,
-  "grey":	  #999999,
-  "silver":	  #dddddd
+        "black":  map-get($grays, "900"), //#111111,
+        "dark":   map-get($grays, "800"), //$dark,
+        "gray":	  map-get($grays, "700"), //#999999,
+        "grey":	  map-get($grays, "700"), //#999999,
+        "silver": map-get($grays, "400"), //#999999,
+        "light":  map-get($grays, "300"),
+        "muted":  map-get($grays, "200"),
+        "silent": map-get($grays, "100")
 );
 
-/**
- * Theme
- */
-$base-color: hsl(204, 100%, 50%); // Base
-$navbar-level1-bg:       darken(desaturate(adjust_hue($base-color, 0%), 90%), 25%); // Level 1 background
-$navbar-level2-bg:      lighten(desaturate(adjust_hue($base-color, 0%), 34%), 25%); // Level 2 background
-$body-bg:               lighten(desaturate(adjust_hue($base-color, 0%), 70%), 46%); // Body background
-$border-color:          lighten(desaturate(adjust_hue($base-color, 0%), 85%), 38%); // Border colour
-$card-header-footer-bg: lighten(desaturate(adjust_hue($base-color, 0%), 76%), 48%); // Card header-footer background
 
-//$navbar-level1-bg:      hsla(207, 10%, 25%, 1); // Level 1 background
-//$navbar-level2-bg:      hsla(207, 66%, 75%, 1); // Level 2 background
-//$body-bg:               hsla(207, 30%, 96%, 1); // Page background
-//$card-header-footer-bg: hsla(207, 24%, 98%, 1); // Card header-footer background
+
+
+
+//$base-color: hsl(204, 100%, 50%); // Base
+//$navbar-level1-bg:       darken(desaturate(adjust_hue($base-color, 0%), 90%), 25%); // Level 1 background
+//$navbar-level2-bg:      lighten(desaturate(adjust_hue($base-color, 0%), 34%), 25%); // Level 2 background
+//$body-bg:               lighten(desaturate(adjust_hue($base-color, 0%), 70%), 46%); // Body background
+//$border-color:          lighten(desaturate(adjust_hue($base-color, 0%), 85%), 38%); // Border colour
+//$card-header-footer-bg: lighten(desaturate(adjust_hue($base-color, 0%), 76%), 48%); // Card header-footer background

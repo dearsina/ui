@@ -428,7 +428,7 @@ EOF;
 	<input type="hidden" name="meta_rel_table" value="{$this->rel_table}"/>
 	<input type="hidden" name="meta_rel_id" value="{$this->rel_id}"/>
 	<input type="hidden" name="callback" value="{$this->callback}"/>
-	<div class="listing">{$this->getFieldsHTML()}</div>
+	{$this->getFieldsHTML()}
 	{$this->getButtonsHTML()}
 </form>
 {$this->getScriptHTML()}

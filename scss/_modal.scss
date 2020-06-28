@@ -2,11 +2,12 @@
  * Experimental, add blur,
  * reduce the background opacity (make it lighter)
  */
-.modal {
-  backdrop-filter: blur(2px);
-}
 .modal-backdrop.show {
-  opacity: 0.2;
+  // Undo Bootstrap defaults
+  opacity: 1;
+  background: none;
+  // Add darkness and blur this way instead
+  backdrop-filter: brightness(0.8) blur(2px);
 }
 
 /**
@@ -20,7 +21,7 @@
 }
 .modal-footer
 {
-  background: $card-header-footer-bg;
+  background: $header-footer-bg;
 }
 .modal-footer > * {
   margin: 0.25rem 0;
@@ -31,8 +32,8 @@
  */
 .modal-content
 {
-  border:none;
-  box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 3px rgba(0,0,0,.3);
+  border: 1px solid #fff;
 }
 
 /**
@@ -41,7 +42,16 @@
 .modal-header
 {
   font-weight: 600;
-  background: $card-header-footer-bg;
+  background: $header-footer-bg;
+}
+
+/**
+ * The (optional) modal close button must
+ * be placed all the way to the right.
+ */
+.modal-header .close
+{
+  float:right;
 }
 
 /**

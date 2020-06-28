@@ -354,7 +354,7 @@ class Field {
 			$html = $desc;
 		}
 
-		$class_array = str::getAttrArray($class, ["form-text", "text-muted"], $only_class);
+		$class_array = str::getAttrArray($class, ["label-desc", "form-text", "text-muted"], $only_class);
 		$class_tag = str::getAttrTag("class", $class_array);
 		$style_tag = str::getAttrTag("style", $style);
 
@@ -367,10 +367,10 @@ class Field {
 	 * @param        $icon
 	 * @param string $prepend_or_append
 	 *
-	 * @return bool|string*@return bool|string
+	 * @return bool|string
 	 * @return bool|string
 	 */
-	static function getIcon($icon, $prepend_or_append = "prepend"){
+	static function getIcon($icon){
 		if(!$icon){
 			//Icons are not mandatory
 			return false;
@@ -387,6 +387,9 @@ class Field {
 			$icon_array = $icon;
 		}
 
+		# Make the icons thin
+		$icon_array['type'] = "thin";
+
 		$icon_html = Icon::generate($icon_array);
 
 		$icon_title = $icon_array['title']? " {$icon_array['title']}" : false;
@@ -395,7 +398,8 @@ class Field {
 		$span_class_array = str::getAttrArray($colour, "input-group-text");
 		$span_class_tag = str::getAttrTag("class", $span_class_array);
 
-		return "<div class=\"input-group-{$prepend_or_append}\"><span{$span_class_tag}>{$icon_html}{$icon_title}</span></div>";
+		return "<span{$span_class_tag}>{$icon_html}{$icon_title}</span>";
+//		return "<div class=\"input-group-{$prepend_or_append}\"><span{$span_class_tag}>{$icon_html}{$icon_title}</span></div>";
 	}
 
 	/**
