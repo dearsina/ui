@@ -17,6 +17,31 @@ class MySQL extends Common implements \App\Common\Example\ExampleInterface {
 	{
 		$grid = new Grid();
 
+		$examples[] = [
+			"header" => "Join with limit",
+			"query" => [
+				"columns" => "currency_code",
+				"table" => "country",
+				"join" => [[
+					"columns" => false,
+					"table" => "geolocation",
+					"on" => "country_code"
+				],[
+					"columns" => false,
+					"table" => "connection",
+					"on" => [
+						"ip" => ["geolocation", "ip"]
+					],
+					"where" => [
+						["closed", "IS", NULL],
+						"user_id" => "123"
+					]
+				]],
+				"limit" => 1
+			],
+			"footer" => ""
+		];
+
 //		$examples[] = [
 //			"header" => "Insert",
 //			"method" => "insert",
@@ -36,75 +61,138 @@ class MySQL extends Common implements \App\Common\Example\ExampleInterface {
 //			"footer" => ""
 //		];
 
-		$examples[] = [
-			"header" => "Simple remove",
-			"method" => "remove",
-			"query" => [
-				"table" => "user",
-				"db" => "public_list",
-				"id" => "123",
-			],
-		];
+//		$examples[] = [
+//			"header" => "GROUP CONCAT",
+//			"query" => [
+//				"columns" => [
+//					"currency_code",
+//					"countries" => ["group_concat", [
+//						"distinct" => true,
+//						"columns" => "name",
+//						"order_by" => [
+//							"country" => "ASC"
+//						],
+//						"separator" => ", "
+//						]
+//					]
+//				],
+//				"table" => "country",
+//				"where" => [
+//					["currency_code", "<>", ""]
+//				],
+//				"order_by" => [
+//					"currency_code" => "ASC"
+//				]
+//			],
+//		];
 
 		$examples[] = [
-			"header" => "Simple restore",
-			"method" => "restore",
+			"header" => "GROUP CONCAT",
 			"query" => [
-				"table" => "user",
-				"db" => "public_list",
-				"id" => "123",
-			],
-		];
-
-		$examples[] = [
-			"header" => "Update with ID + DB",
-			"method" => "update",
-			"query" => [
-				"table" => "user",
-				"db" => "public_list",
-				"id" => "123",
-				"set" => [
-					"first_name" => "George"
-				]
-			],
-			"footer" => "Will give you the whole table"
-		];
-
-		$examples[] = [
-			"header" => "Complex set, and complex where",
-			"method" => "update",
-			"query" => [
-				"table" => "cron_job",
-				"set" => [
-					"order" => [NULL, "cron_job", "order", "+ 1"]
+				"columns" => [
+					"plan_count" => ["COUNT", "plan_id"],
+					"plan_names" => ["GROUP_CONCAT", [
+						"distinct" => true,
+						"columns" => [
+							"title"
+						],
+						"separator" => "|"
+					]]
 				],
-				"where" => [
-					["order", "between", 1, 10]
-				]
+				"table" => "plan",
+				"join" => [[
+//					"columns" => false,
+					"table" => "plan_service",
+					"where" => [
+						"service_id" => "123"
+					]
+				]],
+				"limit" => 1
 			],
 		];
 
-		$examples[] = [
-			"header" => "Update with join",
-			"method" => "update",
-			"query" => [
-				"table" => "user",
-				"db" => "public_list",
-				"join" => [[
-					"table" => "user_role",
-					"on" => "user_id",
-					"where" => [
-						"rel_table" => "alias"
-					],
-//					"include_removed" => true
-				]],
+//		$examples[] = [
+//			"header" => "Active cron jobs only",
+//			"query" => [
+//				"table" => "cron_job",
+//				"where" => [
+//					"paused" => NULL
+//				],
+//				"order_by" => [
+//					"order" => "ASC"
+//				]
+//			],
+//		];
+
+//		$examples[] = [
+//			"header" => "Simple remove",
+//			"method" => "remove",
+//			"query" => [
+//				"table" => "interpol_red_notice",
+//				"db" => "public_list",
 //				"id" => "123",
-				"set" => [
-					"first_name" => ["user_role", "user_id"]
-				]
-			],
-			"footer" => "Will give you the whole table"
-		];
+//			],
+//		];
+//
+//		$examples[] = [
+//			"header" => "Simple restore",
+//			"method" => "restore",
+//			"query" => [
+//				"table" => "interpol_red_notice",
+//				"db" => "public_list",
+//				"id" => "123",
+//			],
+//		];
+//
+//		$examples[] = [
+//			"header" => "Update with ID + DB",
+//			"method" => "update",
+//			"query" => [
+//				"table" => "interpol_red_notice",
+//				"db" => "public_list",
+//				"id" => "123",
+//				"set" => [
+//					"first_name" => "George"
+//				]
+//			],
+//			"footer" => "Will give you the whole table"
+//		];
+//
+//		$examples[] = [
+//			"header" => "Complex set, and complex where",
+//			"method" => "update",
+//			"query" => [
+//				"table" => "cron_job",
+//				"set" => [
+//					"order" => [NULL, "cron_job", "order", "+ 1"]
+//				],
+//				"where" => [
+//					["order", "between", 1, 10]
+//				]
+//			],
+//		];
+//
+//		$examples[] = [
+//			"header" => "Update with join",
+//			"method" => "update",
+//			"query" => [
+//				"table" => "interpol_red_notice",
+//				"db" => "public_list",
+//				"join" => [[
+//					"table" => "user_role",
+//					"on" => "user_id",
+//					"where" => [
+//						"rel_table" => "alias"
+//					],
+////					"include_removed" => true
+//				]],
+////				"id" => "123",
+//				"set" => [
+//					"first_name" => ["user_role", "user_id"]
+//				]
+//			],
+//			"footer" => "Will give you the whole table"
+//		];
 
 
 
@@ -412,32 +500,32 @@ class MySQL extends Common implements \App\Common\Example\ExampleInterface {
 //			]
 //		];
 
-		$examples[] = [
-			"header" => "Join with all the different comparison formats.",
-			"query" => [
-				"table" => "user",
-				"join" => [
-					"table" => "user_role",
-					"on" => [
-						"complete = comparison",
-						["user_id", "=", "val"],
-						["created", "<>", false],
-						["user_id", "LIKE", "%val%"],
-						["user_id", ">", "user", "user_id"],
-						["user_id", "between", 1, 3],
-					],
-					"where" => [
-						"role" => "admin",
-						"rel_table" => "admin"
-					]
-				],
-				"where" => [
-					"first_name" => "val",
-					"last_name" => ["table_alias", "col"]
-				]
-			],
-			"footer" => "<code>false</code> comparison values will be ignored."
-		];
+//		$examples[] = [
+//			"header" => "Join with all the different comparison formats.",
+//			"query" => [
+//				"table" => "user",
+//				"join" => [
+//					"table" => "user_role",
+//					"on" => [
+//						"complete = comparison",
+//						["user_id", "=", "val"],
+//						["created", "<>", false],
+//						["user_id", "LIKE", "%val%"],
+//						["user_id", ">", "user", "user_id"],
+//						["user_id", "between", 1, 3],
+//					],
+//					"where" => [
+//						"role" => "admin",
+//						"rel_table" => "admin"
+//					]
+//				],
+//				"where" => [
+//					"first_name" => "val",
+//					"last_name" => ["table_alias", "col"]
+//				]
+//			],
+//			"footer" => "<code>false</code> comparison values will be ignored."
+//		];
 
 		foreach($examples as $example){
 			$grid->set($this->getSQLCard($example));

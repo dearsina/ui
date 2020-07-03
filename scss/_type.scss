@@ -25,6 +25,17 @@ smaller, .smaller {
 .text-silent {
   color: hsla(207, 7%, 86%, 1) !important;
 }
+
+/**
+ * For when text in Grids is placed in title/body keys instead of HTML.
+ */
+.text-title {
+  font-weight: 500;
+}
+.text-body {
+
+}
+
 /**
  * For when text is displayed as headline and body copy.
  * This is the header.

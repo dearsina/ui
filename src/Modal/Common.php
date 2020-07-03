@@ -7,6 +7,12 @@ use App\Common\str;
 use App\UI\Form\Form;
 use App\UI\Icon;
 
+/**
+ * Class Common
+ * Contains generic methods that are commonly used.
+ *
+ * @package App\UI\Modal
+ */
 abstract class Common extends \App\Common\Common {
 	/**
 	 * @param array  $a

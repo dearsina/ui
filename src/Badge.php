@@ -88,7 +88,7 @@ class Badge {
 			$tag_type = "a";
 		} else {
 			$tag_type = "div";
-			$style .= "cursor:default;";
+			$style[] = ["cursor" => "default"];
 		}
 
 		# Is there a tag override?
@@ -96,13 +96,11 @@ class Badge {
 			$tag_type = $tag;
 		}
 
-		# What colour is the badge?
-		if(str::translate_colour($colour)){
-			$colour = str::translate_colour($colour);
-		} else if(str::is_hex_colour($colour)){
-			$style .= "background-color:{$colour};";
+		# Is the given colour a hex colour?
+		if(str::isHexColour($colour)){
+			$style[] = ["background-color" => $colour];
 		} else {
-			$colour = "dark";
+			$colour = $colour ?: "dark";
 			//default is a b&w theme
 		}
 

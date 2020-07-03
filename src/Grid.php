@@ -126,7 +126,9 @@ class Grid {
 				//if the cell is an accordion
 				$col_html = Accordion::generate($col['accordion']);
 			} else {
-				$col_html = $col['html'];
+				$col_html = self::generateTitle($col['title']);
+				$col_html .= self::generateBody($col['body']);
+				$col_html .= $col['html'];
 			}
 
 			# If they're not to be stacked, make it so (default is stackable)
@@ -200,5 +202,74 @@ class Grid {
 	public static function generate(array $cells){
 		$grid = new Grid();
 		return $grid->getRowHTML($cells);
+	}
+
+	private static function generateTitle($a): ?string
+	{
+		if(!$a){
+			return NULL;
+		}
+
+		$a = is_array($a) ? $a : ["title" => $a];
+
+		extract($a);
+
+		# ID
+		$id = str::getAttrTag("id", $id);
+
+		# Icon
+		$icon = Icon::generate($icon);
+
+		# Badge
+		if($badge = Badge::generate($badge)){
+			$badge = " ".$badge;
+		}
+
+		# Button(s)
+		$button = Button::generate($button);
+
+		# Class
+		$class_array = str::getAttrArray($class, "text-title", $only_class);
+		$class = str::getAttrTag("class", $class_array);
+
+		# Style
+		$style = str::getAttrTag("style", $style);
+
+		# If there is a link or action, that will ONLY apply to the title TEXT, not (optional) icons or badge
+		if($href = href::generate($a)){
+			$title = "<a{$href}>{$title}</a>";
+		}
+
+		# Tag
+		$tag = $tag ?: "div";
+
+		return "<{$tag}{$id}{$class}{$style}{$href}>{$icon}{$title}{$badge}{$button}</{$tag}>";
+
+//		if($href = href::generate($a)){
+//			$tag = "a";
+//
+//		}
+//		$tag = $tag ?: "div";
+//
+//		return "<{$tag}{$id}{$class}{$style}{$href}>{$icon}{$title}{$badge}{$button}</{$tag}>";
+	}
+
+	private static function generateBody($a): ?string
+	{
+		if(!$a){
+			return NULL;
+		}
+
+		$a = is_array($a) ? $a : ["body" => $a];
+		extract($a);
+
+		$tag = $tag ?: "p";
+		$id = str::getAttrTag("id", $id);
+		$button = Button::generate($button);
+		$class_array = str::getAttrArray($class, "text-body", $only_class);
+		$class = str::getAttrTag("class", $class_array);
+		$style = str::getAttrTag("style", $style);
+
+		return "<{$tag}{$id}{$class}{$style}>{$body}{$button}</{$tag}>";
 	}
 }

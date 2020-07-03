@@ -51,11 +51,8 @@ class Progress {
 			$width = self::WIDTH;
 		}
 
-		if($colour){
-			$colour = str::translate_colour($colour);
-		} else {
-			$colour = self::COLOUR;
-		}
+		# Colour, or default colour
+		$colour = $colour ?: self::COLOUR;
 
 		if($label !== false){
 			$label = $label ?: $width;

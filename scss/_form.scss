@@ -251,6 +251,9 @@ form {
   border-left: .1px solid $border-color;
 }
 
+/**
+ * Form a box around one or many fields.
+ */
 .field-box {
   border: 1px solid $border-color;
   margin: 0;

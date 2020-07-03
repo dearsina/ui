@@ -1,7 +1,10 @@
 /**
  * Experimental, add blur,
  * reduce the background opacity (make it lighter)
+ *
+ * Beautiful, but very resource intensive. Disabled for now.
  */
+/*
 .modal-backdrop.show {
   // Undo Bootstrap defaults
   opacity: 1;
@@ -9,6 +12,7 @@
   // Add darkness and blur this way instead
   backdrop-filter: brightness(0.8) blur(2px);
 }
+*/
 
 /**
  * Ensure modal headers and footers are aligned with the body
@@ -19,6 +23,14 @@
   padding: 1rem 0;
   border:none;
 }
+/**
+ * So that it is apparent that you can drag draggable modals.
+ */
+.modal-header-draggable
+{
+  cursor: move;
+}
+
 .modal-footer
 {
   background: $header-footer-bg;

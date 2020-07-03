@@ -108,18 +108,25 @@
  */
 
 /**
- * The handlebar icon is
- * the three lines, and they're
- * auto-generated.
+ * The div the icon sits in
  */
 .sortable-handlebars {
   display: flex;
   align-items: center;
   max-width: 3.5rem;
+  cursor: n-resize;
 }
+
+/**
+ * The handlebar icon is
+ * the three lines, and they're
+ * auto-generated.
+ */
 .sortable-handlebars::after{
   font-family: "Font Awesome 5 Pro";
   content: "\f0c9"; //Hamburger bars
+  font-weight: 100;
+  font-size: small;
 }
 
 /**

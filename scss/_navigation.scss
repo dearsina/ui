@@ -6,6 +6,12 @@ nav i
   font-weight: 100 !important;
 }
 /**
+ * Removes the underline on hover for navigations links.
+ */
+nav a:hover {
+  text-decoration: none !important;
+}
+/**
  * The meta navigation bar on the very top of the screen
  */
 #navbar-level1{
@@ -24,7 +30,7 @@ nav i
  * The logo that sits inside the navbar meta to the top right
  */
 .navbar-level1-logo {
-  opacity: .75;
+  //opacity: .75;
   margin-left: 0.25rem;
   text-decoration: none;
   -webkit-transition: all 0.5s;

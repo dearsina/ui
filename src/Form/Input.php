@@ -18,6 +18,11 @@ class Input extends Field {
 	 */
 	static function generateHTML($a){
 		extract($a);
+
+		#
+		if(!$type && ($html||$button||$buttons)){
+			return false;
+		}
 		
 		# Type correction
 		extract(self::getInputType($type));

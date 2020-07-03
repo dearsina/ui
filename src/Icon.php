@@ -214,7 +214,7 @@ class Icon {
 		if(!$default[] = Icon::getClass($icon_array)){
 			return false;
 		}
-		if($colour = str::translate_colour($colour)){
+		if($colour){
 			$default[] = " text-{$colour}";
 		}
 

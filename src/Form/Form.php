@@ -108,7 +108,7 @@ class Form {
 		$this->setButtons($buttons);
 
 		# Script
-		$this->setScript($script, $only_script);
+		$this->setScript($script);
 
 		# Encryption required?
 		$this->setEncrypt($encrypt);
@@ -123,37 +123,33 @@ class Form {
 	}
 
 	/**
-	 * Sets the default script,
-	 * appends scripts, and optionally,
-	 * if set, replaces the whole script
-	 * with only_script.
+	 * Sets scripts
 	 *
 	 * @param string $script
-	 * @param string $only_script
 	 *
 	 * @return bool
 	 */
-	function setScript($script, $only_script) {
-		$this->script = /** @lang ECMAScript 6 */<<<EOF
-
-var {$this->getId()}_form_is_valid = $("#{$this->getId()}").validate(validationSettings);
-$('#{$this->getId()}').submit(function(event){
-    event.preventDefault();
-    if({$this->getId()}_form_is_valid.form()){
-		submitForm(event, "{$this->getId()}");        
-    } else {
-        Ladda.stopAll();
-    }	
-});
-
-EOF;
+	function setScript($script) {
+//		$this->script = /** @lang ECMAScript 6 */<<<EOF
+//
+//var {$this->getId()}_form_is_valid = $("#{$this->getId()}").validate(validationSettings);
+//$('#{$this->getId()}').submit(function(event){
+//    event.preventDefault();
+//    if({$this->getId()}_form_is_valid.form()){
+//		submitForm(event, "{$this->getId()}");
+//    } else {
+//        Ladda.stopAll();
+//    }
+//});
+//
+//EOF;
 		if($script){
-			$this->script .= $script;
+			$this->script = $script;
 		}
 
-		if($only_script){
-			$this->script = $only_script;
-		}
+//		if($only_script){
+//			$this->script = $only_script;
+//		}
 
 		return true;
 	}

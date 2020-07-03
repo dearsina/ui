@@ -17,6 +17,14 @@ class Table {
 	 * Given an output from a SQL request, formats as a table,
 	 * with sortable column headers.
 	 *
+	 * Tables with an order column:
+	 * <code>
+	 * Table::generate($rows, [
+	 * 	"rel_table" => $rel_table,
+	 * 	"order" => true
+	 * ]);
+	 * </code>
+	 *
 	 * @param            $rows    Array from SQL results
 	 * @param array|null $options ID, class, style, script
 	 *
@@ -101,8 +109,8 @@ EOF;
 
 			if($col['sortable'] !== false){
 				//If the column is not explicitly set to not sortable
-				$data['col'] =  $col['col_name'] ?: $key;
-				//If a column name has been set, use it, otherwise, use the key
+				$data['col'] =  $col['col_alias'] ?: $key;
+				//If a column alias has been set, use it, otherwise, use the key
 			} else {
 				$data = [];
 				$default[] = "sorted-ignore";
@@ -163,13 +171,6 @@ EOF;
 	 * @throws \Exception
 	 */
 	private static function getSortableRow($row){
-//		if(!key_exists("order", $row)){
-//			throw new \Exception("To prepare a sortable table, an order key must be included per row.");
-//		}
-//
-//		$order = $row['order'];
-		/** We don't seem to need any of this */
-
 		# We need to unset the order number, cause we don't actually use it anywhere
 		unset($row['order']);
 
@@ -182,7 +183,7 @@ EOF;
 		unset($row['id']);
 
 		$order = [
-			"#" => [
+			"<!--SORTABLE-->" => [
 				"class" => "sortable-handlebars",
 				"sm" => 1,
 				"header_style" => [

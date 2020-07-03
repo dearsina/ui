@@ -303,6 +303,14 @@ class Button {
 			return false;
 		}
 
+		# Experimental, if more than 1 button is sent at once
+		if(str::isNumericArray($a)){
+			foreach($a as $b){
+				$buttons[] = self::generate($b);
+			}
+			return implode("",$buttons);
+		}
+
 		$a = self::getArray($a, $rel_table, $rel_id, $callback);
 
 		if(!$a['id']){
@@ -334,12 +342,8 @@ class Button {
 		}
 
 		# What colour is the button?
-		if($colour){
-			$colour = str::translate_colour($colour);
-		} else {
-			$colour = "dark";
-			//default is a b&w theme
-		}
+		$colour = $colour ?: "dark";
+		//default is a b&w theme
 
 		# Does this button have children?
 		if($children){
