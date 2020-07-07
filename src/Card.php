@@ -145,7 +145,7 @@ class Card extends Common {
 	 * @throws Exception
 	 */
 	public function getHeaderHTML(){
-		if(!is_array($this->cardHeader)){
+		if(!$this->cardHeader){
 			// Headers are optional
 			return false;
 		}
@@ -163,7 +163,9 @@ class Card extends Common {
 		$this->cardHeader['style'] = str::getAttrArray($this->cardHeader['style'], NULL, $this->cardHeader['only_style']);
 
 		# Dropdown buttons and/or button(s) in a row
-		$buttons = str::getButtons($this->cardHeader);
+		if($buttons = str::getButtons($this->cardHeader)){
+			$buttons = "<div class=\"col\">{$buttons}</div>";
+		}
 
 		# Accent
 		$this->cardHeader['class'][] = str::getColour($this->accent, "bg");
@@ -198,16 +200,16 @@ class Card extends Common {
 		# The div class
 		$class = str::getAttrTag("class", $this->cardHeader['class']);
 
+		# Title parent class and style
+		[$parent_class, $parent_style] = str::getClassAndStyle($this->cardHeader, ["col-auto", "card-title"]);
+
 		return <<<EOF
 <div{$id}{$class}{$style}>
 	<div class="container-fluid">
   		<div class="row">
-    		<div class="col-auto card-title">
+    		<div{$parent_class}{$parent_style}>
     			{$icon}{$title}{$badge}
-    		</div>
-    		<div class="col">
-    			{$buttons}
-    		</div>
+    		</div>{$buttons}
     	</div>
 	</div>{$script}
 </div>
