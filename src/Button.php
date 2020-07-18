@@ -276,6 +276,54 @@ class Button {
 	}
 
 	/**
+	 * Given an array of either a "button" or "buttons",
+	 * returns HTMl with both, or returns NULL if neither are present.
+	 *
+	 * @param array|null $a
+	 *
+	 * @return string
+	 * @throws \Exception
+	 * @throws \Exception
+	 */
+	static function get(?array $a): ?string
+	{
+		if(!is_array($a)){
+			return NULL;
+		}
+
+		# Dropdown buttons
+		if($a['buttons']){
+			return Dropdown::generate($a);
+		}
+
+		# Button(s) in a row
+		if(str::isNumericArray($a['button'])){
+			$a['button'] = array_reverse($a['button']);
+			foreach($a['button'] as $b){
+				$button .= Button::generate($b);
+			}
+		} else if ($a['button']){
+			$button = Button::generate($a['button']);
+		}
+
+		# The buttons are by default wrapped in a btn-float-right div. This can be overwritten, by parent_class/style
+		$parent_class_array = ["btn-float-right"];
+
+		if(str::isAssociativeArray($a['button'])){
+			$parent_class_array = str::getAttrArray($a['button']['parent_class'], $parent_class_array, $a['button']['only_parent_class']);
+		}
+
+		$parent_class = str::getAttrTag("class", $parent_class_array);
+		$parent_style = str::getAttrTag("style", $a['button']['parent_style']);
+
+		if($button){
+			$button = "<div{$parent_class}{$parent_style}>{$button}</div>";
+		}
+
+		return $buttons.$button;
+	}
+
+	/**
 	 * Generates a button based on an array of settings
 	 * <code>
 	 * $html .= Button::generate([
@@ -305,6 +353,7 @@ class Button {
 
 		# Experimental, if more than 1 button is sent at once
 		if(str::isNumericArray($a)){
+//			$a = array_reverse($a);
 			foreach($a as $b){
 				$buttons[] = self::generate($b);
 			}

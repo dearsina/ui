@@ -18,6 +18,44 @@ class MySQL extends Common implements \App\Common\Example\ExampleInterface {
 		$grid = new Grid();
 
 		$examples[] = [
+			"header" => "Join with where and limit",
+			"query" => [
+				"columns" => [
+					"c",
+					"r",
+					"u",
+					"d",
+					"created_by"
+				],
+				"table" => "role_permission",
+				"join" => [[
+					"columns" => false,
+					"table" => "role",
+					"on" => "role_id",
+				],[
+					"columns" => false,
+					"table" => "user_role",
+					"on" => [
+						"rel_table" => ["role", "role"]
+					],
+					"where" => [
+						"rel_table" => "user"
+					]
+				],[
+					"columns" => "first_name",
+					"table" => "user",
+					"on" => [
+						"user_id" => ["role_permission", "created_by"]
+					]
+				]],
+//				"where" => $where,
+				"limit" => 1
+			],
+			"footer" => ""
+		];
+
+
+		$examples[] = [
 			"header" => "Join with limit",
 			"query" => [
 				"columns" => "currency_code",
@@ -86,30 +124,30 @@ class MySQL extends Common implements \App\Common\Example\ExampleInterface {
 //			],
 //		];
 
-		$examples[] = [
-			"header" => "GROUP CONCAT",
-			"query" => [
-				"columns" => [
-					"plan_count" => ["COUNT", "plan_id"],
-					"plan_names" => ["GROUP_CONCAT", [
-						"distinct" => true,
-						"columns" => [
-							"title"
-						],
-						"separator" => "|"
-					]]
-				],
-				"table" => "plan",
-				"join" => [[
-//					"columns" => false,
-					"table" => "plan_service",
-					"where" => [
-						"service_id" => "123"
-					]
-				]],
-				"limit" => 1
-			],
-		];
+//		$examples[] = [
+//			"header" => "GROUP CONCAT",
+//			"query" => [
+//				"columns" => [
+//					"plan_count" => ["COUNT", "plan_id"],
+//					"plan_names" => ["GROUP_CONCAT", [
+//						"distinct" => true,
+//						"columns" => [
+//							"title"
+//						],
+//						"separator" => "|"
+//					]]
+//				],
+//				"table" => "plan",
+//				"join" => [[
+////					"columns" => false,
+//					"table" => "plan_service",
+//					"where" => [
+//						"service_id" => "123"
+//					]
+//				]],
+//				"limit" => 1
+//			],
+//		];
 
 //		$examples[] = [
 //			"header" => "Active cron jobs only",

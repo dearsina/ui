@@ -88,7 +88,7 @@ class Badge {
 			$tag_type = "a";
 		} else {
 			$tag_type = "div";
-			$style[] = ["cursor" => "default"];
+			$style["cursor"] = "default";
 		}
 
 		# Is there a tag override?
@@ -98,7 +98,7 @@ class Badge {
 
 		# Is the given colour a hex colour?
 		if(str::isHexColour($colour)){
-			$style[] = ["background-color" => $colour];
+			$style["background-color"] = $colour;
 		} else {
 			$colour = $colour ?: "dark";
 			//default is a b&w theme
@@ -112,7 +112,7 @@ class Badge {
 		$class = str::getAttrTag("class", [
 			"badge",
 			$pill ? "badge-pill" : "", //pill shape
-			"bg-{$colour}",
+			$basic ? "badge-outline-{$colour}" : "bg-{$colour}",
 			$right ? "float-right" : "", //legacy shortcut
 			"text-light",
 			$class,

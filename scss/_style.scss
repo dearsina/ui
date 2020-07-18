@@ -1,0 +1,133 @@
+/**
+ * App specific styles
+ */
+.plan-cost
+{
+  float : right;
+  clear : both;
+}
+
+.plan-currency
+{
+  vertical-align : top;
+  margin-right   : 0.25rem;
+  font-weight    : 800;
+  float          : left;
+}
+
+.plan-price
+{
+  font-size      : xxx-large;
+  font-weight    : 900;
+  vertical-align : top;
+  line-height    : 2rem;
+  color          : map-get($theme-colors, "primary");
+}
+
+.plan-billing-frequency::before
+{
+  content : "/ ";
+}
+
+.plan-billing-frequency
+{
+  text-transform : uppercase;
+  font-size      : 7pt;
+  margin-top     : 0.5rem;
+  font-weight    : 700;
+  letter-spacing : 0.5px;
+  float          : right;
+  clear          : both;
+  margin-bottom  : 1rem;
+}
+
+.plan-desc
+{
+  font-size     : 10pt;
+  line-height   : 13pt;
+  margin-bottom : 1rem;
+}
+
+.plan-service-title
+{
+  font-size   : medium;
+  font-weight : 700;
+  border-top  : .1px solid $border-color;
+  padding-top : .5rem;
+}
+
+.plan-service-desc ~ .plan-service-title
+{
+  margin-top : 1rem;
+}
+
+/**
+ * Invoice styles
+ */
+.invoice-header
+{
+  border-bottom  : 2px solid $border-color;
+  //border-top: 1px solid #ddd;
+  //background: $header-footer-bg;
+  padding        : .5rem 0;
+  margin-bottom  : .5rem;
+  font-weight    : 700;
+  font-size      : smaller;
+  text-transform : uppercase;
+  overflow       : hidden;
+  white-space    : nowrap;
+}
+
+.invoice-subtotal
+{
+  border-top  : 1px solid $border-color;
+  padding-top : .5rem;
+}
+
+.invoice-discount > div:not(.col-7)
+{
+  //border-top  : 1px solid #dddddd;
+  margin-top  : .5rem;
+  padding-top : .5rem;
+  //font-weight : 600;
+}
+
+.invoice-total > div:not(.col-7)
+{
+  border-top  : 2px solid #dddddd;
+  margin-top  : .5rem;
+  padding-top : .5rem;
+  font-weight : 600;
+}
+
+/**
+ * Plan pop styles
+ */
+.card.plan-pop
+{
+  box-shadow   : 0 .5rem 1rem rgba(0, 0, 0, .15) !important;
+  border-color : #0071b8 !important;
+}
+
+.plan-pop > .card-header
+{
+  background : #0071b8;
+  color      : #ffffff;
+  padding    : .5rem;
+}
+
+.plan-pop > .card-header .card-title
+{
+  width       : 100%;
+  text-align  : center;
+  font-weight : 600;
+}
+
+@media (min-width : 576px)
+{
+  .card.plan-pop
+  {
+    margin-top    : -2rem;
+    margin-bottom : -2rem;
+  }
+}

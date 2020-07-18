@@ -74,11 +74,11 @@ class Input extends Field {
 		# Description
 		$desc = self::getDesc($desc);
 
-		# Script
-		$script = str::getScriptTag($script);
-
 		# $data
-		$data = str::getDataAttr($data);
+		$data = self::getInputData($a);
+
+		# Script (using $a because it may have changed in getSelectData())
+		$script = str::getScriptTag($a['script']);
 
 		return /** @lang HTML */
 			<<<EOF
@@ -111,5 +111,12 @@ class Input extends Field {
 	{$script}
 </div>	
 EOF;
+	}
+
+	private static function getInputData(array &$a): ?string
+	{
+		extract($a);
+		$data['onChange'] = self::getOnChange($a);
+		return str::getDataAttr($data);
 	}
 }

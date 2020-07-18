@@ -2,14 +2,20 @@
  * Bootstrap Card Overrides
  */
 
-.card {
-  margin-bottom: $spacer;
+.card
+{
+  margin-bottom : $spacer;
 
   /**
    * KYC Cards V1
    */
-  box-shadow: 0 1px 3px rgba(0,0,0,.3);
-  border: 1px solid #fff;
+  //box-shadow: 0 1px 3px rgba(0,0,0,.3);
+  //border: 1px solid #fff;
+
+  /**
+   * Flat design
+   */
+  border        : .1px solid $border-color;
 
   /** The box-shadow used by KBC */
   //box-shadow: 1px 1px 2px 0 hsla(0, 0%, 0%, 0.2);
@@ -38,27 +44,51 @@ box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 
 /**
  * To be used for floating (jQuery UI draggable) cards
  */
-.card-floating{
-  box-shadow: 2px 2px 15px 0px hsla(0, 0%, 0%, 0.3);
+.card-floating
+{
+  box-shadow : 2px 2px 15px 0px hsla(0, 0%, 0%, 0.3);
 }
 
-.card-header {
-  font-weight:500;
-  padding: $card-spacer-y;
-  border-bottom: unset;
-  background: $header-footer-bg;
-  font-size: 12pt;
+.card-header
+{
+  font-weight   : 500;
+  padding       : $card-spacer-y;
+  //border-bottom : unset;
+  background    : $header-footer-bg;
+  font-size     : 12pt;
+
+  //background     : hsla(210, 20%, 99%, 1);
+  border-bottom : .1px solid $border-color;
+}
+
+/**
+ * Make the card header thinner.
+ */
+.card-header .card-title
+{
+  text-transform : uppercase;
+  letter-spacing : 1.5px;
+  font-weight    : 400;
+  font-size      : smaller;
+}
+
+.card-title > .far
+{
+  font-weight : 100 !important;
 }
 
 /**
  * Give the main card icon in the header
  * a little breathing room.
  */
-.card-header .card-title i:first-of-type{
-  margin-right: .5rem;
+.card-header .card-title i:first-of-type
+{
+  margin-right : .5rem;
 }
-.card-title{
-  margin-bottom: 0; //Undoing Bootstrap
+
+.card-title
+{
+  margin-bottom : 0; //Undoing Bootstrap
 }
 
 /**
@@ -72,17 +102,19 @@ box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 
 .card-header > .container,
 .card-footer > .container
 {
-  padding: 0;
+  padding : 0;
 }
 
-.card-footer{
-  padding: $card-spacer-y;
-  border-top: unset;
-  background: $header-footer-bg;
+.card-footer
+{
+  padding    : $card-spacer-y;
+  border-top : unset;
+  background : $header-footer-bg;
 }
 
-.card-body {
-  padding: $card-spacer-y;
+.card-body
+{
+  padding : $card-spacer-y;
 }
 
 /**
@@ -94,38 +126,43 @@ box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 
 .card-header > .container > .row > .col-auto > .far,
 .card-header > .container > .row > .col-auto > .fas
 {
-  margin-right: 0.5rem;
+  margin-right : 0.5rem;
 }
 
 /**
  * Small text elements floating right below a card
  */
-.card-post {
-  margin-top: -0.5rem;
-  padding: 0 .5rem;
-  margin-bottom: 1rem;
+.card-post
+{
+  margin-top    : -0.5rem;
+  padding       : 0 .5rem;
+  margin-bottom : 1rem;
 }
 
 /**
  * For the rows
  */
-.card-rows {
-  padding: $card-spacer-y;
-}
-.card-rows .row:not(:first-child)
+.card-rows
 {
-  padding-top: .5rem;
-}
-.card-rows .row:not(:last-child)
-{
-  border-bottom: .1px solid $border-color;
-  padding-bottom: .5rem;
+  padding : $card-spacer-y;
 }
 
-.card-body > * {
-  width: -webkit-fill-available;
-  width: -moz-fill-available;
-  width: fill-available;
+.card-rows .row:not(:first-child)
+{
+  padding-top : .5rem;
+}
+
+.card-rows .row:not(:last-child)
+{
+  border-bottom  : .1px solid $border-color;
+  padding-bottom : .5rem;
+}
+
+.card-body > *
+{
+  width : -webkit-fill-available;
+  width : -moz-fill-available;
+  width : fill-available;
 }
 
 /**
@@ -134,7 +171,7 @@ box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 
  */
 .card-body.col-scroll
 {
-  display: flex;
+  display : flex;
 }
 
 /**
@@ -142,6 +179,21 @@ box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 
  */
 .card-body .col-scroll
 {
-  overflow-y: auto;
-  max-height: 100%;
+  overflow-y : auto;
+  max-height : 100%;
+}
+
+/**
+ * Fixes to the card group
+ */
+@media (min-width : 576px)
+{
+  .card-group > .card:not(:last-child)
+  {
+    margin-right : 1rem;
+  }
+  .card-group > .card
+  {
+    border : 0.1px solid $border-color !important;
+  }
 }

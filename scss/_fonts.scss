@@ -1,0 +1,27 @@
+/**
+ * Fonts
+ */
+//@import url('https://fonts.googleapis.com/css?family=Tajawal:200,300,400,500,700,800,900');
+//very nice, good arabic support, but larger sizes not so nice
+
+@import url('https://fonts.googleapis.com/css?family=Barlow:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i');
+//Similar to the DIN font family, very tidy
+
+//@import url('https://fonts.googleapis.com/css2?family=Chivo:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap');
+// The KYCDD official font
+
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata&display=swap');
+//Monospace font
+
+/**
+ * Bootstrap variable overrides
+ */
+$font-family-sans-serif : "Barlow";
+$font-family-base       : "Barlow";
+//$font-family-sans-serif: "Chivo";
+//$font-family-base: "Chivo";
+//$font-weight-base: 300;
+//$font-weight-bolder: 600;
+
+// Experimental
+$font-family-monospace  : "Inconsolata";

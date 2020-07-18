@@ -57,7 +57,7 @@ class Select extends Field implements FieldInterface {
 		# Settings
 		$data = self::getSelectData($a);
 
-		# Script
+		# Script (using $a because it may have changed in getSelectData())
 		$script = str::getScriptTag($a['script']);
 
 		return /** @lang HTML */ <<<EOF
@@ -96,37 +96,6 @@ EOF;
 			"parent" => $parent,
 			"onChange" => self::getOnChange($a)
 		]);
-	}
-
-	/**
-	 * If this element has an onChange script,
-	 * create a wrapper for it and in conjunction with the
-	 * form.js script, attach the wrapper to a trigger.
-	 *
-	 * @param array $a
-	 *
-	 * @return bool|string
-	 */
-	private static function getOnChange (array &$a)
-	{
-		extract($a);
-		$script = $onChange ?: $onchange;
-
-		if (!$script) {
-			return false;
-		}
-
-		# Generate an arbirary name for the onChange function
-		$id = str::id("function");
-
-		# Append the function to the script key
-		$a['script'] .= <<<EOF
-function {$id}(e){
-	{$script}
-}
-EOF;
-		# Return the arbitrary function name so that it's added the change listener
-		return $id;
 	}
 
 	/**
@@ -183,8 +152,8 @@ EOF;
 		if (is_array($value)) {
 			//Many values
 			$value_array = $value;
-		} else if ($value) {
-			//One value
+		} else if ($value || "0" == (string) $value) {
+			//One value (and that value could be "0" or 0
 			$value_array = [$value];
 		} else {
 			//No value(s)

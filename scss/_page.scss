@@ -29,6 +29,18 @@ main > .container {
   border-bottom: .01rem solid #ddd;
   padding-bottom: 1rem;
   margin-bottom: 1rem;
+  letter-spacing: -1px;
+}
+
+/**
+ * Custom header class that is used by Plan() Card methods,
+ * but that can be used by anything.
+ */
+.h5-header {
+  text-transform: uppercase;
+  font-size: medium;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
 }
 
 /**

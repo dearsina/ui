@@ -356,6 +356,7 @@ EOF;
 				return true;
 			}
 
+			$output->set_var('query',$_SESSION['query']);
 			$output->set_var('total_results',$total_results);
 			$ignore_header = is_bool($ignore_header) ? $ignore_header : false;
 			//if the variable is already set, will not re-set or change it
@@ -395,5 +396,30 @@ EOF;
 		$output->set_var("rows", self::generate($rows, $a, $ignore_header));
 
 		return true;
+	}
+
+
+
+	/**
+	 * Given a rel_table, returns a row with a "New..." link,
+	 * for use when $rows is empty and you don't want
+	 * the table to be bare.
+	 *
+	 * @param string $rel_table
+	 *
+	 * @return array|array[]
+	 */
+	public static function emptyTablePlaceholder(string $rel_table): array
+	{
+		return [
+			str::title($rel_table) => [
+				"icon" => Icon::get("new"),
+				"html" => str::title("New {$rel_table}..."),
+				"hash" => [
+					"rel_table" => $rel_table,
+					"action" => "new"
+				]
+			]
+		];
 	}
 }

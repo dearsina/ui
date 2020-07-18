@@ -272,7 +272,14 @@ class Form {
 
 		# Ensure the key is valid
 		if(!$_SESSION['pgp'][$vars['meta_public_key']]){
-			throw new \Exception("The associated private key cannot be found. This is either because your public key is invalid or has expired. Please refresh the form and try again.");
+			// If the key is not valid (it's because the page needs refreshing)
+
+			# Request a page reload
+			$hash = Hash::getInstance();
+			$hash->set("reload");
+
+			throw new \Exception("There was an issue with the encrypted form you just submitted. The page will now refresh, please try again.");
+//			throw new \Exception("The associated private key cannot be found. This is either because your public key is invalid or has expired. Please refresh the form and try again.");
 		}
 
 		# For each variable, decrypt and save the value

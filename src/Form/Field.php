@@ -430,4 +430,35 @@ class Field {
 
 		return $options;
 	}
+
+	/**
+	 * If this element has an onChange script,
+	 * create a wrapper for it and in conjunction with the
+	 * form.js script, attach the wrapper to a trigger.
+	 *
+	 * @param array $a
+	 *
+	 * @return bool|string
+	 */
+	public static function getOnChange (array &$a)
+	{
+		extract($a);
+		$script = $onChange ?: $onchange;
+
+		if (!$script) {
+			return false;
+		}
+
+		# Generate an arbirary name for the onChange function
+		$id = str::id("function");
+
+		# Append the function to the script key
+		$a['script'] .= <<<EOF
+function {$id}(e){
+	{$script}
+}
+EOF;
+		# Return the arbitrary function name so that it's added the change listener
+		return $id;
+	}
 }

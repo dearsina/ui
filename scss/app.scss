@@ -13,6 +13,11 @@
 @import "variables";
 
 /**
+ * Style fonts
+ */
+@import "fonts";
+
+/**
  * All colour variables.
  *
  * Needs to be loaded before the bootstrap SCSS,
@@ -60,3 +65,8 @@
 @import "spinners";
 @import "table";
 @import "type";
+
+/**
+ * App specific styles.
+ */
+@import "style";

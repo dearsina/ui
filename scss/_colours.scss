@@ -7,6 +7,7 @@
 $french-blue: hsl(203, 100%, 36%);
 
 $grays: (
+  "50": hsl(210, 20%, 99%), //basically white
   "100": hsl(210, 20%, 98%), //cultured
   "200": hsl(210, 30%, 98%), //skimmed
   "300": hsl(206, 30%, 95%), //alice-light
@@ -34,7 +35,7 @@ $footer-level1-bg:  map-get($grays, "800");
 $footer-level2-bg:  map-get($grays, "700");
 $body-bg:           map-get($grays, "100");
 $border-color:      map-get($grays, "400");
-$header-footer-bg:  map-get($grays, "200");
+$header-footer-bg:  map-get($grays, "50");
 
 /**
  * All the button, etc. colours.
@@ -66,8 +67,8 @@ $theme-colors: (
 
         "black":  map-get($grays, "900"), //#111111,
         "dark":   map-get($grays, "800"), //$dark,
-        "gray":	  map-get($grays, "700"), //#999999,
-        "grey":	  map-get($grays, "700"), //#999999,
+        "gray":	  map-get($grays, "600"), //#999999,
+        "grey":	  map-get($grays, "500"), //#999999,
         "silver": map-get($grays, "400"), //#999999,
         "light":  map-get($grays, "300"),
         "muted":  map-get($grays, "200"),

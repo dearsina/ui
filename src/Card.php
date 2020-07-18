@@ -163,7 +163,7 @@ class Card extends Common {
 		$this->cardHeader['style'] = str::getAttrArray($this->cardHeader['style'], NULL, $this->cardHeader['only_style']);
 
 		# Dropdown buttons and/or button(s) in a row
-		if($buttons = str::getButtons($this->cardHeader)){
+		if($buttons = Button::get($this->cardHeader)){
 			$buttons = "<div class=\"col\">{$buttons}</div>";
 		}
 
@@ -224,7 +224,7 @@ EOF;
 	 * @throws Exception
 	 */
 	public function getFooterHTML(){
-		if(!is_array($this->cardFooter)){
+		if(!$this->cardFooter){
 			// Footers are optional
 			return false;
 		}
@@ -240,21 +240,26 @@ EOF;
 			$buttons = Dropdown::generate($this->cardFooter);
 		}
 
-		# Button(s) in a row
-		if(str::isNumericArray($this->cardFooter['button'])){
-			$this->cardFooter['button'] = array_reverse($this->cardFooter['button']);
-			foreach($this->cardFooter['button'] as $b){
-				if(empty($b)){
-					continue;
-				}
-				$button .= Button::generate($b);
-			}
-		} else if ($this->cardFooter['button']){
-			$button = Button::generate($this->cardFooter['button']);
-		}
+//		# Button(s) in a row
+//		if(str::isNumericArray($this->cardFooter['button'])){
+//			$this->cardFooter['button'] = array_reverse($this->cardFooter['button']);
+//			foreach($this->cardFooter['button'] as $b){
+//				if(empty($b)){
+//					continue;
+//				}
+//				$button .= Button::generate($b);
+//			}
+//		} else if ($this->cardFooter['button']){
+//			$button = Button::generate($this->cardFooter['button']);
+//		}
+//
+//		if($button){
+//			$button = "<div class=\"btn-float-right\">{$button}</div>";
+//		}
 
-		if($button){
-			$button = "<div class=\"btn-float-right\">{$button}</div>";
+		# Dropdown buttons and/or button(s) in a row
+		if($buttons = Button::get($this->cardFooter)){
+			$buttons = "<div class=\"col\">{$buttons}</div>";
 		}
 
 		# Icon
@@ -281,16 +286,16 @@ EOF;
 		# The div class
 		$class = str::getAttrTag("class", $this->cardFooter['class']);
 
+		if($html = $icon.$this->cardFooter['html'].$badge){
+			$html = "<div class=\"col-auto\">{$html}</div>";
+		}
+
 		return <<<EOF
 <div{$id}{$class}{$style}>
 	<div class="container-fluid">
   		<div class="row">
-    		<div class="col-auto">
-    			{$icon}{$this->cardFooter['html']}{$badge}
-    		</div>
-    		<div class="col">
-    			{$buttons}{$button}
-    		</div>
+    		{$html}
+    		{$buttons}
     	</div>
 	</div>{$script}
 </div>

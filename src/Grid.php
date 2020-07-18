@@ -160,7 +160,7 @@ class Grid {
 			$data = str::getDataAttr($col['data']);
 
 			# Buttons
-			$buttons = str::getButtons($col);
+			$buttons = Button::get($col);
 
 			# Hash, URI, onClick
 			if($href = href::generate($col)){

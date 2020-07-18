@@ -37,6 +37,13 @@ smaller, .smaller {
 }
 
 /**
+ * Formatting for monospace (money, amounts) text.
+ */
+.text-monospace {
+  font-family: $font-family-monospace;
+}
+
+/**
  * For when text is displayed as headline and body copy.
  * This is the header.
  */

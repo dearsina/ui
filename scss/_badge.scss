@@ -3,6 +3,69 @@
  */
 .badge {
   padding: 0.1rem 0.25rem 0.2rem 0.25rem;
-  box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.2);
   border-radius: 0.2rem;
+}
+/**
+ * Don't apply the shadow to the outlined badges
+ */
+.badge:not([class*="badge-outline-"]) {
+  box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.2);
+}
+
+/**
+ * Creates the badge-outline-COLOUR set of classes
+ */
+@mixin badge-outline-variant(
+  $color,
+  $color-hover: color-contrast($color),
+  $active-background: $color,
+  $active-border: $color,
+  $active-color: color-contrast($active-background)
+) {
+  color: $color !important;
+  border-color: $color;
+  border: .1px solid;
+  font-weight: 400;
+
+  //&:hover {
+  //  color: $color-hover;
+  //  background-color: $active-background;
+  //  border-color: $active-border;
+  //}
+  //
+  //.btn-check:focus + &,
+  //&:focus {
+  //  box-shadow: 0 0 0 $btn-focus-width rgba($color, .5);
+  //}
+  //
+  //.btn-check:checked + &,
+  //.btn-check:active + &,
+  //&:active,
+  //&.active,
+  //&.dropdown-toggle.show {
+  //  color: $active-color;
+  //  background-color: $active-background;
+  //  border-color: $active-border;
+  //
+  //  &:focus {
+  //    @if $enable-shadows {
+  //      @include box-shadow($btn-active-box-shadow, 0 0 0 $btn-focus-width rgba($color, .5));
+  //    } @else {
+  //      // Avoid using mixin so we can pass custom focus shadow properly
+  //      box-shadow: 0 0 0 $btn-focus-width rgba($color, .5);
+  //    }
+  //  }
+  //}
+  //
+  //&:disabled,
+  //&.disabled {
+  //  color: $color;
+  //  background-color: transparent;
+  //}
+}
+
+@each $color, $value in $theme-colors {
+  .badge-outline-#{$color} {
+    @include badge-outline-variant($value);
+  }
 }
