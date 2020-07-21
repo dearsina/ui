@@ -80,6 +80,22 @@ class MySQL extends Common implements \App\Common\Example\ExampleInterface {
 			"footer" => ""
 		];
 
+
+		$examples[] = [
+			"header" => "Join with count",
+			"query" => [
+				"count" => true,
+				"table" => "subscription",
+				"join" => [[
+					"table" => "subscription_plan",
+					"where" => [
+						"discount_id" => "123"
+					]
+				]]
+			],
+			"footer" => ""
+		];
+
 //		$examples[] = [
 //			"header" => "Insert",
 //			"method" => "insert",

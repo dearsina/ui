@@ -70,12 +70,32 @@
   //border-top: 1px solid #ddd;
   //background: $header-footer-bg;
   padding        : .5rem 0;
-  margin-bottom  : .5rem;
+  //margin-bottom  : .5rem;
   font-weight    : 700;
   font-size      : smaller;
   text-transform : uppercase;
   overflow       : hidden;
   white-space    : nowrap;
+}
+
+.invoice-line
+{
+  padding : .5rem 0;
+}
+
+.invoice-line-child
+{
+  padding    : .5rem 0;
+  border-top : .1px solid #dddddd;
+  background : hsla(203, 20%, 99%, 1);
+}
+
+.invoice-line-metric
+{
+  text-transform : uppercase;
+  font-size      : small;
+  font-weight    : 500;
+  line-height    : 18pt;
 }
 
 .invoice-subtotal
@@ -84,12 +104,9 @@
   padding-top : .5rem;
 }
 
-.invoice-discount > div:not(.col-7)
+.invoice-discount
 {
-  //border-top  : 1px solid #dddddd;
-  margin-top  : .5rem;
   padding-top : .5rem;
-  //font-weight : 600;
 }
 
 .invoice-total > div:not(.col-7)

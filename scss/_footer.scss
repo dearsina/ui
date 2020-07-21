@@ -6,6 +6,7 @@ footer {
   font-size: smaller;
   color: map-get($grays, "500");
   margin-top: 2rem;
+  background-color: $footer-bg;
 }
 
 footer ul {

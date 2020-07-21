@@ -7,7 +7,7 @@
 $french-blue: hsl(203, 100%, 36%);
 
 $grays: (
-  "50": hsl(210, 20%, 99%), //basically white
+  "50": hsl(203, 20%, 99%), //basically white
   "100": hsl(210, 20%, 98%), //cultured
   "200": hsl(210, 30%, 98%), //skimmed
   "300": hsl(206, 30%, 95%), //alice-light
@@ -31,7 +31,8 @@ $warning-colour: hsl(50, 97%, 57%);
  */
 $navbar-level1-bg:  map-get($grays, "800");
 $navbar-level2-bg:  $white;
-$footer-level1-bg:  map-get($grays, "800");
+$footer-bg:         map-get($grays, "700");
+$footer-level1-bg:  rgba(0, 0, 0, 0.2);
 $footer-level2-bg:  map-get($grays, "700");
 $body-bg:           map-get($grays, "100");
 $border-color:      map-get($grays, "400");
