@@ -252,13 +252,24 @@ form {
 
 .iti__country-list {
   z-index: 4; //Or button narratives will override the dropdown
+  position: fixed; // Or else it will drown in modals
+}
+
+/**
+ * When a tel field fails validation, the flag will shift,
+ * unless this fix applied.
+ */
+.iti__flag-container
+{
+  bottom: unset;
+  top: 0.7rem;
 }
 
 /**
  * Vertical dividing line
  */
 .vl {
-  border-left: .1px solid $border-color;
+  border-left: .9px solid $border-color;
 }
 
 /**

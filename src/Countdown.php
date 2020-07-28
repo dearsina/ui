@@ -18,18 +18,18 @@ class Countdown {
 	 * <code>
 	 * Countdown::generate([
 	 * 	"id" => , //A div ID
-	 * 	"class" => , //Optional additional classes
-	 * 	"style" => , //optional style
+	 * 	"class" => , //(Optional) additional classes
+	 * 	"style" => , //(Optional) style
 	 * 	"datetime" => , //A (mySQL) datetime string
-	 * 	"modify" => , //A string modifying the datetime
+	 * 	"modify" => , //(Optional) A string modifying the datetime (if not set, will use restart)
 	 * 	"pre" => , //Text that goes before the timer
 	 * 	"post" => , //Text that goes after the timer
 	 * 	"stop" => , //Text to replace pre+timer+post with once the time is up.
 	 * 	"precision" => ,//How frequently (in milliseconds) the countdown is updated.
 	 * 	"format" => , //A custom format of time
-	 * 	"callback" => , //The name of a function to call at zero
+	 * 	"callback" => , //(Optional) The name of a function to call at zero (if not set, will default to "onDemandReset")
 	 * 	"vars" => , //Variables to send to the callback function
-	 * 	"restart" => [
+	 * 	"restart" => [ (Required, how long is the timer for?)
 	 * 		"minutes" => 5,
 	 * 		"hours" => 2,
 	 * 	]
@@ -56,6 +56,12 @@ class Countdown {
 		# Modify the time
 		if($modify){
 			$dt->modify($modify);
+		} else if ($restart){
+			foreach($restart as $metric => $length){
+				$modify_array[] = "+{$length} {$metric}";
+			}
+			$modify = implode(" ",$modify_array);
+			$dt->modify($modify);
 		}
 
 		# Stop?
@@ -68,6 +74,11 @@ class Countdown {
 		# Restart
 		if($restart){
 			$settings["elapse"] = false;
+		}
+
+		# Callback (unless explicitly set to not have a callback, the default is onDemandReset)
+		if($callback !== false){
+			$callback = $callback ?: "onDemandReset";
 		}
 
 		# Precision

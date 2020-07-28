@@ -6,6 +6,10 @@ namespace App\UI;
 
 /**
  * Class SVG
+ *
+ * Used by page and button.
+ * Replace with Img::?
+ *
  * @package App\UI
  */
 class SVG {

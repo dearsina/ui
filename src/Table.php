@@ -109,7 +109,7 @@ EOF;
 
 			if($col['sortable'] !== false){
 				//If the column is not explicitly set to not sortable
-				$data['col'] =  $col['col_alias'] ?: $key;
+				$data['col'] =  $col['col_name'] ?: $key;
 				//If a column alias has been set, use it, otherwise, use the key
 			} else {
 				$data = [];
@@ -409,7 +409,7 @@ EOF;
 	 *
 	 * @return array|array[]
 	 */
-	public static function emptyTablePlaceholder(string $rel_table): array
+	public static function emptyTablePlaceholder(string $rel_table, ?array $vars = NULL): array
 	{
 		return [
 			str::title($rel_table) => [
@@ -417,7 +417,8 @@ EOF;
 				"html" => str::title("New {$rel_table}..."),
 				"hash" => [
 					"rel_table" => $rel_table,
-					"action" => "new"
+					"action" => "new",
+					"vars" => $vars
 				]
 			]
 		];

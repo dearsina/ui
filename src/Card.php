@@ -6,6 +6,7 @@ namespace App\UI;
 use App\Common\Common;
 use App\Common\str;
 use Exception;
+use Pelago\Emogrifier\CssInliner;
 
 /**
  * Class Card
@@ -240,23 +241,6 @@ EOF;
 			$buttons = Dropdown::generate($this->cardFooter);
 		}
 
-//		# Button(s) in a row
-//		if(str::isNumericArray($this->cardFooter['button'])){
-//			$this->cardFooter['button'] = array_reverse($this->cardFooter['button']);
-//			foreach($this->cardFooter['button'] as $b){
-//				if(empty($b)){
-//					continue;
-//				}
-//				$button .= Button::generate($b);
-//			}
-//		} else if ($this->cardFooter['button']){
-//			$button = Button::generate($this->cardFooter['button']);
-//		}
-//
-//		if($button){
-//			$button = "<div class=\"btn-float-right\">{$button}</div>";
-//		}
-
 		# Dropdown buttons and/or button(s) in a row
 		if($buttons = Button::get($this->cardFooter)){
 			$buttons = "<div class=\"col\">{$buttons}</div>";
@@ -286,7 +270,7 @@ EOF;
 		# The div class
 		$class = str::getAttrTag("class", $this->cardFooter['class']);
 
-		if($html = $icon.$this->cardFooter['html'].$badge){
+		if($html = $icon.$this->cardFooter['footer'].$this->cardFooter['html'].$badge){
 			$html = "<div class=\"col-auto\">{$html}</div>";
 		}
 
@@ -504,6 +488,72 @@ EOF;
 
 	}
 
+	function getEmailHTML(): string
+	{
+		$class_array = str::getAttrArray($this->class, ["main", "", "card-email"], $this->only_class);
+		$class = str::getAttrTag("class", $class_array);
+
+		$default_style = [
+			"border-collapse" => "separate",
+			"mso-table-lspace" => "0pt",
+			"mso-table-rspace" => "0pt",
+			"width" => "100%",
+			"background" => "#ffffff",
+			"border" => "0.9px solid #d8e2e9"
+//			"border" => "0.9px solid red"
+		];
+		$style_array = str::getAttrArray($this->style, $default_style, $this->only_style);
+		$style = str::getAttrTag("style", $style_array);
+
+		$html = <<<EOF
+	{$this->getHeaderHTML()}
+	{$this->getBodyHTML()}
+	{$this->getRowsHTML()}
+	{$this->getFooterHTML()}
+	{$this->getScriptHTML(true)}
+EOF;
+
+//		$css_url = "https://app.{$_ENV['domain']}/css/app.css";
+		$css_url = "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0-alpha1/css/bootstrap.min.css";
+		if(!$css = @file_get_contents($css_url)){
+			throw new \Exception("The CSS file at <code>{$css_url}</code> could not be accessed. The email was not sent.");
+		}
+		$html = CssInliner::fromHtml($html)->inlineCss($css)->render();
+
+
+//		return <<<EOF
+//            <!-- White box -->
+//            <table class="main" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background: #ffffff; border-radius: 3px; border:0.9px solid #d8e2e9;">
+//              <tr>
+//                <td class="wrapper" style="font-family: sans-serif; font-size: 14px; vertical-align: top; box-sizing: border-box; padding: 20px;"><!-- First line of the white box. -->
+//                  <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;">
+//                    <tr>
+//                      <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;"><!-- Second line of the white box -->
+//						{$html}
+//					  </td>
+//                    </tr>
+//                  </table>
+//                </td>
+//              </tr>
+//            </table>
+//			<!-- White box end -->
+//EOF;
+
+
+		return /** @lang HTML */<<<EOF
+<table
+	{$this->getId(true)}
+	{$class}
+	{$style}
+	cellspacing="0"
+	cellpadding="0"
+><tr><td class="wrapper" style="font-family: sans-serif; font-size: 14px; vertical-align: top; box-sizing: border-box; padding: 10px;">
+	{$html}
+</td></tr></table>
+	{$this->getPostHTML()}
+EOF;
+	}
+
 	/**
 	 * @return bool|string
 	 * @throws Exception
@@ -513,9 +563,15 @@ EOF;
 			return false;
 		}
 
-		if(!is_array($this->rows['rows'])){
-			throw new Exception("Place the (actual) rows in a 'rows' sub array.");
+		if(!key_exists("rows", $this->rows)){
+			$this->rows = [
+				"rows" => $this->rows
+			];
 		}
+
+//		if(!is_array($this->rows['rows'])){
+//			throw new Exception("Place the (actual) rows in a 'rows' sub array.");
+//		}
 
 		foreach($this->rows['rows'] as $key => $val){
 			$left = [

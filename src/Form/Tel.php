@@ -3,6 +3,7 @@
 
 namespace App\UI\Form;
 
+use App\Common\Geolocation\Geolocation;
 use App\Common\str;
 use App\Common\User\User;
 
@@ -50,8 +51,7 @@ class Tel extends Field implements FieldInterface {
 	 */
 	private static function getTelSettings(string $value_field_id): array
 	{
-		$user = new User();
-		$geolocation = $user->getGeolocation();
+		$geolocation = Geolocation::get();
 		return [
 			"value_field_id" => $value_field_id,
 			"settings" => [
