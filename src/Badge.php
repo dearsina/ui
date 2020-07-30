@@ -114,7 +114,7 @@ class Badge {
 			$pill ? "badge-pill" : "", //pill shape
 			$basic ? "badge-outline-{$colour}" : "bg-{$colour}",
 			$right ? "float-right" : "", //legacy shortcut
-			"text-light",
+			"text-white",
 			$class,
 			$approve_attr ? "approve-decision" : ""
 		]);

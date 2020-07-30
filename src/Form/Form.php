@@ -380,15 +380,7 @@ class Form {
 			$this->prepareButtonsForModals($this->buttons);
 		}
 
-		if(str::isNumericArray($this->buttons)){
-			foreach($this->buttons as $button){
-				$buttons_array[] = Button::generate($button);
-			}
-		} else {
-			$buttons_array[] = Button::generate($this->buttons);
-		}
-
-		$buttons_html = implode("&nbsp;", $buttons_array);
+		$buttons_html = Button::generate($this->buttons);
 
 		if($this->modal){
 			$buttons_html = <<<EOF

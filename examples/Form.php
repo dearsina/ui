@@ -113,7 +113,7 @@ class Form extends Common implements ExampleInterface {
 			"buttons" => ["save", "cancel"]
 		]);
 
-		$card = new \App\UI\Card([
+		$card = new \App\UI\Card\Card([
 			"header" => "I am in need",
 			"body" => $form->getHTML(),
 			"footer" => "Footer",
@@ -256,7 +256,7 @@ class Form extends Common implements ExampleInterface {
 			"buttons" => ["save", "cancel"]
 		]);
 
-		$card = new \App\UI\Card([
+		$card = new \App\UI\Card\Card([
 			"header" => "I am in need",
 			"body" => $form->getHTML(),
 			"footer" => "Footer",
@@ -344,7 +344,7 @@ class Form extends Common implements ExampleInterface {
 			"buttons" => ["save", "cancel"]
 		]);
 
-		$card = new \App\UI\Card([
+		$card = new \App\UI\Card\Card([
 			"header" => "I am in need",
 			"body" => $form->getHTML(),
 			"footer" => "Footer",

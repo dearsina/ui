@@ -4,7 +4,7 @@
 namespace App\UI\Examples;
 
 use App\Common\Example\ExampleInterface;
-use App\UI\Card;
+use App\UI\Card\Card;
 use App\UI\Grid;
 
 class Accordion implements ExampleInterface {

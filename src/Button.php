@@ -31,6 +31,13 @@ class Button {
 			"type" => "submit",
 		],
 
+		"cancel" => [
+			"onClick" => "window.history.back();",
+			"title" => "Cancel",
+			"colour" => "grey",
+			"basic" => true
+		],
+
 		"cancel_md" => [
 			"title" => "Cancel",
 			"colour" => "grey",
@@ -99,12 +106,6 @@ class Button {
 			],
 			"title" => "Update",
 			"onClick" => "$(this).closest('form').submit();"
-		],
-		"cancel" => [
-			"onClick" => "window.history.back();",
-			"title" => "Cancel",
-			"colour" => "grey",
-			"basic" => true
 		],
 
 		"match" => [
@@ -351,9 +352,9 @@ class Button {
 			return false;
 		}
 
-		# Experimental, if more than 1 button is sent at once
 		if(str::isNumericArray($a)){
-//			$a = array_reverse($a);
+			$a = array_reverse($a);
+			// Used by the Card() class
 			foreach($a as $b){
 				$buttons[] = self::generate($b);
 			}

@@ -131,32 +131,4 @@ abstract class Common extends \App\Common\Common {
 
 		return $modal->getHTML();
 	}
-
-	/**
-	 * Finds the Field class and the relevant method for this rel_table.
-	 * Checks if they exist. Will error out of they don't.
-	 *
-	 * @param $rel_table
-	 *
-	 * @return array
-	 * @throws \ReflectionException
-	 */
-	private function getFieldClassAndMethod($rel_table): array
-	{
-		$current_class = get_class($this);
-		$reflection_class = new \ReflectionClass($current_class);
-		$namespace = $reflection_class->getNamespaceName();
-		$field_class = $namespace."\\Field";
-		$method = str::getMethodCase($rel_table);
-
-		if(!class_exists($field_class)){
-			throw new \Exception("A <code>Field()</code> class for the <b>{$rel_table}</b> table could not be found.");
-		}
-
-		if(!method_exists($field_class, $method)){
-			throw new \Exception("A <code>{$method}</code> method could not be found in the <code>{$field_class}</code> class.");
-		}
-
-		return [$field_class, $method];
-	}
 }

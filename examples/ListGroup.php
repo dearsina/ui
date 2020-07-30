@@ -6,7 +6,7 @@ namespace App\UI\Examples;
 use App\Common\Example\Common;
 use App\Common\Example\ExampleInterface;
 use App\Common\str;
-use App\UI\Card;
+use App\UI\Card\Card;
 use App\UI\Grid;
 
 class ListGroup extends Common implements ExampleInterface {

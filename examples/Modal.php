@@ -6,7 +6,7 @@ namespace App\UI\Examples;
 
 use App\Common\Common;
 use App\Common\str;
-use App\UI\Card;
+use App\UI\Card\Card;
 use App\UI\Grid;
 use App\UI\Icon;
 use App\UI\Page;

@@ -44,20 +44,26 @@ class Table {
 
 		extract($options);
 
+		$id = str::getAttrTag("id",$id);
+		$class_array = str::getAttrArray($class, $sortable !== false ? "table-sortable" : "");
+		// You can make the whole table not sortable by adding "sortable => false" in the options array
+
+		# Can the rows be ordered?
 		if($order){
 			foreach($rows as $key => $row){
 				$rows[$key] = self::getSortableRow($row);
 			}
-			$script = str::getScriptTag(self::getSortableScript($options));
-		} else {
-			$script = str::getScriptTag($script);
+			$data["rel_table"] = $rel_table;
+			$class_array[] = "table-orderable";
 		}
 
+		# Script
+		$script = str::getScriptTag($script);
 
-		$id = str::getAttrTag("id",$id);
-		$class_tag = str::getAttrArray($class, $sortable !== false ? "table-sortable" : "");
-		// You can make the whole table not sortable by adding "sortable => false" in the options array
-		$class = str::getAttrTag("class", $class_tag);
+		# Class
+		$class = str::getAttrTag("class", $class_array);
+
+		# Style
 		$style = str::getAttrTag("style", $style);
 
 		# Tables are unstackable by design
@@ -82,8 +88,11 @@ class Table {
 			$grid->set($row);
 		}
 
+		# Data
+		$data = str::getDataAttr($data);
+
 		return <<<EOF
-<div{$id}{$class}{$style}>
+<div{$id}{$class}{$style}{$data}>
 	{$grid->getHTML()}
 </div>{$script}
 EOF;
@@ -129,39 +138,6 @@ EOF;
 			];
 		}
 		return $header_cols;
-	}
-
-	/**
-	 * Relying on the SortableJS library.
-	 * TODO Move to app.js
-	 *
-	 * @param array $a
-	 * @link https://github.com/SortableJS/Sortable
-	 * @return string
-	 */
-	private static function getSortableScript(array $a){
-		extract($a);
-
-		return /** @lang JavaScript */ <<<EOF
-var el = document.getElementById('{$id}');
-var sortable = new Sortable(el, {
-	handle: ".sortable-handlebars",
-	draggable: ".draggable",
- 	// dataIdAttr: 'data-id',
- 	ghostClass: "sortable-ghost",  // Class name for the drop placeholder
-	chosenClass: "sortable-chosen",  // Class name for the chosen item
-	dragClass: "sortable-drag",  // Class name for the dragging item
-	onEnd: function (evt) {
-		ajaxCall("reorder", "{$rel_table}", evt.item.dataset.id, {
-		    "old_index": evt.oldIndex,
-		    "new_index": evt.newIndex,
-		    // "order": sortable.toArray()
-		});
-	}
-});
-{$script}
-EOF;
-
 	}
 
 	/**
@@ -330,14 +306,14 @@ EOF;
 			//for reference
 
 			# Report the metadata back for reference
-			$output->set_var($key, $vars[$key]);
+			$output->setVar($key, $vars[$key]);
 
 			unset($vars[$key]);
 			// We remove them because all other vars are being fed as where cols
 		}
 
 		# The start value grows for every request
-		$output->set_var('start', $start + $length);
+		$output->setVar('start', $start + $length);
 
 		$base_query['where'] = array_merge($base_query['where'] ?: [], $vars ?: []);
 
@@ -350,14 +326,14 @@ EOF;
 
 			if(!$total_results = $sql->select($count_query)){
 				//If no rows can be found
-				$output->set_var('total_results',0);
-				$output->set_var('start',1);
-				$output->set_var("rows", "<i class=\"text-silent\">No rows found</i>");
+				$output->setVar('total_results',0);
+				$output->setVar('start',1);
+				$output->setVar("rows", "<i class=\"text-silent\">No rows found</i>");
 				return true;
 			}
 
-			$output->set_var('query',$_SESSION['query']);
-			$output->set_var('total_results',$total_results);
+			$output->setVar('query',$_SESSION['query']);
+			$output->setVar('total_results',$total_results);
 			$ignore_header = is_bool($ignore_header) ? $ignore_header : false;
 			//if the variable is already set, will not re-set or change it
 		} else {
@@ -393,7 +369,7 @@ EOF;
 		# Due to the data being loaded piecemeal, it is not sortable
 //		$a['sortable'] = false;
 
-		$output->set_var("rows", self::generate($rows, $a, $ignore_header));
+		$output->setVar("rows", self::generate($rows, $a, $ignore_header));
 
 		return true;
 	}

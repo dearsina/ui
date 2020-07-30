@@ -593,7 +593,7 @@ class MySQL extends Common implements \App\Common\Example\ExampleInterface {
 		extract($a);
 		$method = $method ?: "select";
 
-		$card = new \App\UI\Card([
+		$card = new \App\UI\Card\Card([
 			"header" => $header,
 			"body" => ["html" => [[[
 				"html" => str::pre(str::var_export($query, true), false, "php")

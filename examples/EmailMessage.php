@@ -439,7 +439,7 @@ class EmailMessage extends \App\Common\Common implements \App\Common\Example\Exa
 
 		$email_message = new \App\UI\EmailMessage($array);
 
-		$card = new \App\UI\Card([
+		$card = new \App\UI\Card\Card([
 			"header" => $header,
 			"body" => ["html" => [[[
 				"html" => str::pre($array, false, "php"),

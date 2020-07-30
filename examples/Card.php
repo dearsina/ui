@@ -78,13 +78,13 @@ class Card extends Common implements ExampleInterface {
 		]];
 	}
 	public function getHTML ($a = NULL) {
-		$card = new \App\UI\Card([
+		$card = new \App\UI\Card\Card([
 			"body" => "This is the body."
 		]);
 
 		$html .= $card->getHTML();
 
-		$card = new \App\UI\Card([
+		$card = new \App\UI\Card\Card([
 			"header" => [
 				"title" => "This is the header",
 				"buttons" => $this->dropdown_buttons()
@@ -98,7 +98,7 @@ class Card extends Common implements ExampleInterface {
 
 		$html .= $card->getHTML();
 
-		$card = new \App\UI\Card([
+		$card = new \App\UI\Card\Card([
 			"header" => [
 				"colour" => "green",
 				"title" => "A card with two buttons in the header",
@@ -117,7 +117,7 @@ class Card extends Common implements ExampleInterface {
 
 		$html .= $card->getHTML();
 
-		$card = new \App\UI\Card([
+		$card = new \App\UI\Card\Card([
 			"header" => [
 				"title" => "A card with an exceptionally longer header text that will encroach on the buttons",
 				"icon" => [
@@ -134,7 +134,7 @@ class Card extends Common implements ExampleInterface {
 
 		$html .= $card->getHTML();
 
-		$card = new \App\UI\Card([
+		$card = new \App\UI\Card\Card([
 			"header" => [
 				"colour" => "green",
 				"title" => "A card with two buttons in the header",
@@ -152,7 +152,7 @@ class Card extends Common implements ExampleInterface {
 
 		$html .= $card->getHTML();
 
-		$card = new \App\UI\Card([
+		$card = new \App\UI\Card\Card([
 			"header" => [
 				"title" => "Colours",
 			],

@@ -16,7 +16,7 @@ class Gridstack {
 			];
 		}
 
-		$card = new \App\UI\Card\Card([
+		$card = new \App\UI\Card\Card\Card([
 			"header" => [
 				"title" => "Header",
 				"buttons" => $buttons
