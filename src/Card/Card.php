@@ -4,6 +4,7 @@
 namespace App\UI\Card;
 
 use App\Common\Common;
+use App\Common\Img;
 use App\Common\str;
 use App\UI\Badge;
 use App\UI\Button;
@@ -28,12 +29,14 @@ class Card extends Common {
 	public $resizable;
 	public $draggable;
 	public $script;
+	public $img;
 	public $rows;
 	public $only_class;
 	public $class;
 	public $accent;
 	public $buttons;
 	public $style;
+	public $data;
 
 	/**
 	 * Create a card
@@ -277,7 +280,7 @@ EOF;
 		$class = str::getAttrTag("class", $this->cardFooter['class']);
 
 		if($html = $icon.$this->cardFooter['footer'].$this->cardFooter['html'].$badge){
-			$html = "<div class=\"col-auto\">{$html}</div>";
+			$html = "<div class=\"col-auto card-title\">{$html}</div>";
 		}
 
 		return <<<EOF
@@ -476,13 +479,11 @@ EOF;
 		$class_array = str::getAttrArray($this->class, "card", $this->only_class);
 		$class = str::getAttrTag("class", $class_array);
 		$style = str::getAttrTag("style", $this->style);
+		$data = str::getDataAttr($this->data);
 		return /** @lang HTML */<<<EOF
-<div
-	{$this->getId(true)}
-	{$class}
-	{$style}
->
+<div{$this->getId(true)}{$data}{$class}{$style}>
 	{$this->getHeaderHTML()}
+	{$this->getImgHTML()}
 	{$this->getBodyHTML()}
 	{$this->getRowsHTML()}
 	{$this->getFooterHTML()}
@@ -492,6 +493,10 @@ EOF;
 	{$this->getPostHTML()}
 EOF;
 
+	}
+
+	private function getImgHTML(){
+		return Img::generate($this->img);
 	}
 
 	function getEmailHTML(): string
@@ -575,9 +580,9 @@ EOF;
 			];
 		}
 
-//		if(!is_array($this->rows['rows'])){
-//			throw new Exception("Place the (actual) rows in a 'rows' sub array.");
-//		}
+		if(!is_array($this->rows['rows'])){
+			return false;
+		}
 
 		foreach($this->rows['rows'] as $key => $val){
 			$left = [
@@ -588,7 +593,9 @@ EOF;
 			$rows[] = [$left, $val];
 		}
 
-		$html = Grid::generate($rows);
+		if(is_array($rows)){
+			$html = Grid::generate($rows);
+		}
 
 		$id = str::getAttrTag("id", $this->rows['id']);
 		$class_array = str::getAttrArray($this->rows['class'], "container card-rows", $this->rows['only_class']);

@@ -14,31 +14,66 @@ class Dropdown {
 	/**
 	 * Generates a dropdown button,
 	 * with a dropdown menu.
-	 *
-	 * Primerally used by cards.
+	 * Primarily used by cards.
 	 *
 	 * @param $a
 	 *
 	 * @return string
 	 */
-	static function generate($a){
+	static function generate($a)
+	{
 		extract($a);
 
 		if(!$buttons){
 			return false;
 		}
 
+		$icon = $icon ?: [
+			"name" => "bars",
+			"type" => "thin",
+		];
+
+		$class = str::getAttrArray($class, ["nav-right nav-dropdown"], $only_class);
+
 		$parent = [[
-			"icon" => [
-				"name" => "bars",
-				"type" => "thin"
-			],
+			"icon" => $icon,
 			"children" => $buttons,
-			"class" => "nav-right nav-dropdown"
+			"class" => $class,
 		]];
 
-		$html = self::getMultiLevelItemsHTML($parent, ["class" => "nav-right"]);
+		$parent_class = str::getAttrArray($parent_class, ["nav-right"], $only_class);
+
+		$html = self::getMultiLevelItemsHTML($parent, ["class" => $parent_class]);
 		return "<nav>$html</nav>";
+	}
+
+	static function generateButton(array $a): string
+	{
+		extract($a);
+
+		if(!$children){
+			return false;
+		}
+
+		$class = str::getAttrArray($class, ["nav-right nav-dropdown"], $only_class);
+
+		$parent = [[
+			"title" => $button,
+			"children" => $children,
+			"class" => $class,
+		]];
+
+		$parent_class = str::getAttrArray($parent_class, ["nav-right"], $only_class);
+
+		$html = self::getMultiLevelItemsHTML($parent, [
+			"class" => $parent_class,
+			"style" => [
+				"padding" => "0",
+				"margin" => "0",
+			],
+		]);
+
+		return "<nav class=\"dropdown-button\">$html</nav>";
 	}
 
 	/**
@@ -51,7 +86,8 @@ class Dropdown {
 	 * @throws \Exception
 	 * @throws \Exception
 	 */
-	public static function getMultiLevelItemsHTML($items, $ul = NULL){
+	public static function getMultiLevelItemsHTML($items, $ul = NULL)
+	{
 		if(!is_array($items)){
 			return false;
 		}
@@ -76,7 +112,7 @@ class Dropdown {
 				continue;
 			}
 
-			if($item['children'] || $ul) {
+			if($item['children'] || $ul){
 				//if the item has children, or is a top level item
 				$default_parent_class[] = "parent";
 			}
@@ -133,12 +169,11 @@ EOF;
 
 	/**
 	 * Formats dropdown headers
-	 *
 	 * <code>
 	 * "buttons" => [[
-	 * 	"header" => "Header",
-	 * 	"strong" => true,
-	 * 	"colour" => "red"
+	 *    "header" => "Header",
+	 *    "strong" => true,
+	 *    "colour" => "red"
 	 * ]]
 	 * </code>
 	 *
@@ -146,7 +181,8 @@ EOF;
 	 *
 	 * @return string
 	 */
-	static function getHeaderHTML($button){
+	static function getHeaderHTML($button)
+	{
 		extract($button);
 
 		# The text can be colourised
@@ -164,8 +200,16 @@ EOF;
 		$class_array = str::getAttrArray($class, ["dropdown-header", "text-center", $colour], $only_class);
 		$class_tag = str::getAttrTag("class", $class_array);
 
+		//		$default_style = [
+		//			"text-transform" => "uppercase",
+		//			"letter-spacing" => "1.5px",
+		//			"font-weight" => "400",
+		//			"font-size" => "smaller",
+		//		];
+
 		# Style
-		$style_tag = str::getAttrTag("style", $style);
+		$style_array = str::getAttrArray($style, $default_style, $only_style);
+		$style_tag = str::getAttrTag("style", $style_array);
 
 		return "<li{$class_tag}{$style_tag}><span>{$html}</span></li>";
 	}

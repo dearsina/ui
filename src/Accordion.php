@@ -105,6 +105,10 @@ class Accordion {
 		$a = is_array($a) ? $a : ["title" => $a];
 		extract($a);
 
+		# All three words are valid
+		$title = $title.$header.$html;
+		//TODO Bring together so only one word (header?) is used
+
 		$id = str::getAttrTag("id", $id);
 		$icon = Icon::generate($icon);
 		$badge = Badge::generate($badge);

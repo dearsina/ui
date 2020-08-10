@@ -20,23 +20,26 @@
 .modal-header,
 .modal-footer
 {
-  padding: 1rem 0;
-  border:none;
+  padding : 1rem 0;
+  border  : none;
 }
+
 /**
  * So that it is apparent that you can drag draggable modals.
  */
 .modal-header-draggable
 {
-  cursor: move;
+  cursor : move;
 }
 
 .modal-footer
 {
-  background: $header-footer-bg;
+  background : $header-footer-bg;
 }
-.modal-footer > * {
-  margin: 0.25rem 0;
+
+.modal-footer > *
+{
+  margin : 0.25rem 0;
 }
 
 /**
@@ -44,8 +47,8 @@
  */
 .modal-content
 {
-  box-shadow: 0 1px 3px rgba(0,0,0,.3);
-  border: 1px solid #fff;
+  box-shadow : 0 1px 3px rgba(0, 0, 0, .3);
+  border     : 1px solid #ffffff;
 }
 
 /**
@@ -56,16 +59,17 @@
   //font-weight: 600;
   //background: $header-footer-bg;
 
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  font-weight: 400;
-  font-size: smaller;
-  background: hsla(210, 20%, 99%, 1);
-  border-bottom: .9px solid $border-color;
+  text-transform : uppercase;
+  letter-spacing : 1.5px;
+  font-weight    : 400;
+  font-size      : smaller;
+  background     : hsla(210, 20%, 99%, 1);
+  border-bottom  : .9px solid $border-color;
 }
 
-.modal-title > .far {
-  font-weight: 100 !important;
+.modal-title > .far
+{
+  font-weight : 100 !important;
 }
 
 /**
@@ -74,24 +78,27 @@
  */
 .modal-header .close
 {
-  float:right;
+  float : right;
 }
 
 /**
  * Give the main modal icon in the header
  * a little breathing room.
  */
-.modal-header .modal-title i:first-of-type{
-  margin-right: .5rem;
+.modal-header .modal-title i:first-of-type
+{
+  margin-right : .5rem;
 }
+
 //.modal-title{
 //  margin-bottom: 0; //Undoing Bootstrap
 //}
 
-.modal-body > * {
-  width: -webkit-fill-available;
-  width: -moz-fill-available;
-  width: fill-available;
+.modal-body > *
+{
+  width : -webkit-fill-available;
+  width : -moz-fill-available;
+  width : fill-available;
 }
 
 /**
@@ -100,7 +107,7 @@
  */
 .modal-body.col-scroll
 {
-  display: flex;
+  display : flex;
 }
 
 /**
@@ -108,6 +115,6 @@
  */
 .modal-body .col-scroll
 {
-  overflow-y: auto;
-  max-height: 100%;
+  overflow-y : auto;
+  max-height : 100%;
 }

@@ -162,14 +162,7 @@ class Modal extends Common {
 		}
 
 		# Button(s) in a row
-		if(str::isNumericArray($this->modalHeader['button'])){
-			$this->modalHeader['button'] = array_reverse($this->modalHeader['button']);
-			foreach($this->modalHeader['button'] as $b){
-				$button .= Button::generate($b);
-			}
-		} else if ($this->modalHeader['button']){
-			$button = Button::generate($this->modalHeader['button']);
-		}
+		$button = Button::generate($this->modalHeader['button']);
 
 		if($button){
 			$button = "<div class=\"btn-float-right\">{$button}</div>";
@@ -261,17 +254,7 @@ EOF;
 		}
 
 		# Button(s) in a row
-		if(str::isNumericArray($this->modalFooter['button'])){
-			$this->modalFooter['button'] = array_reverse($this->modalFooter['button']);
-			foreach($this->modalFooter['button'] as $b){
-				if(empty($b)){
-					continue;
-				}
-				$button .= Button::generate($b);
-			}
-		} else if ($this->modalFooter['button']){
-			$button = Button::generate($this->modalFooter['button']);
-		}
+		$button = Button::generate($this->modalFooter['button']);
 
 		if($button){
 			$button = "<div class=\"btn-float-right\">{$button}</div>";

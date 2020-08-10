@@ -2,13 +2,13 @@
  * The max screen width before it goes
  * goes up a class.
  */
-$grid-breakpoints: (
+$grid-breakpoints     : (
         xs: 0,
         sm: 576px,
         md: 768px,
         lg: 992px,
         xl: 1200px,
-        // Additional, larger sizes for larger screens
+  // Additional, larger sizes for larger screens
         2xl: 1440px,
         3xl: 1620px,
         4xl: 1860px,
@@ -20,13 +20,14 @@ $grid-breakpoints: (
 
 /**
  * The corresponding container size.
+ * Not sure if we need these any more
  */
-$container-max-widths: (
+$container-max-widths : (
         sm: 540px,
         md: 720px,
         lg: 960px,
         xl: 1140px,
-        // Additional, larger sizes for larger screens
+  // Additional, larger sizes for larger screens
         2xl: 1380px,
         3xl: 1560px,
         4xl: 1800px,
@@ -43,24 +44,27 @@ $container-max-widths: (
 /**
  * So that when a card is resized, the content is still accessible.
  */
-.grid-stack .card-body {
-  overflow-y: auto;
+.grid-stack .card-body
+{
+  overflow-y : auto;
 }
 
 /**
  * Ensures the integrity of the card
  */
-.grid-stack .card {
-  height: 100%;
+.grid-stack .card
+{
+  height : 100%;
 }
 
-.grid-stack>.grid-stack-item>.grid-stack-item-content {
-  overflow: visible;
+.grid-stack > .grid-stack-item > .grid-stack-item-content
+{
+  overflow   : visible;
   /**
    * We're removing scroll bars from the item-content,
    * and moving it to the card-body.
    */
-  box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.2);
+  box-shadow : 1px 1px 2px 0 rgba(0, 0, 0, 0.2);
   /**
    * For some reason, Gridstack hides the box shadow from
    * cards, so we're just re-introducing the same shadow here.
@@ -68,7 +72,47 @@ $container-max-widths: (
 }
 
 /* For when there is only one column and it's a fixed width column */
-.fixed-width-column{
-  min-width: 23rem;
-  max-width: 100%;
+.fixed-width-column
+{
+  min-width : 23rem;
+  max-width : 100%;
+}
+
+.add-list:not(:first-of-type)
+{
+  border-top: .9px solid $border-color;
+  padding-top: 1rem;
+}
+
+/**
+ * Gridster.js
+ */
+
+// The preview of the box as it's being moved.
+.gridster .preview-holder
+{
+  border        : none !important;
+  border-radius : $border-radius-xs !important;
+  background    : #dddddd !important;
+}
+
+// Strips margins from cards to better fit into the grid.
+.card-grid
+{
+  margin : 0;
+}
+
+// Wrapper prevents items from being displayed before placement.
+.card-grid-wrapper
+{
+  display : none;
+}
+
+// The buttons to control the card
+.grid-card-control-buttons
+{
+  z-index: 1;
+  position: absolute;
+  top: .5rem;
+  right: .5rem;
 }

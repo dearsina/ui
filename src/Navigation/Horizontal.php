@@ -43,6 +43,9 @@ class Horizontal {
 		if(empty($this->levels[1])){
 			return false;
 		}
+		if($this->levels[1]['items']){
+			$this->levels[1]['items'] = array_reverse($this->levels[1]['items']);
+		}
 		$html .= "<div id=\"navbar-level1\">";
 		$html .= $this->getTitleHTML($this->levels[1]['title'], "navbar-level1-logo");
 		$html .= "<div id=\"navbar-level1-buttons\">";

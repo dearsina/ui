@@ -191,27 +191,20 @@ class Form extends Common implements ExampleInterface {
 
 		$fields[] = [
 			"type" => "radio",
-			"name" => "radiofield",
+			"name" => "simple_radio",
+			"label" => [
+				"label" => "This, the label",
+				"desc" => "This radio field only has simple values",
+			],
+			"parent_desc" => "Parent desc also works",
 			"value" => 3,
-			"options" => [
-				"1" => "Simple value",
-				"2" => [
-					"label" => "Complex value",
-					"desc" => $desc
-				],
-				"3" => [
-					"label" => [
-						"title" => "Label as array",
-						"desc" => $desc
-					]
-				]
-			]
+			"options" => explode(" ", "Exploded items from string list")
 		];
 
 		$fields[] = [
 			"type" => "radio",
 			"name" => "radiofield_xx",
-			"value" => false,
+			"value" => 3,
 			"options" => [
 				"" => "None",
 				"1" => "Simple value",

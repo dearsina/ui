@@ -107,7 +107,7 @@ class Field {
 	 * and the ID of the field this label is for.
 	 *
 	 * @param array|string $label
-	 * @param              $title
+	 * @param string       $title Not quite sure what this is for.
 	 * @param string       $name
 	 * @param int|string   $id
 	 *
@@ -350,6 +350,7 @@ class Field {
 
 		if(is_array($desc)){
 			extract($desc);
+			$html = $desc;
 		} else {
 			$html = $desc;
 		}

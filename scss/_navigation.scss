@@ -501,6 +501,8 @@ nav .parent > ul li
   //overflow: hidden; This will prevent grand children
   white-space : nowrap;
   max-width   : 300px;
+
+  //border-bottom : .9px solid $border-color;
 }
 
 nav .parent > ul li > a,
@@ -510,7 +512,7 @@ nav .parent > ul li > div
   padding       : 0.3rem 1rem;
   display       : block;
   font-weight   : 400;
-  border-bottom : .9px solid $border-color;
+  //border-bottom : .9px solid $border-color;
 }
 
 nav .nav-left ul ul, nav .nav-left ul ul ul

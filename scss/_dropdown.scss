@@ -124,8 +124,13 @@
 }
 
 .dropdown-header {
-  line-height: 0.5 !important;
+  line-height: 15px !important;
+  overflow: hidden;
   //text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-weight: 400;
+  font-size: 9pt;
 }
 .dropdown-header span {
   display: inline-block;
@@ -135,7 +140,7 @@
 .dropdown-header span:after {
   content: "";
   position: absolute;
-  height: 5px;
+  height: 8px;
   border-bottom-style: solid;
   border-bottom-width: .9px;
   border-bottom-color: black;
@@ -179,3 +184,15 @@ h1:after {
     margin-right: -50%;
 }
  */
+
+/**
+ * For when buttons have dropdowns.
+ */
+.dropdown-button
+{
+  display: inline;
+}
+.dropdown-button .nav-right.nav-dropdown {
+  padding: 0 !important;
+  width: fit-content;
+}

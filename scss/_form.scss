@@ -48,6 +48,17 @@ form {
 .label-desc
 {
   display: block;
+  font-weight: 300;
+}
+
+/**
+ * As the checkbox desc comes above the options,
+ * it needs to be treted differently
+ */
+.checkbox-parent-desc
+{
+  margin-top: -0.5rem;
+  margin-bottom: 1rem;
 }
 
 /**
@@ -59,7 +70,8 @@ form {
 
 .field-label
 {
-  margin-bottom: .25rem;
+  margin-bottom: .5rem;
+  font-weight: 500 !important;
 }
 .field-label > b
 {

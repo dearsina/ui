@@ -112,7 +112,7 @@ class Countdown {
 			"basic" => true,
 			"colour" => "grey",
 			"onClick" => "countdownStopStart.call(this);",
-			"size" => "xs",
+			"size" => "s",
 			"ladda" => false
 		]);
 
@@ -124,9 +124,10 @@ class Countdown {
 				"basic" => true,
 				"colour" => "grey",
 				"onClick" => "countdownRestart.call(this);",
-				"size" => "xs",
+				"size" => "s",
 				"ladda" => false
 			]);
+			$buttons = "<div class=\"btn-group\" role=\"group\">{$pause_play}{$refresh}</div>";
 		}
 
 		$id = str::getAttrTag("id", $id);
@@ -134,7 +135,7 @@ class Countdown {
 		return <<<EOF
 <div class="countdown-wrapper">
 	<div{$id}{$class}{$style}{$data_attr}></div>
-	<div class="btn-group" role="group">{$pause_play}{$refresh}</div>
+	{$buttons}
 </div>
 EOF;
 	}

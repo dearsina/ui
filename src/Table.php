@@ -25,7 +25,7 @@ class Table {
 	 * ]);
 	 * </code>
 	 *
-	 * @param            $rows    Array from SQL results
+	 * @param array      $rows    Array from SQL results
 	 * @param array|null $options ID, class, style, script
 	 *
 	 * @param bool|null  $ignore_header

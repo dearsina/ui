@@ -294,17 +294,13 @@ class Button {
 
 		# Dropdown buttons
 		if($a['buttons']){
-			return Dropdown::generate($a);
+			return Dropdown::generate(["buttons" => $a['buttons']]);
+			//Done this way to not drag in the other keys like icon
 		}
 
 		# Button(s) in a row
-		if(str::isNumericArray($a['button'])){
-			$a['button'] = array_reverse($a['button']);
-			foreach($a['button'] as $b){
-				$button .= Button::generate($b);
-			}
-		} else if ($a['button']){
-			$button = Button::generate($a['button']);
+		if(!$button = Button::generate($a['button'])){
+			return NULL;
 		}
 
 		# The buttons are by default wrapped in a btn-float-right div. This can be overwritten, by parent_class/style
@@ -317,11 +313,7 @@ class Button {
 		$parent_class = str::getAttrTag("class", $parent_class_array);
 		$parent_style = str::getAttrTag("style", $a['button']['parent_style']);
 
-		if($button){
-			$button = "<div{$parent_class}{$parent_style}>{$button}</div>";
-		}
-
-		return $buttons.$button;
+		return "<div{$parent_class}{$parent_style}>{$button}</div>";
 	}
 
 	/**
@@ -354,7 +346,6 @@ class Button {
 
 		if(str::isNumericArray($a)){
 			$a = array_reverse($a);
-			// Used by the Card() class
 			foreach($a as $b){
 				$buttons[] = self::generate($b);
 			}
@@ -368,6 +359,11 @@ class Button {
 		}
 
 		extract($a);
+
+		# Buttons with children are to be treated a little differently
+		if($children){
+			return self::generateWithChildren($a);
+		}
 
 		# Who is directing the button?
 		if($approve){
@@ -484,7 +480,7 @@ class Button {
 		# Size
 		if($size){
 			switch($size){
-			case 'xs' 	: $size = "sm"; break;
+			case 's' 	: $size = "sm"; break;
 			case 'small': $size = "sm"; break;
 			case 'large': $size = "lg"; break;
 			}
@@ -523,6 +519,8 @@ class Button {
 		$title_tag 		= str::getAttrTag("title", $alt.$desc ? $alt.$desc : strip_tags($title));
 		$data_style_tag	= str::getAttrTag("data-style", "slide-left");
 
+
+
 		$button_html = /** @lang HTML */<<<EOF
 {$wrapper_pre}
 <{$tag_type}
@@ -550,49 +548,6 @@ class Button {
 {$wrapper_post}
 {$script}
 EOF;
-
-		if(is_array($children)){
-			foreach($children as $child){
-				$children_html .= self::generate($child);
-			}
-			$href = str::getAttrTag("href", "#");
-			$class = str::getAttrTag("class", "parent");
-			return <<<EOF
-<li{$class}{$style}>
-	<a {$href}>{$icon}{$item['title']}{$badge}</a>
-	{$children_html}
-</li>
-EOF;
-			/**
-			$child['ladda'] = false;
-			foreach($children as $child){
-//				$child_html .= "<li class=\"dropdown-item\">";
-				$child['only_class'] = "dropdown-item";
-				$child['ladda'] = false;
-				$child_html .= Button::generate($child, true);
-//				$child_html .= "</li>";
-			}
-			return /** @lang HTML * /<<<EOF
-			
-<li class="dropdown-submenu">
-	<a
-		class="dropdown-item dropdown-toggle"
-		href="#"		
-	>
-	{$icon}
-	{$title}
-	{$sub_title}
-	</a>
-	<div class="dropdown-menu">
-		{$child_html}
-	</div>
-</li>
-<script>
-enableSubmenu();
-</script>
-EOF;
-			**/
-		}
 
 		if($type == 'file'){
 			$for_tag = str::getAttrTag("for", $id);
@@ -626,6 +581,37 @@ EOF;
 		}
 
 		return $button_html;
+	}
+
+	/**
+	 * If the button has children,
+	 * the process is a little different.
+	 *
+	 * @param array $a
+	 *
+	 * @return string
+	 * @throws \Exception
+	 */
+	static function generateWithChildren(array $a): string
+	{
+		# Separate out the children
+		$children = $a['children'];
+		unset($a['children']);
+
+		# Remove the ladda from the button itself
+		$a['ladda'] = false;
+
+		$a['title'] .= "&nbsp;".Icon::generate([
+			"style" => [
+				"font-weight" => "600 !important"
+			],
+			"name" => "chevron-down"
+		]);
+
+		return Dropdown::generateButton([
+			"button" => self::generate($a),
+			"children" => $children
+		]);
 	}
 
 	/**

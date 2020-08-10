@@ -137,7 +137,20 @@ EOF;
 	private static function getMultiCheckboxHTML($a){
 		extract($a);
 
-		$parent_label = self::getLabel($parent_label, $parent_title, $name, $id);
+		$parent_label = self::getLabel($label, $parent_title, $name, $id);
+
+		if(is_array($parent_desc)){
+			if(is_array($parent_desc['class'])){
+				$parent_desc['class'][] = "checkbox-parent-desc";
+			} else {
+				$parent_desc['class'] .= "checkbox-parent-desc";
+			}
+		} else {
+			$parent_desc = [
+				"desc" => $parent_desc,
+				"class" => "checkbox-parent-desc"
+			];
+		}
 		$parent_desc = self::getDesc($parent_desc);
 
 		foreach($options as $key => $val){

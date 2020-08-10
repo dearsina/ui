@@ -18,84 +18,171 @@ class MySQL extends Common implements \App\Common\Example\ExampleInterface {
 		$grid = new Grid();
 
 		$examples[] = [
-			"header" => "Join with where and limit",
+			"header" => "Long join",
 			"query" => [
-				"columns" => [
-					"c",
-					"r",
-					"u",
-					"d",
-					"created_by"
-				],
-				"table" => "role_permission",
-				"join" => [[
-					"columns" => false,
-					"table" => "role",
-					"on" => "role_id",
+				"db" => "user_data",
+				"table" => "client_type_doc_type",
+				"left_join" => [[
+					"db" => "user_data",
+					"table" => "doc_type",
+					"id" => "doc_type_id"
 				],[
-					"columns" => false,
-					"table" => "user_role",
+					"db" => "user_data",
+					"table" => "client_field",
 					"on" => [
-						"rel_table" => ["role", "role"]
+						"doc_type_id" => ["user_data", "doc_type", "doc_type_id"],
 					],
-					"where" => [
-						"rel_table" => "user"
-					]
 				],[
-					"columns" => "first_name",
-					"table" => "user",
+					"db" => "app",
+					"table" => "field_type",
 					"on" => [
-						"user_id" => ["role_permission", "created_by"]
-					]
-				]],
-//				"where" => $where,
-				"limit" => 1
-			],
-			"footer" => ""
-		];
-
-
-		$examples[] = [
-			"header" => "Join with limit",
-			"query" => [
-				"columns" => "currency_code",
-				"table" => "country",
-				"join" => [[
-					"columns" => false,
-					"table" => "geolocation",
-					"on" => "country_code"
-				],[
-					"columns" => false,
-					"table" => "connection",
-					"on" => [
-						"ip" => ["geolocation", "ip"]
+						"field_type_id" => ["user_data", "client_field", "field_type_id"],
 					],
-					"where" => [
-						["closed", "IS", NULL],
-						"user_id" => "123"
-					]
-				]],
-				"limit" => 1
-			],
-			"footer" => ""
-		];
-
-
-		$examples[] = [
-			"header" => "Join with count",
-			"query" => [
-				"count" => true,
-				"table" => "subscription",
-				"join" => [[
-					"table" => "subscription_plan",
-					"where" => [
-						"discount_id" => "123"
-					]
 				]]
 			],
 			"footer" => ""
 		];
 
+//		$examples[] = [
+//			"header" => "JSON join",
+//			"query" => [
+//				"db" => "user_data",
+//				"table" => "client_type",
+//				"join" => [[
+//					"columns" => false,
+//					"db" => "user_data",
+//					"table" => "doc_type",
+//					"on" => [
+//						"doc_type_id" => ["user_data", "client_type", "doc_type_ids"]
+//					]
+//				]]
+//			],
+//			"footer" => ""
+//		];
+//
+//		$examples[] = [
+//			"header" => "Join with where and limit",
+//			"query" => [
+//				"columns" => [
+//					"c",
+//					"r",
+//					"u",
+//					"d",
+//					"created_by"
+//				],
+//				"table" => "role_permission",
+//				"join" => [[
+//					"columns" => false,
+//					"table" => "role",
+//					"on" => "role_id",
+//				],[
+//					"columns" => false,
+//					"table" => "user_role",
+//					"on" => [
+//						"rel_table" => ["role", "role"]
+//					],
+//					"where" => [
+//						"rel_table" => "user"
+//					]
+//				],[
+//					"columns" => "first_name",
+//					"table" => "user",
+//					"on" => [
+//						"user_id" => ["role_permission", "created_by"]
+//					]
+//				]],
+////				"where" => $where,
+//				"limit" => 1
+//			],
+//			"footer" => ""
+//		];
+//
+//
+//		$examples[] = [
+//			"header" => "Join with limit",
+//			"query" => [
+//				"distinct" => true,
+//				"columns" => "currency_code",
+//				"table" => "country",
+//				"join" => [[
+//					"columns" => false,
+//					"table" => "geolocation",
+//					"on" => "country_code"
+//				],[
+//					"columns" => false,
+//					"table" => "connection",
+//					"on" => [
+//						"ip" => ["geolocation", "ip"]
+//					],
+//					"where" => [
+//						["closed", "IS", NULL],
+//						"user_id" => "123"
+//					]
+//				]],
+//				"limit" => 1
+//			],
+//			"footer" => ""
+//		];
+//
+//
+//		$examples[] = [
+//			"header" => "Join with count",
+//			"query" => [
+//				"count" => true,
+//				"table" => "subscription",
+//				"join" => [[
+//					"table" => "subscription_plan",
+//					"where" => [
+//						"discount_id" => "123"
+//					]
+//				]]
+//			],
+//			"footer" => ""
+//		];
+//
+//
+//		$examples[] = [
+//			"header" => "Distinct join with count",
+//			"query" => [
+//				"distinct" => true,
+//				"columns" => [
+//					"subscription_count" => ["COUNT", "subscription_id"],
+//					"status"
+//				],
+//				"table" => "subscription",
+//				"join" => [[
+//					"columns" => false,
+//					"table" => "subscription_plan_service",
+//					"on" => "subscription_id",
+//					"where" => [
+//						"service_id" => "123"
+//					]
+//				]],
+//			],
+//			"footer" => ""
+//		];
+//
+//
+//		$examples[] = [
+//			"header" => "Distinct join count",
+//			"query" => [
+//				"distinct" => true,
+//				"count" => true,
+//				"table" => "plan",
+//				"join" => [[
+//					"columns" => false,
+//					"table" => "plan_service",
+//					"where" => [
+//						"service_id" => "234",
+//					],
+//				]],
+//				"where" => [
+//					["retired", "IS NOT", NULL],
+//				],
+//			],
+//			"footer" => ""
+//		];
+//
 //		$examples[] = [
 //			"header" => "Insert",
 //			"method" => "insert",
@@ -114,7 +201,7 @@ class MySQL extends Common implements \App\Common\Example\ExampleInterface {
 //			],
 //			"footer" => ""
 //		];
-
+//
 //		$examples[] = [
 //			"header" => "GROUP CONCAT",
 //			"query" => [
@@ -139,7 +226,7 @@ class MySQL extends Common implements \App\Common\Example\ExampleInterface {
 //				]
 //			],
 //		];
-
+//
 //		$examples[] = [
 //			"header" => "GROUP CONCAT",
 //			"query" => [
@@ -164,7 +251,7 @@ class MySQL extends Common implements \App\Common\Example\ExampleInterface {
 //				"limit" => 1
 //			],
 //		];
-
+//
 //		$examples[] = [
 //			"header" => "Active cron jobs only",
 //			"query" => [
@@ -177,7 +264,7 @@ class MySQL extends Common implements \App\Common\Example\ExampleInterface {
 //				]
 //			],
 //		];
-
+//
 //		$examples[] = [
 //			"header" => "Simple remove",
 //			"method" => "remove",
@@ -247,9 +334,9 @@ class MySQL extends Common implements \App\Common\Example\ExampleInterface {
 //			],
 //			"footer" => "Will give you the whole table"
 //		];
-
-
-
+//
+//
+//
 //		$examples[] = [
 //			"header" => "Just the table name",
 //			"query" => [
@@ -319,7 +406,7 @@ class MySQL extends Common implements \App\Common\Example\ExampleInterface {
 //					"SlashR\r\nSlashN" => "user_id",
 //				],
 //				"table" => "user",
-//				"db" => "public_list"
+////				"db" => "public_list"
 //			]
 //		];
 //
@@ -327,7 +414,7 @@ class MySQL extends Common implements \App\Common\Example\ExampleInterface {
 //			"header" => "Different database",
 //			"query" => [
 //				"table" => "user",
-//				"db" => "public_list"
+////				"db" => "public_list"
 //			]
 //		];
 //
@@ -337,7 +424,7 @@ class MySQL extends Common implements \App\Common\Example\ExampleInterface {
 //				"table" => "user",
 //				"join" => [
 //					"table" => "user",
-//					"db" => "public_list",
+////					"db" => "public_list",
 //					"order_by" => [
 //						"first_name" => "ASC"
 //					]
@@ -396,14 +483,14 @@ class MySQL extends Common implements \App\Common\Example\ExampleInterface {
 //			"query" => [
 //				"columns" => "user_id",
 //				"table" => "user",
-//				"db" => "public_list",
+////				"db" => "public_list",
 //				"join" => [[
 //					"columns" => "user_id",
 //					"table" => "user"
 //				],[
 //					"columns" => "user_id",
 //					"table" => "user",
-//					"db" => "public_list",
+////					"db" => "public_list",
 //				],[
 //					"columns" => "user_role_id",
 //					"table" => "user_role",
@@ -418,7 +505,7 @@ class MySQL extends Common implements \App\Common\Example\ExampleInterface {
 //					"table" => "FILES",
 //					"db" => "information_schema",
 //					"on" => [
-//						"FILE_ID" => ["public_list", "user", "user_id"]
+//						"FILE_ID" => ["user", "user_id"]
 //					],
 //					"include_removed" => true
 //				]]
@@ -502,7 +589,7 @@ class MySQL extends Common implements \App\Common\Example\ExampleInterface {
 //			],
 //			"footer" => "If the entire join is just a table name, will assume the key is the main table ID column."
 //		];
-
+//
 //		$examples[] = [
 //			"header" => "Aggregate functions with distinct",
 //			"query" => [
@@ -553,7 +640,7 @@ class MySQL extends Common implements \App\Common\Example\ExampleInterface {
 //				"limit" => 1
 //			]
 //		];
-
+//
 //		$examples[] = [
 //			"header" => "Join with all the different comparison formats.",
 //			"query" => [

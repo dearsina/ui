@@ -12,6 +12,18 @@ $btn-border-radius-xs:  $border-radius-xs;
 }
 
 /**
+ * Create a more uniform min-size for the btn-sm size
+ */
+.btn-sm
+{
+  min-width: 2.2rem;
+  min-height: 2rem;
+}
+.btn-sm i {
+  padding-top: 0.25rem;
+}
+
+/**
  * Undo the transitions added by the ladda JS
  */
 .ladda-button, .ladda-button .ladda-spinner, .ladda-button .ladda-label {
@@ -85,7 +97,8 @@ form .btn i
 {
   margin: -0.5rem 0 0 0;
 }
-.card .btn-float-right .btn
+.card .btn-float-right .btn,
+.modal .btn-float-right .btn
 {
   float: right !important;
   //line-height: 1;

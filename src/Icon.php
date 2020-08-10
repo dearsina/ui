@@ -248,20 +248,22 @@ EOF;
 
 	/**
 	 * Get an icon name from the database table icon.
+	 * Will only call the icon table ONCE per request.
 	 *
 	 * @param $rel_table
 	 *
 	 * @return string
 	 */
 	static function get($rel_table){
-		$sql = Factory::getInstance();
-		$icon = $sql->select([
-			"table" => "icon",
-			"where" => [
-				"rel_table" => $rel_table
-			],
-			"limit" => 1
-		]);
-		return $icon['icon'] ?: $rel_table;
+		global $icon;
+		if(!is_array($icon)){
+			$sql = Factory::getInstance();
+			if($icons = $sql->select(["table" => "icon"])){
+				foreach($icons as $row){
+					$icon[$row['rel_table']] = $row;
+				}
+			}
+		}
+		return $icon[$rel_table]['icon'] ?: $rel_table;
 	}
 }
