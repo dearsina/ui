@@ -196,3 +196,10 @@ h1:after {
   padding: 0 !important;
   width: fit-content;
 }
+
+// Should fix it so that dropdowns hover _above_ modal body frames
+.modal nav:not(.dropdown-button) > .nav-right > .parent
+{
+  position: fixed;
+  margin-left: -0.5rem;
+}

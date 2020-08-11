@@ -20,23 +20,20 @@ class MySQL extends Common implements \App\Common\Example\ExampleInterface {
 		$examples[] = [
 			"header" => "Long join",
 			"query" => [
-				"db" => "user_data",
 				"table" => "client_type_doc_type",
 				"left_join" => [[
-					"db" => "user_data",
 					"table" => "doc_type",
 					"id" => "doc_type_id"
 				],[
-					"db" => "user_data",
-					"table" => "client_field",
+					"table" => "form_field",
 					"on" => [
-						"doc_type_id" => ["user_data", "doc_type", "doc_type_id"],
+						"doc_type_id" => ["doc_type", "doc_type_id"],
 					],
 				],[
 					"db" => "app",
 					"table" => "field_type",
 					"on" => [
-						"field_type_id" => ["user_data", "client_field", "field_type_id"],
+						"field_type_id" => ["form_field", "field_type_id"],
 					],
 				]]
 			],

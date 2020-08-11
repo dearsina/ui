@@ -20,8 +20,10 @@ class Table {
 	 * Tables with an order column:
 	 * <code>
 	 * Table::generate($rows, [
+	 * 	"order" => true,
 	 * 	"rel_table" => $rel_table,
-	 * 	"order" => true
+	 * 	"limiting_key" => "subscription_id",
+	 * 	"limiting_val" => $client_type['subscription_id'],
 	 * ]);
 	 * </code>
 	 *
@@ -32,19 +34,18 @@ class Table {
 	 *
 	 * @return bool|string
 	 * @throws \Exception
-	 * @throws \Exception
-	 * @throws \Exception
 	 */
-	public static function generate($rows, ?array $options = [], ?bool $ignore_header = NULL){
+	public static function generate($rows, ?array $options = [], ?bool $ignore_header = NULL)
+	{
 		if(empty($rows)){
 			return false;
 		}
 
-		$options['id'] =  $options['id'] ?: str::id("table");
+		$options['id'] = $options['id'] ?: str::id("table");
 
 		extract($options);
 
-		$id = str::getAttrTag("id",$id);
+		$id = str::getAttrTag("id", $id);
 		$class_array = str::getAttrArray($class, $sortable !== false ? "table-sortable" : "");
 		// You can make the whole table not sortable by adding "sortable => false" in the options array
 
@@ -53,7 +54,14 @@ class Table {
 			foreach($rows as $key => $row){
 				$rows[$key] = self::getSortableRow($row);
 			}
+
+			# Identifies which table is being reordered
 			$data["rel_table"] = $rel_table;
+
+			# Use the limiting key/val pair to avoid reordering the entire table
+			$data["limiting_key"] = $limiting_key;
+			$data["limiting_val"] = $limiting_val;
+
 			$class_array[] = "table-orderable";
 		}
 
@@ -77,7 +85,7 @@ class Table {
 			$grid->set([
 				"row_class" => str::getAttrArray($row['header_class'], "table-header", $row['only_header_class']),
 				"row_style" => $row['header_style'],
-				"html" => self::generateHeaderRow($row, $options)
+				"html" => self::generateHeaderRow($row, $options),
 			]);
 		}
 
@@ -106,7 +114,8 @@ EOF;
 	 *
 	 * @return mixed
 	 */
-	private static function generateHeaderRow($row, $options){
+	private static function generateHeaderRow($row, $options)
+	{
 		extract($options);
 
 		foreach($row as $key => $col){
@@ -114,11 +123,11 @@ EOF;
 			$col = is_array($col) ? $col : ["html" => $col];
 
 			# The default class for a header row
-			$default= ["text-flat"];
+			$default = ["text-flat"];
 
 			if($col['sortable'] !== false){
 				//If the column is not explicitly set to not sortable
-				$data['col'] =  $col['col_name'] ?: $key;
+				$data['col'] = $col['col_name'] ?: $key;
 				//If a column alias has been set, use it, otherwise, use the key
 			} else {
 				$data = [];
@@ -134,7 +143,7 @@ EOF;
 				"sm" => $col['sm'],
 				"class" => $header_class,
 				"style" => $col['header_style'],
-				"data" => $data
+				"data" => $data,
 			];
 		}
 		return $header_cols;
@@ -146,7 +155,8 @@ EOF;
 	 * @return array
 	 * @throws \Exception
 	 */
-	private static function getSortableRow($row){
+	private static function getSortableRow($row)
+	{
 		# We need to unset the order number, cause we don't actually use it anywhere
 		unset($row['order']);
 
@@ -160,12 +170,12 @@ EOF;
 
 		$order = [
 			"<!--SORTABLE-->" => [
-				"class" => "sortable-handlebars",
+				"class" => $id ? "sortable-handlebars" : "",
 				"sm" => 1,
 				"header_style" => [
-					"max-width" => "3.5rem"
-				]
-			]
+					"max-width" => "3.5rem",
+				],
+			],
 		];
 
 		$row = [
@@ -173,7 +183,7 @@ EOF;
 			"row_data" => [
 				"id" => $id,
 			],
-			"html" => array_merge($order, $row)
+			"html" => array_merge($order, $row),
 		];
 
 		return $row;
@@ -185,7 +195,8 @@ EOF;
 	 * @return string
 	 * @throws \Exception
 	 */
-	public static function onDemand(array $a){
+	public static function onDemand(array $a)
+	{
 		extract($a);
 
 		if(!is_array($hash)){
@@ -193,7 +204,7 @@ EOF;
 		}
 
 		$a['id'] = $id ?: str::id("table");
-		$id = str::getAttrTag("id", $a['id'] );
+		$id = str::getAttrTag("id", $a['id']);
 		$class_array = str::getAttrArray($class, "table-ondemand", $only_class);
 		$class = str::getAttrTag("class", $class_array);
 		$style_class = str::getAttrArray($style, [], $only_style);
@@ -206,7 +217,7 @@ EOF;
 			"icon" => "angle-double-down",
 			"title" => "Load more...",
 			"class" => "load-more-button",
-			"size" => "small"
+			"size" => "small",
 		]);
 
 		return <<<EOF
@@ -225,7 +236,8 @@ EOF;
 	 *
 	 * @return string
 	 */
-	private static function getOnDemandAttr($a){
+	private static function getOnDemandAttr($a)
+	{
 		foreach($a as $key => $val){
 			if($key == 'hash'){
 				continue;
@@ -252,25 +264,25 @@ EOF;
 	 *
 	 * <code>
 	 * $base_query = [
-	 * 	"table" => "error_log",
-	 * 	"order_by" => [
-	 * 		"created" => "desc"
-	 * 	]
+	 *    "table" => "error_log",
+	 *    "order_by" => [
+	 *        "created" => "desc"
+	 *    ]
 	 * ];
 	 *
 	 * $row_handler = function(array $error){
-	 * 	$row["Date"] = [
-	 * 		"html" => str::ago($error['created']),
-	 * 		"sm" => 2
-	 * 	];
-	 * 	$row["Type"] = [
-	 * 		"accordion" => [
-	 * 			"header" => $error['title'],
-	 * 			"body" => str::pre($error['message'])
-	 * 		],
-	 * 		"sm" => 4
-	 * 	];
-	 * 	return $row;
+	 *    $row["Date"] = [
+	 *        "html" => str::ago($error['created']),
+	 *        "sm" => 2
+	 *    ];
+	 *    $row["Type"] = [
+	 *        "accordion" => [
+	 *            "header" => $error['title'],
+	 *            "body" => str::pre($error['message'])
+	 *        ],
+	 *        "sm" => 4
+	 *    ];
+	 *    return $row;
 	 * };
 	 *
 	 * Table::managePageRequest($a, $base_query, $row_handler);
@@ -326,14 +338,14 @@ EOF;
 
 			if(!$total_results = $sql->select($count_query)){
 				//If no rows can be found
-				$output->setVar('total_results',0);
-				$output->setVar('start',1);
+				$output->setVar('total_results', 0);
+				$output->setVar('start', 1);
 				$output->setVar("rows", "<i class=\"text-silent\">No rows found</i>");
 				return true;
 			}
 
-			$output->setVar('query',$_SESSION['query']);
-			$output->setVar('total_results',$total_results);
+			$output->setVar('query', $_SESSION['query']);
+			$output->setVar('total_results', $total_results);
 			$ignore_header = is_bool($ignore_header) ? $ignore_header : false;
 			//if the variable is already set, will not re-set or change it
 		} else {
@@ -367,13 +379,12 @@ EOF;
 		}
 
 		# Due to the data being loaded piecemeal, it is not sortable
-//		$a['sortable'] = false;
+		//		$a['sortable'] = false;
 
 		$output->setVar("rows", self::generate($rows, $a, $ignore_header));
 
 		return true;
 	}
-
 
 
 	/**
@@ -394,9 +405,9 @@ EOF;
 				"hash" => [
 					"rel_table" => $rel_table,
 					"action" => "new",
-					"vars" => $vars
-				]
-			]
+					"vars" => $vars,
+				],
+			],
 		];
 	}
 }
