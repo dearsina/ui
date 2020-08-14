@@ -1,13 +1,23 @@
 /**
  * Give icons breathing room.
  */
-.list-group > * > i:first-of-type{
-  margin-right: 1rem;
+.list-group > * > i:first-of-type
+{
+  margin-right : 1rem;
 }
 
 /**
  * Bootstrap fix
  */
-.list-group-item-action {
-  width: auto;
+.list-group-item-action
+{
+  width : auto;
+}
+
+/**
+ * So that links don't underline.
+ */
+a.list-group-item:hover
+{
+  text-decoration : none !important;
 }

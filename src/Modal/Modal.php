@@ -34,10 +34,13 @@ class Modal extends Common {
 	protected $class;
 	protected $parent_class;
 	protected $parent_style;
+	protected $only_parent_class;
+	protected $child_class;
+	protected $child_style;
+	protected $only_child_class;
 	protected $size;
 	protected $accent;
 	protected $buttons;
-	protected $only_parent_class;
 
 	/**
 	 * Create a modal
@@ -429,6 +432,10 @@ EOF;
 		$class_array = str::getAttrArray($this->class, ["modal-dialog","modal-dialog-centered", "modal-dialog-scrollable", $size], $this->only_class);
 		$class = str::getAttrTag("class", $class_array);
 		$style = str::getAttrTag("style", $this->style);
+		
+		$child_class_array = str::getAttrArray($this->child_class, "modal-content", $this->only_child_class);
+		$child_class = str::getAttrTag("class", $child_class_array);
+		$child_style = str::getAttrTag("style", $this->child_style);
 
 		$data = str::getDataAttr($this->getModalDataAttr(), true);
 
@@ -438,12 +445,15 @@ EOF;
 	{$parent_class}
 	{$parent_style}
 	{$data}
->
+	>
     <div
     	{$class}
 		{$style}
-	>
-        <div class="modal-content">
+		>
+        <div
+        	{$child_class}
+        	{$child_style}
+        	>
         	{$this->getHeaderHTML()}
 			{$this->getBodyHTML()}
 			{$this->getFooterHTML()}

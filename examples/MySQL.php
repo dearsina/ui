@@ -296,19 +296,19 @@ class MySQL extends Common implements \App\Common\Example\ExampleInterface {
 //			"footer" => "Will give you the whole table"
 //		];
 //
-//		$examples[] = [
-//			"header" => "Complex set, and complex where",
-//			"method" => "update",
-//			"query" => [
-//				"table" => "cron_job",
-//				"set" => [
-//					"order" => [NULL, "cron_job", "order", "+ 1"]
-//				],
-//				"where" => [
-//					["order", "between", 1, 10]
-//				]
-//			],
-//		];
+		$examples[] = [
+			"header" => "Complex set, and complex where",
+			"method" => "update",
+			"query" => [
+				"table" => "cron_job",
+				"set" => [
+					"order" => [NULL, "cron_job", "order", "+ 1"]
+				],
+				"where" => [
+					["order", "between", 1, 10]
+				]
+			],
+		];
 //
 //		$examples[] = [
 //			"header" => "Update with join",

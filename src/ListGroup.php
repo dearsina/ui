@@ -192,9 +192,14 @@ EOF;
 		$tag = $tag ?: "p";
 		$id = str::getAttrTag("id", $id);
 		$button = Button::generate($button);
+
+		# Class
 		$class_array = str::getAttrArray($class, "mb-1", $only_class);
 		$class = str::getAttrTag("class", $class_array);
-		$style = str::getAttrTag("style", $style);
+
+		# Style
+		$style_array = str::getAttrArray($style, ["letter-spacing" => "-.5px"], $only_style);
+		$style = str::getAttrTag("style", $style_array);
 
 		return "<{$tag}{$id}{$class}{$style}>{$body}{$button}</{$tag}>";
 	}
