@@ -31,7 +31,7 @@ abstract class Common extends \App\Common\Common {
 				"id" => "all_{$rel_table}",
 			],
 			"footer" => [
-				"button" => ["close_md",[
+				"button" => [[
 					"hash" => [
 						"rel_table" => $rel_table,
 						"action" => "new"
@@ -39,7 +39,7 @@ abstract class Common extends \App\Common\Common {
 					"title" => "New",
 					"icon" => Icon::get("new"),
 					"colour" => "primary",
-				]]
+				],"close_md"]
 			],
 			"draggable" => true,
 			"resizable" => true,

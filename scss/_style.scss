@@ -351,3 +351,60 @@
   margin-top       : .5rem;
   float            : left;
 }
+
+/**
+ * DocMap SVG
+ */
+.doc-map-svg
+{
+  position:absolute;
+  z-index:1;
+  overflow: visible;
+}
+.doc-map-svg.enable-custom
+{
+  cursor: crosshair;
+}
+
+.doc-map-svg path,
+.doc-map-svg rect
+{
+  fill-opacity   : 0;
+  stroke         : black;
+  stroke-width   : 0.1%;
+  stroke-opacity : .1;
+}
+
+.doc-map-svg path:hover,
+.doc-map-svg rect:hover
+{
+  stroke-width   : .4%;
+  cursor         : pointer;
+  stroke-opacity : 1;
+}
+
+.doc-map-svg .doc-map-marker
+{
+  stroke-opacity : 1;
+  stroke         : map-get($theme-colors, "danger");
+  stroke-width   : 0.2%;
+}
+
+.doc-map-svg .doc-map-field
+{
+  stroke-opacity : 1;
+  stroke         : #00cc00;//map-get($theme-colors, "success");
+  stroke-width   : 0.2%;
+}
+.doc-map-svg .doc-map-selected
+{
+  stroke-opacity : 1;
+  stroke-width: 0.5%;
+  stroke-dasharray: 5;
+}
+
+// Blank markers are invisible
+.doc-map-svg .doc-map-blank
+{
+  display: none;
+}

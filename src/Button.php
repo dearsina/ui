@@ -456,8 +456,8 @@ class Button {
 		} else if($name && $value) {
 			//if the button has a value that needs to be collected
 			$type = "submit";
-			$name = "name=\"{$name}\"";
-			$value = "value=\"{$value}\"";
+			$name = str::getAttrTag("name", $name);
+			$value = str::getAttrTag("value", $value);
 			$tag_type = "button";
 		} else if($type == 'submit') {
 			//for most buttons, this is the type
@@ -641,5 +641,60 @@ EOF;
 		$style = str::getAttrTag("style", $pulsating['style']);
 
 		return ["<div{$class}{$style}>", "</div>"];
+	}
+
+	/**
+	 * Generic edit button for a table.
+	 *
+	 * @param string     $rel_table
+	 * @param string     $rel_id
+	 * @param array|null $vars
+	 *
+	 * @return array
+	 */
+	static function edit(string $rel_table, string $rel_id, ?array $vars = NULL): array
+	{
+		return [
+			"size" => "s",
+			"hash" => [
+				"rel_table" => $rel_table,
+				"rel_id" => $rel_id,
+				"action" => "edit",
+				"vars" => $vars
+			],
+			"icon" => Icon::get("edit"),
+			"basic" => true,
+		];
+	}
+
+	/**
+	 * Generic remove button for a table.
+	 *
+	 * @param string     $rel_table
+	 * @param string     $rel_id
+	 * @param array|null $vars
+	 *
+	 * @return array
+	 */
+	static function remove(string $rel_table, string $rel_id, ?array $vars = NULL): array
+	{
+		return [
+			"size" => "s",
+			"hash" => [
+				"rel_table" => $rel_table,
+				"rel_id" => $rel_id,
+				"action" => "remove",
+				"vars" => $vars
+			],
+			"approve" => [
+				"icon" => Icon::get("trash"),
+				"colour" => "red",
+				"title" => str::title("Remove {$rel_table}?"),
+				"message" => str::title("Are you sure you want to remove this {$rel_table}?"),
+			],
+			"icon" => Icon::get("trash"),
+			"basic" => true,
+			"colour" => "danger",
+		];
 	}
 }

@@ -18,28 +18,79 @@ class MySQL extends Common implements \App\Common\Example\ExampleInterface {
 		$grid = new Grid();
 
 		$examples[] = [
-			"header" => "Long join",
+			"header" => "Complex Or",
 			"query" => [
-				"table" => "client_type_doc_type",
-				"left_join" => [[
-					"table" => "doc_type",
-					"id" => "doc_type_id"
-				],[
-					"table" => "form_field",
-					"on" => [
-						"doc_type_id" => ["doc_type", "doc_type_id"],
+				"table" => "form_field",
+				"or" => [
+					"subscription_id" => "123",
+					[
+						"subscription_id" => NULL,
+						$client_type['person'] ? "person" : "organisation" => true
 					],
-				],[
-					"db" => "app",
-					"table" => "field_type",
-					"on" => [
-						"field_type_id" => ["form_field", "field_type_id"],
-					],
-				]]
+//					[
+//						"subscription_id" => NULL,
+//						"immutable" => NULL,
+//					]
+				]
 			],
 			"footer" => ""
 		];
 
+		$examples[] = [
+			"header" => "Recursive and-or",
+			"query" => [
+				"table" => "form_field",
+				"or" => [
+
+						"subscription_id" => NULL,
+						[
+							["person", "IN", [1,2,3]],
+							["person", "=", "abc"],
+//							"person" => NULL,
+							"person" => ["form_field", "organisation"],
+							["organisation", "IS NOT", NULL],
+						]
+
+				]
+			],
+			"footer" => ""
+		];
+
+//		$examples[] = [
+//			"header" => "Or will NOT an OR NULL unless you specify it",
+//			"query" => [
+//				"table" => "form_field",
+//				"or" => [
+//					"doc_type_id" => "123",
+//					["doc_type_id", "IS", NULL]
+//				]
+//			],
+//			"footer" => ""
+//		];
+
+//		$examples[] = [
+//			"header" => "Long join",
+//			"query" => [
+//				"table" => "client_type_doc_type",
+//				"left_join" => [[
+//					"table" => "doc_type",
+//					"id" => "doc_type_id"
+//				],[
+//					"table" => "form_field",
+//					"on" => [
+//						"doc_type_id" => ["doc_type", "doc_type_id"],
+//					],
+//				],[
+//					"db" => "app",
+//					"table" => "field_type",
+//					"on" => [
+//						"field_type_id" => ["form_field", "field_type_id"],
+//					],
+//				]]
+//			],
+//			"footer" => ""
+//		];
+//
 //		$examples[] = [
 //			"header" => "JSON join",
 //			"query" => [
@@ -302,8 +353,11 @@ class MySQL extends Common implements \App\Common\Example\ExampleInterface {
 			"query" => [
 				"table" => "cron_job",
 				"set" => [
-					"order" => [NULL, "cron_job", "order", "+ 1"]
+					"order" => [NULL, "cron_job", "order", "+ 1"],
+					"title" => "TEXT << WILL STILL BE TRUNCATED BECAUSE TITLE IS NOT A LONG ENOUGH COLUMN",
+					"desc" => "TEXT << WON'T BE TRUNCATED BECAUSE COL NAME IS IN HTML ARRAY"
 				],
+				"html" => ["title","desc"],
 				"where" => [
 					["order", "between", 1, 10]
 				]
@@ -638,32 +692,39 @@ class MySQL extends Common implements \App\Common\Example\ExampleInterface {
 //			]
 //		];
 //
-//		$examples[] = [
-//			"header" => "Join with all the different comparison formats.",
-//			"query" => [
-//				"table" => "user",
-//				"join" => [
-//					"table" => "user_role",
-//					"on" => [
-//						"complete = comparison",
-//						["user_id", "=", "val"],
-//						["created", "<>", false],
-//						["user_id", "LIKE", "%val%"],
-//						["user_id", ">", "user", "user_id"],
-//						["user_id", "between", 1, 3],
-//					],
-//					"where" => [
-//						"role" => "admin",
-//						"rel_table" => "admin"
-//					]
-//				],
-//				"where" => [
-//					"first_name" => "val",
-//					"last_name" => ["table_alias", "col"]
-//				]
-//			],
-//			"footer" => "<code>false</code> comparison values will be ignored."
-//		];
+		$examples[] = [
+			"header" => "Join with all the different comparison formats.",
+			"query" => [
+				"table" => "user",
+				"join" => [
+					"table" => "user_role",
+					"on" => [
+						"complete = comparison",
+						["user_id", "=", "val"],
+						["created", "<>", false],
+						["user_id", "LIKE", "%val%"],
+						["user_id", ">", "user", "user_id"],
+						["user_id", "between", 1, 3],
+					],
+					"where" => [
+						"role" => "admin",
+						"rel_table" => "admin",
+
+						"complete = comparison",
+						["user_id", "=", "val"],
+						["created", "<>", false],
+						["user_id", "LIKE", "%val%"],
+						["user_id", ">", "user", "user_id"],
+						["user_id", "between", 1, 3],
+					]
+				],
+				"where" => [
+					"first_name" => "val",
+					"last_name" => ["table_alias", "col"]
+				]
+			],
+			"footer" => "<code>false</code> comparison values will be ignored."
+		];
 
 		foreach($examples as $example){
 			$grid->set($this->getSQLCard($example));

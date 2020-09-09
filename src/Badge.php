@@ -51,7 +51,7 @@ class Badge {
 	 * @throws \Exception
 	 */
 	static function generate($array_or_string = null){
-		if(!$array_or_string){
+		if(!is_array($array_or_string) && !strlen($array_or_string)){
 			return false;
 		}
 
@@ -111,7 +111,7 @@ class Badge {
 
 		$class = str::getAttrTag("class", [
 			"badge",
-			$pill ? "badge-pill" : "", //pill shape
+			$pill ? "rounded-pill" : "", //pill shape
 			$basic ? "badge-outline-{$colour}" : "bg-{$colour}",
 			$right ? "float-right" : "", //legacy shortcut
 			"text-white",

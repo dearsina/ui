@@ -44,4 +44,6 @@ code {
 .noty_body
 {
   overflow-wrap: break-word;
+  max-height: 95vh;
+  overflow-y: auto;
 }

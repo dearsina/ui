@@ -165,6 +165,13 @@ class Grid {
 			# Hash, URI, onClick
 			if($href = href::generate($col)){
 				$tag = "a";
+				if($buttons){
+					//If both hash and a button are found in the same cell
+					$html .= "<div{$class_tag}{$id_tag}{$style_tag}{$data_value}{$data}><a{$href}>{$icon}{$col_html}{$copy}</a>{$buttons}</div>";
+					//Breaks down the tag into two different tags, one remains a div with all the attributes, the other a child a tag with only the href attr
+					continue;
+				}
+
 			} else {
 				$tag = "div";
 			}
@@ -240,10 +247,13 @@ class Grid {
 			$title = "<a{$href}>{$title}</a>";
 		}
 
+		# Alt
+		$alt = str::getAttrTag("title", $alt);
+
 		# Tag
 		$tag = $tag ?: "div";
 
-		return "<{$tag}{$id}{$class}{$style}{$href}>{$icon}{$title}{$badge}{$button}</{$tag}>";
+		return "<{$tag}{$id}{$class}{$style}{$href}{$alt}>{$icon}{$title}{$badge}{$button}</{$tag}>";
 
 //		if($href = href::generate($a)){
 //			$tag = "a";

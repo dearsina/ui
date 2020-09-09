@@ -40,6 +40,11 @@ form
   border-width : $form-item-border-width;
 }
 
+.form-control::placeholder
+{
+  color: map-get($theme-colors, "silver");
+}
+
 .input-group-text
 {
   background-color : $header-footer-bg;

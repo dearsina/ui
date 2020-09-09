@@ -22,6 +22,7 @@ class Table {
 	 * Table::generate($rows, [
 	 * 	"order" => true,
 	 * 	"rel_table" => $rel_table,
+	 * 	//The limiting key-val are only useful for tables where the rows can be reordered
 	 * 	"limiting_key" => "subscription_id",
 	 * 	"limiting_val" => $client_type['subscription_id'],
 	 * ]);
