@@ -4,6 +4,7 @@
 namespace App\UI\Form;
 
 use App\Common\str;
+use App\UI\Button;
 
 /**
  * Class Input
@@ -71,6 +72,23 @@ class Input extends Field {
 		# Button
 		$button = self::getButton($button, $type);
 
+		# Pre button
+		$pre_button = Button::generate($pre_button);
+
+		# Post button
+		$post_button = Button::generate($post_button);
+
+		# Pre (addon)
+        if($pre){
+            $pre = "<span class=\"input-group-text\">$pre</span>";
+        }
+
+		# Post (addon)
+        if($post){
+            $post = "<span class=\"input-group-text\">$post</span>";
+        }
+
+
 		# Description
 		$desc = self::getDesc($desc);
 
@@ -86,6 +104,8 @@ class Input extends Field {
 <div class="mb-3">
 	<div{$parent_class}{$parent_style}>
 		{$icon}
+		{$pre_button}
+		{$pre}
 		<input
 			id="{$id}"
 			type="{$type}"
@@ -106,6 +126,8 @@ class Input extends Field {
 		/>
 		{$icon_suffix}
 		{$button}	
+		{$post_button}
+		{$post}
 	</div>
 	{$desc}
 	{$script}

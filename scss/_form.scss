@@ -159,6 +159,14 @@ form
 }
 
 /**
+ * So that the little X is to the right, not the left of the text
+ */
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+  margin-left: 4px;
+  float: right;
+}
+
+/**
  * Fix so that select2.js and jQuery Validation work together
  */
 .select2js-is-valid

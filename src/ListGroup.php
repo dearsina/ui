@@ -52,6 +52,16 @@ class ListGroup {
 			$a = ["items" => $a];
 		}
 
+		if($a['pre']){
+			$pre = Grid::generate(is_string($a['pre']) ? [$a['pre']] : $a['pre']);
+		} else if($a['html']){
+			$pre = Grid::generate(is_string($a['html']) ? [$a['html']] : $a['html']);
+		}
+
+		if($a['post']){
+			$post = Grid::generate(is_string($a['post']) ? [$a['post']] : $a['post']);
+		}
+
 		if($a['flush']){
 			$default_class[] = "list-group-flush";
 		}
@@ -78,7 +88,7 @@ class ListGroup {
 		# Style
 		$style = str::getAttrTag("style", $a['style']);
 
-		return "<ul{$id}{$class}{$style}>{$html}</ul>";
+		return "{$pre}<ul{$id}{$class}{$style}>{$html}</ul>{$post}";
 	}
 
 	/**

@@ -96,6 +96,8 @@ form .btn i
 .card-footer .btn-float-right
 {
   margin: -0.5rem 0 -0.5rem 0;
+  display: flow-root;
+  // Will fix the margin issue
 }
 .card .btn-float-right .btn,
 .modal .btn-float-right .btn
