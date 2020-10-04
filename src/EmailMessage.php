@@ -65,8 +65,6 @@ class EmailMessage extends Common {
 
 	public function __construct(?array $a = NULL)
 	{
-		parent::__construct();
-
 		if(!is_array($a)){
 			return;
 		}
@@ -117,7 +115,7 @@ class EmailMessage extends Common {
 	 */
 	private function loadColours(): void
 	{
-		$css_file = "https://app.{$_ENV['domain']}/css/app.css";
+		$css_file = "https://{$_ENV['app_subdomain']}.{$_ENV['domain']}/css/app.css";
 		if(!$handle = fopen($css_file, "r")){
 			//If unable to open the app css
 			return;
@@ -372,6 +370,11 @@ class EmailMessage extends Common {
 			"color" => $this->getColour(),
 			"font-size" => "16px",
 		];
+
+		# If the logo is not an image (just text)
+		if(!$a['src']){
+			return $this->getHeaderTextHTML($a);
+		}
 
 		return $this->generateImageTag($a);
 	}

@@ -88,7 +88,6 @@ class Input extends Field {
             $post = "<span class=\"input-group-text\">$post</span>";
         }
 
-
 		# Description
 		$desc = self::getDesc($desc);
 

@@ -331,7 +331,7 @@ EOF;
 		$base_query['where'] = array_merge($base_query['where'] ?: [], $vars ?: []);
 
 		$count_query = $base_query;
-		$count_query['count'] = true;
+		$count_query['count'] = "{$rel_table}_id";
 
 		# Get the total results
 		if(!$start){
