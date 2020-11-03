@@ -33,8 +33,13 @@ class ListGroup {
 	 * # Complex
 	 * ListGroup::generate([
 	 *    "items" => $items,
+	 * 	  "pre" => "Text",
+	 * 	  "post" => "Text",
 	 *    "flush" => true,
-	 *    "horizontal" => true
+	 *    "horizontal" => true,
+	 *    "orderable" => [
+	 * 		"" => "",
+	 *     ]
 	 * ]);
 	 * </code>
 	 *
@@ -74,8 +79,27 @@ class ListGroup {
 			}
 		}
 
-		foreach($a['items'] as $item){
-			$html .= self::generateListGroupItem($item);
+		if($a['cap'] && count($a['items']) > $a['cap']){
+			while(!empty($a['items'])){
+				$col = "";
+				for($i = 0; $i < $a['cap']; $i++){
+					if(empty($a['items'])){
+						break;
+					}
+					$col .= self::generateListGroupItem(array_shift($a['items']));
+				}
+				$cols[] = $col;
+			}
+			$html .= Grid::generate([$cols]);
+		} else {
+			foreach($a['items'] as $item){
+				$html .= self::generateListGroupItem($item, $a['orderable']);
+			}
+		}
+
+		if($a['orderable']){
+			$default_class[] = "list-group-orderable";
+			$data = str::getDataAttr($a['orderable']);
 		}
 
 		# ID
@@ -88,7 +112,7 @@ class ListGroup {
 		# Style
 		$style = str::getAttrTag("style", $a['style']);
 
-		return "{$pre}<ul{$id}{$class}{$style}>{$html}</ul>{$post}";
+		return "{$pre}<ul{$id}{$class}{$style}{$data}>{$html}</ul>{$post}";
 	}
 
 	/**
@@ -99,7 +123,7 @@ class ListGroup {
 	 * @return string
 	 * @throws \Exception
 	 */
-	private static function generateListGroupItem($item) : string
+	private static function generateListGroupItem(array $item, ?array $orderable = []) : string
 	{
 		if(!is_array($item)){
 			$item = ["html" => $item];
@@ -156,6 +180,23 @@ class ListGroup {
 
 		# Style
 		$style = str::getAttrTag("style", $item['style']);
+
+		if($orderable){
+			if($item['orderable'] !== false){
+				if(!$item['id']){
+					throw new \Exception("Each item in an orderable array must have an ID.");
+				}
+
+				$class_array[] = "draggable list-group-handlebars";
+				$class = str::getAttrTag("class", $class_array);
+
+				$id = str::getAttrTag("id", $item["id"]);
+			}
+
+			return <<<EOF
+<li{$id}{$class}{$style}><{$tag}{$href}>{$icon}{$html}{$badge}{$button}</{$tag}></li>
+EOF;
+		}
 
 		return <<<EOF
 <{$tag}{$id}{$class}{$style}{$href}>{$icon}{$html}{$badge}{$button}</{$tag}>

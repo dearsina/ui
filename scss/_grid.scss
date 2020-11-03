@@ -37,40 +37,6 @@ $container-max-widths : (
         8xl: 2640px
 );
 
-/**
- * GridstackJS overrides.
- */
-
-/**
- * So that when a card is resized, the content is still accessible.
- */
-.grid-stack .card-body
-{
-  overflow-y : auto;
-}
-
-/**
- * Ensures the integrity of the card
- */
-.grid-stack .card
-{
-  height : 100%;
-}
-
-.grid-stack > .grid-stack-item > .grid-stack-item-content
-{
-  overflow   : visible;
-  /**
-   * We're removing scroll bars from the item-content,
-   * and moving it to the card-body.
-   */
-  box-shadow : 1px 1px 2px 0 rgba(0, 0, 0, 0.2);
-  /**
-   * For some reason, Gridstack hides the box shadow from
-   * cards, so we're just re-introducing the same shadow here.
-   */
-}
-
 /* For when there is only one column and it's a fixed width column */
 .fixed-width-column
 {
@@ -85,34 +51,37 @@ $container-max-widths : (
 }
 
 /**
- * Gridster.js
+ * GridstackJS overrides.
  */
 
-// The preview of the box as it's being moved.
-.gridster .preview-holder
-{
-  border        : none !important;
-  border-radius : $border-radius-xs !important;
-  background    : #dddddd !important;
+.grid-stack {
+  padding: 0 !important;
+  /**
+   * Removes the padding on the card body that is hosting the grid stack.
+   */
 }
-
-// Strips margins from cards to better fit into the grid.
-.card-grid
+.grid-stack > .grid-stack-item > .grid-stack-item-content
 {
-  margin : 0;
+  overflow   : visible;
+  /**
+   * Ensures the drop down menu doesn't disappear.
+   * Prevents scroll bars.
+   */
 }
-
-// Wrapper prevents items from being displayed before placement.
-.card-grid-wrapper
-{
-  display : none;
-}
-
 // The buttons to control the card
 .grid-card-control-buttons
 {
-  z-index: 1;
   position: absolute;
   top: .5rem;
   right: .5rem;
+}
+
+/**
+ * UI change when a field is being
+ * hovered over a remove class.
+ * Not currently in use.
+ */
+.grid-stack-item-removing {
+  border-color: red !important;
+  color: red;
 }

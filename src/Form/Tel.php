@@ -5,7 +5,6 @@ namespace App\UI\Form;
 
 use App\Common\Geolocation\Geolocation;
 use App\Common\str;
-use App\Common\User\User;
 
 /**
  * Class Tel

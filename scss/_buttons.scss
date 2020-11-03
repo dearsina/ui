@@ -12,6 +12,16 @@ $btn-border-radius-xs:  $border-radius-xs;
 }
 
 /**
+ * Disabling a-href links by adding pointer events,
+ * waiting for the ajax call to complete.
+ * Prevents double clicking and accidentally sending
+ * two commands.
+ */
+a.disabled-waiting{
+  pointer-events: none;
+}
+
+/**
  * Create a more uniform min-size for the btn-sm size
  */
 .btn-sm

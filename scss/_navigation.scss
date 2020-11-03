@@ -192,6 +192,9 @@ nav li .badge i {
   nav .nav-left > .parent {
     margin-right: 1rem;
     float: left;
+
+    // Will prevent items to spill onto two lines
+    white-space: nowrap;
   }
 
   .nav-left > .parent,
@@ -202,6 +205,9 @@ nav li .badge i {
   .nav-left {
     margin: 0;
     padding: 0;
+
+    //Will allow the items to stay on one line, even if the screen isn't wide enough
+    width: max-content;
   }
 
   .nav-left > li > a,
@@ -456,6 +462,14 @@ nav .parent > ul li > div {
   display: block;
   font-weight: 400;
   //border-bottom : .9px solid $border-color;
+}
+
+/**
+ * Disabled navigation elements
+ */
+nav .parent > ul li div.disabled {
+  opacity: .25;
+  cursor: default;
 }
 
 nav .nav-left ul ul, nav .nav-left ul ul ul {

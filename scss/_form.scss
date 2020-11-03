@@ -99,6 +99,8 @@ form {
 
 .select2-dropdown {
   border: $form-item-border-width solid #e1e6ef !important;
+  //When dropdowns are in nested modals, they get lost, hence a slightly higher z-index
+  z-index: 1099;
 }
 
 .select2js .select2-selection__rendered {

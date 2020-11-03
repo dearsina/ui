@@ -479,7 +479,7 @@ EOF;
 		$class_array = str::getAttrArray($this->class, "card", $this->only_class);
 		$class = str::getAttrTag("class", $class_array);
 		$style = str::getAttrTag("style", $this->style);
-		$data = str::getDataAttr($this->data);
+		$data = str::getDataAttr($this->data, true);
 		return /** @lang HTML */<<<EOF
 <div{$this->getId(true)}{$data}{$class}{$style}>
 	{$this->getHeaderHTML()}

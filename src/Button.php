@@ -72,7 +72,7 @@ class Button {
 		],
 
 		"return" => [
-			"hash" => -1,
+			"onClick" => "window.history.back();",
 			"icon" => "chevron-left",
 			"title" => "Return",
 			"class" => "reset",
@@ -516,10 +516,8 @@ class Button {
 		$style_tag 		= str::getAttrTag("style", $style_array);
 		$id_tag 		= str::getAttrTag("id", $id);
 		$type_tag 		= str::getAttrTag("type", $type);
-		$title_tag 		= str::getAttrTag("title", $alt.$desc ? $alt.$desc : strip_tags($title));
+		$title_tag 		= str::getAttrTag("title", $alt ?: strip_tags($title));
 		$data_style_tag	= str::getAttrTag("data-style", "slide-left");
-
-
 
 		$button_html = /** @lang HTML */<<<EOF
 {$wrapper_pre}
