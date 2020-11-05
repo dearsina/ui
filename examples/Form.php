@@ -299,6 +299,32 @@ class Form extends Common implements ExampleInterface {
 		];
 
 		$fields[] = [
+			"type" => "checkbox",
+			"name" => "checkbox_input",
+			"value" => [1,2],
+			"options" => [
+				"1" => "Simple value",
+				"2" => [
+					"label" => "Complex value",
+					"desc" => $desc
+				],
+				"3" => [
+					"label" => [
+						"title" => "Label as array",
+						"desc" => $desc
+					]
+				],
+				"4" => [
+					"type" => "input",
+//					"title" => "The input title",
+					"placeholder" => "Title won't work, but long place holder does",
+					"desc" => "Or a description to why there is an \"other\" field"
+				]
+			],
+			"required" => true
+		];
+
+		$fields[] = [
 			"type" => "hidden",
 			"name" => "hidden_field",
 			"value" => "some_hidden_value"
