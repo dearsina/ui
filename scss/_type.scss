@@ -25,6 +25,9 @@ smaller, .smaller {
 .text-silent {
   color: hsla(207, 7%, 86%, 1) !important;
 }
+.text-italic {
+  font-style: italic;
+}
 
 /**
  * For when text in Grids is placed in title/body keys instead of HTML.

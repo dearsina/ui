@@ -19,13 +19,15 @@ class Grid {
 	 * Format and return content in a HTML grid.
 	 * <code>
 	 * $grid = new Grid([
-	 * 	"unstackable" => FALSE, //If set to TRUE will make the grid unstackable on small screens
-	 * 	"formatter" => FALSE //If set to an anonymous function, will use that function to format the HTML per cell.
+	 *    "unstackable" => FALSE, //If set to TRUE will make the grid unstackable on small screens
+	 *    "formatter" => FALSE //If set to an anonymous function, will use that function to format the HTML per cell.
 	 * ]);
 	 * </code>
+	 *
 	 * @param null $a
 	 */
-	public function __construct ($a = NULL) {
+	public function __construct($a = NULL)
+	{
 		$this->unstackable = $a['unstackable'];
 		$this->formatter = $a['formatter'];
 	}
@@ -39,9 +41,9 @@ class Grid {
 	 * <code>
 	 * $grid = new Grid();
 	 * $grid->set([
-	 * 	"sm" => "",
-	 * 	"id" => "",
-	 * 	"html" => ""
+	 *    "sm" => "",
+	 *    "id" => "",
+	 *    "html" => ""
 	 * ]);
 	 * </code>
 	 *
@@ -49,7 +51,8 @@ class Grid {
 	 *
 	 * @return bool
 	 */
-	public function set($a){
+	public function set($a)
+	{
 		if(!$a){
 			return false;
 		}
@@ -66,14 +69,15 @@ class Grid {
 	 *
 	 * @return string
 	 */
-	private function getRowHTML($rows){
+	private function getRowHTML($rows)
+	{
 		foreach($rows as $row){
-			if(!is_array($row)) {
+			if(!is_array($row)){
 				$row_html = $this->getColHTML(["html" => $row]);
 				$row = [];
 			} else if(str::isNumericArray($row)){
 				$row_html = $this->getColHTML($row);
-			} else if (str::isNumericArray($row['html'])){
+			} else if(str::isNumericArray($row['html'])){
 				$row_html = $this->getColHTML($row['html']);
 			} else if($row['html']){
 				$row_html = $this->getColHTML([$row['html']]);
@@ -107,19 +111,20 @@ class Grid {
 	 *
 	 * @return string
 	 */
-	private function getColHTML($cols){
+	private function getColHTML($cols)
+	{
 		foreach($cols as $col){
 			//for each item in the row
 			if(!is_array($col)){
 				$col_html = $col;
-				$col  = [];
+				$col = [];
 			} else if(str::isNumericArray($col)){
 				//if it goes deeper (without other metadata)
 				$col_html = $this->getRowHTML($col);
-			} else if(str::isNumericArray($col['html'])) {
+			} else if(str::isNumericArray($col['html'])){
 				//if it goes deeper (with metadata)
 				$col_html = $this->getRowHTML($col['html']);
-			} else if ($this->formatter) {
+			} else if($this->formatter){
 				//If a custom formatter has been designated
 				$col_html = ($this->formatter)($col);
 			} else if($col['accordion']){
@@ -156,7 +161,11 @@ class Grid {
 			$style_tag = str::getAttrTag("style", $col['style']);
 
 			# Data value (used for sorting)
-			$data_value = str::getAttrTag("data-value", $col['value']);
+
+			//			$data_value = str::getAttrTag("data-value", $col['value']);
+			//			$data_value = str::getAttrTag("data-type", $col['type']);
+			//			$data_value = str::getAttrTag("data-type", $col['checked']);
+			$data_value = $this->getDataValueTag($col);
 			$data = str::getDataAttr($col['data']);
 
 			# Buttons
@@ -183,13 +192,33 @@ class Grid {
 	}
 
 	/**
+	 * The data-value value is used to identify changes in
+	 * modal forms, and warn the user if there has been a change
+	 * that hasn't been saved.
+	 *
+	 * @param array $col
+	 *
+	 * @return string|null
+	 */
+	public function getDataValueTag(array $col): ?string
+	{
+		if($col['type'] == "checkbox" && !$col['checked']){
+			//if this is a checkbox and it's not checked
+			return NULL;
+		}
+
+		return str::getDataAttr(["value" => $col['value']]);
+	}
+
+	/**
 	 * Returns formatted HTMl of the requested grid.
 	 *
 	 * @param null $a
 	 *
 	 * @return bool|string
 	 */
-	public function getHTML($a = NULL){
+	public function getHTML($a = NULL)
+	{
 		$grid = $a ?: $this->grid;
 
 		if(!$grid){
@@ -206,7 +235,8 @@ class Grid {
 	 *
 	 * @return string Returns HTML
 	 */
-	public static function generate(array $cells){
+	public static function generate(array $cells)
+	{
 		$grid = new Grid();
 		return $grid->getRowHTML($cells);
 	}
@@ -229,7 +259,7 @@ class Grid {
 
 		# Badge
 		if($badge = Badge::generate($badge)){
-			$badge = " ".$badge;
+			$badge = " " . $badge;
 		}
 
 		# Button(s)
@@ -255,13 +285,13 @@ class Grid {
 
 		return "<{$tag}{$id}{$class}{$style}{$href}{$alt}>{$icon}{$title}{$badge}{$button}</{$tag}>";
 
-//		if($href = href::generate($a)){
-//			$tag = "a";
-//
-//		}
-//		$tag = $tag ?: "div";
-//
-//		return "<{$tag}{$id}{$class}{$style}{$href}>{$icon}{$title}{$badge}{$button}</{$tag}>";
+		//		if($href = href::generate($a)){
+		//			$tag = "a";
+		//
+		//		}
+		//		$tag = $tag ?: "div";
+		//
+		//		return "<{$tag}{$id}{$class}{$style}{$href}>{$icon}{$title}{$badge}{$button}</{$tag}>";
 	}
 
 	private static function generateBody($a): ?string

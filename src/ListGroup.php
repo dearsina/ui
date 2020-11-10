@@ -213,10 +213,6 @@ EOF;
 		$a = is_array($a) ? $a : ["title" => $a];
 		extract($a);
 
-		if($href = href::generate($a)){
-			$tag = "a";
-		}
-		$tag = $tag ?: "h5";
 		$id = str::getAttrTag("id", $id);
 		$icon = Icon::generate($icon);
 		$badge = Badge::generate($badge);
@@ -227,6 +223,13 @@ EOF;
 		$class_array = str::getAttrArray($class, "mb-1", $only_class);
 		$class = str::getAttrTag("class", $class_array);
 		$style = str::getAttrTag("style", $style);
+
+
+		if($href = href::generate($a)){
+			return "<div{$parent_class}{$parent_style}><h5{$id}{$class}{$style}><a{$href}>{$icon}{$title}</a>{$badge}{$button}</h5></div>";
+		} else {
+			$tag = "h5";
+		}
 
 		return "<div{$parent_class}{$parent_style}><{$tag}{$id}{$class}{$style}{$href}>{$icon}{$title}{$badge}{$button}</{$tag}></div>";
 	}
