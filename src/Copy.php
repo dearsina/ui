@@ -20,8 +20,9 @@ class Copy {
 	 * 	"style" => "",
 	 * 	"class" => "",
 	 * 	"text" => "",
-	 * 	"alt" => ""
-	 * ], $text);
+	 * 	"alt" => "",
+	 * 	"secret" => ""//, "String replacement" or boolean TRUE
+	 * ]);
 	 * </code>
 	 *
 	 * Can also be boolean:
@@ -34,10 +35,10 @@ class Copy {
 	 *
 	 * @return bool|string
 	 */
-	public static function generate($a, $text)
+	public static function generate($a, ?string $text = NULL): ?string
 	{
 		if(!$a){
-			return false;
+			return NULL;
 		}
 
 		if(is_array($a)){
@@ -47,8 +48,14 @@ class Copy {
 		# Clean up text (Escape double quotes)
 		$text = str_replace("\"", "&quot;", $text);
 
-		# Produce truncated version for display purposes
-		$text_truncated = strlen($text) > 50 ? substr($text, 0, 50). "..." : $text;
+		# Secret?
+		if($secret){
+			# If the string is to stay secret, replace it with the $secret text (or asterixes if no text is given)
+			$text_truncated = is_string($secret) ? $secret : "***";
+		} else {
+			# Produce truncated version for display purposes
+			$text_truncated = strlen($text) > 50 ? substr($text, 0, 50). "..." : $text;
+		}
 
 		# ID (optional)
 		$id = str::getAttrTag("id", $id);
@@ -69,7 +76,7 @@ class Copy {
 
 		# Save the truncated text also for the alert (if needed)
 		if($text != $text_truncated){
-			$data['clipboard-text-truncated'] = $text;
+			$data['clipboard-text-truncated'] = $text_truncated;
 		}
 
 		# Create the data tag

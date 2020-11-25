@@ -21,6 +21,7 @@ class Modal extends Common {
 	private $id;
 	private $modalHeader;
 	private $modalBody;
+	private array $modalRows = [];
 	private $modalFooter;
 
 	protected $icon;
@@ -372,6 +373,15 @@ EOF;
 		return true;
 	}
 
+	public function setRows($a = NULL): void
+	{
+		if(!is_array($a)){
+			return;
+		}
+
+		$this->modalRows = $a;
+	}
+
 	/**
 	 * Returns the body of the modal.
 	 * Not optional.
@@ -394,6 +404,47 @@ EOF;
 		$script = str::getScriptTag($this->modalBody['script']);
 
 		return "<div{$class}{$id}{$style}>{$progress}{$this->modalBody['html']}</div>{$script}";
+	}
+
+	/**
+	 * @return false|string
+	 */
+	public function getRowsHTML(): ?string
+	{
+		if(empty($this->modalRows)){
+			return NULL;
+		}
+
+		if(!key_exists("rows", $this->modalRows)){
+			$this->modalRows = [
+				"rows" => $this->modalRows
+			];
+		}
+
+		if(!is_array($this->modalRows['rows'])){
+			return NULL;
+		}
+
+		foreach($this->modalRows['rows'] as $key => $val){
+			$left = [
+				"class" => "small",
+				"sm" => $this->modalRows['sm'],
+				"html" => $key
+			];
+			$rows[] = [$left, $val];
+		}
+
+		if(is_array($rows)){
+			$html = Grid::generate($rows);
+		}
+
+		$id = str::getAttrTag("id", $this->modalRows['id']);
+		$class_array = str::getAttrArray($this->modalRows['class'], "container card-rows", $this->modalRows['only_class']);
+		$class = str::getAttrTag("class", $class_array);
+		$style = str::getAttrTag("style", $this->modalRows['style']);
+		$script = str::getScriptTag($this->modalRows['script']);
+
+		return "<div{$class}{$id}{$style}>{$html}</div>{$script}";
 	}
 
 	/**
@@ -456,6 +507,7 @@ EOF;
         	>
         	{$this->getHeaderHTML()}
 			{$this->getBodyHTML()}
+			{$this->getRowsHTML()}
 			{$this->getFooterHTML()}
         </div>
     </div>

@@ -123,7 +123,7 @@ class ListGroup {
 	 * @return string
 	 * @throws \Exception
 	 */
-	private static function generateListGroupItem(array $item, ?array $orderable = []) : string
+	private static function generateListGroupItem($item, ?array $orderable = []) : string
 	{
 		if(!is_array($item)){
 			$item = ["html" => $item];
@@ -199,7 +199,7 @@ EOF;
 		}
 
 		return <<<EOF
-<{$tag}{$id}{$class}{$style}{$href}>{$icon}{$html}{$badge}{$button}</{$tag}>
+<{$tag}{$id}{$class}{$style}{$href}>{$icon}{$button}{$html}{$badge}</{$tag}>
 EOF;
 
 	}
@@ -217,7 +217,9 @@ EOF;
 		$icon = Icon::generate($icon);
 		$badge = Badge::generate($badge);
 		$button = Button::generate($button);
-		$parent_class_array = str::getAttrArray($parent_class, "d-flex w-100 justify-content-between", $only_parent_class);
+//		$parent_class_array = str::getAttrArray($parent_class, "d-flex w-100 justify-content-between", $only_parent_class);
+		//Not sure if removing the w-100 is going to work
+		$parent_class_array = str::getAttrArray($parent_class, "d-flex justify-content-between", $only_parent_class);
 		$parent_class = str::getAttrTag("class", $parent_class_array);
 		$parent_style = str::getAttrTag("style", $parent_style);
 		$class_array = str::getAttrArray($class, "mb-1", $only_class);

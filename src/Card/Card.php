@@ -280,7 +280,10 @@ EOF;
 		$class = str::getAttrTag("class", $this->cardFooter['class']);
 
 		if($html = $icon.$this->cardFooter['footer'].$this->cardFooter['html'].$badge){
-			$html = "<div class=\"col-auto card-title\">{$html}</div>";
+			$row_style = str::getAttrTag("style", $this->cardFooter['row_style']);
+			$row_class_array = str::getAttrArray($this->cardFooter['row_class'], ["col-auto", "card-title"], $this->cardFooter['row_class_only']);
+			$row_class = str::getAttrTag("class", $row_class_array);
+			$html = "<div{$row_class}{$row_style}>{$html}</div>";
 		}
 
 		return <<<EOF

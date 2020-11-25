@@ -8,6 +8,7 @@ use App\Common\Example\ExampleInterface;
 use App\Common\str;
 use App\UI\Card\Card;
 use App\UI\Grid;
+use App\UI\Icon;
 
 class ListGroup extends Common implements ExampleInterface {
 
@@ -38,6 +39,21 @@ class ListGroup extends Common implements ExampleInterface {
 			"active" => true,
 			"hash" => "rel_table"
 		],[
+			"html" => "Item with button",
+			"button" => [[
+				"icon" => Icon::get("play"),
+				"size" => "s",
+				"hash" => "rel_table"
+			]]
+		],[
+			"title" => "Title and body with button",
+			"body" => "Title and body with button",
+			"button" => [[
+				"icon" => Icon::get("play"),
+				"size" => "s",
+				"hash" => "rel_table"
+			]]
+		],[
 			"html" => "Item as disabled link",
 			"disabled" => true,
 			"hash" => "rel_table"
@@ -63,9 +79,27 @@ $items = [[
 	"active" => true,
 	"hash" => "rel_table"
 ],[
+	"html" => "Item with button",
+	"button" => [[
+		"icon" => Icon::get("play"),
+		"size" => "s",
+		"hash" => "rel_table"
+	]]
+],[
+	"title" => "Title and body with button",
+	"body" => "Title and body with button",
+	"button" => [[
+		"icon" => Icon::get("play"),
+		"size" => "s",
+		"hash" => "rel_table"
+	]]
+],[
 	"html" => "Item as disabled link",
 	"disabled" => true,
 	"hash" => "rel_table"
+],[
+	"html" => "Item with an icon",
+	"icon" => "globe"
 ],
 	"Simple item"
 ];

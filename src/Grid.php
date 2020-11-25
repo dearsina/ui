@@ -161,10 +161,6 @@ class Grid {
 			$style_tag = str::getAttrTag("style", $col['style']);
 
 			# Data value (used for sorting)
-
-			//			$data_value = str::getAttrTag("data-value", $col['value']);
-			//			$data_value = str::getAttrTag("data-type", $col['type']);
-			//			$data_value = str::getAttrTag("data-type", $col['checked']);
 			$data_value = $this->getDataValueTag($col);
 			$data = str::getDataAttr($col['data']);
 
