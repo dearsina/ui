@@ -110,13 +110,17 @@ EOF;
 	/**
 	 * Generates the (optional) header row.
 	 *
-	 * @param $row
-	 * @param $options
+	 * @param array|NULL $row
+	 * @param array $options
 	 *
-	 * @return mixed
+	 * @return array
 	 */
-	private static function generateHeaderRow($row, $options)
+	private static function generateHeaderRow(?array $row, array $options)
 	{
+		if(!is_array($row)){
+			return [];
+		}
+
 		extract($options);
 
 		foreach($row as $key => $col){
@@ -366,6 +370,8 @@ EOF;
 		}
 
 		$rows = $sql->select($rows_query);
+		$output->setVar('query_parameters', $rows_query);
+		$output->setVar('query', $_SESSION['query']);
 
 		if(!$rows){
 			//if no results are found
@@ -394,9 +400,10 @@ EOF;
 	 * for use when $rows is empty and you don't want
 	 * the table to be bare.
 	 *
-	 * @param string $rel_table
+	 * @param string     $rel_table
+	 * @param array|null $vars
 	 *
-	 * @return array|array[]
+	 * @return array[]
 	 */
 	public static function emptyTablePlaceholder(string $rel_table, ?array $vars = NULL): array
 	{

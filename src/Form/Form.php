@@ -104,6 +104,9 @@ class Form {
 		# Is it in a modal?
 		$this->modal = $modal;
 
+		# Is it in a card?
+		$this->card = $card;
+
 		# Fields
 		$this->setFields($fields);
 		
@@ -370,6 +373,8 @@ class Form {
 	}
 
 	/**
+	 * A bit hacky, but works for now.
+	 *
 	 * @return bool|string
 	 * @throws \Exception
 	 * @throws \Exception
@@ -379,7 +384,7 @@ class Form {
 			return false;
 		}
 
-		if($this->modal){
+		if($this->modal || $this->card){
 			$this->prepareButtonsForModals($this->buttons);
 		}
 
@@ -389,6 +394,20 @@ class Form {
 			$buttons_html = <<<EOF
 </div>
 <div class="modal-footer">
+	<div class="container">
+		<div class="btn-float-right">
+			{$buttons_html}
+		</div>
+	</div>
+</div>
+<div style="display: none;">
+EOF;
+		}
+
+		if($this->card){
+			$buttons_html = <<<EOF
+</div>
+<div class="card-footer">
 	<div class="container">
 		<div class="btn-float-right">
 			{$buttons_html}

@@ -80,97 +80,175 @@ class Button {
 		],
 
 		// Legacy //
-		"next" => [
-			"colour" => "primary",
-			"icon" => [
-				"name" => "save",
-				"type" => "light"
-			],
-			"title" => "Next",
-			"type" => "submit",
-		],
-		"update" => [
-			"colour" => "green",
-			"icon" => [
-				"name" => "save",
-				"type" => "light"
-			],
-			"title" => "Update",
-			"type" => "submit",
-		],
-		"update_md" => [
-			"colour" => "blue",
-			"icon" => [
-				"name" => "save",
-				"type" => "light"
-			],
-			"title" => "Update",
-			"onClick" => "$(this).closest('form').submit();"
-		],
-
-		"match" => [
-			"alt" => "In sync",
-			"colour" => "green",
-			"icon" => "check",
-			"disabled" => true,
-			"style" => "float:right;margin-top:0;",
-			"class" => "btn-sm"
-		],
-		"view_removed" => [
-			"title" => "View removed",
-			"icon" => "trash-alt",
-			"hash" => "rel_table//removed",
-		],
-		"remove" => [
-			"title" => "Remove rel_table...",
-			"alt" => "Remove rel_table",
-			"basic" => true,
-			"colour" => "red",
-			"icon" => "trash",
-			"approve" => "remove this rel_table",
-			"hash" => "rel_table/rel_id/remove/callback/",
-			"class" => "btn-sm",
-			"remove" => 'closest(".container")'
-		],
-		"remove_all" => [
-			"title" => "Remove all...",
-			"alt" => "Remove all instances of rel_table",
-			"basic" => true,
-			"colour" => "red",
-			"icon" => "trash",
-			"approve" => "empty the rel_table table",
-			"hash" => "rel_table//remove_all/callback/",
-			"class" => "btn-sm",
-		],
-		"remove_sm" => [
-			"alt" => "Remove rel_table",
-			"basic" => true,
-			"colour" => "red",
-			"icon" => "trash",
-			"approve" => "remove this rel_table",
-			"hash" => "rel_table/rel_id/remove/callback/",
-			"class" => "btn-sm",
-			"remove" => 'closest(".container")'
-		],
-		"new" => [
-			"icon" => "plus",
-			"colour" => "blue",
-			"title" => "New rel_table...",
-			"hash" => "rel_table//new"
-		],
-		"edit" => [
-			"icon" => "pencil",
-			"title" => "Edit rel_table...",
-			"hash" => "rel_table/rel_id/edit"
-		],
-		"edit_sm" => [
-			"icon" => "pencil",
-			"basic" => true,
-			"alt" => "Edit rel_table",
-			"hash" => "rel_table/rel_id/edit",
-			"class" => "btn-sm",
-		]
+//		"next" => [
+//			"colour" => "primary",
+//			"icon" => [
+//				"name" => "save",
+//				"type" => "light"
+//			],
+//			"title" => "Next",
+//			"type" => "submit",
+//		],
+//		"update" => [
+//			"colour" => "green",
+//			"icon" => [
+//				"name" => "save",
+//				"type" => "light"
+//			],
+//			"title" => "Update",
+//			"type" => "submit",
+//		],
+//		"update_md" => [
+//			"colour" => "blue",
+//			"icon" => [
+//				"name" => "save",
+//				"type" => "light"
+//			],
+//			"title" => "Update",
+//			"onClick" => "$(this).closest('form').submit();"
+//		],
+//
+//		"match" => [
+//			"alt" => "In sync",
+//			"colour" => "green",
+//			"icon" => "check",
+//			"disabled" => true,
+//			"style" => "float:right;margin-top:0;",
+//			"class" => "btn-sm"
+//		],
+//		"view_removed" => [
+//			"title" => "View removed",
+//			"icon" => "trash-alt",
+//			"hash" => "rel_table//removed",
+//		],
+//		"remove" => [
+//			"title" => "Remove rel_table...",
+//			"alt" => "Remove rel_table",
+//			"basic" => true,
+//			"colour" => "red",
+//			"icon" => "trash",
+//			"approve" => "remove this rel_table",
+//			"hash" => "rel_table/rel_id/remove/callback/",
+//			"class" => "btn-sm",
+//			"remove" => 'closest(".container")'
+//		],
+//		"remove_all" => [
+//			"title" => "Remove all...",
+//			"alt" => "Remove all instances of rel_table",
+//			"basic" => true,
+//			"colour" => "red",
+//			"icon" => "trash",
+//			"approve" => "empty the rel_table table",
+//			"hash" => "rel_table//remove_all/callback/",
+//			"class" => "btn-sm",
+//		],
+//		"remove_sm" => [
+//			"alt" => "Remove rel_table",
+//			"basic" => true,
+//			"colour" => "red",
+//			"icon" => "trash",
+//			"approve" => "remove this rel_table",
+//			"hash" => "rel_table/rel_id/remove/callback/",
+//			"class" => "btn-sm",
+//			"remove" => 'closest(".container")'
+//		],
+//		"new" => [
+//			"icon" => "plus",
+//			"colour" => "blue",
+//			"title" => "New rel_table...",
+//			"hash" => "rel_table//new"
+//		],
+//		"edit" => [
+//			"icon" => "pencil",
+//			"title" => "Edit rel_table...",
+//			"hash" => "rel_table/rel_id/edit"
+//		],
+//		"edit_sm" => [
+//			"icon" => "pencil",
+//			"basic" => true,
+//			"alt" => "Edit rel_table",
+//			"hash" => "rel_table/rel_id/edit",
+//			"class" => "btn-sm",
+//		]
 	];
+
+	private static function common(string $name): ?array
+	{
+		switch($name){
+		case "edit":
+			return [
+				"size" => "s",
+				"hash" => [
+					"rel_table" => "rel_table",
+					"rel_id" => "rel_id",
+					"action" => "edit",
+				],
+				"icon" => Icon::get("edit"),
+				"basic" => true,
+			];
+		case "remove":
+			return [
+				"size" => "s",
+				"hash" => [
+					"rel_table" => "rel_table",
+					"rel_id" => "rel_id",
+					"action" => "remove",
+					"vars" => "vars",
+				],
+				"approve" => [
+					"icon" => Icon::get("trash"),
+					"colour" => "red",
+					"title" => "Remove rel_table?",
+					"message" => "Are you sure you want to remove this rel_table",
+				],
+				"icon" => Icon::get("trash"),
+				"basic" => true,
+				"colour" => "danger",
+			];
+		default:
+			return NULL;
+		}
+	}
+
+	private static function ajaxify(array &$button, $rel_table, $rel_id, $action, $vars): array
+	{
+
+	}
+
+	/**
+	 * Generate generic button arrays.
+	 *
+	 * @param string|array      $name
+	 * @param string|null $rel_table
+	 * @param string|null $rel_id
+	 * @param string|null $action
+	 * @param array|null  $overrides
+	 *
+	 * @return array
+	 * @throws \Exception
+	 */
+	static function generic($name, ?string $rel_table = NULL, ?string $rel_id = NULL, ?string $action = NULL, ?array $vars = NULL, ?array $overrides = NULL): array
+	{
+		if(is_array($name)){
+			foreach($name as $n){
+				$buttons[] = self::generic($n, $rel_table, $rel_id, $action, $vars, $overrides);
+			}
+			return $buttons;
+		}
+
+		if(!$button = self::common($name)){
+			throw new \Exception("Cannot find the generic button <code>{$name}</code>.");
+		}
+
+		# Localise
+		self::localise($button, $rel_table, $rel_id);
+
+		if($overrides){
+			$button = array_merge($button, $overrides);
+		}
+
+		return $button;
+	}
 
 	/**
 	 * Localises a button if rel_table/id has been included in the call to the button generator.

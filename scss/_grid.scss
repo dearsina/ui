@@ -64,10 +64,11 @@ $container-max-widths : (
 {
   overflow   : visible;
   /**
-   * Ensures the drop down menu doesn't disappear.
+   * Ensures the drop-and-down menu doesn't disappear.
    * Prevents scroll bars.
    */
 }
+
 // The buttons to control the card
 .grid-card-control-buttons
 {

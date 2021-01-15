@@ -119,6 +119,33 @@ class Form extends Common implements ExampleInterface {
 			"footer" => "Footer",
 		]);
 
+//		$card_array[] = $card->getHTML();
+
+		$fields = [];
+
+		$fields[] = [
+			"type" => "select",
+			"name" => "test-select",
+			"placeholder" => "Test select",
+			"options" => $this->getKeyValues(30),
+			"value" => 4,
+//			"required" => true
+		];
+
+		$form = new \App\UI\Form\Form([
+			"action" => "example_action",
+			"rel_table" => NULL,
+			"rel_id" => NULL,
+			"fields" => $fields,
+			"buttons" => ["save", "cancel"]
+		]);
+
+		$card = new \App\UI\Card\Card([
+			"header" => "I am in need",
+			"body" => $form->getHTML(),
+			"footer" => "Footer",
+		]);
+
 		$card_array[] = $card->getHTML();
 
 		$fields = [];

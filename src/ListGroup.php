@@ -86,13 +86,20 @@ class ListGroup {
 					if(empty($a['items'])){
 						break;
 					}
-					$col .= self::generateListGroupItem(array_shift($a['items']));
+					$item = array_shift($a['items']);
+					if(str::isNumericArray($item)){
+						$item = Grid::generate($item);
+					}
+					$col .= self::generateListGroupItem($item);
 				}
 				$cols[] = $col;
 			}
 			$html .= Grid::generate([$cols]);
 		} else {
 			foreach($a['items'] as $item){
+				if(str::isNumericArray($item)){
+					$item = Grid::generate($item);
+				}
 				$html .= self::generateListGroupItem($item, $a['orderable']);
 			}
 		}
@@ -150,7 +157,8 @@ class ListGroup {
 		$id = str::getAttrTag("id", $id ?: str::id("list-group-item"));
 
 		# Colour
-		$default_class[] = str::getColour($item['colour'], "list-group-item");
+//		$default_class[] = str::getColour($item['colour'], "list-group-item");
+		$default_class[] = $item['colour'] ? "list-group-item-{$item['colour']}" : NULL;
 
 		# Title + Body
 		if($item['title'] || $item['body']){

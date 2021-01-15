@@ -15,7 +15,7 @@ use App\UI\Icon;
  */
 abstract class Common extends \App\Common\Common {
 
-	public function all(array $a, $size = "l"): string
+	public function all(array $a, string $size = "l"): string
 	{
 		extract($a);
 
@@ -57,7 +57,7 @@ abstract class Common extends \App\Common\Common {
 	 * @return string
 	 * @throws \ReflectionException
 	 */
-	public function new(array $a, $size = "l"): string
+	public function new(array $a, string $size = "l"): string
 	{
 		extract($a);
 
@@ -99,7 +99,7 @@ abstract class Common extends \App\Common\Common {
 	 * @return string
 	 * @throws \ReflectionException
 	 */
-	public function edit(array $a, $size = "l"): string
+	public function edit(array $a, string $size = "l"): string
 	{
 		extract($a);
 
