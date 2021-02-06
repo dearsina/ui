@@ -95,7 +95,7 @@ class ListGroup {
 				$cols[] = $col;
 			}
 			$html .= Grid::generate([$cols]);
-		} else {
+		} else if(is_array($a['items'])){
 			foreach($a['items'] as $item){
 				if(str::isNumericArray($item)){
 					$item = Grid::generate($item);
@@ -159,6 +159,8 @@ class ListGroup {
 		# Colour
 //		$default_class[] = str::getColour($item['colour'], "list-group-item");
 		$default_class[] = $item['colour'] ? "list-group-item-{$item['colour']}" : NULL;
+
+		# Accordion
 
 		# Title + Body
 		if($item['title'] || $item['body']){

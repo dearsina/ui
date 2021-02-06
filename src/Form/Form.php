@@ -365,7 +365,7 @@ class Form {
 		}
 
 		if(is_string($a)){
-			if($a = Button::GENERIC[$a]){
+			if($a = Button::COMMON[$a]){
 				Button::localise($a, $this->rel_table, $this->rel_id, $this->callback);
 				$this->prepareButtonsForModals($a);
 			}

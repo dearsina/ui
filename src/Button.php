@@ -20,7 +20,7 @@ class Button {
 	 * Buttons can be localised by including "rel_table" or "rel_id".
 	 *
 	 */
-	const GENERIC = [
+	const COMMON = [
 		"save" => [
 			"colour" => "green",
 			"icon" => [
@@ -77,6 +77,50 @@ class Button {
 			"title" => "Return",
 			"class" => "reset",
 			"basic" => true,
+		],
+
+		# Used by the Button::generic method
+
+		"edit" => [
+			"size" => "s",
+			"hash" => [
+				"rel_table" => "rel_table",
+				"rel_id" => "rel_id",
+				"action" => "edit",
+			],
+			"icon" => "edit",
+			"basic" => true,
+		],
+
+		"duplicate" => [
+			"size" => "s",
+			"colour" => "primary",
+			"hash" => [
+				"rel_table" => "rel_table",
+				"rel_id" => "rel_id",
+				"action" => "duplicate",
+			],
+			"icon" => "copy",
+			"basic" => true,
+		],
+
+		"remove" => [
+			"size" => "s",
+			"hash" => [
+				"rel_table" => "rel_table",
+				"rel_id" => "rel_id",
+				"action" => "remove",
+				"vars" => "vars",
+			],
+			"approve" => [
+				"icon" => "trash",
+				"colour" => "red",
+				"title" => "Remove rel_table?",
+				"message" => "Are you sure you want to remove this rel_table?",
+			],
+			"icon" => "trash",
+			"basic" => true,
+			"colour" => "danger",
 		],
 
 		// Legacy //
@@ -172,51 +216,44 @@ class Button {
 //		]
 	];
 
-	private static function common(string $name): ?array
+	/**
+	 * Localises an array by replacing rel_table/id, action and vars value with their supplied values.
+	 *
+	 * @param array       $button
+	 * @param string|null $rel_table
+	 * @param string|null $rel_id
+	 * @param string|null $action
+	 * @param array|null  $vars
+	 */
+	private static function ajaxify(array &$button, ?string $rel_table, ?string $rel_id, ?string $action, ?array $vars): void
 	{
-		switch($name){
-		case "edit":
-			return [
-				"size" => "s",
-				"hash" => [
-					"rel_table" => "rel_table",
-					"rel_id" => "rel_id",
-					"action" => "edit",
-				],
-				"icon" => Icon::get("edit"),
-				"basic" => true,
-			];
-		case "remove":
-			return [
-				"size" => "s",
-				"hash" => [
-					"rel_table" => "rel_table",
-					"rel_id" => "rel_id",
-					"action" => "remove",
-					"vars" => "vars",
-				],
-				"approve" => [
-					"icon" => Icon::get("trash"),
-					"colour" => "red",
-					"title" => "Remove rel_table?",
-					"message" => "Are you sure you want to remove this rel_table",
-				],
-				"icon" => Icon::get("trash"),
-				"basic" => true,
-				"colour" => "danger",
-			];
-		default:
-			return NULL;
-		}
-	}
-
-	private static function ajaxify(array &$button, $rel_table, $rel_id, $action, $vars): array
-	{
-
+		array_walk_recursive($button, function(&$value, $key) use ($rel_table){
+			$value = $value == "rel_table" ? $rel_table : $value;
+			$value = $value == str_replace("rel_table", $rel_table, $value) ? $value : str::title(str_replace("rel_table", $rel_table, $value));
+		});
+		array_walk_recursive($button, function(&$value, $key) use ($rel_id){
+			$value = str_replace("rel_id", $rel_id, $value);
+		});
+		array_walk_recursive($button, function(&$value, $key) use ($action){
+			$value = str_replace("action", $action, $value);
+		});
+		array_walk_recursive($button, function(&$value, $key) use ($vars){
+			$value = str_replace("vars", $vars, $value);
+		});
+		array_walk_recursive($button, function(&$value, $key){
+			if($key == "icon"){
+				$value = Icon::get($value);
+			}
+		});
 	}
 
 	/**
 	 * Generate generic button arrays.
+	 * Make uniform edit, duplicate and remove buttons for rows, etc.
+	 *
+	 * <code>
+	 * $buttons[] = Button::generic(["edit", "duplicate", "remove"],"field_population",$cols["field_population_id"]);
+	 * </code>
 	 *
 	 * @param string|array      $name
 	 * @param string|null $rel_table
@@ -229,6 +266,7 @@ class Button {
 	 */
 	static function generic($name, ?string $rel_table = NULL, ?string $rel_id = NULL, ?string $action = NULL, ?array $vars = NULL, ?array $overrides = NULL): array
 	{
+		# The button name can also be an array to make the process even more efficient
 		if(is_array($name)){
 			foreach($name as $n){
 				$buttons[] = self::generic($n, $rel_table, $rel_id, $action, $vars, $overrides);
@@ -236,13 +274,15 @@ class Button {
 			return $buttons;
 		}
 
-		if(!$button = self::common($name)){
+		# Ensure the common button exists
+		if(!$button = self::COMMON[$name]){
 			throw new \Exception("Cannot find the generic button <code>{$name}</code>.");
 		}
 
 		# Localise
-		self::localise($button, $rel_table, $rel_id);
+		self::ajaxify($button, $rel_table, $rel_id, $action, $vars);
 
+		# Apply overrides
 		if($overrides){
 			$button = array_merge($button, $overrides);
 		}
@@ -308,7 +348,7 @@ class Button {
 
 		if(!is_array($a)){
 			//if the only thing passed is the name of a generic button
-			if(!$a = Button::GENERIC[$a]){
+			if(!$a = Button::COMMON[$a]){
 				//if a generic version is not found
 				return false;
 			}

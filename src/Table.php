@@ -91,7 +91,7 @@ class Table {
 		}
 
 		# Table rows
-		foreach($rows as $row){
+		foreach($rows as $key => $row){
 			$row['html'] = array_values($row['html'] ?: $row);
 			$row['row_class'] = str::getAttrArray($row['row_class'], "table-body", $row['only_row_class']);
 			$grid->set($row);
@@ -124,7 +124,6 @@ EOF;
 		extract($options);
 
 		foreach($row as $key => $col){
-
 			$col = is_array($col) ? $col : ["html" => $col];
 
 			# The default class for a header row
@@ -342,7 +341,7 @@ EOF;
 		if(!$start){
 			// If this is the first batch (we only need to do this once)
 
-			if(!$total_results = $sql->select($count_query)){
+			if(!$total_results = $sql->select($count_query)){//echo $_SESSION['query'];exit;
 				//If no rows can be found
 				$output->setVar('total_results', 0);
 				$output->setVar('start', 1);

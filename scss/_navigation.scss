@@ -652,3 +652,29 @@ nav .expand {
 .modal nav .nav-right {
   padding-right: 1.5rem;
 }
+
+/**
+ * Tabs
+ */
+
+.nav-tabs {
+  border: unset;
+}
+.tab-content > .active {
+  background: white;
+  border: 0.9px solid #d8e2e9;
+  border-radius: 0.25rem;
+}
+.tab-content > .active > .body {
+  padding: 1rem;
+}
+.tab-content > .active > .footer {
+  padding: .5rem 1rem;
+  border-top: unset;
+  background: #fcfdfd;
+  border-top: 0.9px solid #d8e2e9;
+}
+
+.tab-content > .active > .footer:last-child {
+  border-radius: 0 0 calc(0.25rem - 1px) calc(0.25rem - 1px);
+}

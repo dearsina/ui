@@ -110,7 +110,8 @@ form .btn i
   // Will fix the margin issue
 }
 .card .btn-float-right .btn,
-.modal .btn-float-right .btn
+.modal .btn-float-right .btn,
+.tab-pane .btn-float-right .btn
 {
   float: right !important;
   //line-height: 1;
@@ -138,4 +139,9 @@ form .btn i
 .btn-outline-success:not(:disabled):not(.disabled).active,
 .show > .btn-outline-success.dropdown-toggle {
   color: #000; // On click make the text black
+}
+// Green buttons should have white text (not default black)
+.btn-green
+{
+  color: #fff;
 }

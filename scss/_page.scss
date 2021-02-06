@@ -101,3 +101,13 @@ main > .container {
 .grecaptcha-badge {
   visibility: hidden;
 }
+
+/**
+ * For some reason these two dropped off Bootstrap v5-beta1
+ */
+.float-right{
+  float: right !important;
+}
+.float-left{
+  float: left !important;
+}

@@ -265,14 +265,22 @@ class Field {
 
 	/**
 	 * Translates the validation tree to tags.
+	 * Will also add a class to the class array if validation is to be ignored.
 	 *
 	 * @param $validation
 	 *
 	 * @return bool|string
 	 */
-	static function getValidationTags($validation){
+	static function getValidationTags($validation, ?array &$class = []): ?string
+	{
+		if($validation === false){
+			//if validation is to be ignored for this field
+			$class[] = "ignore-validation";
+			return NULL;
+		}
+
 		if(!is_array($validation)){
-			return false;
+			return NULL;
 		}
 
 		foreach($validation as $rule => $val){

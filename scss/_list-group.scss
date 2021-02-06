@@ -31,7 +31,8 @@ a.list-group-item:hover
  * For some reason the (custom) colour isn't carried over
  */
 .list-group-item.active {
-  z-index: 2;
+  //z-index: 2;
+  //Not sure why it was set to 2. It may be that this needs to be higher (than zero).
   color: #fff;
   background-color: map-get($theme-colors, "primary");
   border-color: map-get($theme-colors, "primary");

@@ -43,13 +43,15 @@ class Select extends Field implements FieldInterface {
 
 		# Class
 		$class_array = str::getAttrArray($class, ["form-control", $disabled_class], $only_class);
+
+		# Validation
+		$validation = self::getValidationTags($validation, $class_array);
+
+		# Class string
 		$class = str::getAttrTag("class", $class_array);
 
 		# Style
 		$style = str::getAttrTag("style", $style);
-
-		# Validation
-		$validation = self::getValidationTags($validation);
 
 		# Description
 		$desc = self::getDesc($desc);

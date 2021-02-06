@@ -211,9 +211,7 @@ class Modal extends Common {
 		# If the modal can be dismissed
 		if($this->dismissible !== false){
 			$dismiss = <<<EOF
-<button type="button" class="close" data-dismiss="modal" aria-label="Close" title="Close this window">
-	<span aria-hidden="true">&times;</span>
-</button>
+<button type="button" class="btn-close" data-dismiss="modal" aria-label="Close" title="Close this window"></button>
 EOF;
 		}
 

@@ -35,6 +35,11 @@ class Textarea extends Field implements FieldInterface {
 
 		# Class
 		$class_array = str::getAttrArray($class, ["form-control", $disabled_class], $only_class);
+
+		# Validation
+		$validation = self::getValidationTags($validation, $class_array);
+
+		# Class string
 		$class = str::getAttrTag("class", $class_array);
 
 		# Style
@@ -52,7 +57,6 @@ class Textarea extends Field implements FieldInterface {
 		# Misc
 		$title = str::getAttrTag("title", $alt);
 		$autocomplete = str::getAttrTag("autocomplete", $autocomplete);
-		$validation = self::getValidationTags($validation);
 
 		return /** @lang HTML */ <<<EOF
 <div class="mb-3">

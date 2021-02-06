@@ -130,6 +130,8 @@ class Grid {
 			} else if($col['accordion']){
 				//if the cell is an accordion
 				$col_html = Accordion::generate($col['accordion']);
+			} else if(is_array($col['tabs'])){
+				$col_html = $this->getTabsHTML($col['tabs']);
 			} else {
 				$col_html = self::generateTitle($col['title']);
 				$col_html .= self::generateBody($col['body']);
@@ -185,6 +187,114 @@ class Grid {
 		}
 
 		return $html;
+	}
+
+	private function getTabHeader(array $tab, ?string $active): string
+	{
+		if(is_array($tab['header'])){
+			extract($tab['header']);
+		} else if ($tab['header']){
+			$title = $tab['header'];
+		} else {
+			throw new \Exception("All tabs must have titles.");
+		}
+
+		# Id
+		$id = str::getAttrTag("id", "{$tab['id']}-tab");
+		//A designted title ID (in the title array) is disregarded
+
+		# Class
+		$class_array = str::getAttrArray($class, ["nav-link", $active], $only_class);
+		$class = str::getAttrTag("class", $class_array);
+
+		# Icon
+		$icon = $icon ?: $tab['icon'];
+		if($icon){
+			if(is_string($icon)){
+				$icon = [
+					"name" => $icon,
+					"type" => "thin"
+				];
+			}
+			$icon = Icon::generate($icon);
+		}
+
+		# Badge
+		$badge = Badge::generate($badge ?: $tab['badge']);
+
+		# Style
+		$style = str::getAttrTag("style", $style);
+
+		return <<<EOF
+<a
+	{$id}
+	{$class}
+	{$style}
+	data-bs-toggle="tab"
+	href="#{$tab['id']}" 
+	role="tab" 
+	aria-controls="{$tab['id']}" 
+	aria-selected="true"
+>
+	{$icon}
+	{$title}
+	{$html}
+	{$badge}
+</a>
+EOF;
+	}
+
+	public function getTabsHTML(array $tabs): string
+	{
+		foreach($tabs as $tab){
+			if($body = $this->getHTML([$tab['body']])){
+				$html .= "<div class=\"body\">{$body}</div>";
+			}
+
+			if($footer = $this->getHTML([$tab['footer']])){
+				$html .= "<div class=\"footer\">{$footer}</div>";
+			}
+
+			$tab['id'] = $tab['id'] ?: str::id("panel");
+			$active = $active !== true ? "active" : NULL;
+			$nav_tabs[] = "<li class=\"nav-item\" role=\"presentation\">{$this->getTabHeader($tab, $active)}</li>";
+			$tab_panes[] = <<<EOF
+			<div
+				class="tab-pane {$active}"
+				id="{$tab['id']}"
+				role="tabpanel"
+				aria-labelledby="{$tab['id']}-tab"
+			>{$html}</div>
+EOF;
+			# An active tab has now been set
+			$active = true;
+
+			# Clear HTML
+			unset($html);
+		}
+
+		$tab_id = str::id("tab");
+		$nav_tabs_html = implode("\r\n", $nav_tabs);
+		$tab_panes = implode("\r\n", $tab_panes);
+
+		return <<<EOF
+<!-- Nav tabs -->
+<ul class="nav nav-tabs" id="{$tab_id}" role="tablist">{$nav_tabs_html}</ul>
+<!-- Tab panes -->
+<div class="tab-content">{$tab_panes}</div>
+<script>
+var triggerTabList = [].slice.call(document.querySelectorAll('#{$tab_id} a'))
+triggerTabList.forEach(function (triggerEl) {
+  var tabTrigger = new bootstrap.Tab(triggerEl)
+
+  triggerEl.addEventListener('click', function (event) {
+    event.preventDefault()
+    tabTrigger.show()
+  })
+});
+</script>
+EOF;
+
 	}
 
 	/**

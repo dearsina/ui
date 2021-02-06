@@ -174,7 +174,7 @@ class Card extends Common {
 
 		# Dropdown buttons and/or button(s) in a row
 		if($buttons = Button::get($this->cardHeader)){
-			$buttons = "<div class=\"col\">{$buttons}</div>";
+			$buttons = "<div class=\"col col-buttons\">{$buttons}</div>";
 		}
 
 		# Accent
@@ -528,7 +528,7 @@ EOF;
 EOF;
 
 //		$css_url = "https://app.{$_ENV['domain']}/css/app.css";
-		$css_url = "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0-alpha1/css/bootstrap.min.css";
+		$css_url = "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0-beta1/css/bootstrap.min.css";
 		if(!$css = @file_get_contents($css_url)){
 			throw new \Exception("The CSS file at <code>{$css_url}</code> could not be accessed. The email was not sent.");
 		}
@@ -587,13 +587,21 @@ EOF;
 			return false;
 		}
 
+		# If the breakpoint key is set to false, the columns won't fold on small screens
+		if($this->rows['breakpoint'] === false){
+			$row_class = "row-cols-2";
+		}
+
 		foreach($this->rows['rows'] as $key => $val){
 			$left = [
 				"class" => "small",
 				"sm" => $this->rows['sm'],
-				"html" => $key
+				"html" => $key,
 			];
-			$rows[] = [$left, $val];
+			$rows[] = [
+				"row_class" => $row_class,
+				"html" => [$left, $val]
+			];
 		}
 
 		if(is_array($rows)){

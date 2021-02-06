@@ -40,9 +40,6 @@ class Input extends Field {
 			$disabled = str::getAttrTag("disabled", "disabled");
 			$disabled_class = "disabled";
 		}
-		
-		# Validation
-		$validation = self::getValidationTags($validation);
 
 		# Parent class
 		$parent_class_array = str::getAttrArray($parent_class, "input-group", $only_parent_class);
@@ -51,8 +48,13 @@ class Input extends Field {
 		# Parent style
 		$parent_style = str::getAttrTag("style", $parent_style);
 
-		# Class
+		# Class array
 		$class_array = str::getAttrArray($class, ["form-control", $disabled_class], $only_class);
+
+		# Validation
+		$validation = self::getValidationTags($validation, $class_array);
+
+		# Class string
 		$class = str::getAttrTag("class", $class_array);
 		
 		# Style

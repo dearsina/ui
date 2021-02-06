@@ -103,6 +103,19 @@
 }
 
 /**
+ * KYC report styles
+ */
+.report-header
+{
+  border-bottom: 1px solid $border-color;
+  padding: .5rem 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/**
  * Plan pop styles
  */
 .card.plan-pop {
@@ -390,4 +403,11 @@
 // Blank markers are invisible
 .doc-map-svg .doc-map-blank {
   display: none;
+}
+
+/**
+ * Flickity override
+ */
+.flickity-button {
+  background: none;
 }

@@ -72,6 +72,13 @@ box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 
   font-size      : smaller;
 }
 
+/**
+ * For some reason when including buttons, the header grows
+ */
+.card-header .col-buttons {
+  height: 0;
+}
+
 .card-title > .far
 {
   font-weight : 100 !important;

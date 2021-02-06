@@ -10,7 +10,7 @@ use App\Common\str;
  * Class Checkbox
  * @package App\UI\Form
  */
-class Checkbox extends Field implements FieldInterface{
+class Checkbox extends Field implements FieldInterface {
 	/**
 	 * Generates the HTML for one to many checkboxes.
 	 *
@@ -18,7 +18,8 @@ class Checkbox extends Field implements FieldInterface{
 	 *
 	 * @return string
 	 */
-	public static function generateHTML (array $a) {
+	public static function generateHTML(array $a)
+	{
 		if(!is_array($a['values']) && $a['value']){
 			$a['values'] = is_array($a['value']) ? $a['value'] : [$a['value']];
 		}
@@ -37,9 +38,11 @@ class Checkbox extends Field implements FieldInterface{
 	 * @param $type
 	 *
 	 * @param $validation
+	 *
 	 * @return array
-*/
-	private static function getLabelArray($val, $type, $validation){
+	 */
+	private static function getLabelArray($val, $type, $validation)
+	{
 		# Label is just a string (not an array)
 		if(!is_array($val)){
 			return ['label' => $val];
@@ -61,17 +64,26 @@ class Checkbox extends Field implements FieldInterface{
 		$val['validation'] = $validation;
 
 		# Adjust the label to fit the field
-		$val['parent_style'] = str::getAttrArray($val['parent_style'],["margin" => "-1rem 0 0 0"], $val['only_parent_style']);
+		$val['parent_style'] = str::getAttrArray($val['parent_style'], $val['default_parent_style'], $val['only_parent_style']); //["margin" => "-1rem 0 0 0"]
+
+		if(!is_array($val['label'])){
+			$val['label'] = [
+				"title" => $val['label'],
+			];
+		}
+
+		# Shift the label a bit closer to the field
+		$val['label']['style']["margin-bottom"] = $val['label']['style']["margin-bottom"] ?: "-0.3rem";
 
 		return [
 			"id" => $id,
 			"script" => self::getLabelScript($id, $val['id']),
 			'label' => [
 				"style" => [
-					"width" => "100%"
+					"width" => "100%",
 				],
-				"html" => Field::getHTML($val)
-			]
+				"html" => Field::getHTML($val),
+			],
 		];
 	}
 
@@ -91,7 +103,8 @@ class Checkbox extends Field implements FieldInterface{
 	 *
 	 * @return string
 	 */
-	private static function getLabelScript(string $parent_id, string $label_id){
+	private static function getLabelScript(string $parent_id, string $label_id)
+	{
 		return /** @lang JavaScript */
 			<<<EOF
 $(document).ready(function() {
@@ -104,21 +117,34 @@ $(document).ready(function() {
 	
 	// When the label field value changes, check it, if it has value, add it to the radio/check
 	$("#{$label_id}").on("change paste keyup",function(){
-	    $("#{$parent_id}").attr("value",$(this).val());
-		if($(this).val().length){
-		    $("#{$parent_id}").attr('disabled', false);
-		    $("#{$parent_id}").prop("checked", true);
-		    $("#{$parent_id}").trigger('change');
-		} else {
-		    $("#{$parent_id}").prop("checked", false);
-		    $("#{$parent_id}").attr('disabled', true);
-		}
+	    if(!$("#{$label_id}").attr("name").length){
+	        //if the label field DOESN'T have its own name, move the value to the parent radio/check
+			$("#{$parent_id}").attr("value",$(this).val());
+			if($(this).val().length){
+				$("#{$parent_id}").attr('disabled', false);
+				$("#{$parent_id}").prop("checked", true);
+				$("#{$parent_id}").trigger('change');
+			} else {
+				$("#{$parent_id}").prop("checked", false);
+				$("#{$parent_id}").attr('disabled', true);
+			}
+	    }
 	});
 	
 	// If the label field _starts_ with a value, make sure the radio/check is checked
 	if($("#{$label_id}").val().length){
-	    $("#{$parent_id}").attr("value",$("#{$label_id}").val());
-		$("#{$parent_id}").prop("checked", true);
+	    if(!$("#{$label_id}").attr("name").length){
+	        //but only if the label field doesn't have a name
+	    	$("#{$parent_id}").attr("value",$("#{$label_id}").val());
+	    	$("#{$parent_id}").prop("checked", true);
+	    	/**
+	    	* otherwise, because more than one "independent" (aka has a name)
+	    	* label field may have values, the wrong field may be checked.
+			*/
+		} else if($("#{$label_id}").attr("name") != $("input[name='"+$("#{$parent_id}").attr("name")+"']:checked").val()){
+			//TODO Fix it so that label elements that are not selected don't have a value
+			console.log($("#{$label_id}").val());
+		}
 	}
 });
 EOF;
@@ -134,7 +160,8 @@ EOF;
 	 * @return string
 	 * @return string
 	 */
-	private static function getMultiCheckboxHTML($a){
+	private static function getMultiCheckboxHTML($a)
+	{
 		extract($a);
 
 		$parent_label = self::getLabel($label, $parent_title, $name, $id);
@@ -142,13 +169,15 @@ EOF;
 		if(is_array($parent_desc)){
 			if(is_array($parent_desc['class'])){
 				$parent_desc['class'][] = "checkbox-parent-desc";
-			} else {
+			}
+			else {
 				$parent_desc['class'] .= "checkbox-parent-desc";
 			}
-		} else {
+		}
+		else {
 			$parent_desc = [
 				"desc" => $parent_desc,
-				"class" => "checkbox-parent-desc"
+				"class" => "checkbox-parent-desc",
 			];
 		}
 		$parent_desc = self::getDesc($parent_desc);
@@ -177,7 +206,7 @@ EOF;
 
 		$parent_script = str::getScriptTag($parent_script);
 
-		return /** @lang HTML */<<<EOF
+		return /** @lang HTML */ <<<EOF
 <div class="mb-3">
 	{$parent_label}{$parent_desc}
 	{$options_html}
@@ -194,7 +223,8 @@ EOF;
 	 *
 	 * @return string
 	 */
-	private static function getSingleCheckboxHTML($a){
+	private static function getSingleCheckboxHTML($a)
+	{
 		# Value
 		$a['value'] = $a['value'] ?: true;
 		/**
@@ -204,7 +234,7 @@ EOF;
 		 */
 
 		$html = self::getCheckboxHTML($a);
-		return /** @lang HTML */<<<EOF
+		return /** @lang HTML */ <<<EOF
 <div class="mb-3">
 	{$html}
 </div>
@@ -218,7 +248,8 @@ EOF;
 	 *
 	 * @return string
 	 */
-	private static function getCheckboxHTML($a){
+	private static function getCheckboxHTML($a)
+	{
 		extract($a);
 
 		# Parent class
@@ -228,9 +259,6 @@ EOF;
 		# Parent style
 		$parent_style_tag = str::getAttrTag("style", $parent_style);
 
-		# Validation
-		$validation = self::getValidationTags($validation);
-
 		# Checked
 		$checked = $checked ? "checked" : false;
 
@@ -239,12 +267,16 @@ EOF;
 			$disabled = str::getAttrTag("disabled", "disabled");
 			$disabled_class = "disabled";
 		}
-		
+
 		# Class
-//		$class_array = str::getAttrArray($class, ["magic-{$type}", $disabled_class], $aonly_class);
 		$class_array = str::getAttrArray($class, ["form-check-input", $disabled_class], $aonly_class);
+
+		# Validation
+		$validation = self::getValidationTags($validation, $class_array);
+
+		# Class tag
 		$class_tag = str::getAttrTag("class", $class_array);
-		
+
 		# Style
 		$style_tag = str::getAttrTag("style", $style);
 
@@ -254,7 +286,7 @@ EOF;
 		# $script
 		$script = str::getScriptTag($script);
 
-		return /** @lang HTML */<<<EOF
+		return /** @lang HTML */ <<<EOF
 <div{$parent_class_tag}{$parent_style_tag}>
 	<input
 		type="{$type}"

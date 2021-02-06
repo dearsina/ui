@@ -75,10 +75,13 @@
 /**
  * The (optional) modal close button must
  * be placed all the way to the right.
+ * Paddding and margins must be reset.
  */
-.modal-header .close
+.modal-header .btn-close
 {
   float : right;
+  padding: 0;
+  margin: 0;
 }
 
 /**
