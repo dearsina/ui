@@ -81,12 +81,24 @@ class Button {
 
 		# Used by the Button::generic method
 
+		"new" => [
+			"size" => "s",
+			"hash" => [
+				"rel_table" => "rel_table",
+				"action" => "new",
+				"vars" => "vars"
+			],
+			"icon" => "new",
+			"colour" => "primary"
+		],
+
 		"edit" => [
 			"size" => "s",
 			"hash" => [
 				"rel_table" => "rel_table",
 				"rel_id" => "rel_id",
 				"action" => "edit",
+				"vars" => "vars"
 			],
 			"icon" => "edit",
 			"basic" => true,
@@ -99,6 +111,7 @@ class Button {
 				"rel_table" => "rel_table",
 				"rel_id" => "rel_id",
 				"action" => "duplicate",
+				"vars" => "vars"
 			],
 			"icon" => "copy",
 			"basic" => true,
@@ -228,8 +241,12 @@ class Button {
 	private static function ajaxify(array &$button, ?string $rel_table, ?string $rel_id, ?string $action, ?array $vars): void
 	{
 		array_walk_recursive($button, function(&$value, $key) use ($rel_table){
-			$value = $value == "rel_table" ? $rel_table : $value;
-			$value = $value == str_replace("rel_table", $rel_table, $value) ? $value : str::title(str_replace("rel_table", $rel_table, $value));
+			if($value == "rel_table"){
+				$value = $rel_table;
+			} else {
+				$value = $value == str_replace("rel_table", $rel_table, $value) ? $value : str::title(str_replace("rel_table", $rel_table, $value));
+			}
+
 		});
 		array_walk_recursive($button, function(&$value, $key) use ($rel_id){
 			$value = str_replace("rel_id", $rel_id, $value);
@@ -238,7 +255,9 @@ class Button {
 			$value = str_replace("action", $action, $value);
 		});
 		array_walk_recursive($button, function(&$value, $key) use ($vars){
-			$value = str_replace("vars", $vars, $value);
+			if($value == "vars"){
+				$value = $vars;
+			}
 		});
 		array_walk_recursive($button, function(&$value, $key){
 			if($key == "icon"){
@@ -255,10 +274,11 @@ class Button {
 	 * $buttons[] = Button::generic(["edit", "duplicate", "remove"],"field_population",$cols["field_population_id"]);
 	 * </code>
 	 *
-	 * @param string|array      $name
+	 * @param             $name
 	 * @param string|null $rel_table
 	 * @param string|null $rel_id
 	 * @param string|null $action
+	 * @param array|null  $vars
 	 * @param array|null  $overrides
 	 *
 	 * @return array

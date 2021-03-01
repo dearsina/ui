@@ -29,7 +29,7 @@ class Input extends Field {
 		extract(self::getInputType($type));
 
 		# Label
-		$label = self::getLabel($label, $title, $name, $id);
+		$label = self::getLabel($label, $title, $name, $id, $for);
 
 		# Icons
 		$icon = self::getIcon($icon);

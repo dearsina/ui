@@ -65,6 +65,7 @@ class Form {
 	private $rel_id;
 	private $callback;
 	private $modal;
+	private $data;
 
 
 	/**
@@ -100,6 +101,9 @@ class Form {
 		$this->rel_table = $rel_table;
 		$this->rel_id = $rel_id;
 		$this->callback = $callback;
+
+		# Data field
+		$this->data = $data;
 
 		# Is it in a modal?
 		$this->modal = $modal;
@@ -438,9 +442,10 @@ EOF;
 		$id = str::getAttrTag("id", $this->id);
 		$class = str::getAttrTag("class", $this->class);
 		$style = str::getAttrTag("style", $this->style);
+		$data = str::getDataAttr($this->data);
 
 		return /** @lang HTML */ <<<EOF
-<form method="POST"{$id}{$class}{$style}>
+<form method="POST"{$id}{$data}{$class}{$style}>
 	<input type="hidden" name="meta_action" value="{$this->action}"/>
 	<input type="hidden" name="meta_rel_table" value="{$this->rel_table}"/>
 	<input type="hidden" name="meta_rel_id" value="{$this->rel_id}"/>

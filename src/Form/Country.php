@@ -21,21 +21,10 @@ class Country extends Field implements FieldInterface {
 	{
 		$a = array_merge($a, [
 			"type" => "select",
-			"options" => Country::getAllCountries(),
+			"options" => \App\Common\Country\Country::getAllCountries(),
 			"autocomplete" => "country",
 		]);
 
 		return Select::generateHTML($a);
-	}
-
-	public static function getAllCountries(): array
-	{
-		$info = Info::getInstance();
-
-		foreach($info->getInfo("country") as $country){
-			$country_options[$country['country_code']] = $country['name'];
-		}
-
-		return $country_options;
 	}
 }

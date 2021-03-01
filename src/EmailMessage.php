@@ -397,7 +397,7 @@ class EmailMessage extends Common {
 	{
 		# Actual image size
 		if(!$size = Img::getimagesize($a['src'])){
-			throw new \Exception("The logo file [<code>{$a['src']}</code>] could not be found.");
+			throw new \Exception("Information about the logo file [<code>{$a['src']}</code>] could no be extracted.");
 		}
 
 		# There is max image width of a hard 500px if not set
@@ -1069,7 +1069,7 @@ EOF;
 	 *
 	 * @return string
 	 */
-	private function getButtonHTML(array $a): ?string
+	public function getButtonHTML(array $a): ?string
 	{
 		if(!$a){
 			return NULL;

@@ -333,6 +333,15 @@ form {
   margin: 0;
 }
 
+/**
+ * This is to prevent the error message from obscuring
+ * the "Remove" link.
+ */
+.dropzone .dz-preview.dz-error:hover .dz-error-message
+{
+  margin-top: 1rem;
+}
+
 .dropzone button.dz-button {
   height: 100%;
   padding: 1rem !important;

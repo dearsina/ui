@@ -22,7 +22,7 @@ class Range extends Field implements FieldInterface {
 	 * "desc" => "desc",
 	 * "label" => "label",
 	 * "value" => $estimate !== null ? $estimate : .5,
-	 * "alt" => "Your best guess at the odds of this guest attending."
+	 * "alt" => "Your best guess at the odds of this guest attending.",
 	 * "min" => 0, // Minimum value
 	 * "max" => 1, // Maximum value
 	 * "step" => 0.1, //Step
@@ -73,6 +73,7 @@ $(document).ready(function () {
 	var id = "{$rangeslider_id}";
 	var min_hsl = RGB2HSL([{$min_colour[0]}, {$min_colour[1]}, {$min_colour[2]}]);
 	var max_hsl = RGB2HSL([{$max_colour[0]}, {$max_colour[1]}, {$max_colour[2]}]);
+	var step = "$step";
 	var multiple = "$multiple";
 	var prefix = "$prefix";
 	var suffix = "$suffix";
@@ -107,7 +108,7 @@ $(document).ready(function () {
 		    // Set the colour
 		    setRangeColour(id, value, this.max, min_hsl, max_hsl);
 		    
-      		updateRangeHandle(id, this.value, multiple, prefix, suffix);
+      		updateRangeHandle(id, this.value, multiple, step, prefix, suffix);
 		},
 	
 		// Callback function
@@ -116,7 +117,7 @@ $(document).ready(function () {
 		    setRangeColour(id, value, this.max, min_hsl, max_hsl);
 		    
 		    // Update the range text
-    		updateRangeHandle(id, value, multiple, prefix, suffix);
+    		updateRangeHandle(id, value, multiple, step, prefix, suffix);
 		},
 	
 		// Callback function

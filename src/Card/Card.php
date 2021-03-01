@@ -233,7 +233,12 @@ EOF;
 	 * @throws Exception
 	 * @throws Exception
 	 */
-	public function getFooterHTML(){
+	public function getFooterHTML(?array $footer = NULL){
+		# Override
+		if($footer){
+			$this->cardFooter = $footer;
+		}
+
 		if(!$this->cardFooter){
 			// Footers are optional
 			return false;
@@ -456,7 +461,12 @@ EOF;
 		$progress = Progress::generate($this->cardBody['progress']);
 		$script = str::getScriptTag($this->cardBody['script']);
 
-		return "<div{$class}{$id}{$style}>{$progress}{$this->cardBody['html']}</div>{$script}";
+		$data = str::getDataAttr($this->cardBody['data'], true);
+
+		$ondrop = str::getAttrTag("ondrop", $this->cardBody['ondrop']);
+		$ondragover = str::getAttrTag("ondragover", $this->cardBody['ondragover']);
+
+		return "<div{$class}{$id}{$style}{$data}{$ondrop}{$ondragover}>{$progress}{$this->cardBody['html']}</div>{$script}";
 	}
 
 	/**

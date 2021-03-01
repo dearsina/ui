@@ -355,16 +355,37 @@
 }
 
 /**
- * DocMap SVG
+ * DocMap and DocFill SVG
  */
-.doc-map-svg {
+.doc-map-svg,
+.doc-fill-svg
+  //The svg itself
+{
   position: absolute;
   z-index: 1;
   overflow: visible;
 }
 
-.doc-map-svg.enable-custom {
+.doc-map-svg.enable-custom,
+.doc-fill-svg
+  //custom doc-maps and any doc fills can have custom rects
+{
   cursor: crosshair;
+}
+
+/**
+ * Doc fill map SVG rect
+ */
+.doc-fill-svg rect
+{
+  fill-opacity: 0;
+  stroke: green;
+  fill: green;
+  stroke-opacity: 1;
+}
+.doc-fill-svg rect:hover
+{
+  stroke-width: 0.3%;
 }
 
 .doc-map-svg path,
@@ -400,6 +421,17 @@
   stroke-dasharray: 5;
 }
 
+/**
+ * Doc fill PRINT
+ * We don't want to see the rectangle around the text,
+ * and because of the multiline element, we have
+ * to print it
+ */
+.doc-fill-svg-print rect {
+  stroke: unset;
+}
+
+
 // Blank markers are invisible
 .doc-map-svg .doc-map-blank {
   display: none;
@@ -410,4 +442,26 @@
  */
 .flickity-button {
   background: none;
+}
+
+/**
+ * Trumbowyg WYSIWYG editor template marker
+ */
+.template-marker
+{
+  display: unset !important;
+  border: none;
+  box-shadow: unset !important;
+  font-weight: 100;
+}
+
+/**
+ * Trumbowyg WYSIWYG editor template button
+ */
+.template-button
+{
+ display: unset !important;
+ padding: 10px;
+ font-weight: 400;
+ font-size: medium;
 }

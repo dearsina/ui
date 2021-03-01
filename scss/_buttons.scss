@@ -29,8 +29,16 @@ a.disabled-waiting{
   min-width: 2.2rem;
   min-height: 2rem;
 }
+
 .btn-sm i {
   padding-top: 0.25rem;
+}
+
+/**
+ * Create a more square btn-xs button
+ */
+.btn-xs {
+  padding: 0.25rem;
 }
 
 /**
@@ -140,8 +148,9 @@ form .btn i
 .show > .btn-outline-success.dropdown-toggle {
   color: #000; // On click make the text black
 }
-// Green buttons should have white text (not default black)
-.btn-green
+// Green (success) buttons should have white text (not default black)
+.btn-green,
+.btn-success
 {
   color: #fff;
 }

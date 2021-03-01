@@ -660,6 +660,21 @@ nav .expand {
 .nav-tabs {
   border: unset;
 }
+.nav-tabs > .nav-item {
+  max-width: fit-content;
+  white-space: nowrap;
+  overflow: hidden;
+  flex: 1 1 0;
+  margin-bottom: -1px;
+}
+
+.nav-tabs > .nav-item > *
+{
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
 .tab-content > .active {
   background: white;
   border: 0.9px solid #d8e2e9;

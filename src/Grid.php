@@ -5,6 +5,7 @@ namespace App\UI;
 
 use App\Common\href;
 use App\Common\str;
+use App\UI\Card\Card;
 
 /**
  * Class Grid
@@ -124,14 +125,14 @@ class Grid {
 			} else if(str::isNumericArray($col['html'])){
 				//if it goes deeper (with metadata)
 				$col_html = $this->getRowHTML($col['html']);
+			} else if(is_array($col['tabs'])){
+				$col_html = $this->getTabsHTML($col['tabs']);
 			} else if($this->formatter){
 				//If a custom formatter has been designated
 				$col_html = ($this->formatter)($col);
 			} else if($col['accordion']){
 				//if the cell is an accordion
 				$col_html = Accordion::generate($col['accordion']);
-			} else if(is_array($col['tabs'])){
-				$col_html = $this->getTabsHTML($col['tabs']);
 			} else {
 				$col_html = self::generateTitle($col['title']);
 				$col_html .= self::generateBody($col['body']);
@@ -195,8 +196,8 @@ class Grid {
 			extract($tab['header']);
 		} else if ($tab['header']){
 			$title = $tab['header'];
-		} else {
-			throw new \Exception("All tabs must have titles.");
+		} else if(!$tab['icon']){
+			throw new \Exception("All tabs must have a header or an icon.");
 		}
 
 		# Id
@@ -244,33 +245,70 @@ class Grid {
 EOF;
 	}
 
+	/**
+	 * Formats and returns the body of a single tab.
+	 * 
+	 * @param array $tab
+	 *
+	 * @return string|null
+	 */
+	private function getTabBody(array $tab): ?string
+	{
+		if(!$tab['body']){
+			return NULL;
+		}
+
+		if(!is_array($tab['body'])){
+			$body = [
+				"html" => $tab['body']
+			];
+		} else {
+			$body = $tab['body'];
+		}
+
+		$id = str::getAttrTag("id", $body['id']);
+		$classArray = str::getAttrArray($body['class'], "body", $body['only_class']);
+		$class = str::getAttrTag("class", $classArray);
+		$style = str::getAttrTag("style", $body['style']);
+		$data = str::getDataAttr( $body['data']);
+
+		return "<div{$id}{$class}{$style}{$data}>{$this->getHTML([$body['html']])}</div>";
+	}
+
+	/**
+	 * Formats and return the footer of a single tab.
+	 *
+	 * @param array $tab
+	 *
+	 * @return string|null
+	 */
+	private function getTabFooter(array $tab): ?string
+	{
+		return (new Card())->getFooterHTML($tab['footer']);
+		//We're borrowing from the Card class
+	}
+
 	public function getTabsHTML(array $tabs): string
 	{
 		foreach($tabs as $tab){
-			if($body = $this->getHTML([$tab['body']])){
-				$html .= "<div class=\"body\">{$body}</div>";
-			}
-
-			if($footer = $this->getHTML([$tab['footer']])){
-				$html .= "<div class=\"footer\">{$footer}</div>";
-			}
 
 			$tab['id'] = $tab['id'] ?: str::id("panel");
 			$active = $active !== true ? "active" : NULL;
 			$nav_tabs[] = "<li class=\"nav-item\" role=\"presentation\">{$this->getTabHeader($tab, $active)}</li>";
+
 			$tab_panes[] = <<<EOF
 			<div
 				class="tab-pane {$active}"
 				id="{$tab['id']}"
 				role="tabpanel"
 				aria-labelledby="{$tab['id']}-tab"
-			>{$html}</div>
+			>
+				{$this->getTabBody($tab)}
+				{$this->getTabFooter($tab)}
+			</div>
 EOF;
 			# An active tab has now been set
 			$active = true;
-
-			# Clear HTML
-			unset($html);
 		}
 
 		$tab_id = str::id("tab");

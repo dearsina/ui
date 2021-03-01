@@ -57,11 +57,15 @@ class Checkbox extends Field implements FieldInterface {
 		# The ID of the parent field
 		$id = str::id($type);
 
+		# So that the label field's label is also _for_ the parent
+		$val['for'] = $id;
+
 		# The ID of the child field
 		$val['id'] = $val['id'] ?: str::id($val['type']);
 
 		# The label field inherits the validation of the parent
 		$val['validation'] = $validation;
+		//TODO Fix this so that if required=true, it doesn't flag that every option doesn't have a value
 
 		# Adjust the label to fit the field
 		$val['parent_style'] = str::getAttrArray($val['parent_style'], $val['default_parent_style'], $val['only_parent_style']); //["margin" => "-1rem 0 0 0"]
@@ -77,7 +81,7 @@ class Checkbox extends Field implements FieldInterface {
 
 		return [
 			"id" => $id,
-			"script" => self::getLabelScript($id, $val['id']),
+			"script" => NULL,//self::getLabelScript($id, $val['id']),
 			'label' => [
 				"style" => [
 					"width" => "100%",
@@ -103,52 +107,76 @@ class Checkbox extends Field implements FieldInterface {
 	 *
 	 * @return string
 	 */
-	private static function getLabelScript(string $parent_id, string $label_id)
-	{
-		return /** @lang JavaScript */
-			<<<EOF
-$(document).ready(function() {
-    // Clicking on the radio/check will open the dropdown
-	$("#{$parent_id}").on("click",function(){
-	    if($('#{$label_id}').is("select")){
-			$('#{$label_id}').select2('open');	        
-	    }	    
-	});
-	
-	// When the label field value changes, check it, if it has value, add it to the radio/check
-	$("#{$label_id}").on("change paste keyup",function(){
-	    if(!$("#{$label_id}").attr("name").length){
-	        //if the label field DOESN'T have its own name, move the value to the parent radio/check
-			$("#{$parent_id}").attr("value",$(this).val());
-			if($(this).val().length){
-				$("#{$parent_id}").attr('disabled', false);
-				$("#{$parent_id}").prop("checked", true);
-				$("#{$parent_id}").trigger('change');
-			} else {
-				$("#{$parent_id}").prop("checked", false);
-				$("#{$parent_id}").attr('disabled', true);
-			}
-	    }
-	});
-	
-	// If the label field _starts_ with a value, make sure the radio/check is checked
-	if($("#{$label_id}").val().length){
-	    if(!$("#{$label_id}").attr("name").length){
-	        //but only if the label field doesn't have a name
-	    	$("#{$parent_id}").attr("value",$("#{$label_id}").val());
-	    	$("#{$parent_id}").prop("checked", true);
-	    	/**
-	    	* otherwise, because more than one "independent" (aka has a name)
-	    	* label field may have values, the wrong field may be checked.
-			*/
-		} else if($("#{$label_id}").attr("name") != $("input[name='"+$("#{$parent_id}").attr("name")+"']:checked").val()){
-			//TODO Fix it so that label elements that are not selected don't have a value
-			console.log($("#{$label_id}").val());
-		}
-	}
-});
-EOF;
-	}
+//	private static function getLabelScript(string $parent_id, string $label_id)
+//	{
+//		return /** @lang JavaScript */
+//			<<<EOF
+//$(document).ready(function() {
+//    // Clicking on the radio/check will open the dropdown
+//    console.log("The parent ID is {$parent_id}");
+//	$("#{$parent_id}").on("click",function(){
+//	    console.log("A parent was clicked on");
+//	    if($("#{$parent_id}").prop("checked")){
+//			console.log("The parent is checked.");
+//
+//	        //Disable all the _other_ label fields for this parent
+//			let parent_name = $("#{$parent_id}").attr("name");
+//			console.log("The parent name is " + parent_name);
+//
+//			$("input[name='"+parent_name+"']").parent().find(".form-control").attr('disabled', true);
+//
+//			$('#{$label_id}').attr('disabled', false);
+//			if($('#{$label_id}').is("select")){
+//				$('#{$label_id}').select2('open');
+//			}
+//	    } else {
+//	        $('#{$label_id}').attr('disabled', true);
+//
+//			validator[$(this).closest("form").attr("id")].resetForm();
+//			$(this).closest("form").valid();
+//	    }
+//	});
+//
+//	// When the label field value changes, check it, if it has value, add it to the radio/check
+//	$("#{$label_id}").on("change paste keyup",function(){
+//	    if(!$("#{$label_id}").attr("name").length){
+//	        //if the label field DOESN'T have its own name, move the value to the parent radio/check
+//			$("#{$parent_id}").attr("value",$(this).val());
+//	    }
+//
+//		if($(this).val().length){
+//			$("#{$parent_id}").attr('disabled', false);
+//			$("#{$parent_id}").prop("checked", true);
+//			$("#{$parent_id}").trigger('change');
+//		} else {
+//			$("#{$parent_id}").prop("checked", false);
+//			$(this).attr('disabled', true);
+//
+//			validator[$(this).closest("form").attr("id")].resetForm();
+//			$(this).closest("form").valid();
+//			//re-validates the form (now that a field has been disabled)
+//		}
+//	});
+//
+//	// If the label field _starts_ with a value, make sure the radio/check is checked
+//	if($("#{$label_id}").val().length){
+//	    if(!$("#{$label_id}").attr("name").length){
+//	        //if the label field doesn't have a name
+//	    	$("#{$parent_id}").attr("value",$("#{$label_id}").val());
+//	    	//feed the child value to the parent
+//		}
+//
+//	    // Either way, check the parent
+//		$("#{$parent_id}").prop("checked", true);
+//	}
+//
+//	else if(!$("#{$parent_id}").prop("checked")){
+//	    	//if the parent field isn't checked, disable the label (child) field
+//			$("#{$label_id}").attr('disabled', true);
+//	}
+//});
+//EOF;
+//	}
 
 	/**
 	 * One field, with one name,
@@ -166,6 +194,15 @@ EOF;
 
 		$parent_label = self::getLabel($label, $parent_title, $name, $id);
 
+		$parent_class = str::getAttrArray($parent_class, "mb-3", $only_parent_class);
+
+		if(array_filter($options, function($option){
+			return is_array($option) && $option['type'];
+		})){
+			//if at least _ONE_ of the radio/check fields has a label-field
+			$parent_class[] = "label-field";
+		}
+
 		if(is_array($parent_desc)){
 			if(is_array($parent_desc['class'])){
 				$parent_desc['class'][] = "checkbox-parent-desc";
@@ -174,13 +211,15 @@ EOF;
 				$parent_desc['class'] .= "checkbox-parent-desc";
 			}
 		}
-		else {
+
+		else if($parent_desc){
 			$parent_desc = [
 				"desc" => $parent_desc,
 				"class" => "checkbox-parent-desc",
 			];
+
+			$parent_desc = self::getDesc($parent_desc);
 		}
-		$parent_desc = self::getDesc($parent_desc);
 
 		foreach($options as $key => $val){
 			# The label can be a string, or a whole separate field
@@ -205,9 +244,10 @@ EOF;
 		}
 
 		$parent_script = str::getScriptTag($parent_script);
+		$parent_class = str::getAttrTag("class", $parent_class);
 
 		return /** @lang HTML */ <<<EOF
-<div class="mb-3">
+<div{$parent_class}>
 	{$parent_label}{$parent_desc}
 	{$options_html}
 </div>

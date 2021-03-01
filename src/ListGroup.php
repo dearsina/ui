@@ -191,6 +191,15 @@ class ListGroup {
 		# Style
 		$style = str::getAttrTag("style", $item['style']);
 
+		# Draggable
+		$draggable = str::getAttrTag("draggable", $item['draggable'] ? "true" : NULL);
+
+		# Data
+		$data = str::getDataAttr($item['data']);
+
+		# OnDragStart
+		$ondragstart = str::getAttrTag("ondragstart", $item['ondragstart']);
+
 		if($orderable){
 			if($item['orderable'] !== false){
 				if(!$item['id']){
@@ -204,12 +213,12 @@ class ListGroup {
 			}
 
 			return <<<EOF
-<li{$id}{$class}{$style}><{$tag}{$href}>{$icon}{$html}{$badge}{$button}</{$tag}></li>
+<li{$id}{$class}{$style}{$draggable}{$ondragstart}{$data}><{$tag}{$href}>{$icon}{$html}{$badge}{$button}</{$tag}></li>
 EOF;
 		}
 
 		return <<<EOF
-<{$tag}{$id}{$class}{$style}{$href}>{$icon}{$button}{$html}{$badge}</{$tag}>
+<{$tag}{$id}{$class}{$style}{$href}{$draggable}{$ondragstart}{$data}>{$icon}{$button}{$html}{$badge}</{$tag}>
 EOF;
 
 	}

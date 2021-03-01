@@ -34,7 +34,8 @@ class Field {
 	 * @return bool|string
 	 * @link https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#autofill
 	 */
-	public static function getHTML(array &$a = NULL){
+	public static function getHTML(array &$a = NULL)
+	{
 		if(!$a){
 			return false;
 		}
@@ -64,13 +65,14 @@ class Field {
 		if(class_exists($class)){
 			//If a custom input type field exists
 			return $class::generateHTML($field);
-		} else {
+		}
+		else {
 			//If a custom field type class doesn't exist
 			return Input::generateHTML($field);
 			//Use the default "input" type
 		}
 	}
-	
+
 	/**
 	 * Given a string, returns a corrected type
 	 * for the input field type as an array.
@@ -82,8 +84,9 @@ class Field {
 	 *
 	 * @return array
 	 */
-	static function getInputType($type){
-		switch($type){
+	static function getInputType($type)
+	{
+		switch($type) {
 		case 'datetime':
 			$a['type'] = 'datetime-local';
 			//to ensure that timezones are correct
@@ -106,28 +109,33 @@ class Field {
 	 * or an array (for more complex labels),
 	 * and the ID of the field this label is for.
 	 *
-	 * @param array|string $label
-	 * @param string       $title Not quite sure what this is for.
-	 * @param string       $name
-	 * @param int|string   $id
+	 * @param array|string    $label
+	 * @param string          $title Not quite sure what this is for.
+	 * @param string          $name
+	 * @param int|string      $id
+	 * @param int|string|null $for   If set, will be the ID that this element's label is "for"
 	 *
 	 * @return bool|string
 	 * @throws \Exception
 	 * @throws \Exception
 	 * @throws \Exception
 	 */
-	static function getLabel($label, $title, $name, $id){
+	static function getLabel($label, $title, $name, $id, ?string $for = NULL)
+	{
 		if($label === false){
 			return false;
 		}
 
-		if(is_array($label)) {
+		if(is_array($label)){
 			$l = $label;
-		} else if ($label){
+		}
+		else if($label){
 			$l['title'] = $label;
-		} else if ($title){
+		}
+		else if($title){
 			$l['title'] = $title;
-		} else {
+		}
+		else {
 			$l = [];
 		}
 
@@ -139,7 +147,7 @@ class Field {
 		if($l['title']){
 			$title = "<b>{$l['title']}</b>";
 		}
-		
+
 		# Class
 		$class_array = str::getAttrArray($l['class'], "field-label", $l['only_class']);
 		$class = str::getAttrTag("class", $class_array);
@@ -157,12 +165,13 @@ class Field {
 		if($href = href::generate($l)){
 			//if the label is a link
 			$tag = "a";
-		} else {
+		}
+		else {
 			$tag = "label";
 		}
 
 		# Id
-		$id = str::getAttrTag("for", $id);
+		$id = str::getAttrTag("for", $for ?: $id);
 
 		# HTML
 		$html = $l['html'];
@@ -182,14 +191,18 @@ class Field {
 	 * @return string
 	 * @throws \Exception
 	 */
-	static function getCheckboxLabel($label, $desc, $name, $id){
+	static function getCheckboxLabel($label, $desc, $name, $id)
+	{
 		if($label === false){
 			$l['title'] = "";
-		} else if(is_array($label)) {
+		}
+		else if(is_array($label)){
 			$l = $label;
-		} else if ($label){
+		}
+		else if($label){
 			$l['html'] = $label;
-		} else {
+		}
+		else {
 			$l = [];
 		}
 
@@ -224,7 +237,8 @@ class Field {
 		if($href = href::generate($l)){
 			//if the label is a link
 			$tag = "a";
-		} else {
+		}
+		else {
 			$tag = "label";
 		}
 
@@ -238,7 +252,7 @@ class Field {
 		$desc = self::getDesc($l['desc']);
 
 		return "<{$tag}{$href}{$id}{$class}{$style}{$alt}>{$icon}{$title}{$html}{$badge}{$desc}</{$tag}>";
-		
+
 	}
 
 	/**
@@ -250,7 +264,8 @@ class Field {
 	 *
 	 * @return array|bool|mixed|string
 	 */
-	static function getPlaceholder($placeholder, $name = NULL){
+	static function getPlaceholder($placeholder, $name = NULL)
+	{
 		if($placeholder === false){
 			return false;
 		}
@@ -287,7 +302,8 @@ class Field {
 			if(is_array($val)){
 				$data["data-rule-{$rule}"] = $val['rule'];
 				$data["data-msg-{$rule}"] = $val['msg'];
-			} else {
+			}
+			else {
 				$data["data-rule-{$rule}"] = $val;
 			}
 		}
@@ -307,14 +323,15 @@ class Field {
 	 *
 	 * @return mixed
 	 */
-	static function getRequiredValidation($a){
+	static function getRequiredValidation($a)
+	{
 		if(!$a['required']){
 			return $a;
 		}
 
 		$a['validation']["required"] = [
 			"rule" => true,
-			"msg" => is_string($a['required']) ? $a['required'] : false
+			"msg" => is_string($a['required']) ? $a['required'] : false,
 		];
 		return $a;
 	}
@@ -326,7 +343,8 @@ class Field {
 	 * @return bool|string
 	 * @throws \Exception
 	 */
-	static function getButton($button, $type){
+	static function getButton($button, $type)
+	{
 		if(!$button){
 			//if no button has been requested
 			return false;
@@ -334,7 +352,7 @@ class Field {
 
 		$button_array = is_array($button) ? $button : ["name", $button];
 
-		if(!$type || $type=="input"){
+		if(!$type || $type == "input"){
 			$button_array['style']['z-index'] = "9";
 			$button_array['style']['border-radius'] = "0 .25rem .25rem 0";
 		}
@@ -351,7 +369,8 @@ class Field {
 	 *
 	 * @return bool|string
 	 */
-	static function getDesc($desc){
+	static function getDesc($desc)
+	{
 		if(!$desc){
 			return false;
 		}
@@ -359,7 +378,8 @@ class Field {
 		if(is_array($desc)){
 			extract($desc);
 			$html = $desc;
-		} else {
+		}
+		else {
 			$html = $desc;
 		}
 
@@ -379,7 +399,8 @@ class Field {
 	 * @return bool|string
 	 * @return bool|string
 	 */
-	static function getIcon($icon){
+	static function getIcon($icon)
+	{
 		if(!$icon){
 			//Icons are not mandatory
 			return false;
@@ -392,7 +413,8 @@ class Field {
 
 		if(!is_array($icon)){
 			$icon_array = ["name" => $icon];
-		} else {
+		}
+		else {
 			$icon_array = $icon;
 		}
 
@@ -401,14 +423,14 @@ class Field {
 
 		$icon_html = Icon::generate($icon_array);
 
-		$icon_title = $icon_array['title']? " {$icon_array['title']}" : false;
+		$icon_title = $icon_array['title'] ? " {$icon_array['title']}" : false;
 
 		$colour = str::getColour($icon_array['colour']);
 		$span_class_array = str::getAttrArray($colour, "input-group-text");
 		$span_class_tag = str::getAttrTag("class", $span_class_array);
 
 		return "<span{$span_class_tag}>{$icon_html}{$icon_title}</span>";
-//		return "<div class=\"input-group-{$prepend_or_append}\"><span{$span_class_tag}>{$icon_html}{$icon_title}</span></div>";
+		//		return "<div class=\"input-group-{$prepend_or_append}\"><span{$span_class_tag}>{$icon_html}{$icon_title}</span></div>";
 	}
 
 	/**
@@ -421,7 +443,7 @@ class Field {
 	 *
 	 * @return array
 	 */
-	public static function getOptions ($select, string $id_column, ?string $title_column = NULL): array
+	public static function getOptions($select, string $id_column, ?string $title_column = NULL): array
 	{
 		if(!$title_column){
 			$title_column = $id_column;
@@ -449,12 +471,12 @@ class Field {
 	 *
 	 * @return bool|string
 	 */
-	public static function getOnChange (array &$a)
+	public static function getOnChange(array &$a)
 	{
 		extract($a);
 		$script = $onChange ?: $onchange;
 
-		if (!$script) {
+		if(!$script){
 			return false;
 		}
 

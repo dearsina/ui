@@ -7,6 +7,7 @@ namespace App\UI;
 use App\Common\Output;
 use App\Common\SQL\Factory;
 use App\Common\str;
+use App\UI\Form\Form;
 
 /**
  * Class Table
@@ -331,7 +332,14 @@ EOF;
 		# The start value grows for every request
 		$output->setVar('start', $start + $length);
 
-		$base_query['where'] = array_merge($base_query['where'] ?: [], $vars ?: []);
+		foreach($vars as $key => $val){
+			# If the value is a numerical array, assume an IN is required
+			if(str::isNumericArray($val)){
+				$base_query['where'][] = [$key, "IN", $val];
+			} else {
+				$base_query['where'][$key] = $val;
+			}
+		}
 
 		$count_query = $base_query;
 		$count_query['distinct'] = true;
@@ -365,10 +373,17 @@ EOF;
 
 		if($order_by_col && $order_by_dir){
 			//only if a col and dir have been given, otherwise use default
-			$rows_query['order_by'] = [$order_by_col => $order_by_dir];
+			$complex_order_by = explode(".", $order_by_col);
+
+			if(count($complex_order_by) == 2){
+				$complex_order_by[] = $order_by_dir;
+				$rows_query['order_by'] = [$complex_order_by];
+			} else {
+				$rows_query['order_by'] = [$order_by_col => $order_by_dir];
+			}
 		}
 
-		$rows = $sql->select($rows_query);
+		$rows = $sql->select($rows_query);//var_dump($rows);exit;
 		$output->setVar('query_parameters', $rows_query);
 		$output->setVar('query', $_SESSION['query']);
 
@@ -384,6 +399,7 @@ EOF;
 				//run the row handler thru each row
 			}
 		}
+//		echo json_encode($rows);exit;
 
 		# Due to the data being loaded piecemeal, it is not sortable
 		//		$a['sortable'] = false;
@@ -417,5 +433,79 @@ EOF;
 				],
 			],
 		];
+	}
+
+	/**
+	 * Given a list of filters, will turn them into a checkbox form,
+	 * connected to the on-demand table. When a checkbox is clicked,
+	 * the table is refreshed with the filter.
+	 *
+	 * Expecting the filters array to be as follows:
+	 * <code>
+	 * "column" => [
+	 * 	"title" => "Column title",
+	 * 	"options" => [
+	 * 		"option-key" => "option-value"
+	 * 	]
+	 * ]
+	 * </code>
+	 *
+	 * @param array  $filters
+	 * @param string $ondemand_table_id
+	 *
+	 * @return string
+	 * @throws \Exception
+	 */
+	public static function getFilterCard(array $filters, string $ondemand_table_id): string
+	{
+		foreach($filters as $column => $data){
+			$options = [];
+			foreach($data['options'] as $key => $option){
+				$options[$key] = [
+					"label" => [
+						"title" => false,
+						"desc" => $option,
+					]
+				];
+			}
+			$fields[] = [
+				"parent_style" => [
+					"height" => "25px"
+				],
+				"type" => "checkbox",
+				"label" => $data['title'],
+				"options" => $options,
+				"name" => $column,
+				"checked" => in_array($id, $vars[$column] ?:[])
+			];
+		}
+
+		$form = new Form([
+			"class" => "form-ondemand-filter",
+			"data" => [
+				"table_id" => $ondemand_table_id,
+			],
+			"style" => [
+				"margin-bottom" => "-1rem"
+			],
+			"fields" => [$fields],
+		]);
+
+		$card = new \App\UI\Card\Card([
+			"header" => [
+				"icon" => Icon::get("filter"),
+				"title" => "Filters",
+				"button" => [
+					"title" => "Clear",
+					"class" => "clear-ondemand-filters",
+					"ladda" => false,
+					"basic" => true,
+					"size" => "s"
+				]
+			],
+			"body" => $form->getHTML(),
+		]);
+
+		return $card->getHTML();
 	}
 }

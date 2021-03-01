@@ -23,7 +23,7 @@ class Textarea extends Field implements FieldInterface {
 		extract($a);
 
 		# Label
-		$label = self::getLabel($label, $title, $name, $id);
+		$label = self::getLabel($label, $title, $name, $id, $for);
 
 		$rows = $rows ?: 2;
 
@@ -44,6 +44,9 @@ class Textarea extends Field implements FieldInterface {
 
 		# Style
 		$style = str::getAttrTag("style", $style);
+
+		# Data
+		$data = str::getDataAttr($data);
 
 		# Placeholder
 		$placeholder = str::getAttrTag("placeholder", self::getPlaceholder($placeholder));
@@ -73,6 +76,7 @@ class Textarea extends Field implements FieldInterface {
 			{$disabled}
 			{$autocomplete}
 			{$validation}
+			{$data}
 		>{$value}</textarea>
 	</div>
 	{$desc}
