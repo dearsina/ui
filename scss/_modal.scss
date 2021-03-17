@@ -99,6 +99,7 @@
 
 .modal-body > *
 {
+  width : 100%; // For Microsoft Edge
   width : -webkit-fill-available;
   width : -moz-fill-available;
   width : fill-available;

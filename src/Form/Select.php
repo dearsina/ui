@@ -44,6 +44,11 @@ class Select extends Field implements FieldInterface {
 		# Class
 		$class_array = str::getAttrArray($class, ["form-control", $disabled_class], $only_class);
 
+		# Tokenize
+		if($tokenize){
+			$class_array[] ='tokenize';
+		}
+
 		# Validation
 		$validation = self::getValidationTags($validation, $class_array);
 
@@ -150,6 +155,19 @@ EOF;
 	private static function getOptionsArray ($a, &$matched = false)
 	{
 		extract($a);
+
+		/**
+		 * Because of the potentially non-distinct
+		 * nature of tokenized options, we can trust
+		 * that the tokenization methods will have already
+		 * prepared the options array in the required
+		 * value/title/selected format.
+		 */
+		if($tokenize){
+			if(str::isNumericArray($options)){
+				return $options;
+			}
+		}
 
 		if (is_array($value)) {
 			//Many values

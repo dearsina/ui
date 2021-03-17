@@ -230,7 +230,7 @@ class Checkbox extends Field implements FieldInterface {
 
 			# If this option has been selected, mark it as checked
 			if(!empty($values)){
-				$val_array['checked'] = in_array($key, $values) ? "checked" : false;
+				$val_array['checked'] = $key&& in_array($key, $values) ? "checked" : false;
 			}
 
 			# The key holds the value

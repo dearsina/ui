@@ -86,3 +86,27 @@ $container-max-widths : (
   border-color: red !important;
   color: red;
 }
+
+/**
+ * So that CSS table columns align with large text.
+ * Might have unintended consequences for longer pieces of text.
+ */
+.table-body .col {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/**
+ * Row cells with buttons are designated col-sm (instead of col)
+ * to avoid their content being hidden by the overflow:hidden flag.
+ * In addition, th col-sm has a z-index that allows button content
+ * to float over other buttons.
+ */
+.col-sm{
+  //z-index: 5;
+  //Didn't work, caused a headache when dropdowns went over the below line
+}
+.card-footer .col {
+  z-index: 0;
+}

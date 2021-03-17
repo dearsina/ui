@@ -27,14 +27,14 @@ class PDF {
 		$tmp_filename = PDF::generateTemporaryFilename($md5);
 
 		# Force refresh the file?
-//		if($refersh){
-//			unlink($tmp_filename);
-			$command = "rm {$tmp_filename}";
-			shell_exec($command);
-//		}
+		if($refresh){
+			if(file_exists($tmp_filename)){
+				unlink($tmp_filename);
+			}
+		}
 
 		# If the file doesn't already exist, create it
-//		if($refersh || !file_exists($tmp_filename)){
+		if($refresh || !file_exists($tmp_filename)){
 
 			# An easier way to structure the CLI settings
 			$settings = self::formatHeadlessChromeSettings([
@@ -54,7 +54,7 @@ class PDF {
 //				"enable-logging" => "stderr",
 //				"log-level" => "0",
 //				"v" => 1,
-//				"user-data-dir" => "/var/www/tmp/"
+				"user-data-dir" => "/var/www/tmp/"
 			]);
 
 			# Write the headless command
@@ -68,7 +68,7 @@ class PDF {
 			if($output){
 				throw new \Exception($output);
 			}
-//		}
+		}
 
 		$command = "chmod 777 {$tmp_filename}";
 		shell_exec($command);

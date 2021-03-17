@@ -105,7 +105,7 @@ abstract class Common extends \App\Common\Common {
 
 		# Any vars sent with the edit AJAX request will be included
 		$$rel_table = array_merge($vars ?:[], $this->info($rel_table, $rel_id));
-		// But only if the value doesn't exist in the rel_table, otherwise it will be overriden
+		// But only if the value doesn't exist in the rel_table, otherwise it will be overwritten
 
 		$buttons = $buttons ?: ["save","cancel_md"];
 

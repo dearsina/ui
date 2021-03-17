@@ -175,7 +175,11 @@ class ListGroup {
 		$icon = Icon::generate($item['icon']);
 
 		# Badge
-		if($badge = Badge::generate($item['badge'])){
+		if($badge = Badge::generate($item['badge'], [
+			"style" => [
+				"margin-left" => ".5rem"
+			]
+		])){
 //			$default_class[] = "d-flex justify-content-between align-items-center";
 		}
 
@@ -205,15 +209,14 @@ class ListGroup {
 				if(!$item['id']){
 					throw new \Exception("Each item in an orderable array must have an ID.");
 				}
-
-				$class_array[] = "draggable list-group-handlebars";
+				$class_array[] = "draggable";
 				$class = str::getAttrTag("class", $class_array);
-
 				$id = str::getAttrTag("id", $item["id"]);
+				$handlebars = "<span class=\"list-group-handlebars\"></span>";
 			}
 
 			return <<<EOF
-<li{$id}{$class}{$style}{$draggable}{$ondragstart}{$data}><{$tag}{$href}>{$icon}{$html}{$badge}{$button}</{$tag}></li>
+<li{$id}{$class}{$style}{$draggable}{$ondragstart}{$data}>{$handlebars}{$button}<{$tag}{$href}>{$icon}{$html}{$badge}</{$tag}></li>
 EOF;
 		}
 
@@ -273,7 +276,10 @@ EOF;
 		$class = str::getAttrTag("class", $class_array);
 
 		# Style
-		$style_array = str::getAttrArray($style, ["letter-spacing" => "-.5px"], $only_style);
+		$style_array = str::getAttrArray($style, [
+			"letter-spacing" => "-.5px",
+			"line-height" => "16pt"
+		], $only_style);
 		$style = str::getAttrTag("style", $style_array);
 
 		return "<{$tag}{$id}{$class}{$style}>{$body}{$button}</{$tag}>";

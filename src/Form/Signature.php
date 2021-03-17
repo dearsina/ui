@@ -39,18 +39,23 @@ class Signature extends Field implements FieldInterface {
 </svg>
 <div class="signature-pad-desc {$signature_id}">{$created}</div>
 EOF;
+		# For the signature
+		$label = str::newline($a['desc']);
 
+		# For the field holding the signature value
+		$a['label'] = false;
+		$a['desc'] = false;
+		$a['style'] = ["display" => "none"];
 
 		return Grid::generate([[
 			"html" => [[[
-				"html" => str::newline($a['desc']),
+				"title" => $a['title'],
+				"body" => $label,
 				"row_style" => [
 					"padding-bottom" => "1rem"
 				]
 			],[
 				"html" => $svg
-			],[
-				"html" => Hidden::generateHTML($a)
 			],[
 				"html" => Button::generate([
 					"icon" => "signature",
@@ -68,6 +73,8 @@ EOF;
 				"row_style" => [
 					"margin-bottom" => "1rem"
 				]
+			],[
+				"html" => Input::generateHTML($a)
 			]]]
 		]]);
 	}

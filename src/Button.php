@@ -271,7 +271,7 @@ class Button {
 	 * Make uniform edit, duplicate and remove buttons for rows, etc.
 	 *
 	 * <code>
-	 * $buttons[] = Button::generic(["edit", "duplicate", "remove"],"field_population",$cols["field_population_id"]);
+	 * $buttons[] = Button::generic(["edit", "duplicate", "remove"], $rel_table, $cols["{$rel_table}_id"]);
 	 * </code>
 	 *
 	 * @param             $name
@@ -284,12 +284,12 @@ class Button {
 	 * @return array
 	 * @throws \Exception
 	 */
-	static function generic($name, ?string $rel_table = NULL, ?string $rel_id = NULL, ?string $action = NULL, ?array $vars = NULL, ?array $overrides = NULL): array
+	static function generic($name, ?string $rel_table = NULL, ?string $rel_id = NULL, ?array $vars = NULL, ?array $overrides = NULL): array
 	{
 		# The button name can also be an array to make the process even more efficient
 		if(is_array($name)){
 			foreach($name as $n){
-				$buttons[] = self::generic($n, $rel_table, $rel_id, $action, $vars, $overrides);
+				$buttons[] = self::generic($n, $rel_table, $rel_id, $vars, $overrides);
 			}
 			return $buttons;
 		}

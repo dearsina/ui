@@ -36,6 +36,13 @@ smaller, .smaller {
   font-weight: 500;
   line-height: 24pt;
 }
+/**
+ * An override for when text titles are in modals
+ */
+.modal .text-title {
+  line-height: unset;
+}
+
 .text-body {
   font-weight: 300;
 }

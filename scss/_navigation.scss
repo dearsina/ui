@@ -75,7 +75,7 @@ a.navbar-level1-logo:hover,
  */
 #navbar-level1-buttons {
   float: right;
-  margin: 4px 5px;
+  margin: 4px -3px;
 }
 
 #navbar-level1-buttons > * {
@@ -356,7 +356,6 @@ nav .nav-right {
   display: none;
 
   position: absolute;
-  z-index: 1000;
   float: left;
   min-width: 10rem;
   padding: 0;
@@ -380,11 +379,21 @@ nav .parent {
 /**
  * How items on the right on level 1 are displayed
  */
-.nav-right > .parent {
-  display: inline-block;
+#ui-navigation .nav-right > .parent{
   margin-left: 1rem;
+}
+.nav-right > .parent{
+  display: inline-block;
   cursor: pointer;
-  z-index: 1; //This is because otherwise they can disappear behind select items
+  z-index: 4; //This is because otherwise they can disappear behind select items, buttons, etc
+}
+
+/**
+ * Experimental space so that button
+ * bars in a table are placed better.
+ */
+.table-body .nav-right {
+  margin-right: 0.5rem;
 }
 
 nav .parent li {
@@ -451,7 +460,7 @@ nav .parent > ul li {
   min-width: max-content;
   //overflow: hidden; This will prevent grand children
   white-space: nowrap;
-  max-width: 300px;
+  //max-width: 300px;
 
   //border-bottom : .9px solid $border-color;
 }
@@ -463,6 +472,11 @@ nav .parent > ul li > div {
   display: block;
   font-weight: 400;
   //border-bottom : .9px solid $border-color;
+}
+
+#navbar-level1 .nav-right > .parent > div.menu-title
+{
+  margin-top : -6px;
 }
 
 /**
@@ -633,6 +647,27 @@ nav .expand {
   }
   .nav-left ul, ul.nav-left {
     padding: 0;
+  }
+
+  // Ensure the menu doesn't drown out the page on small pages
+  .nav-right .parent:hover > ul {
+    max-width: 300px;
+    overflow: hidden;
+  }
+
+  // Ensure the title of the subscription doesn't drown on mobile
+  #navbar-level1 .nav-right > .parent > div.menu-title {
+    margin-top: 0;
+    line-height: 1;
+    max-width: 150px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  // Ensure the title sits right on mobile
+  #navbar-level1-buttons {
+    margin: 4px 2px;
   }
 }
 

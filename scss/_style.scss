@@ -465,3 +465,16 @@
  font-weight: 400;
  font-size: medium;
 }
+
+/**
+ * Tokenised calculations
+ */
+.calc-token {
+  display: inline-block;
+  border: .1px solid $border-color;
+  border-radius: 1rem;
+  padding: 0 0.6rem .1rem 0.6rem;
+  background-color: hsl(207deg, 60%, 97%);
+  font-weight: 300;
+  margin-bottom: 0.3rem;
+}

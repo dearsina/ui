@@ -142,6 +142,11 @@ class Grid {
 			# If they're not to be stacked, make it so (default is stackable)
 			$col_width = $this->unstackable ? "col" : "col-sm";
 
+			# Buttons
+			if($buttons = Button::get($col)){
+				$col_width = "col-sm";
+			}
+
 			# Has a fixed column width been requested
 			if($col['sm']){
 				$col_width .= "-{$col['sm']}";
@@ -166,9 +171,6 @@ class Grid {
 			# Data value (used for sorting)
 			$data_value = $this->getDataValueTag($col);
 			$data = str::getDataAttr($col['data']);
-
-			# Buttons
-			$buttons = Button::get($col);
 
 			# Hash, URI, onClick
 			if($href = href::generate($col)){
@@ -204,8 +206,13 @@ class Grid {
 		$id = str::getAttrTag("id", "{$tab['id']}-tab");
 		//A designted title ID (in the title array) is disregarded
 
+		# Disabled
+		if($tab['disabled']){
+			$disabled = "disabled";
+		}
+
 		# Class
-		$class_array = str::getAttrArray($class, ["nav-link", $active], $only_class);
+		$class_array = str::getAttrArray($class, ["nav-link", $active, $disabled], $only_class);
 		$class = str::getAttrTag("class", $class_array);
 
 		# Icon
@@ -448,11 +455,22 @@ EOF;
 		extract($a);
 
 		$tag = $tag ?: "p";
+
+		if($body != strip_tags($body)){
+			//if the body contains HTML, it will be pushed out of the p tag, so we must switch to a div
+			$tag = "div";
+			$default_style = [
+				"margin-top" => "0",
+				"margin-bottom" => "1rem"
+			];
+			//And format it like a p
+		}
 		$id = str::getAttrTag("id", $id);
 		$button = Button::generate($button);
 		$class_array = str::getAttrArray($class, "text-body", $only_class);
 		$class = str::getAttrTag("class", $class_array);
-		$style = str::getAttrTag("style", $style);
+		$style_array = str::getAttrArray($style, $default_style, $only_style);
+		$style = str::getAttrTag("style", $style_array);
 
 		return "<{$tag}{$id}{$class}{$style}>{$body}{$button}</{$tag}>";
 	}

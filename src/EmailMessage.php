@@ -65,12 +65,12 @@ class EmailMessage extends Common {
 
 	public function __construct(?array $a = NULL)
 	{
+		# Load all the app colours
+		$this->loadColours();
+
 		if(!is_array($a)){
 			return;
 		}
-
-		# Load all the app colours
-		$this->loadColours();
 
 		# Store the email sections
 		$this->setAttr($a);

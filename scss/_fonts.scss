@@ -8,8 +8,13 @@
 //Similar to the DIN font family, very tidy
 //The KYCDD official font
 
-@import url('https://fonts.googleapis.com/css2?family=Inconsolata&display=swap');
+//@import url('https://fonts.googleapis.com/css2?family=Inconsolata&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300&display=swap');
 //Monospace font
+/**
+ * While inconsolata is prettier, Roboto Mono includes Greek characters.
+ * 300 is a little thin, but 400 is too thick.
+ */
 
 /**
  * Bootstrap variable overrides
@@ -20,4 +25,4 @@ $font-family-base       : "Barlow";
 //$font-weight-bolder: 600;
 
 // Experimental
-$font-family-monospace  : "Inconsolata";
+$font-family-monospace  : "Roboto Mono";

@@ -383,7 +383,7 @@ EOF;
 			}
 		}
 
-		$rows = $sql->select($rows_query);//var_dump($rows);exit;
+		$rows = $sql->select($rows_query);
 		$output->setVar('query_parameters', $rows_query);
 		$output->setVar('query', $_SESSION['query']);
 

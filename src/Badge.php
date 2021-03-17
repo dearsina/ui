@@ -50,7 +50,7 @@ class Badge {
 	 * @return string
 	 * @throws \Exception
 	 */
-	static function generate($array_or_string = null){
+	static function generate($array_or_string = null, ?array $overrides = NULL){
 		if(!is_array($array_or_string) && !strlen($array_or_string)){
 			return false;
 		}
@@ -69,6 +69,10 @@ class Badge {
 			return implode("&nbsp;",$badge_array);
 		} else {
 			$a = $array_or_string;
+		}
+
+		if(is_array($overrides)){
+			$a = array_merge($a, $overrides);
 		}
 
 		# Give it an ID
