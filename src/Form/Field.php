@@ -214,8 +214,8 @@ class Field {
 			$l['title'] = $name;
 		}
 
-		# Title (is formatted)
-		$title = $l['title'] ? str::title($l['title']) : false;
+		# Title (is formatted and boldened)
+		$title = $l['title'] ? "<b>".str::title($l['title'])."</b>" : false;
 
 		# HTML (is NOT formatted)
 		$html = $l['html'];
