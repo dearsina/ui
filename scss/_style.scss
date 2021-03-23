@@ -363,7 +363,7 @@
 {
   position: absolute;
   z-index: 1;
-  overflow: visible;
+  overflow: hidden;
 }
 
 .doc-map-svg.enable-custom,
@@ -391,6 +391,7 @@
 .doc-map-svg path,
 .doc-map-svg rect {
   fill-opacity: 0;
+  fill: black;
   stroke: black;
   stroke-width: 0.1%;
   stroke-opacity: .1;
@@ -409,7 +410,9 @@
   stroke-width: 0.2%;
 }
 
-.doc-map-svg .doc-map-field {
+.doc-map-svg .doc-map-field,
+.doc-map-svg .doc-map-field-custom
+{
   stroke-opacity: 1;
   stroke: #00cc00; //map-get($theme-colors, "success");
   stroke-width: 0.2%;
@@ -429,6 +432,7 @@
  */
 .doc-fill-svg-print rect {
   stroke: unset;
+  fill-opacity: 0;
 }
 
 
