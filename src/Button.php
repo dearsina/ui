@@ -17,7 +17,6 @@ class Button {
 
 	/**
 	 * Generic buttons that can be referenced by name only.
-	 * Buttons can be localised by including "rel_table" or "rel_id".
 	 *
 	 */
 	const COMMON = [
@@ -58,19 +57,6 @@ class Button {
 			"class" => "float-right"
 		],
 
-		"remove_md" => [
-			"title" => "Remove rel_table",
-			"basic" => true,
-			"colour" => "red",
-			"icon" => "trash",
-			"approve" => "remove this rel_table",
-			"hash" => "rel_table/rel_id/remove/callback/",
-			"class" => "float-right",
-			"data" => [
-				"dismiss" => "modal"
-			]
-		],
-
 		"return" => [
 			"onClick" => "window.history.back();",
 			"icon" => "chevron-left",
@@ -78,9 +64,14 @@ class Button {
 			"class" => "reset",
 			"basic" => true,
 		],
+	];
 
-		# Used by the Button::generic method
-
+	/**
+	 * Generic, commonly used buttons.
+	 * Used by the Button::generic() method.
+	 *
+	 */
+	const GENERIC = [
 		"new" => [
 			"size" => "s",
 			"hash" => [
@@ -135,98 +126,6 @@ class Button {
 			"basic" => true,
 			"colour" => "danger",
 		],
-
-		// Legacy //
-//		"next" => [
-//			"colour" => "primary",
-//			"icon" => [
-//				"name" => "save",
-//				"type" => "light"
-//			],
-//			"title" => "Next",
-//			"type" => "submit",
-//		],
-//		"update" => [
-//			"colour" => "green",
-//			"icon" => [
-//				"name" => "save",
-//				"type" => "light"
-//			],
-//			"title" => "Update",
-//			"type" => "submit",
-//		],
-//		"update_md" => [
-//			"colour" => "blue",
-//			"icon" => [
-//				"name" => "save",
-//				"type" => "light"
-//			],
-//			"title" => "Update",
-//			"onClick" => "$(this).closest('form').submit();"
-//		],
-//
-//		"match" => [
-//			"alt" => "In sync",
-//			"colour" => "green",
-//			"icon" => "check",
-//			"disabled" => true,
-//			"style" => "float:right;margin-top:0;",
-//			"class" => "btn-sm"
-//		],
-//		"view_removed" => [
-//			"title" => "View removed",
-//			"icon" => "trash-alt",
-//			"hash" => "rel_table//removed",
-//		],
-//		"remove" => [
-//			"title" => "Remove rel_table...",
-//			"alt" => "Remove rel_table",
-//			"basic" => true,
-//			"colour" => "red",
-//			"icon" => "trash",
-//			"approve" => "remove this rel_table",
-//			"hash" => "rel_table/rel_id/remove/callback/",
-//			"class" => "btn-sm",
-//			"remove" => 'closest(".container")'
-//		],
-//		"remove_all" => [
-//			"title" => "Remove all...",
-//			"alt" => "Remove all instances of rel_table",
-//			"basic" => true,
-//			"colour" => "red",
-//			"icon" => "trash",
-//			"approve" => "empty the rel_table table",
-//			"hash" => "rel_table//remove_all/callback/",
-//			"class" => "btn-sm",
-//		],
-//		"remove_sm" => [
-//			"alt" => "Remove rel_table",
-//			"basic" => true,
-//			"colour" => "red",
-//			"icon" => "trash",
-//			"approve" => "remove this rel_table",
-//			"hash" => "rel_table/rel_id/remove/callback/",
-//			"class" => "btn-sm",
-//			"remove" => 'closest(".container")'
-//		],
-//		"new" => [
-//			"icon" => "plus",
-//			"colour" => "blue",
-//			"title" => "New rel_table...",
-//			"hash" => "rel_table//new"
-//		],
-//		"edit" => [
-//			"icon" => "pencil",
-//			"title" => "Edit rel_table...",
-//			"hash" => "rel_table/rel_id/edit"
-//		],
-//		"edit_sm" => [
-//			"icon" => "pencil",
-//			"basic" => true,
-//			"alt" => "Edit rel_table",
-//			"hash" => "rel_table/rel_id/edit",
-//			"class" => "btn-sm",
-//		]
 	];
 
 	/**
@@ -295,7 +194,7 @@ class Button {
 		}
 
 		# Ensure the common button exists
-		if(!$button = self::COMMON[$name]){
+		if(!$button = self::GENERIC[$name]){
 			throw new \Exception("Cannot find the generic button <code>{$name}</code>.");
 		}
 
@@ -308,44 +207,6 @@ class Button {
 		}
 
 		return $button;
-	}
-
-	/**
-	 * Localises a button if rel_table/id has been included in the call to the button generator.
-	 *
-	 * @param      $a
-	 * @param bool|string $rel_table
-	 * @param bool|string $rel_id
-	 * @param bool|string $callback
-	 *
-	 * @return bool
-	 */
-	static function localise(&$a, $rel_table = false, $rel_id = false, $callback = false){
-		if(!$rel_table) {
-			return true;
-		}
-
-		foreach($a as $key => $val){
-			if(is_array($val)){
-				continue;
-			}
-
-			$a[$key] = $val;
-			$a[$key] = str_replace("rel_table",	 $rel_table, $a[$key]);
-			$a[$key] = str_replace("rel_id", $rel_id, $a[$key]);
-			if($callback){
-				$callback = str::urlencode($callback);
-				$a[$key] = str_replace("callback/",	"callback/".$callback, 	$a[$key]);
-			} else {
-				$a[$key] = str_replace("callback/",	"", $a[$key]);
-			}
-
-			if(in_array($key,["title","alt"])){
-				$a[$key] = str::title($a[$key]);
-			}
-		}
-
-		return true;
 	}
 
 	/**
@@ -373,9 +234,6 @@ class Button {
 				return false;
 			}
 		}
-
-		# Infuse with relevant locally relevant vars
-		self::localise($a, $rel_table, $rel_id, $callback);
 
 		return $a;
 	}
@@ -739,7 +597,7 @@ EOF;
 
 		$a['title'] .= "&nbsp;".Icon::generate([
 			"style" => [
-				"font-weight" => "600 !important"
+				"font-weight" => "500 !important"
 			],
 			"name" => "chevron-down"
 		]);
