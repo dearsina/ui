@@ -335,7 +335,8 @@ nav .nav-right {
 
 .nav-right > .parent > ul {
   right: 0;
-  /*top: calc(100% + .5rem);*/
+  top: calc(100% + -.5rem);
+  //Seems to be enough space to go "under" the button
 }
 
 /**
