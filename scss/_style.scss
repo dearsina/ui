@@ -1,4 +1,13 @@
 /**
+ * Boostrap default is "bolder",
+ * which throws a spanner in the works,
+ * as it's not recognised by our font.
+ */
+b, strong {
+  font-weight: bold;
+}
+
+/**
  * App specific styles
  */
 .plan-cost {
