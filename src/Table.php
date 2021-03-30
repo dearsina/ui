@@ -22,6 +22,7 @@ class Table {
 	 * <code>
 	 * Table::generate($rows, [
 	 * 	"order" => true,
+	 *	"sortable" => false, // Disables sorting of any column
 	 * 	"rel_table" => $rel_table,
 	 * 	//The limiting key-val are only useful for tables where the rows can be reordered
 	 * 	"limiting_key" => "subscription_id",
@@ -384,12 +385,18 @@ EOF;
 		}
 
 		$rows = $sql->select($rows_query);
+
 		$output->setVar('query_parameters', $rows_query);
 		$output->setVar('query', $_SESSION['query']);
 
 		if(!$rows){
 			//if no results are found
 			return false;
+		}
+
+		# Hack to fix the order (not sure why SQL isn't doing this)
+		if($rows_query['order_by']){
+			str::multidimensionalOrderBy($rows, $rows_query['order_by']);
 		}
 
 		if(is_object($row_handler)){
