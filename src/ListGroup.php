@@ -221,7 +221,7 @@ EOF;
 		}
 
 		return <<<EOF
-<{$tag}{$id}{$class}{$style}{$href}{$draggable}{$ondragstart}{$data}>{$icon}{$button}{$html}{$badge}</{$tag}>
+<{$tag}{$id}{$class}{$style}{$href}{$draggable}{$ondragstart}{$data}>{$button}{$icon}{$html}{$badge}</{$tag}>
 EOF;
 
 	}
