@@ -323,8 +323,11 @@ EOF;
 		# Label
 		$label = self::getCheckboxLabel($label, $desc, $name, $id);
 
+		# $data
+		$data = self::getInputData($a);
+
 		# $script
-		$script = str::getScriptTag($script);
+		$script = str::getScriptTag($a['script']);
 
 		return /** @lang HTML */ <<<EOF
 <div{$parent_class_tag}{$parent_style_tag}>
@@ -338,10 +341,18 @@ EOF;
 		{$disabled}
 		{$validation}
 		{$checked}
+		{$data}
 	>{$label}
 </div>
 {$script}
 EOF;
 
+	}
+
+	private static function getInputData(array &$a): ?string
+	{
+		extract($a);
+		$data['onChange'] = self::getOnChange($a);
+		return str::getDataAttr($data);
 	}
 }

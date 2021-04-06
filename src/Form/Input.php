@@ -41,6 +41,12 @@ class Input extends Field {
 			$disabled_class = "disabled";
 		}
 
+		# Read only (like disabled, but value is accessible)
+		else if($readonly){
+			$disabled = str::getAttrTag("readonly", "true");
+			$disabled_class = "disabled";
+		}
+
 		# Parent class
 		$parent_class_array = str::getAttrArray($parent_class, "input-group", $only_parent_class);
 		$parent_class = str::getAttrTag("class", $parent_class_array);
