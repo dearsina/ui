@@ -8,7 +8,7 @@ use App\Common\str;
 
 /**
  * Class icon
- * @package app\common
+ * @package App\common
  */
 class Icon {
 	/**
