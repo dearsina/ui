@@ -491,3 +491,15 @@ b, strong {
   font-weight: 300;
   margin-bottom: 0.3rem;
 }
+
+/**
+ * Filter icons for the filter card
+ */
+.filter-icon {
+  margin-left: .5rem;
+  font-size: 8pt;
+  color: #999999
+}
+.filter-icon:hover{
+  color: map-get($theme-colors, "primary");
+}

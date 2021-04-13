@@ -7,6 +7,7 @@ namespace App\UI;
 use App\Common\Output;
 use App\Common\SQL\Factory;
 use App\Common\str;
+use App\UI\Form\Field;
 use App\UI\Form\Form;
 
 /**
@@ -21,12 +22,12 @@ class Table {
 	 * Tables with an order column:
 	 * <code>
 	 * Table::generate($rows, [
-	 * 	"order" => true,
-	 *	"sortable" => false, // Disables sorting of any column
-	 * 	"rel_table" => $rel_table,
-	 * 	//The limiting key-val are only useful for tables where the rows can be reordered
-	 * 	"limiting_key" => "subscription_id",
-	 * 	"limiting_val" => $client_type['subscription_id'],
+	 *    "order" => true,
+	 *    "sortable" => false, // Disables sorting of any column
+	 *    "rel_table" => $rel_table,
+	 *    //The limiting key-val are only useful for tables where the rows can be reordered
+	 *    "limiting_key" => "subscription_id",
+	 *    "limiting_val" => $client_type['subscription_id'],
 	 * ]);
 	 * </code>
 	 *
@@ -113,7 +114,7 @@ EOF;
 	 * Generates the (optional) header row.
 	 *
 	 * @param array|NULL $row
-	 * @param array $options
+	 * @param array      $options
 	 *
 	 * @return array
 	 */
@@ -135,7 +136,8 @@ EOF;
 				//If the column is not explicitly set to not sortable
 				$data['col'] = $col['col_name'] ?: $key;
 				//If a column alias has been set, use it, otherwise, use the key
-			} else {
+			}
+			else {
 				$data = [];
 				$default[] = "sorted-ignore";
 				// You can make individual columns not sortable by adding the "sortable => false" to a cell
@@ -337,7 +339,8 @@ EOF;
 			# If the value is a numerical array, assume an IN is required
 			if(str::isNumericArray($val)){
 				$base_query['where'][] = [$key, "IN", $val];
-			} else {
+			}
+			else {
 				$base_query['where'][$key] = $val;
 			}
 		}
@@ -362,7 +365,8 @@ EOF;
 			$output->setVar('total_results', $total_results);
 			$ignore_header = is_bool($ignore_header) ? $ignore_header : false;
 			//if the variable is already set, will not re-set or change it
-		} else {
+		}
+		else {
 			//If this is not the first batch, no need to post the header again
 			$ignore_header = is_bool($ignore_header) ? $ignore_header : true;
 			//if the variable is already set, will not re-set or change it
@@ -379,7 +383,8 @@ EOF;
 			if(count($complex_order_by) == 2){
 				$complex_order_by[] = $order_by_dir;
 				$rows_query['order_by'] = [$complex_order_by];
-			} else {
+			}
+			else {
 				$rows_query['order_by'] = [$order_by_col => $order_by_dir];
 			}
 		}
@@ -406,7 +411,7 @@ EOF;
 				//run the row handler thru each row
 			}
 		}
-//		echo json_encode($rows);exit;
+		//		echo json_encode($rows);exit;
 
 		# Due to the data being loaded piecemeal, it is not sortable
 		//		$a['sortable'] = false;
@@ -450,10 +455,10 @@ EOF;
 	 * Expecting the filters array to be as follows:
 	 * <code>
 	 * "column" => [
-	 * 	"title" => "Column title",
-	 * 	"options" => [
-	 * 		"option-key" => "option-value"
-	 * 	]
+	 *    "title" => "Column title",
+	 *    "options" => [
+	 *        "option-key" => "option-value"
+	 *    ]
 	 * ]
 	 * </code>
 	 *
@@ -465,36 +470,48 @@ EOF;
 	 */
 	public static function getFilterCard(array $filters, string $ondemand_table_id): string
 	{
+		$fields[] = [
+			"name" => "q",
+			"label" => "Search",
+			"placeholder" => "Enter search string here"
+		];
+
 		foreach($filters as $column => $data){
 			$options = [];
 			foreach($data['options'] as $key => $option){
-				$option .= "<span style=\"
-					margin-left: .5rem;
-    				font-size: 8pt;
-				\"
-				class=\"except\">EXPT</span>";
-				$option .= "<span style=\"
-					margin-left: .5rem;
-    				font-size: 8pt;
-				\"
-				class=\"only\">ONLY</span>";
+				$option .= "<span class=\"filter-icon only\" title=\"Select only this\">" . Icon::generate("indent") . "</span>";
+				$option .= "<span class=\"filter-icon except\" title=\"Select all except this\">" . Icon::generate("outdent") . "</span>";
+
 				$options[$key] = [
 					"label" => [
 						"title" => false,
 						"desc" => $option,
-					]
+					],
 				];
 			}
 
+			$field = [
+				"type" => "checkbox",
+				"class" => "column-toggle",
+				"label" => [
+					"title" => $data['title']
+				],
+				"parent_style" => [
+					"margin-bottom" => "-3rem"
+				]
+			];
+			$label = Field::getHTML($field);
+
+
 			$fields[] = [
 				"parent_style" => [
-					"height" => "25px"
+					"height" => "25px",
 				],
 				"type" => "checkbox",
-				"label" => $data['title'],
+				"label" => $label,
 				"options" => $options,
 				"name" => $column,
-				"checked" => in_array($id, $vars[$column] ?:[])
+				"checked" => in_array($id, $vars[$column] ?: []),
 			];
 		}
 
@@ -504,7 +521,7 @@ EOF;
 				"table_id" => $ondemand_table_id,
 			],
 			"style" => [
-				"margin-bottom" => "-1rem"
+				"margin-bottom" => "-1rem",
 			],
 			"fields" => [$fields],
 		]);
@@ -518,8 +535,8 @@ EOF;
 					"class" => "clear-ondemand-filters",
 					"ladda" => false,
 					"basic" => true,
-					"size" => "s"
-				]
+					"size" => "s",
+				],
 			],
 			"body" => $form->getHTML(),
 		]);
