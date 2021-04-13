@@ -468,6 +468,16 @@ EOF;
 		foreach($filters as $column => $data){
 			$options = [];
 			foreach($data['options'] as $key => $option){
+				$option .= "<span style=\"
+					margin-left: .5rem;
+    				font-size: 8pt;
+				\"
+				class=\"except\">EXPT</span>";
+				$option .= "<span style=\"
+					margin-left: .5rem;
+    				font-size: 8pt;
+				\"
+				class=\"only\">ONLY</span>";
 				$options[$key] = [
 					"label" => [
 						"title" => false,
@@ -475,6 +485,7 @@ EOF;
 					]
 				];
 			}
+
 			$fields[] = [
 				"parent_style" => [
 					"height" => "25px"
