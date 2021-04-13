@@ -81,6 +81,28 @@ class PDF {
 	}
 
 	/**
+	 * Returns CSS that will need to be placed in the page getting PDF-printed,
+	 * to ensure correct formatting.
+	 *
+	 * @return string
+	 */
+	public static function getPrintCss(): string
+	{
+		return <<<EOF
+<style>
+		@media print {
+		  @page { margin-top: 0;margin-left: 0;margin-right: 0; }
+		  .pace { display:none; }
+		  #ui-navigation { display:none; }
+		  #ui-footer { display:none; }
+		  body { margin: 1cm; background-color: white; height: unset; }
+		  main { margin: 0; max-width: unset !important; }
+		}
+</style>
+EOF;
+	}
+
+	/**
 	 * Translate an array of settings to a CLI string.
 	 * If setting has no value, set to TRUE.
 	 *
