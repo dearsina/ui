@@ -91,12 +91,33 @@ class PDF {
 		return <<<EOF
 <style>
 		@media print {
-		  @page { margin-top: 0;margin-left: 0;margin-right: 0; }
+		  @page { margin-top: 1cm; margin-left: 0; margin-right: 0; }
 		  .pace { display:none; }
 		  #ui-navigation { display:none; }
 		  #ui-footer { display:none; }
-		  body { margin: 1cm; background-color: white; height: unset; }
-		  main { margin: 0; max-width: unset !important; }
+		  body { margin: 0 1cm; background-color: white; height: unset; zoom: 75%; }
+		  main { margin: 0; padding: 0; max-width: unset !important; }
+		}
+</style>
+EOF;
+	}
+
+	/**
+	 * Similar to the above, but hides all headers/footers.
+	 *
+	 * @return string
+	 */
+	public static function getDocFillCss(): string
+	{
+		return <<<EOF
+<style>
+		@media print {
+		  @page { margin:0; padding: 0; size: A4; }
+		  .pace { display:none; }
+		  #ui-navigation { display:none; }
+		  #ui-footer { display:none; }
+		  body { margin: 0; padding: 0; background-color: white; }
+		  main { margin: 0; padding: 0; max-width: unset !important; }
 		}
 </style>
 EOF;
