@@ -71,7 +71,7 @@ class EmailMessage extends \App\Common\Common implements \App\Common\Example\Exa
 					"colour" => "grey",
 					"footer" => [
 						"Sent by KYC DD (Pty) Limited
-                    <br>Floor 9, Atrium on 5th, 5th Street, Sandton 2196.
+                    <br>Office 203, 139 Greenway, Greenside, Johannesburg, 2193.
                     <br>Incorporated in South Africa, 2020/181847/07.
                     <br>Copyright © 2020, All rights reserved.",
 						"Next row"
