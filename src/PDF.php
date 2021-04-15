@@ -14,11 +14,12 @@ class PDF {
 	 *
 	 * @param           $url
 	 * @param bool|null $return_filename_only
-	 * @link https://developers.google.com/web/updates/2017/04/headless-chrome
+	 *
 	 * @return string
 	 * @throws \Exception
+	 * @link https://developers.google.com/web/updates/2017/04/headless-chrome
 	 */
-	static function print($url, ?int $seconds = 10, ?bool $refresh = NULL, ?bool $return_filename_only = NULL): string
+	static function print($url, ?int $seconds = 10, ?bool $refresh = NULL, ?bool $return_filename_only = NULL, ?int $rerun = 0): string
 	{
 		# Get the MD5 hash from the URL
 		$md5 = md5($url);
@@ -50,17 +51,23 @@ class PDF {
 				"virtual-time-budget" => $seconds * 1000,
 				# Print the page to PDF (and give filename)
 				"print-to-pdf" => $tmp_filename,
+				# Remove the header
+				"print-to-pdf-no-header" => true,
+				# Only log fatal errors (0 will log everything, 3 will only log fatal)
+				"log-level" => "3",
+				# Give Chrome privileges
+				"no-sandbox" => true,
 
-//				"enable-logging" => "stderr",
-//				"log-level" => "0",
-//				"v" => 1,
-				"user-data-dir" => "/var/www/tmp/"
+				//				"enable-logging" => "stderr",
+				//				"v" => 1,
+
+				"user-data-dir" => "/var/www/tmp",
 			]);
 
 			# Write the headless command
-			$command = "google-chrome {$settings} {$url}";
+			$command = "google-chrome {$settings} '{$url}'";
 
-//			echo $command;exit;
+			//			echo $command;exit;
 
 			# Execute the command
 			$output = shell_exec($command);
@@ -72,6 +79,25 @@ class PDF {
 
 		$command = "chmod 777 {$tmp_filename}";
 		shell_exec($command);
+
+		# Ensure the PDF was generated successfully, if not, try again (up to 10 times)
+		if(intval(exec("wc -l '{$tmp_filename}'")) < 100){
+			//if the file is less than 100 rows (if it's a dud)
+
+			if($rerun == 10){
+				//if 10 attempts have been made to create this PDF with no luck)
+				throw new \Exception("10 attempts were made to make a PDF from the following URL without success: <code>{$command}</code>");
+			}
+
+			# Count the number of attempts
+			$rerun++;
+
+			# Increase the seconds given to load the page
+			$seconds++;
+
+			# Run again
+			return self::print($url, $seconds, $refresh, $return_filename_only, $rerun);
+		}
 
 		if($return_filename_only){
 			return $tmp_filename;
@@ -86,16 +112,20 @@ class PDF {
 	 *
 	 * @return string
 	 */
-	public static function getPrintCss(): string
+	public static function getPrintCss(?bool $keep_footer = NULL): string
 	{
+		if(!$keep_footer){
+			$margin_bottom = "margin-bottom: 0;";
+		}
+
 		return <<<EOF
 <style>
 		@media print {
-		  @page { margin-top: 1cm; margin-left: 0; margin-right: 0; }
+		  @page { size: A4; margin-top: 1cm; margin-left: 0; margin-right: 0; {$margin_bottom} }
 		  .pace { display:none; }
 		  #ui-navigation { display:none; }
 		  #ui-footer { display:none; }
-		  body { margin: 0 1cm; background-color: white; height: unset; zoom: 75%; }
+		  body { margin-top: 0; margin-left: 1cm; margin-right: 1cm; background-color: white; height: unset; zoom: 75%; }
 		  main { margin: 0; padding: 0; max-width: unset !important; }
 		}
 </style>
@@ -136,15 +166,18 @@ EOF;
 		foreach($settings as $key => $val){
 			if($val === true){
 				$string[] = "--{$key}";
-			} else if (is_int($val)){
+			}
+			else if(is_int($val)){
 				$string[] = "--{$key}={$val}";
-			} else {
+			}
+			else {
 				$string[] = "--{$key}=\"{$val}\"";
 			}
 		}
 
 		return implode(" ", $string);
 	}
+
 	/**
 	 * Given $html, will generate a PDF file from the HTML.
 	 * Can be run several times, will only generate the PDF once.
@@ -204,8 +237,8 @@ EOF;
 			//			$snappy->setOption('page-width', '1600px');
 			//			$snappy->setOption('page-height', '1200px');
 			//			$snappy->setOption('viewport-size', '920x1920');
-//						$snappy->setOption('orientation', 'Landscape');
-//						$snappy->setOption('use-xserver', 'true'); //Won't work without patched QT
+			//						$snappy->setOption('orientation', 'Landscape');
+			//						$snappy->setOption('use-xserver', 'true'); //Won't work without patched QT
 
 			//			$snappy->setOption('header-font-name', 'Barlow');
 			//			$snappy->setOption('header-font-size', 8);
@@ -277,17 +310,17 @@ EOF;
 	 */
 	static public function wrap(string $html): string
 	{
-//		return <<<EOF
-//<!DOCTYPE html>
-//<html>
-//	<head>
-//		<link rel="stylesheet" type="text/css" href="https://{$_ENV['app_subdomain']}.{$_ENV['domain']}/css/app.css">
-//	</head>
-//	<body style="background-color: unset !important; height: unset !important;margin:0;padding:0;">
-//		{$html}
-//	</body>
-//</html>
-//EOF;
+		//		return <<<EOF
+		//<!DOCTYPE html>
+		//<html>
+		//	<head>
+		//		<link rel="stylesheet" type="text/css" href="https://{$_ENV['app_subdomain']}.{$_ENV['domain']}/css/app.css">
+		//	</head>
+		//	<body style="background-color: unset !important; height: unset !important;margin:0;padding:0;">
+		//		{$html}
+		//	</body>
+		//</html>
+		//EOF;
 		return <<<EOF
 <!DOCTYPE html>
 <html>
@@ -307,13 +340,14 @@ EOF;
 EOF;
 	}
 
-	static private function generateTemporaryFilename(?string $file_name = NULL): string
+	public static function generateTemporaryFilename(?string $file_name = NULL): string
 	{
 		# Generate an arbitrary filename
 		$tmp_file_name = $file_name ?: str::uuid();
 
 		# Generate a tmp path + name
 		$tmp_dir = sys_get_temp_dir();
+
 		return "{$tmp_dir}/{$tmp_file_name}";
 	}
 
