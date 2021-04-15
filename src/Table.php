@@ -263,7 +263,8 @@ EOF;
 		 */
 		$a['appear-top-offset'] = 300;
 
-		return str::getDataAttr($a);
+		return str::getDataAttr($a, true);
+		//Keep empty because values could be "0"
 	}
 
 	/**
@@ -322,6 +323,7 @@ EOF;
 			if(!$vars[$key]){
 				continue;
 			}
+
 			$$key = $vars[$key];
 			//for reference
 
@@ -337,7 +339,7 @@ EOF;
 
 		foreach($vars as $key => $val){
 			# If the value is a numerical array, assume an IN is required
-			if(str::isNumericArray($val)){
+			if(is_string($key) && str::isNumericArray($val)){
 				$base_query['where'][] = [$key, "IN", $val];
 			}
 			else {
@@ -353,16 +355,20 @@ EOF;
 		if(!$start){
 			// If this is the first batch (we only need to do this once)
 
-			if(!$total_results = $sql->select($count_query)){//echo $_SESSION['query'];exit;
+			# Run the count query
+			$total_results = $sql->select($count_query);
+
+			$output->setVar('query', $_SESSION['query']);
+			$output->setVar('total_results', $total_results ?: 0);
+
+			if(!$total_results){//echo $_SESSION['query'];exit;
 				//If no rows can be found
-				$output->setVar('total_results', 0);
 				$output->setVar('start', 1);
 				$output->setVar("rows", "<i class=\"text-silent\">No rows found</i>");
 				return true;
 			}
 
-			$output->setVar('query', $_SESSION['query']);
-			$output->setVar('total_results', $total_results);
+
 			$ignore_header = is_bool($ignore_header) ? $ignore_header : false;
 			//if the variable is already set, will not re-set or change it
 		}
