@@ -4,12 +4,12 @@
 namespace App\UI;
 
 
-use App\Common\Common;
 use App\Common\href;
 use App\Common\Img;
+use App\Common\Prototype;
 use App\Common\str;
 
-class EmailMessage extends Common {
+class EmailMessage extends Prototype {
 	/**
 	 * The title is the title of page.
 	 * Not super userful.

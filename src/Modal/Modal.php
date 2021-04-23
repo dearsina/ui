@@ -3,7 +3,6 @@
 
 namespace App\UI\Modal;
 
-use App\Common\Common;
 use App\Common\str;
 use App\UI\Badge;
 use App\UI\Button;
@@ -18,7 +17,7 @@ use Exception;
  * Class Modal
  * @package App\UI
  */
-class Modal extends Common {
+class Modal extends \App\Common\Prototype {
 	private $id;
 	private $modalHeader;
 	private $modalBody;

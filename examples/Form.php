@@ -3,13 +3,13 @@
 
 namespace App\UI\Examples;
 
-use App\Common\Common;
 use App\Common\Example\ExampleInterface;
+use App\Common\Prototype;
 use Ramsey\Uuid\Codec\TimestampFirstCombCodec;
 use Ramsey\Uuid\Generator\CombGenerator;
 use Ramsey\Uuid\UuidFactory;
 
-class Form extends Common implements ExampleInterface {
+class Form extends Prototype implements ExampleInterface {
 
 	private function getKeyValues($max_i){
 		for($i = 0; $i < $max_i; $i++){

@@ -4,10 +4,10 @@
 namespace App\UI\Examples;
 
 
-use App\Common\Common;
 use App\Common\Example\ExampleInterface;
+use App\Common\Prototype;
 
-class Card extends Common implements ExampleInterface {
+class Card extends Prototype implements ExampleInterface {
 	function buttons_in_all_colours(){
 		$colours = [
 			"primary",

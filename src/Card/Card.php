@@ -3,7 +3,6 @@
 
 namespace App\UI\Card;
 
-use App\Common\Common;
 use App\Common\Img;
 use App\Common\str;
 use App\UI\Badge;
@@ -19,7 +18,7 @@ use Pelago\Emogrifier\CssInliner;
  * Class Card
  * @package App\UI
  */
-class Card extends Common {
+class Card extends \App\Common\Prototype {
 
 	public $id;
 	public $cardHeader;

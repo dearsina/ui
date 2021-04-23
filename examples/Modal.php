@@ -4,14 +4,14 @@
 namespace App\UI\Examples;
 
 
-use App\Common\Common;
+use App\Common\Prototype;
 use App\Common\str;
 use App\UI\Card\Card;
 use App\UI\Grid;
 use App\UI\Icon;
 use App\UI\Page;
 
-class Modal extends Common implements \App\Common\Example\ExampleInterface {
+class Modal extends Prototype implements \App\Common\Example\ExampleInterface {
 	private $html;
 
 	public function getHTML ($a = NULL)
