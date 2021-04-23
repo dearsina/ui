@@ -95,7 +95,9 @@ class Table {
 
 		# Table rows
 		foreach($rows as $key => $row){
-			$row['html'] = array_values($row['html'] ?: $row);
+			if(!is_string($row['html'])){
+				$row['html'] = array_values($row['html'] ?: $row);
+			}
 			$row['row_class'] = str::getAttrArray($row['row_class'], "table-body", $row['only_row_class']);
 			$grid->set($row);
 		}
