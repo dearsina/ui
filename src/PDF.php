@@ -268,10 +268,12 @@ EOF;
 	}
 
 	/**
-	 * Can accept either the tmp filename, or the HTML string.
-	 * Will delete the temporary file (only).
+	 * Deletes the temporary file. ONLY accepts:
+	 *  - URL that was originally sent to print-to-PDF
+	 *  - the tmp_filename
+	 *  - The HTML string (depreciated)
 	 *
-	 * DON'T SEND THE PDF CONTENT
+	 * `***DON'T SEND THE PDF CONTENT***`
 	 *
 	 * @param string $a
 	 *
@@ -280,7 +282,16 @@ EOF;
 	public static function delete(string $a): bool
 	{
 		# Check to see what kind of string $a is
-		if(strlen($a) == strlen(sys_get_temp_dir()) + 1 + 32){
+		if(filter_var($a, FILTER_VALIDATE_URL)){
+			//if it's the URL to the page that generated the PDF
+
+			# Get the MD5 hash from the URL
+			$md5 = md5($a);
+
+			# Generate temporary filename
+			$tmp_filename = PDF::generateTemporaryFilename($md5);
+		}
+		else if(strlen($a) == strlen(sys_get_temp_dir()) + 1 + 32){
 			//if it is a file path
 			$tmp_filename = $a;
 		}
