@@ -13,7 +13,7 @@ use App\UI\Icon;
  *
  * @package App\UI\Modal
  */
-abstract class Common extends \App\Common\Common {
+abstract class Prototype extends \App\Common\Prototype {
 
 	public function all(array $a, string $size = "l"): string
 	{

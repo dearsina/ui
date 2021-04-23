@@ -7,7 +7,7 @@ namespace App\UI;
 use App\Common\Img;
 use App\Common\str;
 
-class ImageCarousel extends \App\Common\Common {
+class ImageCarousel extends \App\Common\Prototype {
 	/**
 	 * Will generate an image carousel,
 	 * assuming either an array of photos,

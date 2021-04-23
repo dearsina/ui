@@ -8,7 +8,7 @@ use App\Common\href;
 use App\Common\str;
 use App\UI\Grid;
 
-class EmailMessage extends \App\Common\Common implements \App\Common\Example\ExampleInterface {
+class EmailMessage extends \App\Common\Prototype implements \App\Common\Example\ExampleInterface {
 
 	/**
 	 * @inheritDoc

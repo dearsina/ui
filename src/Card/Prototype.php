@@ -8,7 +8,14 @@ use App\Common\str;
 use App\UI\Form\Form;
 use App\UI\Icon;
 
-abstract class Common extends \App\Common\Common {
+/**
+ * Class Card\Prototype
+ *
+ * Should be used as a base class for all Card.php files.
+ *
+ * @package App\UI\Card
+ */
+abstract class Prototype extends \App\Common\Prototype {
 	/**
 	 * Generic edit card frame.
 	 *
@@ -61,7 +68,7 @@ abstract class Common extends \App\Common\Common {
 			"action" => "insert",
 			"rel_table" => $rel_table,
 			"callback" => $this->hash->getCallback(),
-			"fields" => $field_class::{$method}(),
+			"fields" => $field_class::{$method}($vars),
 			"buttons" => $buttons,
 			"modal" => true
 		]);
