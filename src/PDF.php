@@ -114,7 +114,10 @@ class PDF {
 	 */
 	public static function getPrintCss(?bool $keep_footer = NULL): string
 	{
-		if(!$keep_footer){
+		if($keep_footer){
+			//If you want to keep the auto-generated footer
+		} else{
+			//If you don't want to keep the footer
 			$margin_bottom = "margin-bottom: 0;";
 		}
 

@@ -46,7 +46,7 @@ class Textarea extends Field implements FieldInterface {
 		$style = str::getAttrTag("style", $style);
 
 		# Data
-		$data = str::getDataAttr($data);
+		$data = str::getDataAttr($data, true);
 
 		# Placeholder
 		$placeholder = str::getAttrTag("placeholder", self::getPlaceholder($placeholder));
