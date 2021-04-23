@@ -10,6 +10,7 @@ use App\UI\Button;
 use App\UI\Dropdown;
 use App\UI\Grid;
 use App\UI\Icon;
+use App\UI\ListGroup;
 use App\UI\Progress;
 use Exception;
 
@@ -22,6 +23,7 @@ class Modal extends Common {
 	private $modalHeader;
 	private $modalBody;
 	private array $modalRows = [];
+	private array $modalItems = [];
 	private $modalFooter;
 
 	protected $icon;
@@ -380,6 +382,15 @@ EOF;
 		$this->modalRows = $a;
 	}
 
+	public function setItems($a = NULL): void
+	{
+		if(!is_array($a)){
+			return;
+		}
+
+		$this->modalItems = $a;
+	}
+
 	/**
 	 * Returns the body of the modal.
 	 * Not optional.
@@ -446,6 +457,32 @@ EOF;
 	}
 
 	/**
+	 * @return false|string
+	 */
+	public function getItemsHTML(): ?string
+	{
+		if(empty($this->modalItems)){
+			return NULL;
+		}
+
+		if(!key_exists("items", $this->modalItems)){
+			$this->modalItems = [
+				"items" => $this->modalItems
+			];
+		}
+
+		$html = ListGroup::generate($this->modalItems);
+
+		$id = str::getAttrTag("id", $this->modalItems['id']);
+		$class_array = str::getAttrArray($this->modalItems['class'], "container card-items", $this->modalItems['only_class']);
+		$class = str::getAttrTag("class", $class_array);
+		$style = str::getAttrTag("style", $this->modalItems['style']);
+		$script = str::getScriptTag($this->modalItems['script']);
+
+		return "<div{$class}{$id}{$style}>{$html}</div>{$script}";
+	}
+
+	/**
 	 * Return the ID.
 	 *
 	 * @param bool $as_tag If set to TRUE return the ID as a HTML tag.
@@ -506,6 +543,7 @@ EOF;
         	{$this->getHeaderHTML()}
 			{$this->getBodyHTML()}
 			{$this->getRowsHTML()}
+			{$this->getItemsHTML()}
 			{$this->getFooterHTML()}
         </div>
     </div>
