@@ -16,30 +16,45 @@ class Icon {
 	 * Can be overridden or removed if icon is specifically set or set to FALSE.
 	 */
 	const DEFAULTS = [
-		"phone" => "phone",
-		"email" => "envelope",
-		"password" => "key",
-		"money" => "pound-sign",
-		"date" => "calendar",
+		"phone" => [
+			"name" => "phone",
+			"type" => "thin",
+		],
+		"email" => [
+			"name" => "envelope",
+			"type" => "thin",
+		],
+		"password" => [
+			"name" => "key",
+			"type" => "thin",
+		],
+		"money" => [
+			"name" => "money-bill",
+			"type" => "thin",
+		],
+		"date" => [
+			"name" => "calendar",
+			"type" => "thin",
+		],
 		"error" => [
 			"type" => "solid",
-			"name" => "ban"
+			"name" => "ban",
 		],
 		"danger" => [
 			"type" => "solid",
-			"name" => "ban"
+			"name" => "ban",
 		],
 		"success" => [
 			"type" => "solid",
-			"name" => "check"
+			"name" => "check",
 		],
 		"info" => [
 			"type" => "thin",
-			"name" => "info-circle"
+			"name" => "info-circle",
 		],
 		"warning" => [
 			"type" => "solid",
-			"name" => "exclamation-triangle"
+			"name" => "exclamation-triangle",
 		],
 	];
 
@@ -50,30 +65,63 @@ class Icon {
 	 *
 	 * @return string far, fas, or fal
 	 */
-	static function getType($type = NULL){
-		switch($type){
-		case 'regular': return 'far'; break;
-		case 'far': return 'far'; break;
+	static function getType($type = NULL)
+	{
+		switch($type) {
+		case 'regular':
+			return 'far';
+			break;
+		case 'far':
+			return 'far';
+			break;
 
-		case 'duotone': return 'fad'; break;
-		case 'fad': return 'fad'; break;
+		case 'duotone':
+			return 'fad';
+			break;
+		case 'fad':
+			return 'fad';
+			break;
 
-		case 'solid': return 'fas'; break;
-		case 'bold': return 'fas'; break;
-		case 'thick': return 'fas'; break;
-		case 'full': return 'fas'; break;
-		case 'fas': return 'fas'; break;
+		case 'solid':
+			return 'fas';
+			break;
+		case 'bold':
+			return 'fas';
+			break;
+		case 'thick':
+			return 'fas';
+			break;
+		case 'full':
+			return 'fas';
+			break;
+		case 'fas':
+			return 'fas';
+			break;
 
-		case 'light': return 'fal'; break;
-		case 'thin': return 'fal'; break;
-		case 'fal': return 'fal'; break;
+		case 'light':
+			return 'fal';
+			break;
+		case 'thin':
+			return 'fal';
+			break;
+		case 'fal':
+			return 'fal';
+			break;
 
-		case 'brand': return 'fab'; break;
-		case 'fab': return 'fab'; break;
+		case 'brand':
+			return 'fab';
+			break;
+		case 'fab':
+			return 'fab';
+			break;
 
-		case 'flag': return 'flag'; break;
+		case 'flag':
+			return 'flag';
+			break;
 
-		default: return "far"; break;
+		default:
+			return "far";
+			break;
 		}
 	}
 
@@ -88,9 +136,10 @@ class Icon {
 	 *
 	 * @return array
 	 */
-	static function getArray($icon){
+	static function getArray($icon)
+	{
 		# If complex icon instructions have been given
-		if(is_array($icon)) {
+		if(is_array($icon)){
 			$icon['type'] = self::getType($icon['type']);
 			return $icon;
 		}
@@ -98,7 +147,7 @@ class Icon {
 		# If a default name has been given
 		if(key_exists($icon, self::DEFAULTS)){
 			$icon_array = self::DEFAULTS[$icon];
-			$icon_array['type'] = $icon_array['type'] ?: self::getType();
+			$icon_array['type'] = self::getType($icon_array['type']);
 			return $icon_array;
 		}
 
@@ -106,7 +155,7 @@ class Icon {
 		return [
 			"type" => self::getType(),
 			"name" => $icon,
-			"colour" => false
+			"colour" => false,
 		];
 	}
 
@@ -121,7 +170,8 @@ class Icon {
 	 *
 	 * @return bool|string
 	 */
-	static function getClass($icon_array){
+	static function getClass($icon_array)
+	{
 		extract(Icon::getArray($icon_array));
 
 		if(!$name){
@@ -156,13 +206,15 @@ class Icon {
 	 *
 	 * @return string
 	 */
-	private static function generate_stacked($stacked){
+	private static function generate_stacked($stacked)
+	{
 		$highest_stack = 1;
 		foreach($stacked as $stack){
 			$icon_array = [];
 			if(is_string($stack)){
 				$icon_array['name'] = $stack;
-			} else {
+			}
+			else {
 				$icon_array = $stack;
 			}
 			$icon_array['stack'] = $icon_array['stack'] ?: $highest_stack++;
@@ -172,7 +224,7 @@ class Icon {
 		}
 		$class = str::getAttrTag("class", "fa-stack");
 		$style = str::getAttrTag("style", "margin:-3px 0px -8px -6px;");
-		return "<span {$class} {$style}>".implode("\r\n", $icon_stack)."</span>";
+		return "<span {$class} {$style}>" . implode("\r\n", $icon_stack) . "</span>";
 	}
 
 	/**
@@ -182,9 +234,9 @@ class Icon {
 	 *
 	 * <code>
 	 * $icon_html = Icon::generate([
-	 * 	"name" => "copy",
-	 * 	"type" => "thin",
-	 * 	"transform" => "left-8"
+	 *    "name" => "copy",
+	 *    "type" => "thin",
+	 *    "transform" => "left-8"
 	 * ]);
 	 *
 	 * $icon_html = Icon::generate("copy");
@@ -194,18 +246,21 @@ class Icon {
 	 *
 	 * @return string
 	 */
-	static function generate($a = NULL){
+	static function generate($a = NULL)
+	{
 		if(!$a){
 			return false;
 		}
 
-		if(!is_array($a)) {
+		if(!is_array($a)){
 			//if the only thing passed is the name of the icon
 			$icon_array['name'] = $a;
-		} else if(str::isNumericArray($a)){
+		}
+		else if(str::isNumericArray($a)){
 			//if several icons are to be stacked
 			return self::generate_stacked($a);
-		} else {
+		}
+		else {
 			$icon_array = $a;
 		}
 
@@ -254,7 +309,8 @@ EOF;
 	 *
 	 * @return string
 	 */
-	static function get($rel_table){
+	static function get($rel_table)
+	{
 		global $icon;
 		if(!is_array($icon)){
 			$sql = Factory::getInstance();

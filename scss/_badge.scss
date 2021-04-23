@@ -4,12 +4,13 @@
 .badge {
   padding: 0.1rem 0.25rem 0.2rem 0.25rem;
   border-radius: 0.2rem;
+  font-weight: 400;
 }
 /**
  * Don't apply the shadow to the outlined badges
  */
 .badge:not([class*="badge-outline-"]) {
-  box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.2);
+  //box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.2);
 }
 
 /**
