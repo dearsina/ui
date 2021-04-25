@@ -188,8 +188,10 @@ EOF;
 		foreach ($options as $option_value => $option) {
 			if (is_array($option)) {
 				$option_title = $option['title'];
+				$disabled = $option['disabled'];
 			} else {
 				$option_title = $option;
+				$disabled = NULL;
 			}
 
 			if ($value_array && in_array($option_value, $value_array)) {
@@ -209,7 +211,7 @@ EOF;
 				"value" => $option_value,
 				"title" => $option_title,
 				"selected" => $selected,
-				"disabled" => $option['disabled'],
+				"disabled" => $disabled,
 			];
 		}
 
