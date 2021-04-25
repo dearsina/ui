@@ -26,3 +26,32 @@ $font-family-base       : "Barlow";
 
 // Experimental
 $font-family-monospace  : "Roboto Mono";
+
+@keyframes fa-blink {
+  0% { opacity: 1; }
+  25% { opacity: 0.25; }
+  50% { opacity: 0.5; }
+  75% { opacity: 0.75; }
+  100% { opacity: 0; }
+}
+.fa-blink {
+  -webkit-animation: fa-blink .75s linear infinite;
+  -moz-animation: fa-blink .75s linear infinite;
+  -ms-animation: fa-blink .75s linear infinite;
+  -o-animation: fa-blink .75s linear infinite;
+  animation: fa-blink .75s linear infinite;
+}
+
+@keyframes fa-pulse {
+  0% { transform: scale(0.75); opacity: 1; }
+  50% { transform: scale(1); opacity: .75; }
+  100% { transform: scale(0.75); opacity: 1; }
+}
+
+.fa-pulse {
+  -webkit-animation: fa-pulse 1s infinite ease-in-out;
+  -moz-animation: fa-pulse 1s infinite ease-in-out;
+  -ms-animation: fa-pulse 1s infinite ease-in-out;
+  -o-animation: fa-pulse 1s infinite ease-in-out;
+  animation: fa-pulse 1s infinite ease-in-out;
+}
