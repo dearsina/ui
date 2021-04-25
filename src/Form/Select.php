@@ -136,8 +136,9 @@ EOF;
 
 		foreach ($options_array as $option) {
 			$value = str::getAttrTag("value", $option['value']);
-			$selected = $option['selected'] ? " selected" : false;
-			$options_html .= "<option{$value}{$selected}>{$option['title']}</option>";
+			$selected = $option['selected'] ? " selected" : NULL;
+			$disabled = $option['disabled'] ? " disabled" : NULL;
+			$options_html .= "<option{$value}{$selected}{$disabled}>{$option['title']}</option>";
 		}
 
 		return $options_html;
@@ -208,6 +209,7 @@ EOF;
 				"value" => $option_value,
 				"title" => $option_title,
 				"selected" => $selected,
+				"disabled" => $option['disabled'],
 			];
 		}
 
