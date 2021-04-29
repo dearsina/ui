@@ -7,21 +7,26 @@ namespace App\UI\Examples;
 use App\Common\Prototype;
 use App\Common\str;
 use App\UI\Card\Card;
-use App\UI\Grid;
-use App\UI\Icon;
 use App\UI\Page;
 
 class Modal extends Prototype implements \App\Common\Example\ExampleInterface {
 	private $html;
 
-	public function getHTML ($a = NULL)
+	/**
+	 * @param null $a
+	 *
+	 * @return void
+	 */
+	public function getHTML ($a = NULL): void
 	{
 		if(!$a['vars']['type']){
-			return $this->index($a);
+			$this->index($a);
+			return;
 		}
 
 		$this->hash->set(-1);
 		$this->hash->silent();
+		$this->output->clear();
 
 		$this->{$a['vars']['type']}();
 	}
@@ -29,7 +34,7 @@ class Modal extends Prototype implements \App\Common\Example\ExampleInterface {
 	private function getModalCard($header, $type, $body){
 		$card = new Card([
 			"header" => str::title($header),
-			"body" => str::pre($body),
+			"body" => str::pre($body, false, "php"),
 			"footer" => [
 				"button" => [
 					"hash" => [
@@ -47,7 +52,10 @@ class Modal extends Prototype implements \App\Common\Example\ExampleInterface {
 		return $card->getHTML();
 	}
 
-	private function index($a){
+	/**
+	 * @param $a
+	 */
+	private function index($a): void{
 		extract($a);
 
 		$simple =
@@ -68,7 +76,7 @@ class Modal extends Prototype implements \App\Common\Example\ExampleInterface {
 ';
 
 		$complex_approval =
-'$modal = new \App\UI\Modal([
+'$modal = new \App\UI\Modal\Modal([
 	"header" => "Header",
 	"body" => "Body",
 	"footer" => "Footer",
@@ -92,7 +100,7 @@ class Modal extends Prototype implements \App\Common\Example\ExampleInterface {
 ';
 
 		$simple_with_child =
-			'$modal = new \App\UI\Modal([
+			'$modal = new \App\UI\Modal\Modal([
 	"size" => "xl",
 	"header" => "Parent header",
 	"body" => "Parent body",
@@ -112,7 +120,7 @@ class Modal extends Prototype implements \App\Common\Example\ExampleInterface {
 ';
 
 		$simple_with_child_approval =
-			'$modal = new \App\UI\Modal([
+			'$modal = new \App\UI\Modal\Modal([
 	"size" => "xl",
 	"header" => "Parent header",
 	"body" => "Parent body",
@@ -131,9 +139,6 @@ class Modal extends Prototype implements \App\Common\Example\ExampleInterface {
 ]);	
 ';
 
-
-
-
 		$page = new Page([
 			"title" => str::title($rel_id)
 		]);
@@ -148,25 +153,15 @@ class Modal extends Prototype implements \App\Common\Example\ExampleInterface {
 			"html" => $this->getModalCard("Dragggable resizeable modal", "draggable_resizable", $draggable_resizable)
 		],[
 			"html" => $this->getModalCard("Simple with child", "simple_with_child", $simple_with_child)
-		]]);
-
-		$page->setGrid([[
+		],[
 			"html" => $this->getModalCard("simple_with_child_approval", "simple_with_child_approval", $simple_with_child_approval)
-		],[
-//			"html" => $this->getModalCard("Modal with simple approval", "simple_approval", $simple_approval)
-		],[
-//			"html" => $this->getModalCard("Modal with complex approval", "complex_approval", $complex_approval)
-		],[
-//			"html" => $this->getModalCard("Dragggable resizeable modal", "draggable_resizable", $draggable_resizable)
-		],[
-//			"html" => $this->getModalCard("Simple with child", "simple_with_child", $simple_with_child)
 		]]);
 
 		$this->output->html($page->getHTML());
 	}
 
-	private function simple(){
-		$modal = new \App\UI\Modal([
+	private function simple(): void{
+		$modal = new \App\UI\Modal\Modal([
 			"header" => "Header",
 			"body" => "Body",
 			"footer" => "Footer",
@@ -176,7 +171,7 @@ class Modal extends Prototype implements \App\Common\Example\ExampleInterface {
 	}
 
 	private function simple_with_child(){
-		$modal = new \App\UI\Modal([
+		$modal = new \App\UI\Modal\Modal([
 			"size" => "xl",
 			"header" => "Parent header",
 			"body" => "Parent body",
@@ -198,7 +193,7 @@ class Modal extends Prototype implements \App\Common\Example\ExampleInterface {
 	}
 
 	private function simple_with_child_approval(){
-		$modal = new \App\UI\Modal([
+		$modal = new \App\UI\Modal\Modal([
 			"size" => "xl",
 			"header" => "Parent header",
 			"body" => "Parent body",
@@ -220,7 +215,7 @@ class Modal extends Prototype implements \App\Common\Example\ExampleInterface {
 	}
 
 	private function simple_approval(){
-		$modal = new \App\UI\Modal([
+		$modal = new \App\UI\Modal\Modal([
 			"header" => "Header",
 			"body" => "Body",
 			"footer" => "Footer",
@@ -231,7 +226,7 @@ class Modal extends Prototype implements \App\Common\Example\ExampleInterface {
 	}
 
 	private function complex_approval(){
-		$modal = new \App\UI\Modal([
+		$modal = new \App\UI\Modal\Modal([
 			"header" => "Header",
 			"body" => "Body",
 			"footer" => "Footer",
@@ -247,7 +242,7 @@ class Modal extends Prototype implements \App\Common\Example\ExampleInterface {
 	}
 
 	private function draggable_resizable(){
-		$modal = new \App\UI\Modal([
+		$modal = new \App\UI\Modal\Modal([
 			"header" => "Header",
 			"body" => "Body",
 			"footer" => "Footer",
