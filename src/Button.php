@@ -42,7 +42,7 @@ class Button {
 			"colour" => "grey",
 			"basic" => true,
 			"data" => [
-				"dismiss" => "modal"
+				"bs-dismiss" => "modal"
 			],
 			"class" => "float-right"
 		],
@@ -52,7 +52,7 @@ class Button {
 			"colour" => "grey",
 			"basic" => true,
 			"data" => [
-				"dismiss" => "modal"
+				"bs-dismiss" => "modal"
 			],
 			"class" => "float-right"
 		],

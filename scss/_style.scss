@@ -162,22 +162,34 @@ b, strong {
   color: map-get($theme-colors, "primary");
 }
 
+.comparison-row {
+  align-items: center;
+}
+
 .comparison-box,
 .comparison-box-empty {
-  background-color: white;
+  //background-color: white;
   display: flex;
   flex-direction: column;
-  font-size: 14px;
+  //font-size: 14px;
   justify-content: center;
   text-align: center;
-  border: .9px solid $border-color;
+  //border: .9px solid $border-color;
   text-transform: uppercase;
+  align-items: center;
+  padding: 1rem;
+
+  font-size: 120%;
+  font-weight: 600;
+}
+.comparison-rows > .row:nth-child(even) {
+  background: white;
 }
 
 .comparison-price,
 .comparison-switch {
-  background-color: white;
-  border: .9px solid $border-color;
+  //background-color: white;
+  //border: .9px solid $border-color;
   padding-top: 1rem;
   padding-bottom: 1rem;
   text-align: center;
@@ -185,43 +197,73 @@ b, strong {
 
 .comparison-switch {
   font-size: small;
-  line-height: 24pt;
+  //line-height: 24pt;
   color: map-get($theme-colors, "grey");
   padding-bottom: .5rem;
 }
 
-.comparison-price .plan-cost,
-.comparison-price .plan-currency,
-.comparison-price .plan-billing-frequency {
-  float: unset;
-  text-align: center;
-  margin-bottom: 0;
+.comparison-box .price-number {
+  font-size: 36pt;
+  font-weight: 900;
+  vertical-align: top;
+  line-height: 2rem;
 }
 
-.comparison-plan-title {
-  font-weight: 700;
-  text-align: center;
+.comparison-box .price-currency {
+  vertical-align: top;
+  margin-right: 0.25rem;
+  font-weight: 800;
+  letter-spacing: 0px;
+  font-size: larger;
+}
+
+.comparison-box .price-suffix {
   text-transform: uppercase;
+  font-size: 7pt;
+  margin-top: 0.5rem;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+}
+
+//.comparison-price .plan-cost,
+//.comparison-price .plan-currency,
+//.comparison-price .plan-billing-frequency {
+//  float: unset;
+//  text-align: center;
+//  margin-bottom: 0;
+//}
+
+.comparison-plan-title {
+  //font-weight: 700;
+  text-align: center;
+  //text-transform: uppercase;
+
+  text-transform: uppercase;
+  font-size: 25px;
+  font-weight: 300;
+  letter-spacing: 1px;
+  padding-top: 10px;
+  margin: 1rem;
 }
 
 .comparison-plan-body {
   text-align: center;
   font-size: smaller;
-  color: map-get($theme-colors, "primary") !important;
+  //color: map-get($theme-colors, "silver") !important;
 }
 
-.comparison-price:first-of-type {
-  border-top-left-radius: $btn-border-radius-xs;
-}
-
-.comparison-price:last-child {
-  border-top-right-radius: $btn-border-radius-xs;
-}
-
-.additional-services .row:not(:last-child) {
-  border-bottom: .9px solid $border-color;
-  margin-bottom: 1rem;
-}
+//.comparison-price:first-of-type {
+//  border-top-left-radius: $btn-border-radius-xs;
+//}
+//
+//.comparison-price:last-child {
+//  border-top-right-radius: $btn-border-radius-xs;
+//}
+//
+//.additional-services .row:not(:last-child) {
+//  border-bottom: .9px solid $border-color;
+//  margin-bottom: 1rem;
+//}
 
 /**
  * Payment gateway card

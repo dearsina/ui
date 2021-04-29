@@ -122,8 +122,8 @@ class Accordion {
 	{$id}
 	{$class}
 	{$style}
-	data-toggle="collapse"
-	data-target="#{$data_target_id}"
+	data-bs-toggle="collapse"
+	data-bs-target="#{$data_target_id}"
 	aria-expanded="false"
 	aria-controls="{$data_target_id}"
 >
