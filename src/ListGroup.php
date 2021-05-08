@@ -141,6 +141,9 @@ class ListGroup {
 		if($href = href::generate($item)){
 			$tag = "a";
 			$default_class[] = "list-group-item-action";
+		} else if($orderable){
+			$tag = "span style=\"padding: 0.5rem 1rem;display: block;\"";
+			//little bit of a fudge in the cases where the item is NOT a link, but needs to be orderable
 		} else {
 			$tag = "li";
 		}
@@ -157,7 +160,6 @@ class ListGroup {
 		$id = str::getAttrTag("id", $id ?: str::id("list-group-item"));
 
 		# Colour
-//		$default_class[] = str::getColour($item['colour'], "list-group-item");
 		$default_class[] = $item['colour'] ? "list-group-item-{$item['colour']}" : NULL;
 
 		# Accordion
@@ -195,6 +197,9 @@ class ListGroup {
 		# Style
 		$style = str::getAttrTag("style", $item['style']);
 
+		# Alt
+		$title = str::getAttrTag("title", $item['alt']);
+
 		# Draggable
 		$draggable = str::getAttrTag("draggable", $item['draggable'] ? "true" : NULL);
 
@@ -216,12 +221,12 @@ class ListGroup {
 			}
 
 			return <<<EOF
-<li{$id}{$class}{$style}{$draggable}{$ondragstart}{$data}>{$handlebars}{$button}<{$tag}{$href}>{$icon}{$html}{$badge}</{$tag}></li>
+<li{$id}{$class}{$style}{$draggable}{$ondragstart}{$data}{$title}>{$handlebars}{$button}<{$tag}{$href}>{$icon}{$html}{$badge}</{$tag}></li>
 EOF;
 		}
 
 		return <<<EOF
-<{$tag}{$id}{$class}{$style}{$href}{$draggable}{$ondragstart}{$data}>{$button}{$icon}{$html}{$badge}</{$tag}>
+<{$tag}{$id}{$class}{$style}{$href}{$draggable}{$ondragstart}{$data}{$title}>{$button}{$icon}{$html}{$badge}</{$tag}>
 EOF;
 
 	}
