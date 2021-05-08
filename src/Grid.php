@@ -298,7 +298,6 @@ EOF;
 	public function getTabsHTML(array $tabs): string
 	{
 		foreach($tabs as $tab){
-
 			$tab['id'] = $tab['id'] ?: str::id("panel");
 			$active = $active !== true ? "active" : NULL;
 			$nav_tabs[] = "<li class=\"nav-item\" role=\"presentation\">{$this->getTabHeader($tab, $active)}</li>";

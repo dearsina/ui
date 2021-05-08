@@ -229,8 +229,13 @@ class Checkbox extends Field implements FieldInterface {
 			$val_array['id'] = $val_array['id'] ?: str::id($type);
 
 			# If this option has been selected, mark it as checked
+			if(!is_array($value) && strlen($value)){
+				//Applies to radio
+				$val_array['checked'] = $key == $value ? "checked" : false;
+			}
 			if(!empty($values)){
-				$val_array['checked'] = $key&& in_array($key, $values) ? "checked" : false;
+				//Applies to checkbox
+				$val_array['checked'] = strlen($key) && in_array($key, $values) ? "checked" : false;
 			}
 
 			# The key holds the value
