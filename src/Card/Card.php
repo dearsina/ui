@@ -10,6 +10,7 @@ use App\UI\Button;
 use App\UI\Dropdown;
 use App\UI\Grid;
 use App\UI\Icon;
+use App\UI\ListGroup;
 use App\UI\Progress;
 use Exception;
 use Pelago\Emogrifier\CssInliner;
@@ -30,6 +31,7 @@ class Card extends \App\Common\Prototype {
 	public $script;
 	public $img;
 	public $rows;
+	public $items;
 	public $only_class;
 	public $class;
 	public $accent;
@@ -483,6 +485,11 @@ EOF;
 		return true;
 	}
 
+	public function setRows(?array $rows = NULL): void
+	{
+		$this->rows = $rows;
+	}
+
 	/**
 	 * Set the card body.
 	 * Will replace existing bodies.
@@ -513,6 +520,29 @@ EOF;
 		}
 
 		return true;
+	}
+
+	/**
+	 * Appends array keys or HTML to the card body.
+	 *
+	 * @param null $a
+	 */
+	public function addBody($a = NULL): void
+	{
+		if(!$a){
+			return;
+		}
+
+		# If an array is sent, get really particular
+		if(is_array($a)){
+			foreach($a as $key => $val){
+				$this->cardBody[$key] .= $val;
+			}
+			return;
+		}
+
+		# Otherwise, just append to the HTML
+		$this->cardBody['html'] .= $a;
 	}
 
 	/**
@@ -575,6 +605,7 @@ EOF;
 	{$this->getImgHTML()}
 	{$this->getBodyHTML()}
 	{$this->getRowsHTML()}
+	{$this->getItemsHTML()}
 	{$this->getFooterHTML()}
 	
 	{$this->getScriptHTML(true)}
@@ -609,6 +640,7 @@ EOF;
 	{$this->getHeaderHTML()}
 	{$this->getBodyHTML()}
 	{$this->getRowsHTML()}
+	{$this->getItemsHTML()}
 	{$this->getFooterHTML()}
 	{$this->getScriptHTML(true)}
 EOF;
@@ -653,6 +685,40 @@ EOF;
 	{$this->getPostHTML()}
 EOF;
 	}
+	
+	
+
+	/**
+	 * @return bool|string
+	 * @throw Exception
+	 */
+	public function getItemsHTML(){
+		if(!is_array($this->items)){
+			return false;
+		}
+
+		if(!key_exists("items", $this->items)){
+			$this->items = [
+				"items" => $this->items
+			];
+		}
+
+		if(!is_array($this->items['items'])){
+			return false;
+		}
+
+		$html = ListGroup::generate($this->items);
+
+		$id = str::getAttrTag("id", $this->items['id']);
+		$class_array = str::getAttrArray($this->items['class'], "container card-items", $this->items['only_class']);
+		$class = str::getAttrTag("class", $class_array);
+		$style = str::getAttrTag("style", $this->items['style']);
+		$script = str::getScriptTag($this->items['script']);
+
+		return "<div{$class}{$id}{$style}>{$html}</div>{$script}";
+	}
+	
+	
 
 	/**
 	 * @return bool|string
