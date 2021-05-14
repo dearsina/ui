@@ -19,7 +19,7 @@ abstract class Prototype extends \App\Common\Prototype {
 	{
 		extract($a);
 
-		$modal = new \App\UI\Modal\Modal([
+		$modal = new Modal([
 			"size" => $size,
 			"icon" => Icon::get($rel_table),
 			"header" => str::title("All ".str::pluralise($rel_table)),
@@ -65,27 +65,47 @@ abstract class Prototype extends \App\Common\Prototype {
 
 		[$field_class, $method] = $this->getFieldClassAndMethod($rel_table);
 
+		$fields = $field_class::{$method}($a['vars']);
+
 		$form = new Form([
 			"action" => "insert",
 			"rel_table" => $rel_table,
 			"rel_id" => $rel_id,
 			"callback" => $this->hash->getCallback(),
-			"fields" => $field_class::{$method}($a['vars']),
+			"fields" => $fields,
 			"buttons" => $buttons,
 			"modal" => true
 		]);
 
-		$modal = new \App\UI\Modal\Modal([
-			"size" => $size,
-			"header" => [
-				"icon" => Icon::get("new"),
-				"title" => str::title("New {$rel_table}"),
-			],
-			"body" => $form->getHTML(),
-			"approve" => "change",
-			"draggable" => true,
-			"resizable" => true,
-		]);
+		# A different modal for when tabs are being used
+		if(array_key_exists("tabs", $fields)){
+			$modal = new Modal([
+				"size" => $size,
+				"body" => [
+					"style" => [
+						"background-color" => "#fcfdfd",
+					],
+					"html" => $form->getHTML()
+				],
+				"approve" => "change",
+				"draggable" => true,
+				"resizable" => true,
+			]);
+		}
+
+		else {
+			$modal = new Modal([
+				"size" => $size,
+				"header" => [
+					"icon" => Icon::get("new"),
+					"title" => str::title("New {$rel_table}"),
+				],
+				"body" => $form->getHTML(),
+				"approve" => "change",
+				"draggable" => true,
+				"resizable" => true,
+			]);
+		}
 
 		return $modal->getHTML();
 	}
@@ -111,25 +131,45 @@ abstract class Prototype extends \App\Common\Prototype {
 
 		[$field_class, $method] = $this->getFieldClassAndMethod($rel_table);
 
+		$fields = $field_class::{$method}($$rel_table);
+
 		$form = new Form([
 			"action" => "update",
 			"rel_table" => $rel_table,
 			"rel_id" => $rel_id,
 			"callback" => $this->hash->getCallback(),
-			"fields" => $field_class::{$method}($$rel_table),
+			"fields" => $fields,
 			"buttons" => $buttons,
 			"modal" => true
 		]);
 
-		$modal = new \App\UI\Modal\Modal([
-			"size" => $size,
-			"icon" => Icon::get("edit"),
-			"header" => str::title("Edit {$rel_table}"),
-			"body" => $form->getHTML(),
-			"approve" => "change",
-			"draggable" => true,
-			"resizable" => true,
-		]);
+		# A different modal for when tabs are being used
+		if(array_key_exists("tabs", $fields)){
+			$modal = new Modal([
+				"size" => $size,
+				"body" => [
+					"style" => [
+						"background-color" => "#fcfdfd",
+					],
+					"html" => $form->getHTML()
+				],
+				"approve" => "change",
+				"draggable" => true,
+				"resizable" => true,
+			]);
+		}
+
+		else {
+			$modal = new Modal([
+				"size" => $size,
+				"icon" => Icon::get("edit"),
+				"header" => str::title("Edit {$rel_table}"),
+				"body" => $form->getHTML(),
+				"approve" => "change",
+				"draggable" => true,
+				"resizable" => true,
+			]);
+		}
 
 		return $modal->getHTML();
 	}
