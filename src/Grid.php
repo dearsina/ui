@@ -3,6 +3,7 @@
 
 namespace App\UI;
 
+use App\Common\Exception\BadRequest;
 use App\Common\href;
 use App\Common\str;
 use App\UI\Card\Card;
@@ -153,7 +154,7 @@ class Grid {
 			}
 
 			# ID
-			$id_tag = str::getAttrTag("id", $col['id']);
+			$id_tag = str::getAttrTag("id", $col['id'] ?: $col['col_id']);
 
 			# Icon
 			$icon = Icon::generate($col['icon']);
@@ -199,12 +200,12 @@ class Grid {
 		} else if ($tab['header']){
 			$title = $tab['header'];
 		} else if(!$tab['icon']){
-			throw new \Exception("All tabs must have a header or an icon.");
+			throw new BadRequest("All tabs must have a header or an icon.");
 		}
 
 		# Id
 		$id = str::getAttrTag("id", "{$tab['id']}-tab");
-		//A designted title ID (in the title array) is disregarded
+		//A designated title ID (in the title array) is disregarded
 
 		# Disabled
 		if($tab['disabled']){
@@ -434,14 +435,6 @@ EOF;
 		$tag = $tag ?: "div";
 
 		return "<{$tag}{$id}{$class}{$style}{$href}{$alt}>{$icon}{$title}{$badge}{$button}</{$tag}>";
-
-		//		if($href = href::generate($a)){
-		//			$tag = "a";
-		//
-		//		}
-		//		$tag = $tag ?: "div";
-		//
-		//		return "<{$tag}{$id}{$class}{$style}{$href}>{$icon}{$title}{$badge}{$button}</{$tag}>";
 	}
 
 	private static function generateBody($a): ?string
