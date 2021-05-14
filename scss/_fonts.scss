@@ -42,16 +42,16 @@ $font-family-monospace  : "Roboto Mono";
   animation: fa-blink .75s linear infinite;
 }
 
-@keyframes fa-pulse {
+@keyframes fa-beat {
   0% { transform: scale(0.75); opacity: 1; }
   50% { transform: scale(1); opacity: .75; }
   100% { transform: scale(0.75); opacity: 1; }
 }
 
-.fa-pulse {
-  -webkit-animation: fa-pulse 1s infinite ease-in-out;
-  -moz-animation: fa-pulse 1s infinite ease-in-out;
-  -ms-animation: fa-pulse 1s infinite ease-in-out;
-  -o-animation: fa-pulse 1s infinite ease-in-out;
-  animation: fa-pulse 1s infinite ease-in-out;
+.fa-beat {
+  -webkit-animation: fa-beat 1s infinite ease-in-out;
+  -moz-animation: fa-beat 1s infinite ease-in-out;
+  -ms-animation: fa-beat 1s infinite ease-in-out;
+  -o-animation: fa-beat 1s infinite ease-in-out;
+  animation: fa-beat 1s infinite ease-in-out;
 }

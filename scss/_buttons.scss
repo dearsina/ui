@@ -66,6 +66,14 @@ a.disabled-waiting{
   background-color: #e9ecef;
   border-color: #b9bec6;
 }
+/**
+ * Blue overrides
+ */
+.btn-blue,
+.btn-blue:hover
+{
+  color: white;
+}
 
 .btn-outline-dark:not(.disabled):hover{
   color: #ffffff !important;
