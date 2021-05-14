@@ -164,13 +164,12 @@ class ListGroup {
 
 		# Accordion
 
-		# Title + Body
-		if($item['title'] || $item['body']){
-			$html = self::generateTitle($item['title']);
-			$html .= self::generateBody($item['body']);
-		}
+		# Title + Subtitle + Body
+		$html .= $item['title'] ? self::generateTitle($item['title']) : NULL;
+		$html .= $item['subtitle'] ? self::generateSubtitle($item['subtitle']) : NULL;
+		$html .= $item['body'] ? self::generateSubtitle($item['body']) : NULL;
 
-		# HTML (After/instead of title/body)
+		# HTML (After/instead of title/subtitle/body)
 		$html .= $item['html'];
 
 		# Icon
@@ -244,23 +243,47 @@ EOF;
 		$icon = Icon::generate($icon);
 		$badge = Badge::generate($badge);
 		$button = Button::generate($button);
-//		$parent_class_array = str::getAttrArray($parent_class, "d-flex w-100 justify-content-between", $only_parent_class);
-		//Not sure if removing the w-100 is going to work
 		$parent_class_array = str::getAttrArray($parent_class, "d-flex justify-content-between", $only_parent_class);
 		$parent_class = str::getAttrTag("class", $parent_class_array);
 		$parent_style = str::getAttrTag("style", $parent_style);
-		$class_array = str::getAttrArray($class, "mb-1", $only_class);
+		$class_array = str::getAttrArray($class, "list-group-item-title", $only_class);
+		$class = str::getAttrTag("class", $class_array);
+		$style = str::getAttrTag("style", $style);
+
+
+		if($href = href::generate($a)){
+			return "<div{$parent_class}{$parent_style}><div{$id}{$class}{$style}><a{$href}>{$icon}{$title}</a>{$badge}{$button}</div></div>";
+		}
+
+		return "<div{$parent_class}{$parent_style}><div{$id}{$class}{$style}{$href}>{$icon}{$title}{$badge}{$button}</div></div>";
+	}
+
+	private static function generateSubtitle($a): ?string
+	{
+		if(!$a){
+			return NULL;
+		}
+
+		$a = is_array($a) ? $a : ["title" => $a];
+		extract($a);
+
+		$id = str::getAttrTag("id", $id);
+		$icon = Icon::generate($icon);
+		$badge = Badge::generate($badge);
+		$button = Button::generate($button);
+		$parent_class_array = str::getAttrArray($parent_class, "d-flex justify-content-between", $only_parent_class);
+		$parent_class = str::getAttrTag("class", $parent_class_array);
+		$parent_style = str::getAttrTag("style", $parent_style);
+		$class_array = str::getAttrArray($class, "list-group-item-subtitle", $only_class);
 		$class = str::getAttrTag("class", $class_array);
 		$style = str::getAttrTag("style", $style);
 
 
 		if($href = href::generate($a)){
 			return "<div{$parent_class}{$parent_style}><h5{$id}{$class}{$style}><a{$href}>{$icon}{$title}</a>{$badge}{$button}</h5></div>";
-		} else {
-			$tag = "h5";
 		}
 
-		return "<div{$parent_class}{$parent_style}><{$tag}{$id}{$class}{$style}{$href}>{$icon}{$title}{$badge}{$button}</{$tag}></div>";
+		return "<div{$parent_class}{$parent_style}><div{$id}{$class}{$style}{$href}>{$icon}{$title}{$badge}{$button}</div></div>";
 	}
 
 	private static function generateBody($a): ?string
