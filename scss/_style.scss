@@ -3,113 +3,129 @@
  * which throws a spanner in the works,
  * as it's not recognised by our font.
  */
-b, strong {
-  font-weight: bold;
+b, strong
+{
+  font-weight : bold;
 }
 
 /**
  * App specific styles
  */
-.plan-cost {
-  float: right;
-  clear: both;
+.plan-cost
+{
+  float : right;
+  clear : both;
 }
 
-.plan-currency {
-  vertical-align: top;
-  margin-right: 0.25rem;
-  font-weight: 800;
-  float: left;
+.plan-currency
+{
+  vertical-align : top;
+  margin-right   : 0.25rem;
+  font-weight    : 800;
+  float          : left;
 }
 
-.plan-price {
-  font-size: 36pt;
-  font-weight: 900;
-  vertical-align: top;
-  line-height: 2rem;
-  color: map-get($theme-colors, "primary");
+.plan-price
+{
+  font-size      : 36pt;
+  font-weight    : 900;
+  vertical-align : top;
+  line-height    : 2rem;
+  color          : map-get($theme-colors, "primary");
 }
 
-.plan-billing-frequency::before {
-  content: "/ ";
+.plan-billing-frequency::before
+{
+  content : "/ ";
 }
 
-.plan-billing-frequency {
-  text-transform: uppercase;
-  font-size: 7pt;
-  margin-top: 0.5rem;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  float: right;
-  clear: both;
-  margin-bottom: 1rem;
+.plan-billing-frequency
+{
+  text-transform : uppercase;
+  font-size      : 7pt;
+  margin-top     : 0.5rem;
+  font-weight    : 700;
+  letter-spacing : 0.5px;
+  float          : right;
+  clear          : both;
+  margin-bottom  : 1rem;
 }
 
-.plan-desc {
-  font-size: 10pt;
-  line-height: 13pt;
-  margin-bottom: 1rem;
+.plan-desc
+{
+  font-size     : 10pt;
+  line-height   : 13pt;
+  margin-bottom : 1rem;
 }
 
-.plan-service-title {
-  font-size: medium;
-  font-weight: 700;
-  border-top: .9px solid $border-color;
-  padding-top: .5rem;
+.plan-service-title
+{
+  font-size   : medium;
+  font-weight : 700;
+  border-top  : .9px solid $border-color;
+  padding-top : .5rem;
 }
 
-.plan-service-desc ~ .plan-service-title {
-  margin-top: 1rem;
+.plan-service-desc ~ .plan-service-title
+{
+  margin-top : 1rem;
 }
 
 /**
  * Invoice styles
  */
-.invoice-header {
-  border-bottom: 2px solid $border-color;
+.invoice-header
+{
+  border-bottom  : 2px solid $border-color;
   //border-top: 1px solid #ddd;
   //background: $header-footer-bg;
-  padding: .5rem 0;
+  padding        : .5rem 0;
   //margin-bottom  : .5rem;
-  font-weight: 700;
-  font-size: smaller;
-  text-transform: uppercase;
-  overflow: hidden;
-  white-space: nowrap;
+  font-weight    : 700;
+  font-size      : smaller;
+  text-transform : uppercase;
+  overflow       : hidden;
+  white-space    : nowrap;
 }
 
-.invoice-line {
-  padding: .5rem 0;
-  border-top: 1px solid $border-color;
+.invoice-line
+{
+  padding    : .5rem 0;
+  border-top : 1px solid $border-color;
 }
 
-.invoice-line-child {
-  padding: .5rem 0;
-  border-top: .9px solid $border-color;
-  background: hsla(203, 20%, 99%, 1);
+.invoice-line-child
+{
+  padding    : .5rem 0;
+  border-top : .9px solid $border-color;
+  background : hsla(203, 20%, 99%, 1);
 }
 
-.invoice-line-metric {
-  text-transform: uppercase;
-  font-size: small;
-  font-weight: 500;
-  line-height: 18pt;
+.invoice-line-metric
+{
+  text-transform : uppercase;
+  font-size      : small;
+  font-weight    : 500;
+  line-height    : 18pt;
 }
 
-.invoice-subtotal {
-  border-top: 1px solid $border-color;
-  padding-top: .5rem;
+.invoice-subtotal
+{
+  border-top  : 1px solid $border-color;
+  padding-top : .5rem;
 }
 
-.invoice-discount {
-  padding-top: .5rem;
+.invoice-discount
+{
+  padding-top : .5rem;
 }
 
-.invoice-total > div:not(.col-7) {
-  border-top: 2px solid $border-color;
-  margin-top: .5rem;
-  padding-top: .5rem;
-  font-weight: 600;
+.invoice-total > div:not(.col-7)
+{
+  border-top  : 2px solid $border-color;
+  margin-top  : .5rem;
+  padding-top : .5rem;
+  font-weight : 600;
 }
 
 /**
@@ -117,38 +133,43 @@ b, strong {
  */
 .report-header
 {
-  border-bottom: 1px solid $border-color;
-  padding: .5rem 1rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  overflow: hidden;
-  white-space: nowrap;
+  border-bottom  : 1px solid $border-color;
+  padding        : .5rem 1rem;
+  font-weight    : 600;
+  text-transform : uppercase;
+  overflow       : hidden;
+  white-space    : nowrap;
 }
 
 /**
  * Plan pop styles
  */
-.card.plan-pop {
-  box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15) !important;
-  border-color: #0071b8 !important;
+.card.plan-pop
+{
+  box-shadow   : 0 .5rem 1rem rgba(0, 0, 0, .15) !important;
+  border-color : #0071b8 !important;
 }
 
-.plan-pop > .card-header {
-  background: map-get($theme-colors, "primary");
-  color: #ffffff;
-  padding: .5rem;
+.plan-pop > .card-header
+{
+  background : map-get($theme-colors, "primary");
+  color      : #ffffff;
+  padding    : .5rem;
 }
 
-.plan-pop > .card-header .card-title {
-  width: 100%;
-  text-align: center;
-  font-weight: 600;
+.plan-pop > .card-header .card-title
+{
+  width       : 100%;
+  text-align  : center;
+  font-weight : 600;
 }
 
-@media (min-width: 576px) {
-  .card.plan-pop {
-    margin-top: -2rem;
-    margin-bottom: -2rem;
+@media (min-width : 576px)
+{
+  .card.plan-pop
+  {
+    margin-top    : -2rem;
+    margin-bottom : -2rem;
   }
 }
 
@@ -156,73 +177,83 @@ b, strong {
  * Comparison page
  */
 
-.comparison-quantity {
-  font-size: large;
-  font-weight: bold;
-  color: map-get($theme-colors, "primary");
+.comparison-quantity
+{
+  font-size   : large;
+  font-weight : bold;
+  color       : map-get($theme-colors, "primary");
 }
 
-.comparison-row {
-  align-items: center;
+.comparison-row
+{
+  align-items : center;
 }
 
 .comparison-box,
-.comparison-box-empty {
+.comparison-box-empty
+{
   //background-color: white;
-  display: flex;
-  flex-direction: column;
+  display         : flex;
+  flex-direction  : column;
   //font-size: 14px;
-  justify-content: center;
-  text-align: center;
+  justify-content : center;
+  text-align      : center;
   //border: .9px solid $border-color;
-  text-transform: uppercase;
-  align-items: center;
-  padding: 1rem;
+  text-transform  : uppercase;
+  align-items     : center;
+  padding         : 1rem;
 
-  font-size: 120%;
-  font-weight: 600;
+  font-size       : 120%;
+  font-weight     : 600;
 }
-.comparison-rows > .row:nth-child(even) {
-  background: white;
+
+.comparison-rows > .row:nth-child(even)
+{
+  background : white;
 }
 
 .comparison-price,
-.comparison-switch {
+.comparison-switch
+{
   //background-color: white;
   //border: .9px solid $border-color;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-  text-align: center;
+  padding-top    : 1rem;
+  padding-bottom : 1rem;
+  text-align     : center;
 }
 
-.comparison-switch {
-  font-size: small;
+.comparison-switch
+{
+  font-size      : small;
   //line-height: 24pt;
-  color: map-get($theme-colors, "grey");
-  padding-bottom: .5rem;
+  color          : map-get($theme-colors, "grey");
+  padding-bottom : .5rem;
 }
 
-.comparison-box .price-number {
-  font-size: 36pt;
-  font-weight: 900;
-  vertical-align: top;
-  line-height: 2rem;
+.comparison-box .price-number
+{
+  font-size      : 36pt;
+  font-weight    : 900;
+  vertical-align : top;
+  line-height    : 2rem;
 }
 
-.comparison-box .price-currency {
-  vertical-align: top;
-  margin-right: 0.25rem;
-  font-weight: 800;
-  letter-spacing: 0px;
-  font-size: larger;
+.comparison-box .price-currency
+{
+  vertical-align : top;
+  margin-right   : 0.25rem;
+  font-weight    : 800;
+  letter-spacing : 0px;
+  font-size      : larger;
 }
 
-.comparison-box .price-suffix {
-  text-transform: uppercase;
-  font-size: 7pt;
-  margin-top: 0.5rem;
-  font-weight: 400;
-  letter-spacing: 0.5px;
+.comparison-box .price-suffix
+{
+  text-transform : uppercase;
+  font-size      : 7pt;
+  margin-top     : 0.5rem;
+  font-weight    : 400;
+  letter-spacing : 0.5px;
 }
 
 //.comparison-price .plan-cost,
@@ -233,22 +264,24 @@ b, strong {
 //  margin-bottom: 0;
 //}
 
-.comparison-plan-title {
+.comparison-plan-title
+{
   //font-weight: 700;
-  text-align: center;
+  text-align     : center;
   //text-transform: uppercase;
 
-  text-transform: uppercase;
-  font-size: 25px;
-  font-weight: 300;
-  letter-spacing: 1px;
-  padding-top: 10px;
-  margin: 1rem;
+  text-transform : uppercase;
+  font-size      : 25px;
+  font-weight    : 300;
+  letter-spacing : 1px;
+  padding-top    : 10px;
+  margin         : 1rem;
 }
 
-.comparison-plan-body {
-  text-align: center;
-  font-size: smaller;
+.comparison-plan-body
+{
+  text-align : center;
+  font-size  : smaller;
   //color: map-get($theme-colors, "silver") !important;
 }
 
@@ -268,22 +301,25 @@ b, strong {
 /**
  * Payment gateway card
  */
-.payment-total-row {
-  border-bottom: .9px solid $border-color;
-  padding-bottom: 1rem;
+.payment-total-row
+{
+  border-bottom  : .9px solid $border-color;
+  padding-bottom : 1rem;
 }
 
-.payment-total-string {
-  font-size: larger;
-  font-weight: 700;
+.payment-total-string
+{
+  font-size   : larger;
+  font-weight : 700;
 }
 
-.payment-total-number {
-  text-align: right;
-  font-size: 16pt;
-  line-height: 21pt;
-  font-weight: bold;
-  color: map-get($theme-colors, "primary");
+.payment-total-number
+{
+  text-align  : right;
+  font-size   : 16pt;
+  line-height : 21pt;
+  font-weight : bold;
+  color       : map-get($theme-colors, "primary");
 }
 
 /**
@@ -296,65 +332,71 @@ b, strong {
  * helping us get the transaction ID
  * from the URL.
  */
-.payment-iframe {
-  display: none;
-  height: 0;
-  width: 0;
+.payment-iframe
+{
+  display : none;
+  height  : 0;
+  width   : 0;
 }
 
-.payment-iframe-takeover {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  display: unset;
-  top: 0;
-  background: white;
-  margin-left: -1rem;
-  padding: 0;
+.payment-iframe-takeover
+{
+  position    : absolute;
+  width       : 100%;
+  height      : 100%;
+  display     : unset;
+  top         : 0;
+  background  : white;
+  margin-left : -1rem;
+  padding     : 0;
 }
 
 /**
 * form-group equivalent.
 * We just want some space between the items.
 */
-.wpwl-group {
-  margin-bottom: 1rem;
+.wpwl-group
+{
+  margin-bottom : 1rem;
 }
 
 /**
  * .form-control equivalent.
  * Each line item has this class
  */
-.wpwl-control {
+.wpwl-control
+{
   /* display: block; */
-  width: 100%;
+  width         : 100%;
   /* min-height: calc(1.5em + 0.75rem + 2px); */
-  padding: 0.375rem 0.75rem;
+  padding       : 0.375rem 0.75rem;
   /* font-size: 1rem; */
   /* font-weight: 400; */
   /* line-height: 1.5; */
   /* color: #495057; */
   /* background-color: #fff; */
   /* background-clip: padding-box; */
-  border: .9px solid $border-color;
-  appearance: none;
-  border-radius: 0.25rem;
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  border        : .9px solid $border-color;
+  appearance    : none;
+  border-radius : 0.25rem;
+  transition    : border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
 /**
  * Make sure the field labels stand out.
  */
-.wpwl-label {
-  font-weight: 500;
-  white-space: nowrap;
+.wpwl-label
+{
+  font-weight : 500;
+  white-space : nowrap;
 }
 
 /**
  * Hides the whole brand malarky
  */
-.wpwl-group-brand {
-  display: none;
+.wpwl-group-brand
+{
+  display : none;
 }
 
 /**
@@ -363,7 +405,8 @@ b, strong {
  */
 .wpwl-group-brand,
 .wpwl-group-cardNumber,
-.wpwl-group-cardHolder {
+.wpwl-group-cardHolder
+{
   //float : left;
   //width : 70%;
 }
@@ -374,36 +417,38 @@ b, strong {
  */
 .wpwl-brand-card,
 .wpwl-group-expiry,
-.wpwl-group-cvv {
+.wpwl-group-cvv
+{
   //width : 28%;
   //float : right;
 }
 
-.wpwl-button {
+.wpwl-button
+{
   // .btn
-  display: inline-block;
-  font-weight: 400;
-  line-height: 1.5;
-  color: #212529;
-  text-align: center;
-  text-decoration: none;
-  vertical-align: middle;
-  cursor: pointer;
-  user-select: none;
-  background-color: transparent;
-  border: 1px solid transparent;
-  padding: 0.375rem 0.75rem;
-  font-size: 1rem;
-  border-radius: 0.25rem;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  display          : inline-block;
+  font-weight      : 400;
+  line-height      : 1.5;
+  color            : #212529;
+  text-align       : center;
+  text-decoration  : none;
+  vertical-align   : middle;
+  cursor           : pointer;
+  user-select      : none;
+  background-color : transparent;
+  border           : 1px solid transparent;
+  padding          : 0.375rem 0.75rem;
+  font-size        : 1rem;
+  border-radius    : 0.25rem;
+  transition       : color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 
   // .btn-primary
-  color: #ffffff;
-  background-color: map-get($theme-colors, "primary");
-  border-color: map-get($theme-colors, "primary");
+  color            : #ffffff;
+  background-color : map-get($theme-colors, "primary");
+  border-color     : map-get($theme-colors, "primary");
 
   // Custom
-  margin-top: .5rem;
+  margin-top       : .5rem;
 }
 
 /**
@@ -413,16 +458,16 @@ b, strong {
 .doc-fill-svg
   //The svg itself
 {
-  position: absolute;
-  z-index: 1;
-  overflow: hidden;
+  position : absolute;
+  z-index  : 1;
+  overflow : hidden;
 }
 
 .doc-map-svg.enable-custom,
 .doc-fill-svg
   //custom doc-maps and any doc fills can have custom rects
 {
-  cursor: crosshair;
+  cursor : crosshair;
 }
 
 /**
@@ -430,50 +475,55 @@ b, strong {
  */
 .doc-fill-svg rect
 {
-  fill-opacity: 0;
-  stroke: green;
-  fill: green;
-  stroke-opacity: 1;
+  fill-opacity   : 0;
+  stroke         : green;
+  fill           : green;
+  stroke-opacity : 1;
 }
+
 .doc-fill-svg rect:hover
 {
-  stroke-width: 0.3%;
+  stroke-width : 0.3%;
 }
 
 .doc-map-svg path,
-.doc-map-svg rect {
-  fill-opacity: 0;
-  fill: black;
-  stroke: black;
-  stroke-width: 0.1%;
-  stroke-opacity: .1;
+.doc-map-svg rect
+{
+  fill-opacity   : 0;
+  fill           : black;
+  stroke         : black;
+  stroke-width   : 0.1%;
+  stroke-opacity : .1;
 }
 
 .doc-map-svg path:hover,
-.doc-map-svg rect:hover {
-  stroke-width: .4%;
-  cursor: pointer;
-  stroke-opacity: 1;
+.doc-map-svg rect:hover
+{
+  stroke-width   : .4%;
+  cursor         : pointer;
+  stroke-opacity : 1;
 }
 
-.doc-map-svg .doc-map-marker {
-  stroke-opacity: 1;
-  stroke: map-get($theme-colors, "danger");
-  stroke-width: 0.2%;
+.doc-map-svg .doc-map-marker
+{
+  stroke-opacity : 1;
+  stroke         : map-get($theme-colors, "danger");
+  stroke-width   : 0.2%;
 }
 
 .doc-map-svg .doc-map-field,
 .doc-map-svg .doc-map-field-custom
 {
-  stroke-opacity: 1;
-  stroke: #00cc00; //map-get($theme-colors, "success");
-  stroke-width: 0.2%;
+  stroke-opacity : 1;
+  stroke         : #00cc00; //map-get($theme-colors, "success");
+  stroke-width   : 0.2%;
 }
 
-.doc-map-svg .doc-map-selected {
-  stroke-opacity: 1;
-  stroke-width: 0.5%;
-  stroke-dasharray: 5;
+.doc-map-svg .doc-map-selected
+{
+  stroke-opacity   : 1;
+  stroke-width     : 0.5%;
+  stroke-dasharray : 5;
 }
 
 /**
@@ -482,22 +532,25 @@ b, strong {
  * and because of the multiline element, we have
  * to print it
  */
-.doc-fill-svg-print rect {
-  stroke: unset;
-  fill-opacity: 0;
+.doc-fill-svg-print rect
+{
+  stroke       : unset;
+  fill-opacity : 0;
 }
 
 
 // Blank markers are invisible
-.doc-map-svg .doc-map-blank {
-  display: none;
+.doc-map-svg .doc-map-blank
+{
+  display : none;
 }
 
 /**
  * Flickity override
  */
-.flickity-button {
-  background: none;
+.flickity-button
+{
+  background : none;
 }
 
 /**
@@ -505,10 +558,10 @@ b, strong {
  */
 .template-marker
 {
-  display: unset !important;
-  border: none;
-  box-shadow: unset !important;
-  font-weight: 100;
+  display     : unset !important;
+  border      : none;
+  box-shadow  : unset !important;
+  font-weight : 100;
 }
 
 /**
@@ -516,33 +569,37 @@ b, strong {
  */
 .template-button
 {
- display: unset !important;
- padding: 10px;
- font-weight: 400;
- font-size: medium;
+  display     : unset !important;
+  padding     : 10px;
+  font-weight : 400;
+  font-size   : medium;
 }
 
 /**
  * Tokenised calculations
  */
-.calc-token {
-  display: inline-block;
-  border: .1px solid $border-color;
-  border-radius: 1rem;
-  padding: 0 0.6rem .1rem 0.6rem;
-  background-color: hsl(207deg, 60%, 97%);
-  font-weight: 300;
-  margin-bottom: 0.3rem;
+.calc-token
+{
+  display          : inline-block;
+  border           : .1px solid $border-color;
+  border-radius    : 1rem;
+  padding          : 0 0.6rem .1rem 0.6rem;
+  background-color : hsl(207deg, 60%, 97%);
+  font-weight      : 300;
+  margin-bottom    : 0.3rem;
 }
 
 /**
  * Filter icons for the filter card
  */
-.filter-icon {
-  margin-left: .5rem;
-  font-size: 8pt;
-  color: #999999
+.filter-icon
+{
+  margin-left : .5rem;
+  font-size   : 8pt;
+  color       : #999999
 }
-.filter-icon:hover{
-  color: map-get($theme-colors, "primary");
+
+.filter-icon:hover
+{
+  color : map-get($theme-colors, "primary");
 }

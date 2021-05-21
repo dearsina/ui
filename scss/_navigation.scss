@@ -704,7 +704,11 @@ nav .expand {
   margin-bottom: -1px;
 }
 
-.nav-tabs > .nav-item > *
+/**
+ * For when tab titles become too long.
+ * Exclude tab titles that are icons only.
+ */
+.nav-tabs > .nav-item > a:not(.icon-only)
 {
   text-overflow: ellipsis;
   white-space: nowrap;
