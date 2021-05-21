@@ -171,7 +171,7 @@ class ListGroup {
 		# Title + Subtitle + Body
 		$html .= $item['title'] ? self::generateTitle($item['title']) : NULL;
 		$html .= $item['subtitle'] ? self::generateSubtitle($item['subtitle']) : NULL;
-		$html .= $item['body'] ? self::generateSubtitle($item['body']) : NULL;
+		$html .= $item['body'] ? self::generateBody($item['body']) : NULL;
 
 		# HTML (After/instead of title/subtitle/body)
 		$html .= $item['html'];
