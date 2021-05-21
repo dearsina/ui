@@ -523,6 +523,32 @@ EOF;
 	}
 
 	/**
+	 * @param array|false $a
+	 */
+	public function setItems($a = NULL): void
+	{
+		# Numeric arrays
+		if(str::isNumericArray($a)){
+			$this->items['items'] = $a;
+			$this->items['id'] = str::id("items");
+			return;
+		}
+
+		# Associative arrays
+		if(str::isAssociativeArray($a)){
+			$a['id'] = $a['id'] ?: str::id("items");
+			$this->items = $a;
+			return;
+		}
+
+		# Clear
+		if($a === false){
+			$this->items = [];
+			return;
+		}
+	}
+
+	/**
 	 * Appends array keys or HTML to the card body.
 	 *
 	 * @param null $a
@@ -692,19 +718,10 @@ EOF;
 	 * @return bool|string
 	 * @throw Exception
 	 */
-	public function getItemsHTML(){
-		if(!is_array($this->items)){
-			return false;
-		}
-
-		if(!key_exists("items", $this->items)){
-			$this->items = [
-				"items" => $this->items
-			];
-		}
-
-		if(!is_array($this->items['items'])){
-			return false;
+	public function getItemsHTML(): ?string
+	{
+		if(!$this->items){
+			return NULL;
 		}
 
 		$html = ListGroup::generate($this->items);
