@@ -126,7 +126,8 @@ class Grid {
 			} else if(str::isNumericArray($col['html'])){
 				//if it goes deeper (with metadata)
 				$col_html = $this->getRowHTML($col['html']);
-			} else if(is_array($col['tabs'])){
+			} else if(is_array($col['tabs']) && array_filter($col['tabs'])){
+				//If tabs exist
 				$col_html = $this->getTabsHTML($col['tabs']);
 			} else if($this->formatter){
 				//If a custom formatter has been designated
@@ -214,6 +215,12 @@ class Grid {
 
 		# Class
 		$class_array = str::getAttrArray($class, ["nav-link", $active, $disabled], $only_class);
+
+		# If the tab title is just an icon, add the icon-only class
+		if(!$title){
+			$class_array[] = "icon-only";
+		}
+
 		$class = str::getAttrTag("class", $class_array);
 
 		# Icon
@@ -298,7 +305,7 @@ EOF;
 
 	public function getTabsHTML(array $tabs): string
 	{
-		foreach($tabs as $tab){
+		foreach(array_filter($tabs) as $tab){
 			$tab['id'] = $tab['id'] ?: str::id("panel");
 			$active = $active !== true ? "active" : NULL;
 			$nav_tabs[] = "<li class=\"nav-item\" role=\"presentation\">{$this->getTabHeader($tab, $active)}</li>";
