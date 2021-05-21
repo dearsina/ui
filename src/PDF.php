@@ -51,7 +51,7 @@ class PDF {
 				"virtual-time-budget" => $seconds * 1000,
 				# Print the page to PDF (and give filename)
 				"print-to-pdf" => $tmp_filename,
-				# Remove the header
+				# Remove the header and footer
 				"print-to-pdf-no-header" => true,
 				# Only log fatal errors (0 will log everything, 3 will only log fatal)
 				"log-level" => "3",
@@ -116,6 +116,7 @@ class PDF {
 	{
 		if($keep_footer){
 			//If you want to keep the auto-generated footer
+			$margin_bottom = "margin-bottom: 0.5cm;";
 		} else{
 			//If you don't want to keep the footer
 			$margin_bottom = "margin-bottom: 0;";
@@ -124,13 +125,26 @@ class PDF {
 		return <<<EOF
 <style>
 		@media print {
-		  @page { size: A4; margin-top: 1cm; margin-left: 0; margin-right: 0; {$margin_bottom} }
+		  @page { size: A4; margin-top: 1cm; margin-left: 0; margin-right: 0; {$margin_bottom}}
 		  .pace { display:none; }
 		  #ui-navigation { display:none; }
 		  #ui-footer { display:none; }
 		  body { margin-top: 0; margin-left: 1cm; margin-right: 1cm; background-color: white; height: unset; zoom: 75%; }
 		  main { margin: 0; padding: 0; max-width: unset !important; }
-		}
+		  
+		  /** When printed, .containers will shrink if the max-width limit isn't removed */
+		  .container {max-width: unset !important;}
+		  /** For this to work, the .row immediately outside the card will need to be set to display:block */
+		  .card{ break-inside: avoid; page-break-inside:avoid; }
+		  
+		  /** For optional footers */
+		  footer {
+			position: fixed;
+			bottom: 0;
+			background: white;
+			color: black;
+		  }
+		}		
 </style>
 EOF;
 	}
