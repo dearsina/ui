@@ -1,0 +1,47 @@
+/**
+ * The card window floats above all windows.
+ */
+.card-window
+{
+  box-shadow : #34324e26 0px 0px 4px, #34324e26 0px 4px 12px, #34324e26 6px 6px 14px;
+  position   : absolute;
+  overflow   : hidden;
+
+  min-height: 10vw;
+  min-width: 30vh;
+}
+
+/**
+ * Signals to the user that they can move the card.
+ */
+.card-window > .card-header {
+  cursor: all-scroll;
+}
+
+/**
+ * The body will scroll up/down
+ */
+.card-window > .card-body {
+  overflow-y: auto;
+}
+
+.window-controls
+{
+  position : absolute;
+  right    : 10px;
+  top      : 5px;
+}
+
+.window-controls i
+{
+  font-weight : 100;
+  padding     : 15px;
+}
+
+.window-controls i:hover
+{
+  font-weight : 500;
+  color       : map-get($theme-colors, "primary");
+  cursor      : pointer;
+
+}

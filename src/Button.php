@@ -57,6 +57,14 @@ class Button {
 			"class" => "float-right"
 		],
 
+		"close_wd" => [
+			"size" => "s",
+			"title" => "Close",
+			"colour" => "grey",
+			"basic" => true,
+			"class" => "window-button-close"
+		],
+
 		"return" => [
 			"onClick" => "window.history.back();",
 			"icon" => "chevron-left",
