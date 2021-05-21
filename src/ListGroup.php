@@ -49,8 +49,12 @@ class ListGroup {
 	 * @throws \Exception
 	 * @throws \Exception
 	 */
-	public static function generate(array $a) : string
+	public static function generate(?array $a) : ?string
 	{
+		if(!$a){
+			return NULL;
+		}
+
 		$default_class[] = "list-group";
 
 		if(str::isNumericArray($a)){
@@ -176,13 +180,18 @@ class ListGroup {
 		$icon = Icon::generate($item['icon']);
 
 		# Badge
-		if($badge = Badge::generate($item['badge'], [
+		$badge = Badge::generate($item['badge'], [
 			"style" => [
 				"margin-left" => ".5rem"
 			]
-		])){
-//			$default_class[] = "d-flex justify-content-between align-items-center";
-		}
+		]);
+
+		# Left badge (badge on the LEFT side of the item)
+		$left_badge = Badge::generate($item['left_badge'], [
+			"style" => [
+				"float" => "left"
+			]
+		]);
 
 		# Button(s)
 		if($button = Button::generate($item["button"])){
@@ -220,12 +229,12 @@ class ListGroup {
 			}
 
 			return <<<EOF
-<li{$id}{$class}{$style}{$draggable}{$ondragstart}{$data}{$title}>{$handlebars}{$button}<{$tag}{$href}>{$icon}{$html}{$badge}</{$tag}></li>
+<li{$id}{$class}{$style}{$draggable}{$ondragstart}{$data}{$title}>{$handlebars}{$button}<{$tag}{$href}>{$icon}{$left_badge}{$html}{$badge}</{$tag}></li>
 EOF;
 		}
 
 		return <<<EOF
-<{$tag}{$id}{$class}{$style}{$href}{$draggable}{$ondragstart}{$data}{$title}>{$button}{$icon}{$html}{$badge}</{$tag}>
+<{$tag}{$id}{$class}{$style}{$href}{$draggable}{$ondragstart}{$data}{$title}>{$button}{$icon}{$left_badge}{$html}{$badge}</{$tag}>
 EOF;
 
 	}
