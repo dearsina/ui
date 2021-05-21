@@ -113,6 +113,42 @@ EOF;
 	}
 
 	/**
+	 * Update a single row in a table.
+	 *
+	 * Given a row ID, an array of row data, and an (optional) audience,
+	 * will update (replace) a single row in a table. If an audience is
+	 * included, will update in real time in the window of every audience
+	 * member. Requires the row to have a meta row-id field setup like this:
+	 *
+	 * <code>
+	 * $row = [
+	 * 	"html" => $row,
+	 * 	"row_id" => $row_id,
+	 * ];
+	 * </code>
+	 *
+	 * @param string     $row_id
+	 * @param array      $row
+	 * @param array|null $audience
+	 */
+	public static function updateRow(string $row_id, array $row, ?array $audience = NULL): void
+	{
+		# Rows are basically just unstackable grids
+		$grid = new Grid(["unstackable" => true]);
+
+		$row['html'] = array_values($row['html'] ?: $row);
+		//In case the row has meta fields
+
+		# Set the class
+		$row['row_class'] = str::getAttrArray($row['row_class'], "table-body", $row['only_row_class']);
+
+		# Set the single row grid
+		$grid->set($row);
+
+		Output::getInstance()->replace("#{$row_id}", $grid->getHTML(), $audience);
+	}
+
+	/**
 	 * Generates the (optional) header row.
 	 *
 	 * @param array|NULL $row
@@ -481,7 +517,7 @@ EOF;
 		$fields[] = [
 			"name" => "q",
 			"label" => "Search",
-			"placeholder" => "Enter search string here"
+			"placeholder" => "Enter search string here",
 		];
 
 		foreach($filters as $column => $data){
@@ -502,11 +538,11 @@ EOF;
 				"type" => "checkbox",
 				"class" => "column-toggle",
 				"label" => [
-					"title" => $data['title']
+					"title" => $data['title'],
 				],
 				"parent_style" => [
-					"margin-bottom" => "-3rem"
-				]
+					"margin-bottom" => "-3rem",
+				],
 			];
 			$label = Field::getHTML($field);
 
