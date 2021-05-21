@@ -72,7 +72,7 @@ class Badge {
 		}
 
 		if(is_array($overrides)){
-			$a = array_merge($a, $overrides);
+			$a = array_merge_recursive($a, $overrides);
 		}
 
 		# Give it an ID
