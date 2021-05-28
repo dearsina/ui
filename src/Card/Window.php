@@ -39,14 +39,14 @@ class Window extends Card{
 	private function windowControlIcons(): string
 	{
 		$resize = Icon::generate([
-			"type" => "thin",
+			"type" => "light",
 			"name" => "window-maximize",
 			"alt" => "Maximise",
 			"class" => "window-button-resize window-button-maximise"
 		]);
 
 		$close = Icon::generate([
-			"type" => "thin",
+			"type" => "light",
 			"name" => "times",
 			"alt" => "Close window",
 			"class" => "window-button-close"

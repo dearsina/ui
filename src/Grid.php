@@ -229,7 +229,7 @@ class Grid {
 			if(is_string($icon)){
 				$icon = [
 					"name" => $icon,
-					"type" => "thin"
+					"type" => "light"
 				];
 			}
 			$icon = Icon::generate($icon);

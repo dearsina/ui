@@ -126,7 +126,15 @@ class Page {
 		if(!$icon){
 			return false;
 		}
+		if(is_string($icon)){
+			$icon = [
+				"name" => $icon
+			];
+		}
 		$this->title['icon'] = $icon;
+
+		# The default icon thickness is light
+		$this->title['icon']['type'] = $this->title['icon']['type'] ?: "light";
 		return true;
 	}
 

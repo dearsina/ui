@@ -18,23 +18,23 @@ class Icon {
 	const DEFAULTS = [
 		"phone" => [
 			"name" => "phone",
-			"type" => "thin",
+			"type" => "light",
 		],
 		"email" => [
 			"name" => "envelope",
-			"type" => "thin",
+			"type" => "light",
 		],
 		"password" => [
 			"name" => "key",
-			"type" => "thin",
+			"type" => "light",
 		],
 		"money" => [
 			"name" => "money-bill",
-			"type" => "thin",
+			"type" => "light",
 		],
 		"date" => [
 			"name" => "calendar",
-			"type" => "thin",
+			"type" => "light",
 		],
 		"error" => [
 			"type" => "solid",
@@ -49,7 +49,7 @@ class Icon {
 			"name" => "check",
 		],
 		"info" => [
-			"type" => "thin",
+			"type" => "light",
 			"name" => "info-circle",
 		],
 		"warning" => [
@@ -65,63 +65,32 @@ class Icon {
 	 *
 	 * @return string far, fas, or fal
 	 */
-	static function getType($type = NULL)
+	static function getType(?string $type = NULL): string
 	{
+		# The default if type isn't specified
+		if(!$type){
+			return "fa-regular";
+		}
+
 		switch($type) {
 		case 'regular':
-			return 'far';
-			break;
-		case 'far':
-			return 'far';
-			break;
-
-		case 'duotone':
-			return 'fad';
-			break;
-		case 'fad':
-			return 'fad';
-			break;
-
 		case 'solid':
-			return 'fas';
-			break;
-		case 'bold':
-			return 'fas';
-			break;
-		case 'thick':
-			return 'fas';
-			break;
-		case 'full':
-			return 'fas';
-			break;
-		case 'fas':
-			return 'fas';
-			break;
-
 		case 'light':
-			return 'fal';
-			break;
+		case 'duotone':
 		case 'thin':
-			return 'fal';
-			break;
-		case 'fal':
-			return 'fal';
-			break;
+		case 'brands':
+			return "fa-{$type}";
 
-		case 'brand':
-			return 'fab';
-			break;
-		case 'fab':
-			return 'fab';
-			break;
+		case 'bold':
+		case 'thick':
+		case 'full':
+			return "fa-solid";
 
 		case 'flag':
 			return 'flag';
-			break;
 
 		default:
-			return "far";
-			break;
+			return "fa-regular";
 		}
 	}
 
@@ -235,7 +204,7 @@ class Icon {
 	 * <code>
 	 * $icon_html = Icon::generate([
 	 *    "name" => "copy",
-	 *    "type" => "thin",
+	 *    "type" => "light",
 	 *    "transform" => "left-8"
 	 * ]);
 	 *

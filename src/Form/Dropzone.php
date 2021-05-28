@@ -50,7 +50,7 @@ class Dropzone extends Field implements FieldInterface {
             //If an icon hasn't been explicitly refused
 
             $a['settings']['dictDefaultMessage'] .= "<div>".Icon::generate([
-                    "type" => "thin",
+                    "type" => "light",
                     "name" => $a['icon'] ?: "folder",
                     "size" => "3x",
                     "style" => [

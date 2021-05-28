@@ -30,7 +30,7 @@ class Dropdown {
 
 		$icon = $icon ?: [
 			"name" => "bars",
-			"type" => "thin",
+			"type" => "light",
 		];
 
 		$class = str::getAttrArray($class, ["nav-right nav-dropdown"], $only_class);

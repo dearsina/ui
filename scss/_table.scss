@@ -18,7 +18,7 @@
  */
 .table-sortable > .table-header > div::after{
   float: right;
-  font-family: "Font Awesome 5 Pro";
+  font-family: "Font Awesome 6 Pro";
 }
 
 /**
@@ -123,9 +123,9 @@
  * auto-generated.
  */
 .sortable-handlebars::after{
-  font-family: "Font Awesome 5 Pro";
+  font-family: "Font Awesome 6 Pro";
   content: "\f0c9"; //Hamburger bars
-  font-weight: 100;
+  font-weight: 300;
   font-size: small;
 }
 

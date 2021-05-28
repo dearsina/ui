@@ -17,7 +17,7 @@ class Wait {
 	{
 
 		$icon = Icon::generate([
-			"type" => "thin",
+			"type" => "light",
 			"colour" => "primary",
 			"name" => "spinner-third",
 			"class" => "fa-spin",

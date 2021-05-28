@@ -65,7 +65,7 @@ class Horizontal {
 		}
 		$html .= "<div id=\"navbar-level2\" class=\"navbar navbar-expand-md navbar-dark\">";
 		$html .= $this->getTitleHTML($this->levels[2]['title'], "navbar-title");
-		$html .= "<div class=\"navbar-sidebar-toggle\" onClick=\"$('#ui-sidebar-right').toggleClass('show');$(this).toggleClass('show');\"><i class=\"fal fa-bars\"></i></div>";
+		$html .= "<div class=\"navbar-sidebar-toggle\" onClick=\"$('#ui-sidebar-right').toggleClass('show');$(this).toggleClass('show');\"><i class=\"fa-light fa-bars\"></i></div>";
 		$html .= "<div id=\"ui-sidebar-right\">";
 		$html .= Dropdown::getMultiLevelItemsHTML($this->levels[2]['items'], ["class" => "nav-left"]);
 		$html .= "</div>";
