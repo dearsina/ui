@@ -303,11 +303,27 @@ EOF;
 		//We're borrowing from the Card class
 	}
 
-	public function getTabsHTML(array $tabs): string
+	public function getTabsHTML(array $tabs): ?string
 	{
-		foreach(array_filter($tabs) as $tab){
+		# Remove empty tabs
+		if(!$tabs = array_filter($tabs)){
+			//if there are no real tabs left
+			return NULL;
+		}
+
+		# Ensure at least one tab is active
+		if(!array_filter($tabs, function($tab){
+			return $tab['active'];
+		})){
+			//if none of the tabs are set to be active
+
+			# Set the first tab to be active by default
+			$tabs[0]['active'] = true;
+		}
+
+		foreach($tabs as $tab){
 			$tab['id'] = $tab['id'] ?: str::id("panel");
-			$active = $active !== true ? "active" : NULL;
+			$active = $tab['active'] ? "active" : NULL;
 			$nav_tabs[] = "<li class=\"nav-item\" role=\"presentation\">{$this->getTabHeader($tab, $active)}</li>";
 
 			$tab_panes[] = <<<EOF
@@ -321,8 +337,6 @@ EOF;
 				{$this->getTabFooter($tab)}
 			</div>
 EOF;
-			# An active tab has now been set
-			$active = true;
 		}
 
 		$tab_id = str::id("tab");
