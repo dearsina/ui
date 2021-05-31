@@ -136,6 +136,11 @@ class PDF {
 		  .container {max-width: unset !important;}
 		  /** For this to work, the .row immediately outside the card will need to be set to display:block */
 		  .card{ break-inside: avoid; page-break-inside:avoid; }
+		  /** Things we don't want to see in print view */
+		  .collapse-toggle::after /** The little chevron down */
+		  {
+		  	display:none;
+		  }
 		  
 		  /** For optional footers */
 		  footer {
