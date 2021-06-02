@@ -25,7 +25,7 @@ class MySQL extends Common implements \App\Common\Example\ExampleInterface {
 					"subscription_id" => "123",
 					[
 						"subscription_id" => NULL,
-						$client_type['person'] ? "person" : "organisation" => true
+						$workflow['person'] ? "person" : "organisation" => true
 					],
 //					[
 //						"subscription_id" => NULL,
@@ -71,7 +71,7 @@ class MySQL extends Common implements \App\Common\Example\ExampleInterface {
 //		$examples[] = [
 //			"header" => "Long join",
 //			"query" => [
-//				"table" => "client_type_doc_type",
+//				"table" => "workflow_doc_type",
 //				"left_join" => [[
 //					"table" => "doc_type",
 //					"id" => "doc_type_id"
@@ -95,13 +95,13 @@ class MySQL extends Common implements \App\Common\Example\ExampleInterface {
 //			"header" => "JSON join",
 //			"query" => [
 //				"db" => "user_data",
-//				"table" => "client_type",
+//				"table" => "workflow",
 //				"join" => [[
 //					"columns" => false,
 //					"db" => "user_data",
 //					"table" => "doc_type",
 //					"on" => [
-//						"doc_type_id" => ["user_data", "client_type", "doc_type_ids"]
+//						"doc_type_id" => ["user_data", "workflow", "doc_type_ids"]
 //					]
 //				]]
 //			],
