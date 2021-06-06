@@ -343,8 +343,8 @@ class Button {
 	 * @throws \Exception
 	 */
 	static function generate($a, $rel_table = false, $rel_id = false, $callback = false){
-		if(!$a){
-			//if no data is submitted to the method, ignore it
+		if(!is_array($a) && !is_string($a)){
+			// A valid button value has to be either an array or a string
 			return false;
 		}
 
