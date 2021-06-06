@@ -24,7 +24,7 @@ class Button {
 			"colour" => "green",
 			"icon" => [
 				"name" => "save",
-				"type" => "light"
+				"type" => "light",
 			],
 			"title" => "Save",
 			"type" => "submit",
@@ -34,7 +34,7 @@ class Button {
 			"onClick" => "window.history.back();",
 			"title" => "Cancel",
 			"colour" => "grey",
-			"basic" => true
+			"basic" => true,
 		],
 
 		"cancel_md" => [
@@ -42,9 +42,9 @@ class Button {
 			"colour" => "grey",
 			"basic" => true,
 			"data" => [
-				"bs-dismiss" => "modal"
+				"bs-dismiss" => "modal",
 			],
-			"class" => "float-right"
+			"class" => "float-right",
 		],
 
 		"close_md" => [
@@ -52,9 +52,9 @@ class Button {
 			"colour" => "grey",
 			"basic" => true,
 			"data" => [
-				"bs-dismiss" => "modal"
+				"bs-dismiss" => "modal",
 			],
-			"class" => "float-right"
+			"class" => "float-right",
 		],
 
 		"close_wd" => [
@@ -62,7 +62,7 @@ class Button {
 			"title" => "Close",
 			"colour" => "grey",
 			"basic" => true,
-			"class" => "window-button-close"
+			"class" => "window-button-close",
 		],
 
 		"return" => [
@@ -85,10 +85,10 @@ class Button {
 			"hash" => [
 				"rel_table" => "rel_table",
 				"action" => "new",
-				"vars" => "vars"
+				"vars" => "vars",
 			],
 			"icon" => "new",
-			"colour" => "primary"
+			"colour" => "primary",
 		],
 
 		"edit" => [
@@ -97,7 +97,7 @@ class Button {
 				"rel_table" => "rel_table",
 				"rel_id" => "rel_id",
 				"action" => "edit",
-				"vars" => "vars"
+				"vars" => "vars",
 			],
 			"icon" => "edit",
 			"basic" => true,
@@ -110,7 +110,7 @@ class Button {
 				"rel_table" => "rel_table",
 				"rel_id" => "rel_id",
 				"action" => "duplicate",
-				"vars" => "vars"
+				"vars" => "vars",
 			],
 			"icon" => "copy",
 			"basic" => true,
@@ -150,7 +150,8 @@ class Button {
 		array_walk_recursive($button, function(&$value, $key) use ($rel_table){
 			if($value == "rel_table"){
 				$value = $rel_table;
-			} else {
+			}
+			else {
 				$value = $value == str_replace("rel_table", $rel_table, $value) ? $value : str::title(str_replace("rel_table", $rel_table, $value));
 			}
 
@@ -230,9 +231,10 @@ class Button {
 	 *
 	 * @return bool|array
 	 */
-	static function getArray($a, $rel_table = false, $rel_id = false, $callback = false){
+	static function getArray($a, $rel_table = false, $rel_id = false, $callback = false)
+	{
 		if(str::isNumericArray($a)){
-			return self::getArray($a[0],$a[1],$a[2],$a[3]);
+			return self::getArray($a[0], $a[1], $a[2], $a[3]);
 		}
 
 		if(!is_array($a)){
@@ -252,27 +254,33 @@ class Button {
 	 * @return bool|string
 	 * @throws \Exception
 	 */
-	static function multi($a){
+	static function multi($a)
+	{
 		if(!$a){
 			return false;
 		}
 
 		if(is_array($a) && !str::isNumericArray($a)){
 			$buttons[] = $a;
-		} else if(str::isNumericArray($a)){
+		}
+		else if(str::isNumericArray($a)){
 			$buttons = $a;
-		} else if(is_array($a)){
+		}
+		else if(is_array($a)){
 			return Button::generate($a);
-		} else if(is_string($a)){
+		}
+		else if(is_string($a)){
 			return $a;
-		} else {
+		}
+		else {
 			return false;
 		}
 
 		foreach($buttons as $id => $button){
 			if(is_array($button)){
 				$html .= Button::generate($button);
-			} else {
+			}
+			else {
 				$html .= $button;
 			}
 		}
@@ -339,10 +347,12 @@ class Button {
 	 * @param string|bool  $rel_id    Optional, if a generic button with localisation has been chosen.
 	 *
 	 * @param bool         $callback
+	 *
 	 * @return string
 	 * @throws \Exception
 	 */
-	static function generate($a, $rel_table = false, $rel_id = false, $callback = false){
+	static function generate($a, $rel_table = false, $rel_id = false, $callback = false)
+	{
 		if(!is_array($a) && !is_string($a)){
 			// A valid button value has to be either an array or a string
 			return false;
@@ -353,13 +363,13 @@ class Button {
 			foreach($a as $b){
 				$buttons[] = self::generate($b);
 			}
-			return implode("",$buttons);
+			return implode("", $buttons);
 		}
 
 		$a = self::getArray($a, $rel_table, $rel_id, $callback);
 
 		if(!$a['id']){
-			$a['id'] = "button_".rand();
+			$a['id'] = "button_" . rand();
 		}
 
 		extract($a);
@@ -369,22 +379,10 @@ class Button {
 			return self::generateWithChildren($a);
 		}
 
-		# Who is directing the button?
-		if($approve){
-			//if an approval dialogue is to prepend the action
-			$approve_attr = str::getApproveAttr($a['approve']);
-			$approve_class = "approve-decision";
-		}
-
 		$href = href::generate($a);
 
 		# Style with override
 		$style_array = str::getAttrArray($style, false, $only_style);
-
-		# OnClicks aren't treated as true buttons, fix it
-		if($onClick){
-			$style_array["cursor"] = "pointer";
-		}
 
 		# Is it a basic button?
 		if($basic || $outline){
@@ -395,19 +393,39 @@ class Button {
 		$colour = $colour ?: "dark";
 		//default is a b&w theme
 
+		# Class with override
+		$class_array = str::getAttrArray($class, ["btn", "btn{$outline}-{$colour}"], $only_class);
+
+		# Who is directing the button?
+		if($approve){
+			//if an approval dialogue is to prepend the action
+			$approve_attr = str::getApproveAttr($a['approve']);
+			$class_array[] = "approve-decision";
+		}
+
+		# OnClicks aren't treated as true buttons, fix it
+		if($onClick){
+			$style_array["cursor"] = "pointer";
+		}
+
 		# Does this button have children?
 		if($children){
 			$class_array[] = $parent;
 		}
 
-		# Does it have an icon?
-		if($svg = SVG::generate($svg, "
-		height: 1rem;
-		position: relative;
-		top: .2rem;
-		left: -0.2rem;")){
+		# Does it have an SVG icon?
+		if($svg){
+			$svg = SVG::generate($svg, [
+				"height" => "1rem",
+				"position" => "relative",
+				"top" => "0.2rem",
+				"left" => "-0.2rem",
+			]);
 			$icon = false;
-		} else if($icon){
+		}
+
+		# Does it have an icon?
+		else if($icon){
 			$icon = Icon::generate($icon);
 		}
 
@@ -418,13 +436,14 @@ class Button {
 
 		# is it to be placed to the right?
 		if($right){
-			$right = 'float-right';
+			$class_array[] = "float-right";
 		}
 
 		# What tag-type is it?
 		if($tag_type){
 			//a tag type can be forced
-		} else if($type == 'file') {
+		}
+		else if($type == 'file'){
 			$tag_type = "input";
 			$name = "name=\"{$name}\"";
 			if($multiple){
@@ -436,12 +455,14 @@ class Button {
 					foreach($val as $sub_key => $sub_val){
 						$flat_data["{$key}[{$sub_key}]"] = $sub_val;
 					}
-				} else {
+				}
+				else {
 					$flat_data[$key] = $val;
 				}
 			}
 			$json_data = json_encode($flat_data);
-			$script .= /**@lang JavaScript*/"
+			$script .= /**@lang JavaScript */
+				"
 			$(function () {
 				$('#{$id}').fileupload({
 					url: 'ajax.php',
@@ -457,42 +478,36 @@ class Button {
 				});
 			});
 			";
-		} else if($name && $value) {
+		}
+		else if($name && $value){
 			//if the button has a value that needs to be collected
 			$type = "submit";
 			$name = str::getAttrTag("name", $name);
 			$value = str::getAttrTag("value", $value);
 			$tag_type = "button";
-		} else if($type == 'submit') {
+		}
+		else if($type == 'submit'){
 			//for most buttons, this is the type
 			$tag_type = "button";
-		} else if($onClick||$onclick) {
+		}
+		else if($onClick || $onclick){
 			$tag_type = 'a';
-		} else {
+		}
+		else {
 			$tag_type = 'a';
 		}
 
 		# Is it disabled?
 		if($disabled){
-			$outline = "-outline";
+			$style_array["cursor"] = "default";
+			$class_array[] = "btn-outline-{$colour}";
+			$class_array[] = "disabled";
 			$disabled = "disabled=\"disabled\"";
 			$tag_type = "button";
-			$disabled_class = "disabled";
-			$style_array["cursor"] = "default";
 		}
 
 		# Size
-		if($size){
-			switch($size){
-			case 's' 	: $size = "sm"; break;
-			case 'small': $size = "sm"; break;
-			case 'large': $size = "lg"; break;
-			}
-			$class = "btn-{$size} {$class}";
-		}
-
-		# Class with override override
-		$class_array = str::getAttrArray($class, ["btn", "btn{$outline}-{$colour}", $right, $approve_class, $disabled_class], $only_class);
+		$class_array[] = self::getSize($size);
 
 		# Pulsating
 		if($pulsating){
@@ -516,14 +531,15 @@ class Button {
 			$span_post = "</span>";
 		}
 
-		$class_tag 		= str::getAttrTag("class", $class_array);
-		$style_tag 		= str::getAttrTag("style", $style_array);
-		$id_tag 		= str::getAttrTag("id", $id);
-		$type_tag 		= str::getAttrTag("type", $type);
-		$title_tag 		= str::getAttrTag("title", $alt ?: strip_tags($title));
-		$data_style_tag	= str::getAttrTag("data-style", "slide-left");
+		$class_tag = str::getAttrTag("class", $class_array);
+		$style_tag = str::getAttrTag("style", $style_array);
+		$id_tag = str::getAttrTag("id", $id);
+		$type_tag = str::getAttrTag("type", $type);
+		$title_tag = str::getAttrTag("title", $alt ?: strip_tags($title));
+		$data_style_tag = str::getAttrTag("data-style", "slide-left");
 
-		$button_html = /** @lang HTML */<<<EOF
+		$button_html = /** @lang HTML */
+			<<<EOF
 {$wrapper_pre}
 <{$tag_type}
 {$id_tag}
@@ -553,7 +569,8 @@ EOF;
 
 		if($type == 'file'){
 			$for_tag = str::getAttrTag("for", $id);
-			$button_html = /** @lang HTML */<<<EOF
+			$button_html = /** @lang HTML */
+				<<<EOF
 <{$tag_type}
 	{$id_tag}
 	{$href}
@@ -603,16 +620,16 @@ EOF;
 		# Remove the ladda from the button itself
 		$a['ladda'] = false;
 
-		$a['title'] .= "&nbsp;".Icon::generate([
-			"style" => [
-				"font-weight" => "500 !important"
-			],
-			"name" => "chevron-down"
-		]);
+		$a['title'] .= "&nbsp;" . Icon::generate([
+				"style" => [
+					"font-weight" => "500 !important",
+				],
+				"name" => "chevron-down",
+			]);
 
 		return Dropdown::generateButton([
 			"button" => self::generate($a),
-			"children" => $children
+			"children" => $children,
 		]);
 	}
 
@@ -621,16 +638,21 @@ EOF;
 	 *
 	 * @return bool|string[]
 	 */
-	static function pulsating($a){
+	static function pulsating($a)
+	{
 		if(!$a){
 			return false;
-		} else	if(is_bool($a)){
+		}
+		else if(is_bool($a)){
 			$pulsating['colour'] = "black";
-		} else if (is_string($a)){
+		}
+		else if(is_string($a)){
 			$pulsating['colour'] = $a;
-		} else if (is_array($a)){
+		}
+		else if(is_array($a)){
 			$pulsating = $a;
-		} else {
+		}
+		else {
 			return false;
 		}
 
@@ -646,57 +668,28 @@ EOF;
 	}
 
 	/**
-	 * Generic edit button for a table.
+	 * If a button size has been given, make the size uniform,
+	 * prefix with btn- and return to be used in the class array.
 	 *
-	 * @param string     $rel_table
-	 * @param string     $rel_id
-	 * @param array|null $vars
+	 * @param string|null $size
 	 *
-	 * @return array
+	 * @return string|null
 	 */
-	static function edit(string $rel_table, string $rel_id, ?array $vars = NULL): array
+	public static function getSize(?string $size): ?string
 	{
-		return [
-			"size" => "s",
-			"hash" => [
-				"rel_table" => $rel_table,
-				"rel_id" => $rel_id,
-				"action" => "edit",
-				"vars" => $vars
-			],
-			"icon" => Icon::get("edit"),
-			"basic" => true,
-		];
-	}
+		if(!$size){
+			return NULL;
+		}
 
-	/**
-	 * Generic remove button for a table.
-	 *
-	 * @param string     $rel_table
-	 * @param string     $rel_id
-	 * @param array|null $vars
-	 *
-	 * @return array
-	 */
-	static function remove(string $rel_table, string $rel_id, ?array $vars = NULL): array
-	{
-		return [
-			"size" => "s",
-			"hash" => [
-				"rel_table" => $rel_table,
-				"rel_id" => $rel_id,
-				"action" => "remove",
-				"vars" => $vars
-			],
-			"approve" => [
-				"icon" => Icon::get("trash"),
-				"colour" => "red",
-				"title" => str::title("Remove {$rel_table}?"),
-				"message" => str::title("Are you sure you want to remove this {$rel_table}?"),
-			],
-			"icon" => Icon::get("trash"),
-			"basic" => true,
-			"colour" => "danger",
-		];
+		switch($size) {
+		case 's':
+			return "btn-sm";
+		case 'small':
+			return "btn-sm";
+		case 'large':
+			return "btn-lg";
+		default:
+			return "btn-{$size}";
+		}
 	}
 }

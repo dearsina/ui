@@ -175,7 +175,9 @@ class Page {
 		$icon = Icon::generate($this->title['icon']);
 
 		# SVG
-		$svg = SVG::generate($this->title['svg'], "height:23px;");
+		$svg = SVG::generate($this->title['svg'], [
+			"height" => "23px"
+		]);
 
 		# Colour
 		$colour = str::getColour($this->title['colour']);
@@ -213,7 +215,9 @@ class Page {
 		$icon = Icon::generate($this->subtitle['icon']);
 
 		# SVG
-		$svg = SVG::generate($this->subtitle['svg'], "height:23px;");
+		$svg = SVG::generate($this->subtitle['svg'], [
+			"height" => "23px"
+		]);
 
 		# Colour
 		$colour = str::getColour($this->subtitle['colour']) ?: "text-muted";

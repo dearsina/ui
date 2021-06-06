@@ -51,7 +51,9 @@ EOF;
 			"html" => [[[
 				"title" => [
 					"style" => [
-						"width" => "max-content"
+						# The following two settings are set so that float-right badges can be applied to the field
+						"width" => "max-content",
+						"line-height" => "unset"
 					],
 					"title" => $a['title'],
 				],
