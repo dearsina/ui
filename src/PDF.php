@@ -41,8 +41,6 @@ class PDF {
 			$settings = self::formatHeadlessChromeSettings([
 				# Run Chrome headless
 				"headless" => true,
-				# Disable the GPU (probably not needed)
-				"disable-gpu" => true,
 				# Wait till Javascript has done it's job before drawing/printing
 				"run-all-compositor-stages-before-draw" => true,
 				# Set the user agent to be a hidden key, used on the recipient end to ensure this is a headless command
@@ -65,20 +63,15 @@ class PDF {
 			]);
 
 			# Write the headless command
-			$command = "google-chrome {$settings} '{$url}'";
-
-			//			echo $command;exit;
+			$command = "google-chrome {$settings} '{$url}' 2>&1";
+			// 2>&1 means that any output is piped to the stdout (stored in the $output variable)
 
 			# Execute the command
-			$output = shell_exec($command);
-
-			if($output){
-				throw new \Exception($output);
-			}
+			exec($command, $output);
 		}
 
-		$command = "chmod 777 {$tmp_filename}";
-		shell_exec($command);
+		$command = "chmod 777 {$tmp_filename} 2>&1";
+		exec($command, $output);
 
 		# Ensure the PDF was generated successfully, if not, try again (up to 10 times)
 		if(intval(exec("wc -l '{$tmp_filename}'")) < 100){
@@ -86,7 +79,11 @@ class PDF {
 
 			if($rerun == 10){
 				//if 10 attempts have been made to create this PDF with no luck)
-				throw new \Exception("10 attempts were made to make a PDF from the following URL without success: <code>{$command}</code>");
+
+				$error = implode("\r\n", $output);
+				throw new \Exception("
+				10 attempts were made to make a PDF from the following URL without success: <code>{$url}</code>.
+				The following error message was returned: <code>{$error}</code>");
 			}
 
 			# Count the number of attempts
@@ -117,7 +114,8 @@ class PDF {
 		if($keep_footer){
 			//If you want to keep the auto-generated footer
 			$margin_bottom = "margin-bottom: 0.5cm;";
-		} else{
+		}
+		else {
 			//If you don't want to keep the footer
 			$margin_bottom = "margin-bottom: 0;";
 		}
