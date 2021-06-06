@@ -4,11 +4,14 @@
 namespace App\UI;
 
 
+use App\Common\str;
+
 /**
  * Class SVG
  *
  * Used by page and button.
- * Replace with Img::?
+ *
+ * Should eventually be depreciated and replaced with Img::
  *
  * @package App\UI
  */
@@ -27,19 +30,15 @@ class SVG {
 			return false;
 		}
 
-		if(!is_array($a)){
-			//if the only thing passed is the name
-			$svg_array['name'] = $a;
-		} else {
-			$svg_array = $a;
-		}
+		# Create an SVG array
+		$svg_array = is_array($a) ? $a : ["name" => $a];
 
-		return /** @lang HTML */<<<EOF
-<object
-	data="{$svg_array['name']}"
-	type="image/svg+xml"
-	style="{$style}"
-></object>
-EOF;
+		# Get the style
+		$style = str::getAttrTag("style", $style);
+
+		# Set the type
+		$type = str::getAttrTag("type", "image/svg+xml");
+
+		return "<object{$type}{$style} data=\"{$svg_array['name']}\"></object>";
 	}
 }
