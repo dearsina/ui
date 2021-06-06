@@ -49,7 +49,12 @@ EOF;
 
 		return Grid::generate([[
 			"html" => [[[
-				"title" => $a['title'],
+				"title" => [
+					"style" => [
+						"width" => "max-content"
+					],
+					"title" => $a['title'],
+				],
 				"body" => $label,
 				"row_style" => [
 					"padding-bottom" => "1rem"
