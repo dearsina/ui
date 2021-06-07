@@ -546,7 +546,6 @@ EOF;
 			];
 			$label = Field::getHTML($field);
 
-
 			$fields[] = [
 				"parent_style" => [
 					"height" => "25px",

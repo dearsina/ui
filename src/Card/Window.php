@@ -6,6 +6,13 @@ namespace App\UI\Card;
 
 use App\UI\Icon;
 
+/**
+ * Class Window
+ *
+ * The window is just a floating card.
+ *
+ * @package App\UI\Card
+ */
 class Window extends Card{
 	function __construct ($a = NULL) {
 		# Style
@@ -25,32 +32,37 @@ class Window extends Card{
 		];
 
 		# Window icons
-		$a['header']['html'] = $this->windowControlIcons().$a['header']['html'];
+		$a['header']['html'] = $this->windowControlIcons($a).$a['header']['html'];
 
-		# Draggable/resizeable
-//		$a['draggable'] = $a['draggable'] ?: true;
-		$a['resizable'] = $a['resizable'] ?: true;
+		# Default is true, but can be set to false
+		$a['resizable'] = key_exists("resizable", $a) ? $a['resizable'] : true;
 
 		parent::__construct($a);
 
 		return true;
 	}
 
-	private function windowControlIcons(): string
+	private function windowControlIcons(array $a): string
 	{
-		$resize = Icon::generate([
-			"type" => "light",
-			"name" => "window-maximize",
-			"alt" => "Maximise",
-			"class" => "window-button-resize window-button-maximise"
-		]);
+		extract($a);
 
-		$close = Icon::generate([
-			"type" => "light",
-			"name" => "times",
-			"alt" => "Close window",
-			"class" => "window-button-close"
-		]);
+		if($maximise !== false){
+			$resize = Icon::generate([
+				"type" => "light",
+				"name" => "window-maximize",
+				"alt" => "Maximise",
+				"class" => "window-button-resize window-button-maximise"
+			]);
+		}
+
+		if($close !== false){
+			$close = Icon::generate([
+				"type" => "light",
+				"name" => "times",
+				"alt" => "Close window",
+				"class" => "window-button-close"
+			]);
+		}
 
 		return "<div class=\"window-controls\">{$resize}{$close}</div>";
 	}
