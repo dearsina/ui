@@ -412,6 +412,42 @@ EOF;
 		$grid = new Grid();
 		return $grid->getRowHTML($cells);
 	}
+	
+	public static function generateRows(?array $rows): ?string
+	{
+		if(!$rows){
+			return NULL;
+		}
+
+		if(!key_exists("rows", $rows)){
+			$rows = [
+				"rows" => $rows
+			];
+		}
+
+		if(!is_array($rows['rows'])){
+			return NULL;
+		}
+
+		# If the breakpoint key is set to false, the columns won't fold on small screens
+		if($rows['breakpoint'] === false){
+			$row_class = "row-cols-2";
+		}
+
+		foreach($rows['rows'] as $key => $val){
+			$left = [
+				"class" => "small",
+				"sm" => $rows['sm'],
+				"html" => $key,
+			];
+			$grid[] = [
+				"row_class" => $row_class,
+				"html" => [$left, $val]
+			];
+		}
+
+		return Grid::generate($grid);
+	}
 
 	private static function generateTitle($a): ?string
 	{

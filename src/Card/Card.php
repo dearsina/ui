@@ -742,39 +742,8 @@ EOF;
 	 * @throws Exception
 	 */
 	public function getRowsHTML(){
-		if(!is_array($this->rows)){
+		if(!$html = Grid::generateRows($this->rows)){
 			return false;
-		}
-
-		if(!key_exists("rows", $this->rows)){
-			$this->rows = [
-				"rows" => $this->rows
-			];
-		}
-
-		if(!is_array($this->rows['rows'])){
-			return false;
-		}
-
-		# If the breakpoint key is set to false, the columns won't fold on small screens
-		if($this->rows['breakpoint'] === false){
-			$row_class = "row-cols-2";
-		}
-
-		foreach($this->rows['rows'] as $key => $val){
-			$left = [
-				"class" => "small",
-				"sm" => $this->rows['sm'],
-				"html" => $key,
-			];
-			$rows[] = [
-				"row_class" => $row_class,
-				"html" => [$left, $val]
-			];
-		}
-
-		if(is_array($rows)){
-			$html = Grid::generate($rows);
 		}
 
 		$id = str::getAttrTag("id", $this->rows['id']);
