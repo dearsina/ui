@@ -47,36 +47,37 @@ class Modal extends \App\Common\Prototype {
 	/**
 	 * Create a modal
 	 * <code>
-	 * 	$modal = new modal([
-	 * 	"id" => "id",
-	 * 	"size" => "xl",
-	 * 	"dismissible" => false,
-	 * 	"draggable" => true,
-	 * 	"resizable" => true,
-	 * 	"approve" => true,
-	 * 	"header" => [
-	 * 		"title" => "",	//If the header is just a string, it's assumed to be this key value
-	 * 		"html" => "",
-	 * 		"buttons" => [],
-	 * 		"button" => []
-	 * 	],
-	 * 	"body" => [
-	 * 		"html" => "", //If the body is just a string, it's assumed to be this key value
-	 * 		"class" => [],
-	 * 		"style" => [],
-	 * 	],
-	 * 	"footer" => [
-	 * 		"html" => "", //If the footer is just a string, it's assumed to be this key value
-	 * 		"class" => [],
-	 * 		"style" => [],
-	 * 	]
+	 *    $modal = new modal([
+	 *    "id" => "id",
+	 *    "size" => "xl",
+	 *    "dismissible" => false,
+	 *    "draggable" => true,
+	 *    "resizable" => true,
+	 *    "approve" => true,
+	 *    "header" => [
+	 *        "title" => "",    //If the header is just a string, it's assumed to be this key value
+	 *        "html" => "",
+	 *        "buttons" => [],
+	 *        "button" => []
+	 *    ],
+	 *    "body" => [
+	 *        "html" => "", //If the body is just a string, it's assumed to be this key value
+	 *        "class" => [],
+	 *        "style" => [],
+	 *    ],
+	 *    "footer" => [
+	 *        "html" => "", //If the footer is just a string, it's assumed to be this key value
+	 *        "class" => [],
+	 *        "style" => [],
+	 *    ]
 	 * ]);
 	 * </code>
 	 *
 	 * @param array|NULL $a
 	 *
 	 */
-	function __construct ($a = NULL) {
+	function __construct($a = NULL)
+	{
 		parent::__construct();
 
 		if(!is_array($a)){
@@ -97,7 +98,8 @@ class Modal extends \App\Common\Prototype {
 	 *
 	 * @return bool
 	 */
-	public function setId($id = NULL){
+	public function setId($id = NULL)
+	{
 		if($id === false){
 			$this->id = false;
 			return true;
@@ -114,7 +116,8 @@ class Modal extends \App\Common\Prototype {
 	 *
 	 * @return bool
 	 */
-	public function setHeader($a = NULL){
+	public function setHeader($a = NULL)
+	{
 		# Array
 		if(is_array($a)){
 			$this->modalHeader = $a;
@@ -122,7 +125,7 @@ class Modal extends \App\Common\Prototype {
 		}
 
 		# Mixed
-		if ($a){
+		if($a){
 			$this->modalHeader['title'] = $a;
 			return true;
 		}
@@ -143,14 +146,15 @@ class Modal extends \App\Common\Prototype {
 	 * @throws Exception
 	 * @throws Exception
 	 */
-	public function getHeaderHTML(){
+	public function getHeaderHTML()
+	{
 		if(!is_array($this->modalHeader)){
 			// Headers are optional
 			return false;
 		}
 
 		# Header buttons can also be defined outside of the header key when defining modal vales.
-		$this->modalHeader['buttons'] = array_merge($this->modalHeader['buttons']?:[], $this->buttons?:[]);
+		$this->modalHeader['buttons'] = array_merge($this->modalHeader['buttons'] ?: [], $this->buttons ?: []);
 
 		# Add the required Bootstrap header class very first
 		$this->modalHeader['class'] = str::getAttrArray($this->modalHeader['class'], "modal-header", $this->modalHeader['only_class']);
@@ -198,7 +202,7 @@ class Modal extends \App\Common\Prototype {
 		$script = str::getScriptTag($this->modalHeader['script']);
 
 		# The header title itself
-		$title = $this->modalHeader['header'].$this->modalHeader['title'].$this->modalHeader['html'];
+		$title = $this->modalHeader['header'] . $this->modalHeader['title'] . $this->modalHeader['html'];
 
 		# Title class
 		if(!empty(array_filter($class))){
@@ -239,7 +243,8 @@ EOF;
 	 * @throws Exception
 	 * @throws Exception
 	 */
-	public function getFooterHTML(){
+	public function getFooterHTML()
+	{
 		if(!is_array($this->modalFooter)){
 			// Footers are optional
 			return false;
@@ -288,12 +293,12 @@ EOF;
 		$class = str::getAttrTag("class", $this->modalFooter['class']);
 
 		# Only include left side if it has values (or a custom ID)
-		if(($left = $icon.$this->modalFooter['html'].$badge) || $id){
+		if(($left = $icon . $this->modalFooter['html'] . $badge) || $id){
 			$left = "<div class=\"col-auto\">{$left}</div>";
 		}
 
 		# Only include right side if it has values (buttons)
-		if($right = $buttons.$button){
+		if($right = $buttons . $button){
 			$right = "<div class=\"col\">{$right}</div>";
 		}
 
@@ -318,7 +323,8 @@ EOF;
 	 *
 	 * @return bool
 	 */
-	public function setFooter($a = NULL){
+	public function setFooter($a = NULL)
+	{
 		# Array
 		if(is_array($a)){
 			$this->modalFooter = $a;
@@ -326,7 +332,7 @@ EOF;
 		}
 
 		# Mixed
-		if ($a){
+		if($a){
 			$this->modalFooter['html'] = $a;
 			return true;
 		}
@@ -348,7 +354,8 @@ EOF;
 	 *
 	 * @return bool
 	 */
-	public function setBody($a = NULL){
+	public function setBody($a = NULL)
+	{
 		# Array
 		if(is_array($a)){
 			$this->modalBody = $a;
@@ -357,7 +364,7 @@ EOF;
 		}
 
 		# Mixed
-		if ($a){
+		if($a){
 			$this->modalBody['html'] = $a;
 			$this->modalBody['id'] = str::id("body");
 			return true;
@@ -396,7 +403,8 @@ EOF;
 	 *
 	 * @return bool|string
 	 */
-	public function getBodyHTML(){
+	public function getBodyHTML()
+	{
 		if(!$this->modalBody){
 			return false;
 		}
@@ -425,7 +433,7 @@ EOF;
 
 		if(!key_exists("rows", $this->modalRows)){
 			$this->modalRows = [
-				"rows" => $this->modalRows
+				"rows" => $this->modalRows,
 			];
 		}
 
@@ -437,7 +445,7 @@ EOF;
 			$left = [
 				"class" => "small",
 				"sm" => $this->modalRows['sm'],
-				"html" => $key
+				"html" => $key,
 			];
 			$rows[] = [$left, $val];
 		}
@@ -466,7 +474,7 @@ EOF;
 
 		if(!key_exists("items", $this->modalItems)){
 			$this->modalItems = [
-				"items" => $this->modalItems
+				"items" => $this->modalItems,
 			];
 		}
 
@@ -488,7 +496,8 @@ EOF;
 	 *
 	 * @return bool|string
 	 */
-	private function getId($as_tag = NULL){
+	private function getId($as_tag = NULL)
+	{
 		$this->id = $this->id ?: $this->setId();
 		if($as_tag){
 			return str::getAttrTag("id", $this->id);
@@ -500,31 +509,45 @@ EOF;
 	 * @return string
 	 * @throws Exception
 	 */
-	function getHTML(){
-		switch($this->size){
+	function getHTML()
+	{
+		switch($this->size) {
 		case 'xs':
 		case 's':
-		case 'small': $size = "modal-sm"; break;
+		case 'small':
+			$size = "modal-sm";
+			break;
+		case 'm':
+		case 'medium':
+			$size = "modal-md";
+			break;
 		case 'l':
 		case 'lg':
-		case 'large': $size = "modal-lg"; break;
-		case 'xl': $size = "modal-xl"; break;
+		case 'large':
+			$size = "modal-lg";
+			break;
+		case 'xl':
+			$size = "modal-xl";
+			break;
+		case 'xxl':
+			$size = "modal-xxl";
+			break;
 		}
 		$parent_class_array = str::getAttrArray($this->parent_class, "modal", $this->only_parent_class);
 		$parent_class = str::getAttrTag("class", $parent_class_array);
 		$parent_style = str::getAttrTag("style", $this->parent_style);
-		
-		$class_array = str::getAttrArray($this->class, ["modal-dialog","modal-dialog-centered", "modal-dialog-scrollable", $size], $this->only_class);
+
+		$class_array = str::getAttrArray($this->class, ["modal-dialog", "modal-dialog-centered", "modal-dialog-scrollable", $size], $this->only_class);
 		$class = str::getAttrTag("class", $class_array);
 		$style = str::getAttrTag("style", $this->style);
-		
+
 		$child_class_array = str::getAttrArray($this->child_class, "modal-content", $this->only_child_class);
 		$child_class = str::getAttrTag("class", $child_class_array);
 		$child_style = str::getAttrTag("style", $this->child_style);
 
 		$data = str::getDataAttr($this->getModalDataAttr(), true);
 
-		return /** @lang HTML */<<<EOF
+		return /** @lang HTML */ <<<EOF
 <div
 	{$this->getId(true)}
 	{$parent_class}
@@ -558,7 +581,8 @@ EOF;
 	 *
 	 * @return array
 	 */
-	private function getModalDataAttr(){
+	private function getModalDataAttr()
+	{
 		$modal['show'] = true;
 		if($this->dismissible === false){
 			$modal['backdrop'] = "static";
@@ -579,7 +603,8 @@ EOF;
 	 *
 	 * @return bool|string
 	 */
-	private function getScriptHTML($as_tag = FALSE){
+	private function getScriptHTML($as_tag = false)
+	{
 		if($as_tag){
 			return str::getScriptTag($script);
 		}
@@ -591,7 +616,8 @@ EOF;
 	 *
 	 * @return array|bool
 	 */
-	private function getApproveSettings(){
+	private function getApproveSettings()
+	{
 		if(!$this->approve){
 			return false;
 		}
@@ -613,14 +639,14 @@ EOF;
 			$colour = "grey";
 			$message = str::title("Are you sure you want to {$this->approve}?");
 		}
-//		else {
-//			//if just set to true or any other object
-//			$title = "Close this window?";
-//			$message = "Any changes you may have made, will be lost.";
-//		}
+		//		else {
+		//			//if just set to true or any other object
+		//			$title = "Close this window?";
+		//			$message = "Any changes you may have made, will be lost.";
+		//		}
 
 		# If the message contains line breaks, it will break JavaScript, remove
-		$message = str_replace(["\r\n","\r","\n"], " ", $message);
+		$message = str_replace(["\r\n", "\r", "\n"], " ", $message);
 
 		# Set up icons, colour
 		$icon_class = Icon::getClass($icon);
@@ -636,9 +662,9 @@ EOF;
 			"content" => $message,
 			"buttons" => [
 				"confirm" => [
-					"btnClass" => $button_colour
-				]
-			]
+					"btnClass" => $button_colour,
+				],
+			],
 		]);
 	}
 
@@ -651,13 +677,14 @@ EOF;
 	 */
 	private function getDraggableSettings()
 	{
-		if(!$this->draggable) {
+		if(!$this->draggable){
 			return false;
 		}
 
 		if(is_array($this->draggable)){
 			return $this->draggable;
-		} else {
+		}
+		else {
 			return [];
 		}
 	}
@@ -675,7 +702,7 @@ EOF;
 			//If resizable has been written incorrectly
 			$this->resizable = $this->resizeable;
 		}
-		if(!$this->resizable) {
+		if(!$this->resizable){
 			return false;
 		}
 
