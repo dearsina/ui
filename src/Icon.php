@@ -81,6 +81,9 @@ class Icon {
 		case 'brands':
 			return "fa-{$type}";
 
+		case 'brand':
+			return "fa-brands";
+
 		case 'bold':
 		case 'thick':
 		case 'full':
