@@ -21,6 +21,13 @@ $alert-color: (
   }
 }
 
+/** Custom "info" alert colours */
+.alert-info {
+  color: #1f77ad;
+  background-color: #e1eefa;
+  border-color: #99c1e6;
+}
+
 /**
  * The <code> tag is often used as shorthand for monotype script in alerts
  */

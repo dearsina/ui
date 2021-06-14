@@ -141,3 +141,52 @@
 .sortable-drag{
   opacity: 0;
 }
+
+/**
+ * Excel table look-alike
+ */
+.excel-table {
+  border: 1px solid #B0CBEF;
+  border-width: 1px 0px 0px 1px;
+  font-size: 90%;
+  font-family: Calibri;
+  font-weight: lighter;
+  border-spacing: 0px;
+  border-collapse: collapse;
+}
+
+.excel-table th {
+  font-weight: normal;
+  border: 1px solid #9EB6CE;
+  border-width: 0px 1px 1px 0px;
+  height: 17px;
+  padding: 5px;
+  min-width: 25px;
+  background-color: #E4ECF7;
+}
+
+.excel-table tbody tr {
+  background-color: white;
+}
+
+.excel-table tbody tr:hover {
+  cursor: cell;
+  background: #e4ecf7;
+}
+
+.excel-table td {
+  border: 0px;
+  padding: 0px 4px 0px 4px;
+  border: 1px solid #D0D7E5;
+  border-width: 0px 1px 1px 0px;
+}
+
+.excel-table td:first-child {
+  background-color: #E4ECF7;
+  text-align: center;
+  border: 1px solid #9EB6CE;
+  border-width: 0px 1px 1px 0px;
+  padding: 5px;
+  font-weight: 400;
+  width: 35px;
+}
