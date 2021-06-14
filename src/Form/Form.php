@@ -394,9 +394,12 @@ class Form {
 		$buttons_html = Button::generate($this->buttons);
 
 		if($this->modal){
+			if(is_string($this->modal)){
+				$id = str::getAttrTag("id", $this->modal);
+			}
 			$buttons_html = <<<EOF
 </div>
-<div class="modal-footer">
+<div class="modal-footer"{$id}>
 	<div class="container">
 		<div class="btn-float-right">
 			{$buttons_html}
