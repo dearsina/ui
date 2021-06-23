@@ -59,6 +59,15 @@
 }
 
 /**
+ * The container for tabs in modals
+ */
+.modal-tabs
+{
+  padding: 0.7rem;
+  background: $header-footer-bg;
+}
+
+/**
  * Make the header text stand out a little
  */
 .modal-header

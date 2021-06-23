@@ -19,11 +19,7 @@ use Exception;
  */
 class Modal extends \App\Common\Prototype {
 	private $id;
-	private $modalHeader;
-	private $modalBody;
-	private array $modalRows = [];
-	private array $modalItems = [];
-	private $modalFooter;
+	private $elements = [];
 
 	protected $icon;
 	protected $draggable;
@@ -120,19 +116,19 @@ class Modal extends \App\Common\Prototype {
 	{
 		# Array
 		if(is_array($a)){
-			$this->modalHeader = $a;
+			$this->elements['header'] = $a;
 			return true;
 		}
 
 		# Mixed
 		if($a){
-			$this->modalHeader['title'] = $a;
+			$this->elements['header']['title'] = $a;
 			return true;
 		}
 
 		# Clear
 		if($a === false){
-			$this->modalHeader = [];
+			$this->elements['header'] = [];
 			return true;
 		}
 
@@ -148,61 +144,61 @@ class Modal extends \App\Common\Prototype {
 	 */
 	public function getHeaderHTML()
 	{
-		if(!is_array($this->modalHeader)){
+		if(!is_array($this->elements['header'])){
 			// Headers are optional
 			return false;
 		}
 
 		# Header buttons can also be defined outside of the header key when defining modal vales.
-		$this->modalHeader['buttons'] = array_merge($this->modalHeader['buttons'] ?: [], $this->buttons ?: []);
+		$this->elements['header']['buttons'] = array_merge($this->elements['header']['buttons'] ?: [], $this->buttons ?: []);
 
 		# Add the required Bootstrap header class very first
-		$this->modalHeader['class'] = str::getAttrArray($this->modalHeader['class'], "modal-header", $this->modalHeader['only_class']);
+		$this->elements['header']['class'] = str::getAttrArray($this->elements['header']['class'], "modal-header", $this->elements['header']['only_class']);
 
 		# Draggable
-		$this->modalHeader['class'][] = $this->draggable ? "modal-header-draggable" : false;
+		$this->elements['header']['class'][] = $this->draggable ? "modal-header-draggable" : false;
 
 		# Styles
-		$this->modalHeader['style'] = str::getAttrArray($this->modalHeader['style'], NULL, $this->modalHeader['only_style']);
+		$this->elements['header']['style'] = str::getAttrArray($this->elements['header']['style'], NULL, $this->elements['header']['only_style']);
 
 		# Dropdown buttons
-		if($this->modalHeader['buttons']){
-			$buttons = Dropdown::generate($this->modalHeader);
+		if($this->elements['header']['buttons']){
+			$buttons = Dropdown::generate($this->elements['header']);
 		}
 
 		# Button(s) in a row
-		$button = Button::generate($this->modalHeader['button']);
+		$button = Button::generate($this->elements['header']['button']);
 
 		if($button){
 			$button = "<div class=\"btn-float-right\">{$button}</div>";
 		}
 
 		# Accent
-		$this->modalHeader['class'][] = str::getColour($this->accent, "bg");
+		$this->elements['header']['class'][] = str::getColour($this->accent, "bg");
 
 		# Icon
-		if(!$icon = Icon::generate($this->modalHeader['icon'])){
+		if(!$icon = Icon::generate($this->elements['header']['icon'])){
 			//the icon attribute can either be in the header or in the main modal
 			$icon = Icon::generate($this->icon);
 		}
 
 		# Badge
-		$badge = Badge::generate($this->modalHeader['badge']);
+		$badge = Badge::generate($this->elements['header']['badge']);
 
 		# ID
-		$id = str::getAttrTag("id", $this->modalHeader['id']);
+		$id = str::getAttrTag("id", $this->elements['header']['id']);
 
 		# Style
-		$style = str::getAttrTag("style", $this->modalHeader['style']);
+		$style = str::getAttrTag("style", $this->elements['header']['style']);
 
 		# Title colour
-		$class[] = str::getColour($this->modalHeader['colour']);
+		$class[] = str::getColour($this->elements['header']['colour']);
 
 		# Script
-		$script = str::getScriptTag($this->modalHeader['script']);
+		$script = str::getScriptTag($this->elements['header']['script']);
 
 		# The header title itself
-		$title = $this->modalHeader['header'] . $this->modalHeader['title'] . $this->modalHeader['html'];
+		$title = $this->elements['header']['header'] . $this->elements['header']['title'] . $this->elements['header']['html'];
 
 		# Title class
 		if(!empty(array_filter($class))){
@@ -211,7 +207,7 @@ class Modal extends \App\Common\Prototype {
 		}
 
 		# The div class
-		$class = str::getAttrTag("class", $this->modalHeader['class']);
+		$class = str::getAttrTag("class", $this->elements['header']['class']);
 
 		# If the modal can be dismissed
 		if($this->dismissible !== false){
@@ -245,55 +241,55 @@ EOF;
 	 */
 	public function getFooterHTML()
 	{
-		if(!is_array($this->modalFooter)){
+		if(!is_array($this->elements['footer'])){
 			// Footers are optional
 			return false;
 		}
 
 		# Add the required Bootstrap footer class very first
-		$this->modalFooter['class'] = str::getAttrArray($this->modalFooter['class'], "modal-footer", $this->modalFooter['only_class']);
+		$this->elements['footer']['class'] = str::getAttrArray($this->elements['footer']['class'], "modal-footer", $this->elements['footer']['only_class']);
 
 		# Styles
-		$this->modalFooter['style'] = str::getAttrArray($this->modalFooter['style'], NULL, $this->modalFooter['only_style']);
+		$this->elements['footer']['style'] = str::getAttrArray($this->elements['footer']['style'], NULL, $this->elements['footer']['only_style']);
 
 		# Dropdown buttons
-		if($this->modalFooter['buttons']){
-			$buttons = Dropdown::generate($this->modalFooter);
+		if($this->elements['footer']['buttons']){
+			$buttons = Dropdown::generate($this->elements['footer']);
 		}
 
 		# Button(s) in a row
-		$button = Button::generate($this->modalFooter['button']);
+		$button = Button::generate($this->elements['footer']['button']);
 
 		if($button){
 			$button = "<div class=\"btn-float-right\">{$button}</div>";
 		}
 
 		# Icon
-		$icon = Icon::generate($this->modalFooter['icon']);
+		$icon = Icon::generate($this->elements['footer']['icon']);
 
 		# Badge
-		$badge = Badge::generate($this->modalFooter['badge']);
+		$badge = Badge::generate($this->elements['footer']['badge']);
 
 		# ID
-		$id = str::getAttrTag("id", $this->modalFooter['id']);
+		$id = str::getAttrTag("id", $this->elements['footer']['id']);
 
 		# Style
-		$style = str::getAttrTag("style", $this->modalFooter['style']);
+		$style = str::getAttrTag("style", $this->elements['footer']['style']);
 
 		# Text colour
-		$class[] = str::getColour($this->modalFooter['colour']);
+		$class[] = str::getColour($this->elements['footer']['colour']);
 
 		# Draggable
 		$class[] = $this->draggable ? "modal-footer-draggable" : false;
 
 		# Script
-		$script = str::getScriptTag($this->modalFooter['script']);
+		$script = str::getScriptTag($this->elements['footer']['script']);
 
 		# The div class
-		$class = str::getAttrTag("class", $this->modalFooter['class']);
+		$class = str::getAttrTag("class", $this->elements['footer']['class']);
 
 		# Only include left side if it has values (or a custom ID)
-		if(($left = $icon . $this->modalFooter['html'] . $badge) || $id){
+		if(($left = $icon . $this->elements['footer']['html'] . $badge) || $id){
 			$left = "<div class=\"col-auto\">{$left}</div>";
 		}
 
@@ -327,19 +323,19 @@ EOF;
 	{
 		# Array
 		if(is_array($a)){
-			$this->modalFooter = $a;
+			$this->elements['footer'] = $a;
 			return true;
 		}
 
 		# Mixed
 		if($a){
-			$this->modalFooter['html'] = $a;
+			$this->elements['footer']['html'] = $a;
 			return true;
 		}
 
 		# Clear
 		if($a === false){
-			$this->modalFooter = [];
+			$this->elements['footer'] = [];
 			return true;
 		}
 
@@ -358,43 +354,61 @@ EOF;
 	{
 		# Array
 		if(is_array($a)){
-			$this->modalBody = $a;
-			$this->modalBody['id'] = $this->modalBody['id'] ?: str::id("body");
+			$this->elements['body'] = $a;
+			$this->elements['body']['id'] = $this->elements['body']['id'] ?: str::id("body");
 			return true;
 		}
 
 		# Mixed
 		if($a){
-			$this->modalBody['html'] = $a;
-			$this->modalBody['id'] = str::id("body");
+			$this->elements['body']['html'] = $a;
+			$this->elements['body']['id'] = str::id("body");
 			return true;
 		}
 
 		# Clear
 		if($a === false){
-			$this->modalBody = [];
+			$this->elements['body'] = [];
 			return true;
 		}
 
 		return true;
 	}
 
+	/**
+	 * @param null $a
+	 */
 	public function setRows($a = NULL): void
 	{
 		if(!is_array($a)){
 			return;
 		}
 
-		$this->modalRows = $a;
+		$this->elements['rows'] = $a;
 	}
 
+	/**
+	 * @param null $a
+	 */
 	public function setItems($a = NULL): void
 	{
 		if(!is_array($a)){
 			return;
 		}
 
-		$this->modalItems = $a;
+		$this->elements['items'] = $a;
+	}
+
+	/**
+	 * @param null $a
+	 */
+	public function setTabs($a = NULL): void
+	{
+		if(!is_array($a)){
+			return;
+		}
+
+		$this->elements['tabs'] = $a;
 	}
 
 	/**
@@ -405,21 +419,21 @@ EOF;
 	 */
 	public function getBodyHTML()
 	{
-		if(!$this->modalBody){
+		if(!$this->elements['body']){
 			return false;
 		}
 
-		if(is_array($this->modalBody['html'])){
-			$this->modalBody['html'] = Grid::generate($this->modalBody['html']);
+		if(is_array($this->elements['body']['html'])){
+			$this->elements['body']['html'] = Grid::generate($this->elements['body']['html']);
 		}
 
-		$id = str::getAttrTag("id", $this->modalBody['id']);
-		$class = str::getAttrTag("class", ["modal-body", $this->modalBody['class']]);
-		$style = str::getAttrTag("style", $this->modalBody['style']);
-		$progress = Progress::generate($this->modalBody['progress']);
-		$script = str::getScriptTag($this->modalBody['script']);
+		$id = str::getAttrTag("id", $this->elements['body']['id']);
+		$class = str::getAttrTag("class", ["modal-body", $this->elements['body']['class']]);
+		$style = str::getAttrTag("style", $this->elements['body']['style']);
+		$progress = Progress::generate($this->elements['body']['progress']);
+		$script = str::getScriptTag($this->elements['body']['script']);
 
-		return "<div{$class}{$id}{$style}>{$progress}{$this->modalBody['html']}</div>{$script}";
+		return "<div{$class}{$id}{$style}>{$progress}{$this->elements['body']['html']}</div>{$script}";
 	}
 
 	/**
@@ -427,24 +441,24 @@ EOF;
 	 */
 	public function getRowsHTML(): ?string
 	{
-		if(empty($this->modalRows)){
+		if(empty($this->elements['rows'])){
 			return NULL;
 		}
 
-		if(!key_exists("rows", $this->modalRows)){
-			$this->modalRows = [
-				"rows" => $this->modalRows,
+		if(!key_exists("rows", $this->elements['rows'])){
+			$this->elements['rows'] = [
+				"rows" => $this->elements['rows'],
 			];
 		}
 
-		if(!is_array($this->modalRows['rows'])){
+		if(!is_array($this->elements['rows']['rows'])){
 			return NULL;
 		}
 
-		foreach($this->modalRows['rows'] as $key => $val){
+		foreach($this->elements['rows']['rows'] as $key => $val){
 			$left = [
 				"class" => "small",
-				"sm" => $this->modalRows['sm'],
+				"sm" => $this->elements['rows']['sm'],
 				"html" => $key,
 			];
 			$rows[] = [$left, $val];
@@ -454,13 +468,31 @@ EOF;
 			$html = Grid::generate($rows);
 		}
 
-		$id = str::getAttrTag("id", $this->modalRows['id']);
-		$class_array = str::getAttrArray($this->modalRows['class'], "container card-rows", $this->modalRows['only_class']);
+		$id = str::getAttrTag("id", $this->elements['rows']['id']);
+		$class_array = str::getAttrArray($this->elements['rows']['class'], "container card-rows", $this->elements['rows']['only_class']);
 		$class = str::getAttrTag("class", $class_array);
-		$style = str::getAttrTag("style", $this->modalRows['style']);
-		$script = str::getScriptTag($this->modalRows['script']);
+		$style = str::getAttrTag("style", $this->elements['rows']['style']);
+		$script = str::getScriptTag($this->elements['rows']['script']);
 
 		return "<div{$class}{$id}{$style}>{$html}</div>{$script}";
+	}
+
+	public function getTabsHTML(): ?string
+	{
+		if(empty($this->elements['tabs'])){
+			return NULL;
+		}
+
+		$html = Grid::generate([[
+			"tabs" => [
+				"tabs" => $this->elements['tabs'],
+				"class" => $this->draggable ? "modal-header-draggable" : NULL
+			]
+		]]);
+
+		$class = str::getAttrTag("class", ["modal-tabs"]);
+
+		return "<div{$class}{$style}>{$html}</html>";
 	}
 
 	/**
@@ -468,23 +500,23 @@ EOF;
 	 */
 	public function getItemsHTML(): ?string
 	{
-		if(empty($this->modalItems)){
+		if(empty($this->elements['items'])){
 			return NULL;
 		}
 
-		if(!key_exists("items", $this->modalItems)){
-			$this->modalItems = [
-				"items" => $this->modalItems,
+		if(!key_exists("items", $this->elements['items'])){
+			$this->elements['items'] = [
+				"items" => $this->elements['items'],
 			];
 		}
 
-		$html = ListGroup::generate($this->modalItems);
+		$html = ListGroup::generate($this->elements['items']);
 
-		$id = str::getAttrTag("id", $this->modalItems['id']);
-		$class_array = str::getAttrArray($this->modalItems['class'], "container card-items", $this->modalItems['only_class']);
+		$id = str::getAttrTag("id", $this->elements['items']['id']);
+		$class_array = str::getAttrArray($this->elements['items']['class'], "container card-items", $this->elements['items']['only_class']);
 		$class = str::getAttrTag("class", $class_array);
-		$style = str::getAttrTag("style", $this->modalItems['style']);
-		$script = str::getScriptTag($this->modalItems['script']);
+		$style = str::getAttrTag("style", $this->elements['items']['style']);
+		$script = str::getScriptTag($this->elements['items']['script']);
 
 		return "<div{$class}{$id}{$style}>{$html}</div>{$script}";
 	}
@@ -547,6 +579,15 @@ EOF;
 
 		$data = str::getDataAttr($this->getModalDataAttr(), true);
 
+		# You either have tabs, or you have header/body/rows/items, not both
+		if(!$html = $this->getTabsHTML()){
+			$html = $this->getHeaderHTML()
+				. $this->getBodyHTML()
+				. $this->getRowsHTML()
+				. $this->getItemsHTML();
+
+		}
+
 		return /** @lang HTML */ <<<EOF
 <div
 	{$this->getId(true)}
@@ -562,10 +603,7 @@ EOF;
         	{$child_class}
         	{$child_style}
         	>
-        	{$this->getHeaderHTML()}
-			{$this->getBodyHTML()}
-			{$this->getRowsHTML()}
-			{$this->getItemsHTML()}
+        	{$html}
 			{$this->getFooterHTML()}
         </div>
     </div>
