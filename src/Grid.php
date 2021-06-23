@@ -303,25 +303,35 @@ EOF;
 		//We're borrowing from the Card class
 	}
 
-	public function getTabsHTML(array $tabs): ?string
+	public function getTabsHTML(array $data): ?string
 	{
+		if($data['tabs']){
+			$tabs = $data;
+		}
+
+		else {
+			$tabs = [
+				"tabs" => $data
+			];
+		}
+
 		# Remove empty tabs
-		if(!$tabs = array_filter($tabs)){
+		if(!$tabs['tabs'] = array_filter($tabs['tabs'])){
 			//if there are no real tabs left
 			return NULL;
 		}
 
 		# Ensure at least one tab is active
-		if(!array_filter($tabs, function($tab){
+		if(!array_filter($tabs['tabs'], function($tab){
 			return $tab['active'];
 		})){
 			//if none of the tabs are set to be active
 
 			# Set the first tab to be active by default
-			$tabs[0]['active'] = true;
+			$tabs['tabs'][0]['active'] = true;
 		}
 
-		foreach($tabs as $tab){
+		foreach($tabs['tabs'] as $tab){
 			$tab['id'] = $tab['id'] ?: str::id("panel");
 			$active = $tab['active'] ? "active" : NULL;
 			$nav_tabs[] = "<li class=\"nav-item\" role=\"presentation\">{$this->getTabHeader($tab, $active)}</li>";
@@ -339,13 +349,25 @@ EOF;
 EOF;
 		}
 
-		$tab_id = str::id("tab");
+		# Tab ID
+		$tab_id = $tabs['id'] ?: str::id("tab");
+
+		# Tab class
+		$class_array = str::getAttrArray($tabs['class'], ["nav", "nav-tabs"], $tabs['only_class']);
+		$class = str::getAttrTag("class", $class_array);
+
+		# Style
+		$style = str::getAttrTag("style", $tabs['style']);
+
+		# The tab navigation
 		$nav_tabs_html = implode("\r\n", $nav_tabs);
+
+		# The tab panes (data)
 		$tab_panes = implode("\r\n", $tab_panes);
 
 		return <<<EOF
 <!-- Nav tabs -->
-<ul class="nav nav-tabs" id="{$tab_id}" role="tablist">{$nav_tabs_html}</ul>
+<ul{$class}{$style}id="{$tab_id}" role="tablist">{$nav_tabs_html}</ul>
 <!-- Tab panes -->
 <div class="tab-content">{$tab_panes}</div>
 <script>
