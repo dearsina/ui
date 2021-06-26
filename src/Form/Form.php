@@ -342,6 +342,17 @@ class Form {
 				return Field::getHTML($field);
 			}
 		]);
+
+		# Slightly hacky way to add a class to the modal tab header to allow for draggable (if enabled)
+		if(count($this->fields ?:[]) == 1 && reset($this->fields)['tabs'] && $this->modal){
+			$this->fields = [[
+				"tabs" => [
+					"tabs" => reset($this->fields)['tabs'],
+					"class" => "modal-header-draggable"
+				]
+			]];
+		}
+
 		return $grid->getHTML($this->fields);
 	}
 
@@ -399,7 +410,7 @@ class Form {
 			}
 			$buttons_html = <<<EOF
 </div>
-<div class="modal-footer"{$id}>
+<div class="modal-footer" style="padding:12px 4px 8px 0;"{$id}>
 	<div class="container">
 		<div class="btn-float-right">
 			{$buttons_html}
