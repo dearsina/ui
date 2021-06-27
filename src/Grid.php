@@ -163,6 +163,9 @@ class Grid {
 			# Copy
 			$copy = Copy::generate($col['copy'], $col_html);
 
+			# Badges
+			$col_html .= Badge::generate($col['badge']);
+
 			# Class
 			$class_array = str::getAttrArray($col['class'], $col_width, $col['only_class']);
 			$class_tag = str::getAttrTag("class", $class_array);

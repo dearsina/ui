@@ -55,6 +55,9 @@ class Table {
 
 		# Can the rows be ordered?
 		if($order){
+			if(!$rel_table){
+				throw new \Exception("If a table is orderable, it must also have a corresponding <code>rel_table</code> table.");
+			}
 			foreach($rows as $key => $row){
 				$rows[$key] = self::getSortableRow($row);
 			}
