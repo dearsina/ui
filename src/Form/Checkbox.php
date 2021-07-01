@@ -83,7 +83,8 @@ class Checkbox extends Field implements FieldInterface {
 		}
 
 		# Shift the label a bit closer to the field
-		$val['label']['style']["margin-bottom"] = $val['label']['style']["margin-bottom"] ?: "-0.3rem";
+//		$val['label']['style']["margin-bottom"] = $val['label']['style']["margin-bottom"] ?: "-0.3rem";
+		//not sure if we need this any more
 
 		return [
 			"id" => $id,
