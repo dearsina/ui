@@ -217,9 +217,6 @@ EOF;
 		# Rows without meta rows
 		else {
 			$html = $row;
-			$meta = [
-				"row_class" => "draggable",
-			];
 		}
 
 		if(!key_exists("id", $html)){
@@ -229,6 +226,7 @@ EOF;
 		$id = $html['id'];
 		unset($html['id']);
 
+		$meta['row_class'] = "draggable";
 		$meta['row_data']['id'] = $id;
 
 		# We need to unset the order number, cause we don't actually use it anywhere
