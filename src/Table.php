@@ -125,8 +125,8 @@ EOF;
 	 *
 	 * <code>
 	 * $row = [
-	 * 	"html" => $row,
-	 * 	"row_id" => $row_id,
+	 *    "html" => $row,
+	 *    "row_id" => $row_id,
 	 * ];
 	 * </code>
 	 *
@@ -206,36 +206,47 @@ EOF;
 	 */
 	private static function getSortableRow($row)
 	{
-		# We need to unset the order number, cause we don't actually use it anywhere
-		unset($row['order']);
+		# Rows with meta rows
+		if($row['html']){
+			//if the row already has its own meta row
+			$html = $row['html'];
+			unset($row['html']);
+			$meta = $row;
+		}
 
+		# Rows without meta rows
+		else {
+			$html = $row;
+			$meta = [
+				"row_class" => "draggable",
+			];
+		}
 
-		if(!key_exists("id", $row)){
+		if(!key_exists("id", $html)){
 			throw new \Exception("To prepare a sortable table, an id key must be included per row.");
 		}
 
-		$id = $row['id'];
-		unset($row['id']);
+		$id = $html['id'];
+		unset($html['id']);
 
-		$order = [
-			"<!--SORTABLE-->" => [
+		$meta['row_data']['id'] = $id;
+
+		# We need to unset the order number, cause we don't actually use it anywhere
+		unset($html['order']);
+
+		# Add the custom sortable "row" (as the first row)
+		$html = array_merge(["<!--SORTABLE-->" => [
 				"class" => $id ? "sortable-handlebars" : "",
 				"sm" => 1,
 				"header_style" => [
 					"max-width" => "3.5rem",
 				],
 			],
-		];
+		], $html);
 
-		$row = [
-			"row_class" => "draggable",
-			"row_data" => [
-				"id" => $id,
-			],
-			"html" => array_merge($order, $row),
-		];
+		$meta['html'] = $html;
 
-		return $row;
+		return $meta;
 	}
 
 	/**
