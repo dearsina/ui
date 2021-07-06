@@ -337,6 +337,7 @@ EOF;
 		foreach($tabs['tabs'] as $tab){
 			$tab['id'] = $tab['id'] ?: str::id("panel");
 			$active = $tab['active'] ? "active" : NULL;
+			$style = str::getAttrTag("style", $tab['style']);
 			$nav_tabs[] = "<li class=\"nav-item\" role=\"presentation\">{$this->getTabHeader($tab, $active)}</li>";
 
 			$tab_panes[] = <<<EOF
@@ -345,6 +346,7 @@ EOF;
 				id="{$tab['id']}"
 				role="tabpanel"
 				aria-labelledby="{$tab['id']}-tab"
+				{$style}
 			>
 				{$this->getTabBody($tab)}
 				{$this->getTabFooter($tab)}
