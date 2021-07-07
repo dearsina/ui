@@ -99,7 +99,13 @@ class PDF {
 			return $tmp_filename;
 		}
 
-		return file_get_contents($tmp_filename);
+		$tmp_contents = file_get_contents($tmp_filename);
+
+		if(file_exists($tmp_filename)){
+			unlink($tmp_filename);
+		}
+
+		return $tmp_contents;
 	}
 
 	/**
