@@ -74,18 +74,15 @@ class PDF {
 		exec($command, $output);
 
 		# Ensure the PDF was generated successfully, if not, try again (up to 10 times)
-//		if(intval(exec("wc -l '{$tmp_filename}'")) < 100){
-		//if the file is less than 100 rows (if it's a dud)
 		if(filesize($tmp_filename) < 3000){
-			//if file is less than 3kb
+			//if file is less than 3kb (if it's dud)
 			if($rerun == 10){
 				//if 10 attempts have been made to create this PDF with no luck)
 
 				$error = implode("\r\n", $output);
 				throw new \Exception("
 				10 attempts were made to make a PDF from the following URL without success: <code>{$url}</code>.
-				Running the following command: <code>$chrome_command</code>
-				Got the following error message was returned: <code>{$error}</code>");
+				The following error message was returned: <code>{$error}</code>");
 			}
 
 			# Count the number of attempts
