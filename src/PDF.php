@@ -63,11 +63,11 @@ class PDF {
 			]);
 
 			# Write the headless command
-			$command = "google-chrome {$settings} '{$url}' 2>&1";
+			$chrome_command = "google-chrome {$settings} '{$url}' 2>&1";
 			// 2>&1 means that any output is piped to the stdout (stored in the $output variable)
 
 			# Execute the command
-			exec($command, $output);
+			exec($chrome_command, $output);
 		}
 
 		$command = "chmod 777 {$tmp_filename} 2>&1";
@@ -84,7 +84,8 @@ class PDF {
 				$error = implode("\r\n", $output);
 				throw new \Exception("
 				10 attempts were made to make a PDF from the following URL without success: <code>{$url}</code>.
-				The following error message was returned: <code>{$error}</code>");
+				Running the following command: <code>$chrome_command</code>
+				Got the following error message was returned: <code>{$error}</code>");
 			}
 
 			# Count the number of attempts
