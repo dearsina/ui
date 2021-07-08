@@ -22,6 +22,8 @@ class EmailMessage extends \App\Common\Prototype implements \App\Common\Example\
 			"url" => "https://{$_ENV['domain']}"
 		]);
 
+		$year = date("Y");
+
 		$examples[] = [
 			"header" => "Welcome email",
 			"array" => [
@@ -73,7 +75,7 @@ class EmailMessage extends \App\Common\Prototype implements \App\Common\Example\
 						"Sent by KYC DD (Pty) Limited
                     <br>Office 203, 139 Greenway, Greenside, Johannesburg, 2193.
                     <br>Incorporated in South Africa, 2020/181847/07.
-                    <br>Copyright © 2020, All rights reserved.",
+                    <br>Copyright © {$year}, All rights reserved.",
 						"Next row"
 					]
 				]
