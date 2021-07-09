@@ -455,10 +455,13 @@ EOF;
 			return false;
 		}
 
+		$output->setVar("row_count", count($rows));
+
 		# Hack to fix the order (not sure why SQL isn't doing this)
 		if($rows_query['order_by']){
 			str::multidimensionalOrderBy($rows, $rows_query['order_by']);
 		}
+
 
 		if(is_object($row_handler)){
 			//if a custom row handler has been included
