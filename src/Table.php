@@ -142,17 +142,43 @@ EOF;
 	 */
 	public static function updateRow(string $row_id, array $row, ?array $audience = NULL): void
 	{
+		Output::getInstance()->replace("#{$row_id}", Table::generate([$row], Table::getAsyncOptions($row), true, true), $audience);
+	}
+
+	/**
+	 * Add a row to a table.
+	 *
+	 * @param string     $table_id
+	 * @param array      $row
+	 * @param array|null $audience
+	 *
+	 * @throws \Exception
+	 */
+	public static function addRow(string $table_id, array $row, ?array $audience = NULL): void
+	{
+		Output::getInstance()->append("#{$table_id}", Table::generate([$row], Table::getAsyncOptions($row), true, true), $audience);
+	}
+
+	/**
+	 * Generate the options for a row insert/update.
+	 *
+	 * @param array $row
+	 *
+	 * @return bool[]|null
+	 */
+	private static function getAsyncOptions(array $row): ?array
+	{
 		# Handle order-able table updates
 		if($row['id'] || $row['html']['id']){
 			// If there is an "id" column, assume this is an order-able table that we're updating
-			$options = [
+			return [
 				"order" => true,
 				"rel_table" => true
 				// As we don't know the rel_table, and we only need it to "be", set it to true
 			];
 		}
 
-		Output::getInstance()->replace("#{$row_id}", Table::generate([$row], $options, true, true), $audience);
+		return NULL;
 	}
 
 	/**
