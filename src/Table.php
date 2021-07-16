@@ -39,10 +39,10 @@ class Table {
 	 * @return bool|string
 	 * @throws \Exception
 	 */
-	public static function generate($rows, ?array $options = [], ?bool $ignore_header = NULL)
+	public static function generate($rows, ?array $options = [], ?bool $ignore_header = NULL, ?bool $rows_only = NULL): ?string
 	{
 		if(empty($rows)){
-			return false;
+			return NULL;
 		}
 
 		$options['id'] = $options['id'] ?: str::id("table");
@@ -86,8 +86,8 @@ class Table {
 
 		$grid = new Grid($grid);
 
-		# Header row (if it's not be ignored)
-		if(!$ignore_header){
+		# Header row (if it's not be ignored), or if we're NOT only interested in the rows
+		if(!$ignore_header && !$rows_only){
 			$row = $rows[0]['html'] ?: $rows[0];
 			$grid->set([
 				"row_class" => str::getAttrArray($row['header_class'], "table-header", $row['only_header_class']),
@@ -103,6 +103,11 @@ class Table {
 			}
 			$row['row_class'] = str::getAttrArray($row['row_class'], "table-body", $row['only_row_class']);
 			$grid->set($row);
+		}
+
+		if($rows_only){
+			//if we're only interested in the row data
+			return $grid->getHTML();
 		}
 
 		# Data
@@ -121,7 +126,8 @@ EOF;
 	 * Given a row ID, an array of row data, and an (optional) audience,
 	 * will update (replace) a single row in a table. If an audience is
 	 * included, will update in real time in the window of every audience
-	 * member. Requires the row to have a meta row-id field setup like this:
+	 * member. Requires the row being updated to have been created with
+	 * a meta row-id field setup like this:
 	 *
 	 * <code>
 	 * $row = [
@@ -136,19 +142,17 @@ EOF;
 	 */
 	public static function updateRow(string $row_id, array $row, ?array $audience = NULL): void
 	{
-		# Rows are basically just unstackable grids
-		$grid = new Grid(["unstackable" => true]);
+		# Handle order-able table updates
+		if($row['id'] || $row['html']['id']){
+			// If there is an "id" column, assume this is an order-able table that we're updating
+			$options = [
+				"order" => true,
+				"rel_table" => true
+				// As we don't know the rel_table, and we only need it to "be", set it to true
+			];
+		}
 
-		$row['html'] = array_values($row['html'] ?: $row);
-		//In case the row has meta fields
-
-		# Set the class
-		$row['row_class'] = str::getAttrArray($row['row_class'], "table-body", $row['only_row_class']);
-
-		# Set the single row grid
-		$grid->set($row);
-
-		Output::getInstance()->replace("#{$row_id}", $grid->getHTML(), $audience);
+		Output::getInstance()->replace("#{$row_id}", Table::generate([$row], $options, true, true), $audience);
 	}
 
 	/**
