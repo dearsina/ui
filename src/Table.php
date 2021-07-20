@@ -423,7 +423,13 @@ EOF;
 				$base_query['where'][] = [$key, "IN", $val];
 			}
 			else {
-				$base_query['where'][$key] = $val;
+				if(is_int($key)){
+					$base_query['where'][] = $val;
+				}
+				else {
+					$base_query['where'][$key] = $val;
+				}
+
 			}
 		}
 
