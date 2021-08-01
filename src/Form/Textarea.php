@@ -45,17 +45,18 @@ class Textarea extends Field implements FieldInterface {
 		# Style
 		$style = str::getAttrTag("style", $style);
 
-		# Data
-		$data = str::getDataAttr($data, true);
-
 		# Placeholder
 		$placeholder = str::getAttrTag("placeholder", self::getPlaceholder($placeholder));
 
 		# Description
 		$desc = self::getDesc($desc);
 
+		# Data
+		$data = self::getData($a);
+
 		# Script
-		$script = str::getScriptTag($script);
+		$script = str::getScriptTag($a['script']);
+		//$a['script'] may be updated by getData
 
 		# Misc
 		$title = str::getAttrTag("title", $alt);
@@ -83,7 +84,5 @@ class Textarea extends Field implements FieldInterface {
 	{$script}
 </div>
 EOF;
-
-
 	}
 }

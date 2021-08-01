@@ -215,7 +215,7 @@ class Field {
 		}
 
 		# Title (is formatted and boldened)
-		$title = $l['title'] ? "<b>".str::title($l['title'])."</b>" : false;
+		$title = $l['title'] ? "<b>" . str::title($l['title']) . "</b>" : false;
 
 		# HTML (is NOT formatted)
 		$html = $l['html'];
@@ -491,5 +491,29 @@ function {$id}(e){
 EOF;
 		# Return the arbitrary function name so that it's added the change listener
 		return $id;
+	}
+
+	/**
+	 * Looks for an optional data key. Merges it with an
+	 * optional onChange key. Updates the script key,
+	 * must be run before the getScriptTag method, like so:
+	 * <code>
+	 * # Data
+	 * $data = self::getData($a);
+	 *
+	 * # Script
+	 * $script = str::getScriptTag($a['script']);
+	 * //$a['script'] may be updated by getData
+	 * </code>
+	 *
+	 * @param array $a
+	 *
+	 * @return string|null
+	 */
+	public static function getData(array &$a): ?string
+	{
+		extract($a);
+		$data['onChange'] = self::getOnChange($a);
+		return str::getDataAttr($data, true);
 	}
 }
