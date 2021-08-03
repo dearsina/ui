@@ -4,6 +4,8 @@
 namespace App\UI;
 
 
+use API\Microsoft\Azure\Azure;
+use App\Common\EmailWrapper\EmailWrapper;
 use App\Common\href;
 use App\Common\Img;
 use App\Common\Prototype;
@@ -11,93 +13,63 @@ use App\Common\str;
 
 class EmailMessage extends Prototype {
 	/**
-	 * The title is the title of page.
-	 * Not super userful.
+	 * Array holding the email format.
 	 *
-	 * @var string|null
+	 * @var array
 	 */
-	private ?string $title = NULL;
+	private array $format = [];
 
 	/**
-	 * The preheader is the preview text in mobile browsers
+	 * The pre-header is the preview text in mobile browsers
 	 * underneath the subject line.
 	 *
 	 * @var string|null
 	 */
 	private ?string $preheader = NULL;
-
 	private ?array $header = [];
 	private ?array $body = [];
 	private ?array $footer = [];
-	/**
-	 * The different sections of the email
-	 * @var array
-	 */
-	private array $sections;
-
-	/**
-	 * The base title text colour for the entire email.
-	 * The default colour is #333333.
-	 * @var string
-	 */
-	private string $title_colour = "#333333";
-
-	/**
-	 * The base body text colour for the entire email.
-	 * The default colour is #666666.
-	 * @var string
-	 */
-	private string $colour = "#666666";
-
-	/**
-	 * The base background colour for the entire email.
-	 * The default background colour is #FFFFFF
-	 * @var string
-	 */
-	private string $bg_colour = "#FFFFFF";
 
 	/**
 	 * An array of colour names => hex values.
 	 *
 	 * @var array
 	 */
-	private array $app_colours;
+	private array $app_colours = [];
 
-	public function __construct(?array $a = NULL)
+	public function __construct(?array $format = NULL, ?array $sections = NULL)
 	{
-		# Load all the app colours
+		# Load colours
 		$this->loadColours();
 
-		if(!is_array($a)){
+		# Set the format
+		$this->setFormat($format ?: EmailWrapper::$defaults);
+
+		# Store the email sections
+		$this->setPreheader($sections['preheader']);
+		$this->setHeader($sections['header']);
+		$this->setBody($sections['body']);
+		$this->setFooter($sections['footer']);
+	}
+
+	/**
+	 * Set the email format with data from the email wrapper table.
+	 * If no format is given, will use the default format.
+	 *
+	 * @param array|null $format
+	 */
+	private function setFormat(?array $format): void
+	{
+		if(!$format){
 			return;
 		}
 
-		# Store the email sections
-		$this->setAttr($a);
-	}
+		if($format['subscription_id'] && $format['logo_id']){
+			$azure = new Azure();
+			$format['logo_src'] = $azure->getURL($format['subscription_id'], $format['logo_id']);
+		}
 
-	/**
-	 * @return string|null
-	 */
-	public function getTitle(): ?string
-	{
-		return $this->title;
-	}
-
-	/**
-	 * @param string|null $title
-	 */
-	public function setTitle(?string $title): void
-	{
-		$this->title = $title;
-	}
-
-	/**
-	 * @return string|null
-	 */
-	public function getPreheader(): ?string
-	{
-		return $this->preheader;
+		$this->format = $format;
 	}
 
 	/**
@@ -105,32 +77,416 @@ class EmailMessage extends Prototype {
 	 */
 	public function setPreheader(?string $preheader): void
 	{
+		if(!$preheader){
+			return;
+		}
+
 		$this->preheader = $preheader;
 	}
 
+	/**
+	 * Header can include:
+	 *
+	 * * `logo`
+	 *    * url
+	 *    * src
+	 *    * height
+	 *    * position
+	 * * `url`
+	 * * `title`
+	 *
+	 * If only a string is passed, it will be interpreted as a `title`.
+	 *
+	 * @param mixed|null $header
+	 */
+	public function setHeader($header = NULL): void
+	{
+		if(!$header){
+			return;
+		}
 
+		if(is_array($header['logo'])){
+			$this->format = array_merge($this->format ?: [], $header['logo']);
+		}
+
+		if(is_array($header['title'])){
+			$this->format = array_merge($this->format ?: [], $header['title']);
+		}
+
+		if(is_array($header)){
+			$this->header = $header;
+			return;
+		}
+
+		$this->header['title'] = $header;
+	}
 
 	/**
-	 * Loads the app colours
+	 * Body can include
+	 * * `preheader`
+	 * * `header`
+	 * * `body`
+	 *    * `text_colour`
+	 *    * `background_colour`
+	 *    * `copy`
+	 *        * `title`
+	 *        * `body`
+	 *    * `columns`
+	 *        * `title`
+	 *        * `body`
+	 *        * `image`
+	 *            * `url`
+	 *            * `src`
+	 *            * `height`
+	 * * `title`
+	 * * `url`
+	 * * `button`
+	 * * `colour`
+	 *
+	 * @param mixed|null $body
+	 */
+	public function setBody($body = NULL): void
+	{
+		# Empty
+		if(!$body){
+			return;
+		}
+
+		# String
+		if(!is_array($body)){
+			$body = [[
+				"copy" => [
+					"body" => $body,
+				],
+			]];
+		}
+
+		if(!str::isNumericArray($body)){
+			$body = [$body];
+		}
+
+		foreach($body as $section){
+			$this->body[] = $section;
+		}
+	}
+
+	/**
+	 * Footer can only include:
+	 * - `footer`, a numeric array of footer text.
+	 *
+	 * If only a string is passed, it will be interpreted as one of the footer texts.
+	 *
+	 * @param mixed|null $footer
+	 */
+	public function setFooter($footer = NULL): void
+	{
+		if(!$footer){
+			return;
+		}
+
+		if(is_array($footer)){
+			$this->footer = $footer;
+			return;
+		}
+
+		$this->footer["footer"][] = $footer;
+	}
+
+	/**
+	 * Returns a header image and or text.
+	 *
+	 * @return string|null
+	 * @throws \Exception
+	 */
+	private function getHeaderHTML(): ?string
+	{
+		# Get the header background colour
+		$bgcolor = $this->getColourHexValue($this->format['header_background_colour']);
+		
+		# If there is a logo
+		if($this->format['logo_src']){
+			# Format the logo array for use with the image methods
+			$logo = [
+				"src" => $this->format['logo_src'],
+				"url" => $this->format['logo_url'],
+				"alt" => $this->format['alt'],
+				"width" => $this->format['logo_width'],
+				"height" => $this->format['logo_height'],
+				"image_width" => $this->format['image_width'],
+				"image_height" => $this->format['image_height'],
+			];
+
+			$logo_html = $this->generateImageTag($logo);
+			$logo_width = $logo['width'];
+
+			if(!$title_width = 500 - $logo_width){
+				//if there is no room for the title
+				$this->format['logo_position'] = "centre";
+				//by default the logo becomes dominant
+			}
+
+			# Get different td left-rights depending on the logo position request
+			switch($this->format['logo_position']) {
+
+			case 'right':
+				$td_left = $this->generateTitleTd("left", $title_width);
+				$td_right = "<td bgcolor=\"{$bgcolor}\" width=\"{$logo_width}\" align=\"right\">{$logo_html}</td>";
+				break;
+
+			case 'centre':
+				# Make a special concession for when the header background colour is white
+				if(strtoupper($bgcolor) == "#FFFFFF"){
+					return $this->getImageHTML($logo);
+					//This will remove any margin between the header logo and the email body
+				}
+				$td_left = "<td bgcolor=\"{$bgcolor}\" width=\"{$logo_width}\" align=\"center\">{$logo_html}</td>";
+				break;
+
+			case 'left':
+			default:
+				$td_left = "<td bgcolor=\"{$bgcolor}\" width=\"{$logo_width}\" align=\"left\">{$logo_html}</td>";
+				$td_right = $this->generateTitleTd("right", $title_width);
+				break;
+			}
+		}
+
+		# If there is NO logo
+		else if($this->format['header_text']){
+			$td_left = $this->generateTitleTd("left", 500);
+		}
+
+		# If there is no header logo or text
+		else {
+			return NULL;
+		}
+
+		return <<<EOF
+<!-- HEADER -->
+<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+    <tr>
+        <td bgcolor="{$bgcolor}">
+            <div align="center" style="padding: 0px 15px 0px 15px;">
+                <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="500" class="wrapper">
+                    <!-- LOGO/PREHEADER TEXT -->
+                    <tr>
+                        <td style="padding: 20px 0px 20px 0px;" class="logo">
+                            <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+                                <tr>
+									{$td_left}
+									{$td_right}
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </td>
+    </tr>
+</table>
+EOF;
+	}
+
+	private function generateTitleTd(string $align, int $width): string
+	{
+		return <<<EOF
+<td bgcolor="{$this->getColourHexValue($this->format['header_background_colour'])}" width="{$width}" align="{$align}" class="mobile-hide">
+	<table role="presentation" border="0" cellpadding="0" cellspacing="0">
+		<tr>
+			{$this->getHeaderTitleHTML($align)}
+		</tr>
+	</table>
+</td>
+EOF;
+
+	}
+
+	/**
+	 * Returns the header title HTML.
+	 *
+	 * @param string $align
+	 *
+	 * @return string|null
+	 */
+	private function getHeaderTitleHTML(string $align): ?string
+	{
+		if(!$this->format['header_text']){
+			return NULL;
+		}
+
+		# Set the header text
+		$title = $this->generateTag("td", [
+			"align" => $align,
+			"style" => [
+				"padding" => "0 0 5px 0",
+				"font-size" => "14px",
+				"font-family" => $this->format['font_family'],
+				"color" => $this->getColourHexValue($this->format['header_text_colour']),
+				"text-decoration" => "none",
+			],
+			"html" => $this->getHeaderTextHTML($this->format['header_text']),
+		]);
+
+		return $title;
+
+	}
+
+	/**
+	 * Loads the app colours. A clever way to be able to write
+	 * generic colour names instead of specific hex values.
+	 *
 	 */
 	private function loadColours(): void
 	{
-		$css_file = "https://{$_ENV['app_subdomain']}.{$_ENV['domain']}/css/app.css";
+		$css_file = "/var/www/html/app/css/app.css";
 		if(!$handle = fopen($css_file, "r")){
 			//If unable to open the app css
 			return;
 		}
-		while (!feof($handle)) {
+		while(!feof($handle)) {
 			$contents .= fread($handle, 100);
 			if(preg_match("/:root\s*{([^}]+)}/", $contents, $matches)){
 				break;
 			}
 		}
-		$css = str_replace("--bs-","", $matches[1]);
+		$css = str_replace("--bs-", "", $matches[1]);
 		preg_match_all("/\s*([a-z\-]+): ([^;]+);\s*/", $css, $matches);
 		foreach($matches[0] as $id => $string){
 			$this->app_colours[$matches[1][$id]] = $matches[2][$id];
 		}
+	}
+
+	/**
+	 * Returns an image on a whole row.
+	 *
+	 * @param $img
+	 *
+	 * @return string
+	 * @throws \Exception
+	 */
+	private function getImageHTML($img): string
+	{
+		# If the image is still in array format, get the img string
+		if(is_array($img)){
+			$img['class'] = "img-max";
+			$img['default_style'] = [
+				"display" => "block",
+				"padding" => "0",
+				"color" => $this->getColourHexValue($this->format['text_colour']),
+				"text-decoration" => "none",
+				"font-family" => $this->format["font"],
+				"font-size" => "16px",
+			];
+			$img = $this->generateImageTag($img);
+		}
+
+		return <<<EOF
+<!-- HERO IMAGE -->
+<table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0">
+	<tbody>
+		 <tr>
+			  <td class="padding-copy" style="padding: 25px 0 0 0;" align="center">
+				  <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0">
+					  <tr>
+						  <td align="center">{$img}</td>
+						</tr>
+				  </table>
+			  </td>
+		  </tr>
+	</tbody>
+</table>
+EOF;
+	}
+
+	/**
+	 * Expecting:
+	 *  - `src`
+	 * Optional:
+	 *  - `url`
+	 *  - `height`
+	 *  - `width`
+	 *  - `style`
+	 *  - `default_style`
+	 *
+	 * @param array $a
+	 *
+	 * @return string|null
+	 */
+	private function generateImageTag(array &$a): ?string
+	{
+		# Get the actual image size
+		if($a['image_width'] && $a['image_height']){
+			$size = [
+				"width" => $a['image_width'],
+				"height" => $a['image_height'],
+			];
+		}
+
+		# If it's not supplied, get it from the file itself (slow)
+		else {
+			if(!$size = Img::getimagesize($a['src'], true)){
+				throw new \Exception("Information about the logo file [<code>{$a['src']}</code>] could no be extracted.");
+			}
+		}
+
+		# There is max image width of a hard 500px if not set
+		$a['max_width'] = $a['max_width'] ?: 500;
+
+		# If width is set
+		if($a['width']){
+			//if a width is set
+
+			# Ensure width is wider than max width
+			$a['width'] = $a['width'] > $a['max_width'] ? $a['max_width'] : $a['width'];
+
+			# Get the proportional height
+			$a['height'] = $size['height'] * ($a['width'] / $size['width']);
+		}
+
+		# If height is set *instead*
+		else if($a['height']){
+			# If height is too high, reduce is so that the width is max width, and return
+			if($size['width'] * ($a['height'] / $size['height']) > 500){
+				unset($a['height']);
+				$a['width'] = $a['max_width'];
+				return $this->generateImageTag($a);
+			}
+
+			$a['width'] = $size['width'] * ($a['height'] / $size['height']);
+		}
+
+		# If no dimensions are given
+		else {
+			# Ensure images are not bigger than the max width
+			if($size['width'] > $a['max_width']){
+				//if the image is larger than 500px in width
+				$a['width'] = $size['width'] * ($a['max_width'] / $size['width']);
+				$a['height'] = $size['height'] * ($a['max_width'] / $size['width']);
+			}
+
+			else {
+				$a['width'] = $size['width'];
+				$a['height'] = $size['height'];
+			}
+		}
+
+		# Style
+		$a['style']['width'] = "{$a['width']}px";
+		$a['style']['height'] = "{$a['height']}px";
+
+		# Border needs to be set to zero
+		$a['border'] = "0";
+
+		$img = Img::generate($a);
+
+		if($a['url']){
+			return href::a([
+				"url" => $a['url'],
+				"target" => "_blank",
+				"html" => $img,
+			]);
+		}
+
+		return $img;
 	}
 
 	/**
@@ -141,62 +497,13 @@ class EmailMessage extends Prototype {
 	 *
 	 * @return string
 	 */
-	private function getColourHexValue(?string $colour_name): ?string
+	public function getColourHexValue(?string $colour_name): ?string
 	{
 		if(!$colour_name){
 			return NULL;
 		}
 		return $this->app_colours[$colour_name] ?: $colour_name;
 	}
-
-	/**
-	 * @return string
-	 */
-	private function getColour(): string
-	{
-		return $this->getColourHexValue($this->colour);
-	}
-
-	/**
-	 * @param string $colour
-	 */
-	public function setColour(string $colour): void
-	{
-		$this->colour = $colour;
-	}
-
-	/**
-	 * @return string
-	 */
-	private function getTitleColour(): string
-	{
-		return $this->getColourHexValue($this->title_colour);
-	}
-
-	/**
-	 * @param string $colour
-	 */
-	public function setTitleColour(string $title_colour): void
-	{
-		$this->title_colour = $title_colour;
-	}
-
-	/**
-	 * @return string
-	 */
-	private function getBgColour(): string
-	{
-		return $this->getColourHexValue($this->bg_colour);
-	}
-
-	/**
-	 * @param string $bg_colour
-	 */
-	public function setBgColour(string $bg_colour): void
-	{
-		$this->bg_colour = $bg_colour;
-	}
-
 
 	private function generateTag(string $tag, $a): string
 	{
@@ -210,7 +517,7 @@ class EmailMessage extends Prototype {
 		$style_array = str::getAttrArray($style, $default_style, $only_style);
 		$style_array['color'] = $this->getColourHexValue($style_array['color']);
 		$style = str::getAttrTag("style", $style_array);
-		
+
 		# Align
 		$align = str::getAttrTag("align", $align);
 		$valign = str::getAttrTag("valign", $valign);
@@ -219,104 +526,6 @@ class EmailMessage extends Prototype {
 		$bgcolor = str::getAttrTag("bgcolor", $bgcolor);
 
 		return "<{$tag}{$align}{$valign}{$class}{$style}{$bgcolor}>{$html}</{$tag}>";
-	}
-
-	/**
-	 * Header can include:
-	 *  - `logo` (array)
-	 *  - `url`
-	 *  - `title`
-	 *  - `style`
-	 *  - `only_style`
-	 *
-	 * @param $a
-	 */
-	public function setHeader($a = NULL){
-		# Array
-		if(is_array($a)){
-			$this->header = $a;
-			return true;
-		}
-
-		# Mixed
-		if ($a){
-			$this->header['title'] = $a;
-			return true;
-		}
-
-		# Clear
-		if($a === false){
-			$this->header = [];
-			return true;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Footer can include:
-	 *  - `title`
-	 *  - `style`
-	 *  - `only_style`
-	 *
-	 * @param array|NULL $a
-	 */
-	public function setFooter($a = NULL){
-		# Array
-		if(is_array($a)){
-			$this->footer = $a;
-			return true;
-		}
-
-		# Mixed
-		if ($a){
-			$this->footer['title'] = $a;
-			return true;
-		}
-
-		# Clear
-		if($a === false){
-			$this->footer = [];
-			return true;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Body must include
-	 *  - `type`
-	 * Body can include
-	 *  - `preheader`
-	 *  - `header`
-	 *  - `body`
-	 *  - `button`
-	 *
-	 * @param $a
-	 */
-	public function setBody($a = NULL): void
-	{
-		# Empty
-		if(!$a){
-			return;
-		}
-
-		# String
-		if(!is_array($a)){
-			$a = [[
-				"copy" => [
-					"body" => $a
-				]
-			]];
-		}
-
-		if(!str::isNumericArray($a)){
-			$a = [$a];
-		}
-
-		foreach($a as $section){
-			$this->body[] = $section;
-		}
 	}
 
 	/**
@@ -334,6 +543,7 @@ class EmailMessage extends Prototype {
 		}
 
 		$html[] = $this->getTop();
+		$html[] = $this->getPreheaderHTML();
 		$html[] = $this->getHeaderHTML();
 		$html[] = $this->getBodyHTML();
 		$html[] = $this->getFooterHTML();
@@ -366,8 +576,8 @@ class EmailMessage extends Prototype {
 		# Default style
 		$a['default_style'] = [
 			"display" => "block",
-			"font-family" => "Helvetica, Arial, sans-serif",
-			"color" => $this->getColour(),
+			"font-family" => $this->format['font_family'],
+			"color" => $this->getColourHexValue($this->format["text_colour"]),
 			"font-size" => "16px",
 		];
 
@@ -377,65 +587,6 @@ class EmailMessage extends Prototype {
 		}
 
 		return $this->generateImageTag($a);
-	}
-
-	/**
-	 * Expecting:
-	 *  - `src`
-	 * Optional:
-	 *  - `url`
-	 *  - `height`
-	 *  - `width`
-	 *  - `style`
-	 *  - `default_style`
-	 *
-	 * @param array $a
-	 *
-	 * @return string|null
-	 */
-	private function generateImageTag(array $a): ?string
-	{
-		# Actual image size
-		if(!$size = Img::getimagesize($a['src'])){
-			throw new \Exception("Information about the logo file [<code>{$a['src']}</code>] could no be extracted.");
-		}
-
-		# There is max image width of a hard 500px if not set
-		$a['max_width'] = $a['max_width'] ?: 500;
-
-		# Ensure images are not bigger than the max width
-		if($size['width'] > $a['max_width']){
-			//if the image is larger than 500px in width
-			$scale = $a['max_width'] / $size['width'];
-			$size['width'] = $a['max_width'];
-			$size['height'] = floor($size['height'] * $scale);
-			//Ensure the height is proportionate to the new max width
-		}
-
-		# Scale
-		$height_scale = $a['height'] ? $a['height'] / $size['height'] : 1;
-		$width_scale = $a['width'] ? $a['width'] / $size['width'] : 1;
-
-		# Dimensions
-		$a['width'] = $a['width'] ?: floor($size['width'] * $height_scale);
-		$a['height'] = $a['height'] ?: floor($size['height'] * $width_scale);
-		$a['style']['width'] = "{$a['width']}px";
-		$a['style']['height'] = "{$a['height']}px";
-
-		# Border needs to be set to zero
-		$a['border'] = "0";
-
-		$img = Img::generate($a);
-
-		if($a['url']){
-			return href::a([
-				"url" => $a['url'],
-				"target" => "_blank",
-				"html" => $img,
-			]);
-		}
-
-		return $img;
 	}
 
 	/**
@@ -453,89 +604,19 @@ class EmailMessage extends Prototype {
 
 		if(!is_array($a)){
 			$a = [
-				"title" => $a
+				"title" => $a,
 			];
 		}
 
 		$a['html'] .= $a['title'];
 		$a['default_style'] = [
-			"color" => $this->getColourHexValue($a['colour'] ?: $this->getColour()),
+			"color" => $this->getColourHexValue($a['colour'] ?: $this->format["header_text_colour"]),
 			"text-decoration" => "none",
 		];
 
 		return $this->generateTag("span", $a);
 	}
 
-	/**
-	 * Prepares and returns the header bar.
-	 *
-	 * @return string|null
-	 * @throws \Exception
-	 */
-	private function getHeaderHTML(): ?string
-	{
-		if(!$this->header){
-			// Headers are optional
-			return NULL;
-		}
-
-		extract($this->header);
-
-		# Set the background colour for the header
-		$bgcolor = $this->getColourHexValue($bg_colour ?: $this->getBgColour());
-
-		# Set the logo
-		$logo = $this->getLogo($logo);
-		//<a href="http://alistapart.com/article/can-email-be-responsive/" target="_blank"><img alt="Logo" src="https://kycdd.co.za/assets/img/salt/logo.png" width="52" height="78" style="display: block; font-family: Helvetica, Arial, sans-serif; color: #666666; font-size: 16px;" border="0"></a>
-
-		# Set the header text
-		$title = $this->generateTag("td", [
-			"align" => "right",
-			"style" => [
-				"padding" => "0 0 5px 0",
-				"font-size" => "14px",
-				"font-family" => "Arial, sans-serif",
-				"color" => $this->getColourHexValue($colour ?: $this->getColour()),
-				"text-decoration" => "none",
-			],
-			"html" => $this->getHeaderTextHTML($title)
-		]);
-		//<span style="color: #666666; text-decoration: none;">{$title}</span>
-
-		return <<<EOF
-<!-- HEADER -->
-<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
-    <tr>
-        <td bgcolor="{$bgcolor}">
-            <div align="center" style="padding: 0px 15px 0px 15px;">
-                <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="500" class="wrapper">
-                    <!-- LOGO/PREHEADER TEXT -->
-                    <tr>
-                        <td style="padding: 20px 0px 20px 0px;" class="logo">
-                            <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
-                                <tr>
-                                    <td bgcolor="{$bgcolor}" width="100" align="left">
-										{$logo}
-									</td>
-                                    <td bgcolor="{$bgcolor}" width="400" align="right" class="mobile-hide">
-                                        <table role="presentation" border="0" cellpadding="0" cellspacing="0">
-                                            <tr>
-                                                {$title}
-                                            </tr>
-                                        </table>
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </td>
-    </tr>
-</table>
-EOF;
-	}
-	
 	private function getFooterHTML(): ?string
 	{
 		if(!$this->footer){
@@ -546,13 +627,13 @@ EOF;
 		extract($this->footer);
 
 		# Set the background colour for the footer
-		$bgcolor = $this->getColourHexValue($bg_colour ?: $this->getBgColour());
+		$bgcolor = $this->getColourHexValue($bg_colour ?: "#FFFFFF");
 
 		$default_style = [
 			"font-size" => "10px",
 			"line-height" => "13px",
-			"font-family" => "Helvetica, Arial, sans-serif",
-			"color" => $this->getColourHexValue($colour ?: $this->getColour())
+			"font-family" => $this->format['font_family'],
+			"color" => $this->getColourHexValue($colour ?: $this->format["text_colour"]),
 		];
 
 		if(is_array($footer)){
@@ -563,8 +644,8 @@ EOF;
 			"align" => "center",
 			"valign" => "middle",
 			"default_style" => $default_style,
-			"html" => $html.$footer,
-			"style" => $style
+			"html" => $html . $footer,
+			"style" => $style,
 		]);
 		//<td align="center" valign="middle" style=""><span class="appleFooter" style="color:#666666;">1234 Main Street, Anywhere, MA 01234, USA</span><br><a class="original-only" style="color: #666666; text-decoration: none;">Unsubscribe</a><span class="original-only" style="font-family: Arial, sans-serif; font-size: 12px; color: #444444;">&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</span><a style="color: #666666; text-decoration: none;">View this email in your browser</a></td>
 
@@ -592,48 +673,6 @@ EOF;
 
 	}
 
-	/**
-	 * Returns an image row.
-	 *
-	 * @param $img
-	 *
-	 * @return string
-	 * @throws \Exception
-	 */
-	private function getImageHTML($img): string
-	{
-		# If the image is still in array format, get the img string
-		if(is_array($img)){
-			$img['class'] = "img-max";
-			$img['default_style'] = [
-				"display" => "block",
-				"padding" => "0",
-				"color" => $this->getColour(),
-				"text-decoration" => "none",
-				"font-family" => "Helvetica, arial, sans-serif",
-				"font-size" => "16px",
-			];
-			$img = $this->generateImageTag($img);
-		}
-
-		return <<<EOF
-<!-- HERO IMAGE -->
-<table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0">
-	<tbody>
-		 <tr>
-			  <td class="padding-copy" style="padding: 25px 0 0 0;" align="center">
-				  <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0">
-					  <tr>
-						  <td>{$img}</td>
-						</tr>
-				  </table>
-			  </td>
-		  </tr>
-	</tbody>
-</table>
-EOF;
-	}
-
 	private function getTitleTextHTML($a): ?string
 	{
 		if(!$a){
@@ -642,7 +681,7 @@ EOF;
 
 		if(!is_array($a)){
 			$a = [
-				"title" => $a
+				"title" => $a,
 			];
 		}
 
@@ -651,18 +690,21 @@ EOF;
 		# Set the title text colour
 		if($title_colour){
 			$color = $title_colour;
-		} else if ($colour){
+		}
+		else if($colour){
 			$color = $colour;
-		} else {
-			$color = $this->getTitleColour();
+		}
+		else {
+			$color = $this->format['title_colour'];
 		}
 		$color = $this->getColourHexValue($color);
 
 		$default_style = [
 			"font-size" => "25px",
-			"font-family" => "Helvetica, Arial, sans-serif",
+			"font-family" => $this->format['font_family'],
 			"color" => $color,
 			"padding-top" => "20px",
+			"font-weight" => "bold",
 		];
 
 		return $this->generateTag("td", [
@@ -673,7 +715,7 @@ EOF;
 			"valign" => $valign ?: NULL,
 			"default_style" => $default_style,
 			"default_class" => "padding-copy",
-			"html" => $title.$html.$text
+			"html" => $title . $html . $text,
 		]);
 	}
 
@@ -685,7 +727,7 @@ EOF;
 
 		if(!is_array($a)){
 			$a = [
-				"body" => $a
+				"body" => $a,
 			];
 		}
 
@@ -694,10 +736,12 @@ EOF;
 		# Set the body text colour
 		if($body_colour){
 			$color = $body_colour;
-		} else if ($colour){
+		}
+		else if($colour){
 			$color = $colour;
-		} else {
-			$color = $this->getColour();
+		}
+		else {
+			$color = $this->format["text_colour"];
 		}
 		$color = $this->getColourHexValue($color);
 
@@ -705,7 +749,7 @@ EOF;
 			"padding" => "10px 0 0 0",
 			"font-size" => "16px",
 			"line-height" => "25px",
-			"font-family" => "Helvetica, Arial, sans-serif",
+			"font-family" => $this->format['font_family'],
 			"color" => $color,
 		];
 
@@ -720,7 +764,7 @@ EOF;
 			"align" => $align ?: "center",
 			"default_style" => $default_style,
 			"default_class" => "padding-copy",
-			"html" => $body.$html.$text
+			"html" => $body . $html . $text,
 		]);
 	}
 
@@ -729,7 +773,7 @@ EOF;
 		if(!$array){
 			return NULL;
 		}
-		return "<{$tag}>".implode("</{$tag}><{$tag}>", $array)."</{$tag}>";
+		return "<{$tag}>" . implode("</{$tag}><{$tag}>", $array) . "</{$tag}>";
 	}
 
 	private function getCopyHTML($a): string
@@ -759,7 +803,7 @@ EOF;
 			$articles[] = $this->getArticleHTML($article);
 		}
 
-		return "<tr>".implode("</tr><tr>", $articles)."</tr>";
+		return "<tr>" . implode("</tr><tr>", $articles) . "</tr>";
 	}
 
 	private function getArticleHTML($a): string
@@ -771,29 +815,30 @@ EOF;
 			$image['default_style'] = [
 				"display" => "block",
 				"padding" => "0",
-				"color" => $this->getColour(),
+				"color" => $this->getColourHexValue($this->format['text_colour']),
 				"text-decoration" => "none",
-				"font-family" => "Helvetica, arial, sans-serif",
+				"font-family" => $this->format['font_family'],
 				"font-size" => "16px",
 			];
 			$image = $this->generateImageTag($image);
 			$image = $this->generateTag("td", [
 				"valign" => "top",
 				"style" => [
-					"padding" => "40px 0 0 0"
+					"padding" => "40px 0 0 0",
 				],
 				"class" => "mobile-hide",
-				"html" => $image
+				"html" => $image,
 			]);
-		} else {
+		}
+		else {
 			//if there is no image, make sure the space of the image is kept the same
 			$image = $this->generateTag("td", [
 				"valign" => "top",
 				"style" => [
-					"padding" => "40px 0 0 0"
+					"padding" => "40px 0 0 0",
 				],
 				"class" => "mobile-hide",
-				"html" => "&nbsp;"
+				"html" => "&nbsp;",
 			]);
 		}
 		//<td valign="top" style="padding: 40px 0 0 0;" class="mobile-hide"><a href="https://litmus.com/community" target="_blank"><img src="https://kycdd.co.za/assets/img/salt/litmus-logo.png" alt="Litmus" width="105" height="105" border="0" style="display: block; font-family: Arial; color: #666666; font-size: 14px; width: 105px; height: 105px;"></a></td>
@@ -801,39 +846,39 @@ EOF;
 		if($pretitle){
 			if(!is_array($pretitle)){
 				$pretitle = [
-					"html" => $pretitle
+					"html" => $pretitle,
 				];
 			}
 			$pretitle['align'] = "left";
 			$pretitle['default_style'] = [
 				"padding" => "0 0 5px 25px",
 				"font-size" => "13px",
-				"font-family" => "Helvetica, Arial, sans-serif",
+				"font-family" => $this->format['font_family'],
 				"font-weight" => "normal",
 				"color" => "#aaaaaa",
 			];
 			$pretitle['default_class'] = "padding-meta";
-			$pretitle['html'] = $pretitle['html'].$pretitle['pretitle'];
+			$pretitle['html'] = $pretitle['html'] . $pretitle['pretitle'];
 			$tds[] = $this->generateTag("td", $pretitle);
 		}
 		//<td align="left" style="padding: 0 0 5px 25px; font-size: 13px; font-family: Helvetica, Arial, sans-serif; font-weight: normal; color: #aaaaaa;" class="padding-meta">Litmus Community</td>
-		
+
 		if($title){
 			if(!is_array($title)){
 				$title = [
-					"html" => $title
+					"html" => $title,
 				];
 			}
 			$title['align'] = "left";
 			$title['default_style'] = [
 				"padding" => "0 0 5px 25px",
 				"font-size" => "22px",
-				"font-family" => "Helvetica, Arial, sans-serif",
+				"font-family" => $this->format['font_family'],
 				"font-weight" => "normal",
-				"color" => $this->getTitleColour(),
+				"color" => $this->getColourHexValue($this->format['title_colour']),
 			];
 			$title['default_class'] = "padding-copy";
-			$title['html'] = $title['html'].$title['title'];
+			$title['html'] = $title['html'] . $title['title'];
 			$tds[] = $this->generateTag("td", $title);
 		}
 		//<td align="left" style="padding: 0 0 5px 25px; font-size: 22px; font-family: Helvetica, Arial, sans-serif; font-weight: normal; color: #333333;" class="padding-copy">A growing community for email professionals</td>
@@ -841,7 +886,7 @@ EOF;
 		if($body){
 			if(!is_array($body)){
 				$body = [
-					"html" => $body
+					"html" => $body,
 				];
 			}
 			$body['align'] = "left";
@@ -849,11 +894,11 @@ EOF;
 				"padding" => "10px 0 15px 25px",
 				"font-size" => "16px",
 				"line-height" => "24px",
-				"font-family" => "Helvetica, Arial, sans-serif",
-				"color" => $this->getColour(),
+				"font-family" => $this->format['font_family'],
+				"color" => $this->getColourHexValue($this->format['text_colour']),
 			];
 			$body['default_class'] = "padding-copy";
-			$body['html'] = $body['html'].$body['body'];
+			$body['html'] = $body['html'] . $body['body'];
 			$tds[] = $this->generateTag("td", $body);
 		}
 		//<td align="left" style="padding: 10px 0 15px 25px; font-size: 16px; line-height: 24px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">Share knowledge, ask code questions, and learn from a growing library of articles on all things email.</td>
@@ -870,7 +915,7 @@ EOF;
 EOF;
 		}
 
-		$table = "<tr>".implode("</tr><tr>", $tds)."</tr>";
+		$table = "<tr>" . implode("</tr><tr>", $tds) . "</tr>";
 
 		return <<<EOF
 {$image}
@@ -884,7 +929,7 @@ EOF;
 
 	}
 
-	
+
 	private function getColumnsHTML($a): array
 	{
 		if(!str::isNumericArray($a[0])){
@@ -913,8 +958,8 @@ EOF;
 		if(!is_array($a)){
 			$a = [
 				"copy" => [
-					"body" => $a
-				]
+					"body" => $a,
+				],
 			];
 		}
 
@@ -927,17 +972,17 @@ EOF;
 			$image['default_style'] = [
 				"display" => "block",
 				"padding" => "0",
-				"color" => $this->getColour(),
+				"color" => $this->format["text_colour"],
 				"text-decoration" => "none",
-				"font-family" => "Helvetica, arial, sans-serif",
+				"font-family" => $this->format['font_family'],
 				"font-size" => "16px",
 			];
 			$image = $this->generateImageTag($image);
 			$rows[] = $this->generateTag("td", [
 				"align" => "center",
-				"bgcolor" => $this->getBgColour(),
+				"bgcolor" => $this->getColourHexValue($this->format['background_colour']),
 				"valign" => "middle",
-				"html" => $image
+				"html" => $image,
 			]);
 		}
 
@@ -945,14 +990,14 @@ EOF;
 		if($title){
 			if(!is_array($title)){
 				$title = [
-					"title" => $title
+					"title" => $title,
 				];
 			}
 			$title['style'] = [
 				"padding" => "15px 0 0 0",
 				"font-size" => "20px",
 			];
-			$title['bgcolor'] = $title['bg_colour'];
+			$title['bgcolor'] = $this->getColourHexValue($title['bg_colour']);
 
 			$rows[] = $this->getTitleTextHTML($title);
 		}
@@ -961,7 +1006,7 @@ EOF;
 		if($body){
 			if(!is_array($body)){
 				$body = [
-					"body" => $body
+					"body" => $body,
 				];
 			}
 			$body['style'] = [
@@ -969,7 +1014,7 @@ EOF;
 				"font-size" => "14px",
 				"line-height" => "20px",
 			];
-			$body['bgcolor'] = $body['bg_colour'];
+			$body['bgcolor'] = $this->getColourHexValue($body['bg_colour']);
 
 			$rows[] = $this->getBodyTextHTML($body);
 		}
@@ -987,8 +1032,7 @@ EOF;
 		</td>
 	</tr>
 </table>
-EOF;
-;
+EOF;;
 	}
 
 	private function getBodyHTML(): ?string
@@ -1004,15 +1048,15 @@ EOF;
 		return implode("\r\n", $body);
 	}
 
-	private function getSectionHTML($a): string
+	private function getSectionHTML(array $section): string
 	{
 		# Set the background colour for the section
-		$bgcolor = $this->getColourHexValue($a['bg_colour'] ?: $this->getBgColour());
+		$bgcolor = $this->getColourHexValue($section['background_colour'] ?: $this->format['background_colour']);
 
 		$rows = [];
 
 		# Image, copy, button
-		foreach($a as $item => $data){
+		foreach($section as $item => $data){
 			if($item == "articles"){
 				$articles = $this->getArticlesHTML($data);
 				continue;
@@ -1027,7 +1071,8 @@ EOF;
 				foreach($row as $r){
 					$rows[] = "<tr><td>{$r}</td></tr>";
 				}
-			} else {
+			}
+			else {
 				$rows[] = "<tr><td>{$row}</td></tr>";
 			}
 		}
@@ -1079,12 +1124,12 @@ EOF;
 		$a['html'] = $a['title'];
 
 		# Button colour
-		$bgcolor = $this->getColourHexValue($a['colour']);
+		$bgcolor = $this->getColourHexValue($a['colour'] ?: $this->format['button_colour']);
 
 		# Button default styles
 		$a['default_style'] = [
 			"font-size" => "16px",
-			"font-family" => "Helvetica, Arial, sans-serif",
+			"font-family" => $this->format['font_family'],
 			"font-weight" => "normal",
 			"color" => "#ffffff",
 			"text-decoration" => "none",
@@ -1120,29 +1165,28 @@ EOF;
 
 	}
 
+	/**
+	 * SALTED | A RESPONSIVE EMAIL TEMPLATE
+	 * =====================================
+	 *
+	 * Based on code used and tested by Litmus (@litmusapp)
+	 * Originally developed by Kevin Mandeville (@KEVINgotbounce)
+	 * Cleaned up by Jason Rodriguez (@rodriguezcommaj)
+	 * Presented by A List Apart (@alistapart)
+	 *
+	 * Email is surprisingly hard. While this has been thoroughly tested, your mileage may vary.
+	 * It's highly recommended that you test using a service like Litmus and your own devices.
+	 *
+	 * Enjoy!
+	 * @return string
+	 * @link https://github.com/rodriguezcommaj/salted/blob/master/salted-responsive-email-template.html
+	 */
 	private function getTop()
 	{
 		return <<<EOF
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>{$this->getTitle()}</title>
-<!--
-
-    SALTED | A RESPONSIVE EMAIL TEMPLATE
-    =====================================
-
-    Based on code used and tested by Litmus (@litmusapp)
-    Originally developed by Kevin Mandeville (@KEVINgotbounce)
-    Cleaned up by Jason Rodriguez (@rodriguezcommaj)
-    Presented by A List Apart (@alistapart)
-
-    Email is surprisingly hard. While this has been thoroughly tested, your mileage may vary.
-    It's highly recommended that you test using a service like Litmus and your own devices.
-
-    Enjoy!
-
- -->
  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
  <meta name="viewport" content="width=device-width, initial-scale=1">
  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -1253,18 +1297,27 @@ EOF;
 </style>
 </head>
 <body style="margin: 0; padding: 0;">
-
-<!-- Some preview text. -->
-<div style="display: none; max-height: 0; overflow: hidden;">
-{$this->getPreheader()}		
-</div>
-<!-- Get rid of unwanted preview text. -->
-<!-- DOESN'T ACTUALLY WORK
-<div style="display: none; max-height: 0px; overflow: hidden;">
-    &nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;
-</div>
--->
 EOF;
+	}
+
+	/**
+	 * Returns a formatted pre-header if a pre-header has been set.
+	 *
+	 * @param string|null $preheader
+	 *
+	 * @return string|null
+	 */
+	private function getPreheaderHTML(string $preheader = NULL): ?string
+	{
+		if(!$preheader = $preheader ?: $this->preheader){
+			return NULL;
+		}
+
+		return <<<EOF
+<!-- Preheader text -->
+<div style="display: none; max-height: 0; overflow: hidden;">{$preheader}</div>
+EOF;
+
 	}
 
 	private function getTail()

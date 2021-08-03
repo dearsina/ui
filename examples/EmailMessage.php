@@ -4,11 +4,14 @@
 namespace App\UI\Examples;
 
 
+use App\Common\EmailWrapper\EmailWrapper;
+use App\Common\Example\ExampleInterface;
 use App\Common\href;
+use App\Common\Prototype;
 use App\Common\str;
 use App\UI\Grid;
 
-class EmailMessage extends \App\Common\Prototype implements \App\Common\Example\ExampleInterface {
+class EmailMessage extends Prototype implements ExampleInterface {
 
 	/**
 	 * @inheritDoc
@@ -31,9 +34,11 @@ class EmailMessage extends \App\Common\Prototype implements \App\Common\Example\
 				"colour" => "#000",
 				"header" => [
 					"logo" => [
-						"url" => "https://kycdd.co.za",
-						"src" => "https://kycdd.co.za/assets/img/kycdd_logo_v4_black.png",
-						"height" => 30
+						"logo_url" => "https://kycdd.co.za",
+						"logo_src" => "https://kycdd.co.za/assets/img/kycdd_logo_v4_black.png",
+						"image_height" => 30,
+						"image_width" => 100,
+						"alt" => "Click here to go to KYCDD"
 					]
 				],
 				"body" => [[
@@ -89,16 +94,18 @@ class EmailMessage extends \App\Common\Prototype implements \App\Common\Example\
 				"colour" => "#000",
 				"header" => [
 					"title" => [
-						"title" => "Right aligned header text<br> with line break and own colour.",
-						"colour" => "grey",
+						"header_text" => "Right aligned header text<br> with line break and own colour.",
+						"header_text_colour" => "grey",
 						"style" => [
 							"font-style" => "italic"
 						]
 					],
 					"logo" => [
-						"url" => "https://kycdd.co.za",
-						"src" => "https://kycdd.co.za/assets/img/kycdd_logo_v4_black.png",
-						"height" => 25
+						"logo_url" => "https://kycdd.co.za",
+						"logo_src" => "https://kycdd.co.za/assets/img/kycdd_logo_v4_black.png",
+						"image_height" => 30,
+						"image_width" => 100,
+						"alt" => "Click here to go to KYCDD"
 					]
 				],
 			]
@@ -257,9 +264,11 @@ class EmailMessage extends \App\Common\Prototype implements \App\Common\Example\
 				"header" => [
 					"title" => "Right aligned header text<br> with line break and own colour.",
 					"logo" => [
-						"url" => "https://kycdd.co.za",
-						"src" => "https://kycdd.co.za/assets/img/kycdd_logo_v4_black.png",
-						"height" => 25
+						"logo_url" => "https://kycdd.co.za",
+						"logo_src" => "https://kycdd.co.za/assets/img/kycdd_logo_v4_black.png",
+						"image_height" => 30,
+						"image_width" => 100,
+						"alt" => "Click here to go to KYCDD"
 					]
 				],
 				"body" => [[
@@ -439,7 +448,7 @@ class EmailMessage extends \App\Common\Prototype implements \App\Common\Example\
 	{
 		extract($a);
 
-		$email_message = new \App\UI\EmailMessage($array);
+		$email_message = new \App\UI\EmailMessage(EmailWrapper::$defaults, $array);
 
 		$card = new \App\UI\Card\Card([
 			"header" => $header,
