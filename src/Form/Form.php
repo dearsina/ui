@@ -435,7 +435,11 @@ EOF;
 EOF;
 		}
 
-		return $buttons_html;
+		return <<<EOF
+<div class="btn-float-right">
+	{$buttons_html}
+</div>
+EOF;
 	}
 
 	/**
