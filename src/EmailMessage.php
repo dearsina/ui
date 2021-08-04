@@ -106,11 +106,11 @@ class EmailMessage extends Prototype {
 		}
 
 		if(is_array($header['logo'])){
-			$this->format = array_merge($this->format ?: [], $header['logo']);
+			$this->format = array_merge( $header['logo'], $this->format ?: []);
 		}
 
 		if(is_array($header['title'])){
-			$this->format = array_merge($this->format ?: [], $header['title']);
+			$this->format = array_merge($header['title'], $this->format ?: []);
 		}
 
 		if(is_array($header)){
