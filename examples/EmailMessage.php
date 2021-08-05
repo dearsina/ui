@@ -453,7 +453,9 @@ class EmailMessage extends Prototype implements ExampleInterface {
 		$card = new \App\UI\Card\Card([
 			"header" => $header,
 			"body" => ["html" => [[[
-				"html" => str::pre($array, false, "php"),
+				"html" => str::pre($array, [
+					"language" => "php"
+				]),
 				"sm" => 6
 			],[
 				"html" => $email_message->getHTML(),

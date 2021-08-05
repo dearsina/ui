@@ -34,7 +34,9 @@ class Modal extends Prototype implements \App\Common\Example\ExampleInterface {
 	private function getModalCard($header, $type, $body){
 		$card = new Card([
 			"header" => str::title($header),
-			"body" => str::pre($body, false, "php"),
+			"body" => str::pre($body, [
+				"language" => "php"
+			]),
 			"footer" => [
 				"button" => [
 					"hash" => [

@@ -741,9 +741,13 @@ class MySQL extends Common implements \App\Common\Example\ExampleInterface {
 		$card = new \App\UI\Card\Card([
 			"header" => $header,
 			"body" => ["html" => [[[
-				"html" => str::pre(str::var_export($query, true), false, "php")
+				"html" => str::pre(str::var_export($query, true), [
+					"language" => "php"
+				])
 			],[
-				"html" => str::pre($this->sql->{$method}($query, 1), false, "sql")
+				"html" => str::pre($this->sql->{$method}($query, 1), [
+					"language" => "sql"
+				])
 			]]]],
 			"footer" => $footer
 		]);
