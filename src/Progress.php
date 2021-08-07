@@ -24,7 +24,7 @@ class Progress {
 	 * progress::generate([
 	 * 	"height" => "px",
 	 * 	"width" => "%",
-	 * 	"colour" = > "primary"
+	 * 	"colour" => "primary"
 	 * ]);
 	 * </code>
 	 *
@@ -43,9 +43,8 @@ class Progress {
 			$width = $a;
 		}
 
-		if(!$height){
-			$height = self::HEIGHT;
-		}
+		$style_array = str::getAttrArray($style, ["height" => $height ?: self::HEIGHT], $only_style);
+		$style = str::getAttrTag("style", $style_array);
 
 		if(!$width){
 			$width = self::WIDTH;
@@ -59,7 +58,7 @@ class Progress {
 		}
 
 		return /** @lang HTML */<<<EOF
-<div id="bar" class="progress" style="height: {$height};">
+<div id="bar" class="progress"{$style}>
 	<div class="bar progress-bar progress-bar-striped bg-{$colour}" style="width: {$width};">{$label}</div>
 </div>
 EOF;
