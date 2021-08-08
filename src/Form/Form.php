@@ -423,6 +423,7 @@ EOF;
 
 		if($this->card){
 			$buttons_html = <<<EOF
+	</div>
 </div>
 <div class="card-footer">
 	<div class="container">
@@ -430,8 +431,7 @@ EOF;
 			{$buttons_html}
 		</div>
 	</div>
-</div>
-<div style="display: none;">
+	<div style="display: none;">
 EOF;
 		}
 
