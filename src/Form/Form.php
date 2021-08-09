@@ -409,6 +409,7 @@ class Form {
 				$id = str::getAttrTag("id", $this->modal);
 			}
 			$buttons_html = <<<EOF
+	</div>
 </div>
 <div class="modal-footer" style="padding:12px 4px 8px 0;"{$id}>
 	<div class="container">
@@ -416,7 +417,6 @@ class Form {
 			{$buttons_html}
 		</div>
 	</div>
-</div>
 <div style="display: none;">
 EOF;
 		}
