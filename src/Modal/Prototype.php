@@ -65,7 +65,9 @@ abstract class Prototype extends \App\Common\Prototype {
 
 		[$field_class, $method] = $this->getFieldClassAndMethod($rel_table);
 
-		$fields = $field_class::{$method}($a['vars']);
+		if(!$fields = $field_class::{$method}($a['vars'])){
+			throw new \Exception("No form fields were found running the <code>{$field_class}::{$method}</code> class method.");
+		}
 
 		$form = new Form([
 			"action" => "insert",
