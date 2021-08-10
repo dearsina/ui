@@ -245,9 +245,13 @@ EOF;
 		$parent_script = str::getScriptTag($parent_script);
 		$parent_class = str::getAttrTag("class", $parent_class);
 
+		if($all){
+			$toggle_all = "<input type=checkbox class=\"form-check-input checkbox-all\" title=\"Toggle all\">";
+		}
+
 		return /** @lang HTML */ <<<EOF
 <div{$parent_class}>
-	{$parent_label}{$parent_desc}
+	{$toggle_all}{$parent_label}{$parent_desc}
 	{$options_html}
 </div>
 {$parent_script}
