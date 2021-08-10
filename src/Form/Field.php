@@ -114,13 +114,12 @@ class Field {
 	 * @param string          $name
 	 * @param int|string      $id
 	 * @param int|string|null $for   If set, will be the ID that this element's label is "for"
+	 * @param bool|null       $all If set, will add a checkbox so that all values can be selected. Only used by checkboxes.
 	 *
-	 * @return bool|string
-	 * @throws \Exception
-	 * @throws \Exception
+	 * @return false|string
 	 * @throws \Exception
 	 */
-	static function getLabel($label, $title, $name, $id, ?string $for = NULL)
+	static function getLabel($label, $title, $name, $id, ?string $for = NULL, ?bool $all = NULL)
 	{
 		if($label === false){
 			return false;
@@ -179,7 +178,12 @@ class Field {
 		# Description
 		$desc = self::getDesc($l['desc']);
 
-		return "<{$tag}{$href}{$id}{$class}{$style}>{$icon}{$title}{$html}{$badge}{$desc}</{$tag}>";
+		# Toggle the all button
+		if($all){
+			$toggle_all = "<input type=checkbox class=\"form-check-input checkbox-all\" title=\"Toggle all\">";
+		}
+
+		return "<{$tag}{$href}{$id}{$class}{$style}>{$toggle_all}{$icon}{$title}{$html}{$badge}{$desc}</{$tag}>";
 	}
 
 	/**
