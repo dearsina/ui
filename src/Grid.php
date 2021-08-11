@@ -479,6 +479,14 @@ EOF;
 		return Grid::generate($grid);
 	}
 
+	/**
+	 * Generate a cell title.
+	 * 
+	 * @param $a
+	 *
+	 * @return string|null
+	 * @throws \Exception
+	 */
 	private static function generateTitle($a): ?string
 	{
 		if(!$a){
@@ -488,6 +496,9 @@ EOF;
 		$a = is_array($a) ? $a : ["title" => $a];
 
 		extract($a);
+
+		# Title
+		$title = $title ?: $html;
 
 		# ID
 		$id = str::getAttrTag("id", $id);
