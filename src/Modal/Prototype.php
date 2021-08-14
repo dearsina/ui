@@ -19,10 +19,23 @@ abstract class Prototype extends \App\Common\Prototype {
 	{
 		extract($a);
 
+		$buttons = $buttons ?: [
+			[
+				"hash" => [
+					"rel_table" => $rel_table,
+					"action" => "new",
+				],
+				"title" => "New",
+				"icon" => Icon::get("new"),
+				"colour" => "primary",
+			],
+			"close_md",
+		];
+
 		$modal = new Modal([
 			"size" => $size,
 			"icon" => Icon::get($rel_table),
-			"header" => str::title("All ".str::pluralise($rel_table)),
+			"header" => str::title("All " . str::pluralise($rel_table)),
 			"body" => [
 				"style" => [
 					"overflow-y" => "auto",
@@ -31,15 +44,7 @@ abstract class Prototype extends \App\Common\Prototype {
 				"id" => "all_{$rel_table}",
 			],
 			"footer" => [
-				"button" => [[
-					"hash" => [
-						"rel_table" => $rel_table,
-						"action" => "new"
-					],
-					"title" => "New",
-					"icon" => Icon::get("new"),
-					"colour" => "primary",
-				],"close_md"]
+				"button" => $buttons,
 			],
 			"draggable" => true,
 			"resizable" => true,
@@ -48,6 +53,7 @@ abstract class Prototype extends \App\Common\Prototype {
 		return $modal->getHTML();
 
 	}
+
 	/**
 	 * Generic new modal frame.
 	 *
@@ -61,7 +67,7 @@ abstract class Prototype extends \App\Common\Prototype {
 	{
 		extract($a);
 
-		$buttons = $buttons ?: ["save","cancel_md"];
+		$buttons = $buttons ?: ["save", "cancel_md"];
 
 		[$field_class, $method] = $this->getFieldClassAndMethod($rel_table);
 
@@ -76,7 +82,7 @@ abstract class Prototype extends \App\Common\Prototype {
 			"callback" => $this->hash->getCallback(),
 			"fields" => $fields,
 			"buttons" => $buttons,
-			"modal" => true
+			"modal" => true,
 		]);
 
 		# A different modal for when tabs are being used
@@ -87,7 +93,7 @@ abstract class Prototype extends \App\Common\Prototype {
 					"style" => [
 						"background-color" => "#fcfdfd",
 					],
-					"html" => $form->getHTML()
+					"html" => $form->getHTML(),
 				],
 				"approve" => "change",
 				"draggable" => true,
@@ -126,10 +132,10 @@ abstract class Prototype extends \App\Common\Prototype {
 		extract($a);
 
 		# Any vars sent with the edit AJAX request will be included
-		$$rel_table = array_merge($vars ?:[], $this->info($rel_table, $rel_id));
+		$$rel_table = array_merge($vars ?: [], $this->info($rel_table, $rel_id));
 		// But only if the value doesn't exist in the rel_table, otherwise it will be overwritten
 
-		$buttons = $buttons ?: ["save","cancel_md"];
+		$buttons = $buttons ?: ["save", "cancel_md"];
 
 		[$field_class, $method] = $this->getFieldClassAndMethod($rel_table);
 
@@ -142,18 +148,19 @@ abstract class Prototype extends \App\Common\Prototype {
 			"callback" => $this->hash->getCallback(),
 			"fields" => $fields,
 			"buttons" => $buttons,
-			"modal" => true
+			"modal" => true,
 		]);
 
 		# A different modal for when tabs are being used
 		if(array_key_exists("tabs", $fields)){
 			$modal = new Modal([
+				"id" => $id,
 				"size" => $size,
 				"body" => [
 					"style" => [
 						"background-color" => "#fcfdfd",
 					],
-					"html" => $form->getHTML()
+					"html" => $form->getHTML(),
 				],
 				"approve" => "change",
 				"draggable" => true,
@@ -163,6 +170,7 @@ abstract class Prototype extends \App\Common\Prototype {
 
 		else {
 			$modal = new Modal([
+				"id" => $id,
 				"size" => $size,
 				"icon" => Icon::get("edit"),
 				"header" => str::title("Edit {$rel_table}"),
