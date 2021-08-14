@@ -413,6 +413,7 @@ class Form {
 </div>
 <div class="modal-footer" style="padding:12px 4px 8px 0;"{$id}>
 	<div class="container">
+		<div class="footer-content"></div>
 		<div class="btn-float-right">
 			{$buttons_html}
 		</div>
@@ -427,6 +428,7 @@ EOF;
 </div>
 <div class="card-footer">
 	<div class="container">
+		<div class="footer-content"></div>
 		<div class="btn-float-right">
 			{$buttons_html}
 		</div>

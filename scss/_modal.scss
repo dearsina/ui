@@ -17,8 +17,12 @@
 /**
  * XXL modals
  */
-@include media-breakpoint-up(xxl) {
-  .modal-xxl { max-width: $modal-xxl; }
+@include media-breakpoint-up(xxl)
+{
+  .modal-xxl
+  {
+    max-width : $modal-xxl;
+  }
 }
 
 /**
@@ -39,16 +43,6 @@
   cursor : move;
 }
 
-.modal-footer
-{
-  background : $header-footer-bg;
-}
-
-.modal-footer > *
-{
-  margin : 0.25rem 0;
-}
-
 /**
  * Make modals look like cards
  */
@@ -63,8 +57,8 @@
  */
 .modal-tabs
 {
-  padding: 0.7rem;
-  background: $header-footer-bg;
+  padding    : 0.7rem;
+  background : $header-footer-bg;
 }
 
 /**
@@ -95,9 +89,9 @@
  */
 .modal-header .btn-close
 {
-  float : right;
-  padding: 0;
-  margin: 0;
+  float   : right;
+  padding : 0;
+  margin  : 0;
 }
 
 /**
@@ -137,4 +131,23 @@
 {
   overflow-y : auto;
   max-height : 100%;
+}
+
+.modal-footer
+{
+  background : $header-footer-bg;
+}
+
+.modal-footer > *
+{
+  margin : 0.25rem 0;
+}
+
+/**
+ * A div that sits inside the modal-footer container.
+ * Only visible when the footer is overwritten by forms.
+ */
+.footer-content
+{
+  float : left;
 }
