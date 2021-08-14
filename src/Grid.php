@@ -404,7 +404,7 @@ EOF;
 	 */
 	public function getDataValueTag(array $col): ?string
 	{
-		if($col['type'] == "checkbox" && !$col['checked']){
+		if($col['type'] == "checkbox" && array_key_exists("checked", $col) && !$col['checked']){
 			//if this is a checkbox and it's not checked
 			return NULL;
 		}
@@ -481,7 +481,7 @@ EOF;
 
 	/**
 	 * Generate a cell title.
-	 * 
+	 *
 	 * @param $a
 	 *
 	 * @return string|null
@@ -543,6 +543,8 @@ EOF;
 
 		$a = is_array($a) ? $a : ["body" => $a];
 		extract($a);
+
+		$body = $body ?: $html;
 
 		$tag = $tag ?: "p";
 
