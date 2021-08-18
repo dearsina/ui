@@ -20,7 +20,6 @@ $grays            : (
 );
 
 // Buttons
-//$info-colour: hsl(196, 80%, 48%);
 $info-colour      : hsl(203, 70%, 60%);
 $success-colour   : hsl(142, 78%, 36%);
 $danger-colour    : hsl(358, 71%, 46%);
@@ -74,13 +73,11 @@ $theme-colors     : (
         "silent": map-get($grays, "100")
 );
 
-
-//$base-color: hsl(204, 100%, 50%); // Base
-//$navbar-level1-bg:       darken(desaturate(adjust_hue($base-color, 0%), 90%), 25%); // Level 1 background
-//$navbar-level2-bg:      lighten(desaturate(adjust_hue($base-color, 0%), 34%), 25%); // Level 2 background
-//$body-bg:               lighten(desaturate(adjust_hue($base-color, 0%), 70%), 46%); // Body background
-//$border-color:          lighten(desaturate(adjust_hue($base-color, 0%), 85%), 38%); // Border colour
-//$card-header-footer-bg: lighten(desaturate(adjust_hue($base-color, 0%), 76%), 48%); // Card header-footer background
+/**
+ * These two don't get the message, and need to be overwritten.
+ */
+$form-check-input-checked-bg-color: map-get($theme-colors, "primary");
+$form-check-input-checked-border-color: map-get($theme-colors, "primary");
 
 /**
  * Adds the "fill" property to th bg-[colour] CSS styles

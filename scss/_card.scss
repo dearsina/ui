@@ -88,8 +88,8 @@ box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 
  * Give the main card icon in the header
  * a little breathing room.
  */
-.card-header .card-title i:first-of-type,
-.card-footer .card-title i:first-of-type
+.card-header .card-title i.fa-fw:first-of-type,
+.card-footer .card-title i.fa-fw:first-of-type
 {
   margin-right : .5rem;
 }
