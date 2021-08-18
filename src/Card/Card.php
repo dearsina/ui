@@ -251,22 +251,6 @@ EOF;
 		# Styles
 		$this->cardFooter['style'] = str::getAttrArray($this->cardFooter['style'], NULL, $this->cardFooter['only_style']);
 
-		# Dropdown buttons
-//		if($this->cardFooter['buttons']){
-//			$buttons = Dropdown::generate($this->cardFooter);
-//		}
-
-		# Dropdown buttons and/or button(s) in a row
-//		if($buttons = Button::get($this->cardFooter)){
-//			$buttons = "<div class=\"col\">{$buttons}</div>";
-//		}
-
-		# Icon
-//		$icon = Icon::generate($this->cardFooter['icon']);
-
-		# Badge
-//		$badge = Badge::generate($this->cardFooter['badge']);
-
 		# ID
 		$id = str::getAttrTag("id", $this->cardFooter['id']);
 
@@ -279,37 +263,28 @@ EOF;
 		# Draggable
 		$class[] = $this->draggable ? "card-footer-draggable" : false;
 
-		# Script
-//		$script = str::getScriptTag($this->cardFooter['script']);
-
 		# The div class
 		$class = str::getAttrTag("class", $this->cardFooter['class']);
-
-//		if($html = $icon.$this->cardFooter['footer'].$this->cardFooter['html'].$badge){
-//			$row_style = str::getAttrTag("style", $this->cardFooter['row_style']);
-//			$row_class_array = str::getAttrArray($this->cardFooter['row_class'], ["col-auto", "card-title"], $this->cardFooter['row_class_only']);
-//			$row_class = str::getAttrTag("class", $row_class_array);
-//			$html = "<div{$row_class}{$row_style}>{$html}</div>";
-//		}
 
 		return <<<EOF
 <div{$id}{$class}{$style}>
 	{$this->getSockHTML($footer)}
 </div>
 EOF;
-
-//		return <<<EOF
-//<div{$id}{$class}{$style}>
-//	<div class="container-fluid">
-//  		<div class="row">
-//    		{$html}
-//    		{$buttons}
-//    	</div>
-//	</div>{$script}
-//</div>
-//EOF;
 	}
 
+	/**
+	 * Broken the footer and "sock" into two different methods, because
+	 * the sock can be called separately. The analogy should actually be
+	 * reversed, as the sock is everything except the card-footer div.
+	 *
+	 * This allows for the contents (only) of the div to be updated via AJAX.
+	 *
+	 * @param array|null $footer
+	 *
+	 * @return false|string
+	 * @throws Exception
+	 */
 	public function getSockHTML(?array $footer = NULL){
 		# Override
 		if($footer){
@@ -321,45 +296,14 @@ EOF;
 			return false;
 		}
 
-//		# Add the required Bootstrap footer class very first
-//		$this->cardFooter['class'] = str::getAttrArray($this->cardFooter['class'], "card-footer", $this->cardFooter['only_class']);
-//
-//		# Styles
-//		$this->cardFooter['style'] = str::getAttrArray($this->cardFooter['style'], NULL, $this->cardFooter['only_style']);
-
-		# Dropdown buttons
-		if($this->cardFooter['buttons']){
-			$buttons = Dropdown::generate($this->cardFooter);
-		}
-
-		# Dropdown buttons and/or button(s) in a row
-		if($buttons = Button::get($this->cardFooter)){
-			$buttons = "<div class=\"col\">{$buttons}</div>";
-		}
-
 		# Icon
 		$icon = Icon::generate($this->cardFooter['icon']);
 
 		# Badge
 		$badge = Badge::generate($this->cardFooter['badge']);
 
-		# ID
-//		$id = str::getAttrTag("id", $this->cardFooter['id']);
-
-		# Style
-//		$style = str::getAttrTag("style", $this->cardFooter['style']);
-
-		# Text colour
-//		$class[] = str::getColour($this->cardFooter['colour']);
-
-		# Draggable
-//		$class[] = $this->draggable ? "card-footer-draggable" : false;
-
 		# Script
 		$script = str::getScriptTag($this->cardFooter['script']);
-
-		# The div class
-//		$class = str::getAttrTag("class", $this->cardFooter['class']);
 
 		if(is_array($this->cardFooter['html'])){
 			$this->cardFooter['html'] = Grid::generate($this->cardFooter['html']);
@@ -367,9 +311,20 @@ EOF;
 
 		if($html = $icon.$this->cardFooter['footer'].$this->cardFooter['html'].$badge){
 			$row_style = str::getAttrTag("style", $this->cardFooter['row_style']);
-			$row_class_array = str::getAttrArray($this->cardFooter['row_class'], ["col-auto", "card-title"], $this->cardFooter['row_class_only']);
+			$row_class_array = str::getAttrArray($this->cardFooter['row_class'], ["col", "card-title"], $this->cardFooter['row_class_only']);
 			$row_class = str::getAttrTag("class", $row_class_array);
 			$html = "<div{$row_class}{$row_style}>{$html}</div>";
+			$buttons_col = "col-auto";
+		}
+
+		else {
+			//if there is no text in the footer, keep the col-class just "col", not "col-auto" (it will override the float-right)
+			$buttons_col = "col";
+		}
+
+		# Dropdown buttons and/or button(s) in a row
+		if($buttons = Button::get($this->cardFooter)){
+			$buttons = "<div class=\"{$buttons_col}\">{$buttons}</div>";
 		}
 
 		return <<<EOF
