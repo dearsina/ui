@@ -26,6 +26,10 @@ class Checkbox extends Field implements FieldInterface {
 			$a['values'] = is_array($a['value']) ? $a['value'] : [$a['value']];
 		}
 
+		if($a['dropdown']){
+			return self::getDropdownCheckboxHTML($a);
+		}
+
 		if($a['button']){
 			return self::getButtonCheckboxHTML($a);
 		}
@@ -35,6 +39,62 @@ class Checkbox extends Field implements FieldInterface {
 		}
 
 		return self::getSingleCheckboxHTML($a);
+	}
+
+	private static function getDropdownCheckboxHTML(array $a): string
+	{
+		extract($a);
+
+		$a['label'] = false;
+		$a['dropdown'] = NULL;
+		$checkboxes = self::generateHTML($a);
+
+		if(is_string($label)){
+			$title = $label;
+		}
+
+		else if (is_array($label)){
+			$title = $label['title'] ?: $label['html'];
+		}
+
+		else {
+			$title = str::title($name);
+		}
+
+		if($checked){
+			$basic = false;
+		}
+
+		else if (is_array($value)){
+			$basic = false;
+		}
+
+		else {
+			$basic = true;
+		}
+
+		$button = Button::generate([
+			"icon" => $icon,
+			"title" => "{$title} ".Icon::generate("chevron-down"),
+			"alt" => $alt,
+			"basic" => $basic,
+			"colour" => $colour,
+			"data" => [
+				"bs-toggle" => "dropdown",
+			],
+			"ladda" => false,
+			"size" => "s",
+		]);
+
+		return <<<EOF
+<div class="dropdown">
+	{$button}
+	<div class="dropdown-menu checkbox-menu allow-focus">
+		{$checkboxes}
+	</div>
+</div>
+EOF;
+
 	}
 
 	/**
@@ -211,6 +271,17 @@ EOF;
 			];
 
 			$parent_desc = self::getDesc($parent_desc);
+		}
+
+		if($label === false && $all){
+			# Toggle the all button
+			$all_id = str::id("all");
+			$options_html .= <<<EOF
+			<div class="form-check">
+				<input id="{$all_id}" type=checkbox class="form-check-input checkbox-all" title="Toggle all">
+				<label for="{$all_id}" class="field-label"><i>Select all</i></label>
+			</div>
+EOF;
 		}
 
 		foreach($options as $key => $val){
