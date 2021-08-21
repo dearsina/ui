@@ -149,6 +149,60 @@ class Card extends \App\Common\Prototype {
 	}
 
 	/**
+	 * Handle buttons in the header of a card.
+	 *
+	 * @return string|null
+	 * @throws Exception
+	 */
+	private function getHeaderButtonsHTML(): ?string
+	{
+		if($this->cardHeader['buttons']){
+			$buttons = Button::get($this->cardHeader);
+		}
+
+		if($this->cardHeader['button']){
+			if(str::isNumericArray($this->cardHeader['button'])){
+				$this->cardHeader['button'] = array_reverse($this->cardHeader['button']);
+			}
+			$button = Button::generate($this->cardHeader['button']);
+		}
+
+		if($buttons || $button){
+			return "<div class=\"col col-buttons btn-float-right\">{$button}{$buttons}</div>";
+		}
+
+		return NULL;
+	}
+
+	/**
+	 * Handle buttons in the footer of a card.
+	 *
+	 * @param string|null $content
+	 *
+	 * @return string|null
+	 * @throws Exception
+	 */
+	private function getFooterButtonsHTML(?string $content): ?string
+	{
+		if($this->cardFooter['buttons']){
+			$buttons = Button::get($this->cardFooter);
+		}
+
+		if($this->cardFooter['button']){
+			$button = Button::generate($this->cardFooter['button']);
+		}
+
+		if($buttons || $button){
+			if($content){
+				return "<div class=\"col-auto col-buttons btn-float-right\">{$buttons}{$button}</div>";
+			}
+			return "<div class=\"col col-buttons btn-float-right\">{$buttons}{$button}</div>";
+		}
+
+		return NULL;
+	}
+
+	/**
 	 * Returns the header as HTML.
 	 *
 	 * @return bool|string
@@ -174,9 +228,7 @@ class Card extends \App\Common\Prototype {
 		$this->cardHeader['style'] = str::getAttrArray($this->cardHeader['style'], NULL, $this->cardHeader['only_style']);
 
 		# Dropdown buttons and/or button(s) in a row
-		if($buttons = Button::get($this->cardHeader)){
-			$buttons = "<div class=\"col col-buttons\">{$buttons}</div>";
-		}
+		$buttons = $this->getHeaderButtonsHTML();
 
 		# Accent
 		$this->cardHeader['class'][] = str::getColour($this->accent, "bg");
@@ -314,18 +366,10 @@ EOF;
 			$row_class_array = str::getAttrArray($this->cardFooter['row_class'], ["col", "card-title"], $this->cardFooter['row_class_only']);
 			$row_class = str::getAttrTag("class", $row_class_array);
 			$html = "<div{$row_class}{$row_style}>{$html}</div>";
-			$buttons_col = "col-auto";
-		}
-
-		else {
-			//if there is no text in the footer, keep the col-class just "col", not "col-auto" (it will override the float-right)
-			$buttons_col = "col";
 		}
 
 		# Dropdown buttons and/or button(s) in a row
-		if($buttons = Button::get($this->cardFooter)){
-			$buttons = "<div class=\"{$buttons_col}\">{$buttons}</div>";
-		}
+		$buttons = $this->getFooterButtonsHTML($html);
 
 		return <<<EOF
 	<div class="container-fluid">

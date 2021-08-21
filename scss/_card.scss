@@ -73,10 +73,24 @@ box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 
 }
 
 /**
- * For some reason when including buttons, the header grows
+ * Fixes the header to handle both buttons and buttons, even together
  */
 .card-header .col-buttons {
   height: 0;
+
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 10px;
+}
+
+/**
+ * Small fix so that the navigation sits right in the card footer
+ */
+.card-footer .nav-right {
+  height: 100%;
+  display: flex;
+  align-items: center;
 }
 
 .card-title > .far
