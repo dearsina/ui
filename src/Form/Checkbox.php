@@ -87,7 +87,7 @@ class Checkbox extends Field implements FieldInterface {
 		]);
 
 		return <<<EOF
-<div class="dropdown">
+<div class="checkbox-dropdown">
 	{$button}
 	<div class="dropdown-menu checkbox-menu allow-focus">
 		{$checkboxes}
