@@ -160,7 +160,7 @@ class Button {
 			$value = str_replace("rel_id", $rel_id, $value);
 		});
 		array_walk_recursive($button, function(&$value, $key) use ($action){
-			$value = str_replace("action", $action, $value);
+			$value = preg_replace("/\/action/", "/{$action}", $value);
 		});
 		array_walk_recursive($button, function(&$value, $key) use ($vars){
 			if($value == "vars"){
