@@ -35,12 +35,15 @@ class Dropzone extends Field implements FieldInterface {
 		$style = str::getAttrTag("style", $style);
 
         # Description
-        $desc = self::getDesc($desc);
+        if($desc = self::getDesc($desc)){
+			$parent_style_array = str::getAttrArray($parent_style, ["height" => "fit-content"], $only_parent_style);
+        	$parent_style = str::getAttrTag("style", $parent_style_array);
+		}
 
 		# Data (settings)
 		$data = self::getSettings($a);
 
-		return "<div{$parent_id}><div{$id}{$data}{$class}{$style}></div>{$desc}</div>";
+		return "<div{$parent_id}{$parent_style}><div{$id}{$data}{$class}{$style}></div>{$desc}</div>";
 	}
 
 	private static function getSettings(array &$a): ?string
