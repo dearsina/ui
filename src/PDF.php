@@ -244,7 +244,7 @@ EOF;
 
 			# Generate temporary filename from the MD5
 			$tmp_filename = PDF::generateTemporaryFilename($md5);
-		}var_dump($a, $tmp_filename);
+		}
 
 		# If the file for some reason doesn't exist, return true
 		if(!file_exists($tmp_filename)){
