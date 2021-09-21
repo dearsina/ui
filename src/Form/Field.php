@@ -140,8 +140,7 @@ class Field {
 
 		# If no icon, title, badge or HTML has been supplied, use the name
 		if(!count(array_intersect(["title", "icon", "html", "badge"], array_keys($l)))){
-			$l['title'] = $name;
-//			$l['title'] = str::title($name);
+			$l['title'] = str::title($name);
 		}
 
 		if($l['title']){
