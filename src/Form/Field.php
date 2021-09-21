@@ -215,11 +215,10 @@ class Field {
 
 		# If no icon, title, badge or HTML has been supplied, use the name
 		if(!count(array_intersect(["title", "icon", "html", "badge"], array_keys($l)))){
-			$l['title'] = $name;
+			$l['title'] = str::title($name);
 		}
 
-		# Title (is formatted and boldened)
-//		$title = $l['title'] ? "<b>" . str::title($l['title']) . "</b>" : false;
+		# Title (is formatted and bolded)
 		$title = $l['title'] ? "<b>" . $l['title'] . "</b>" : false;
 
 		# HTML (is NOT formatted)
