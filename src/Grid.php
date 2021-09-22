@@ -327,6 +327,9 @@ EOF;
 			return NULL;
 		}
 
+		# Ensure the numerical array starts from zero
+		$tabs['tabs'] = array_values($tabs['tabs']);
+
 		# Ensure at least one tab is active
 		if(!array_filter($tabs['tabs'], function($tab){
 			return $tab['active'];
