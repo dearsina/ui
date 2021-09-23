@@ -89,6 +89,7 @@ class Button {
 			],
 			"icon" => "new",
 			"colour" => "primary",
+			"alt" => "New"
 		],
 
 		"edit" => [
@@ -101,6 +102,7 @@ class Button {
 			],
 			"icon" => "edit",
 			"basic" => true,
+			"alt" => "Edit"
 		],
 
 		"duplicate" => [
@@ -114,6 +116,7 @@ class Button {
 			],
 			"icon" => "copy",
 			"basic" => true,
+			"alt" => "Duplicate"
 		],
 
 		"remove" => [
@@ -133,6 +136,7 @@ class Button {
 			"icon" => "trash",
 			"basic" => true,
 			"colour" => "danger",
+			"alt" => "Remove"
 		],
 	];
 
