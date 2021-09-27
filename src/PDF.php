@@ -74,10 +74,10 @@ class PDF {
 		exec($command, $output);
 
 		# Ensure the PDF was generated successfully, if not, try again (up to 10 times)
-		if(filesize($tmp_filename) < 3000){
-			//if file is less than 3kb (if it's dud)
+		if(!file_exists($tmp_filename) || filesize($tmp_filename) < 3000){
+			//if the file isn't created or if file is less than 3kb (if it's dud)
 			if($rerun == 10){
-				//if 10 attempts have been made to create this PDF with no luck)
+				//if 10 attempts have been made to create this PDF with no luck
 
 				$error = implode("\r\n", $output);
 				throw new \Exception("
