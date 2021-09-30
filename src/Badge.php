@@ -123,7 +123,9 @@ class Badge {
 			$approve_attr ? "approve-decision" : ""
 		]);
 
-		$style = str::getAttrTag("style", $style);
+		$style_array = str::getAttrArray($style, NULL, $only_style);
+		$style = str::getAttrTag("style", $style_array);
+
 		$script = str::getScriptTag($script);
 
 		$alt = $alt ? $alt : $desc;
