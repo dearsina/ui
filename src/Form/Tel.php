@@ -51,6 +51,7 @@ class Tel extends Field implements FieldInterface {
 	private static function getTelSettings(string $value_field_id): array
 	{
 		$geolocation = Geolocation::get();
+
 		return [
 			"value_field_id" => $value_field_id,
 			"settings" => [
