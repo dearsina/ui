@@ -219,13 +219,12 @@ class ListGroup {
 
 		if($orderable){
 			if($item['orderable'] !== false){
-				if(!$item['id']){
-					throw new \Exception("Each item in an orderable array must have an ID.");
+				if($item['id']){
+					$class_array[] = "draggable";
+					$class = str::getAttrTag("class", $class_array);
+					$id = str::getAttrTag("id", $item["id"]);
+					$handlebars = "<span class=\"list-group-handlebars\"></span>";
 				}
-				$class_array[] = "draggable";
-				$class = str::getAttrTag("class", $class_array);
-				$id = str::getAttrTag("id", $item["id"]);
-				$handlebars = "<span class=\"list-group-handlebars\"></span>";
 			}
 
 			return <<<EOF
