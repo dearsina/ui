@@ -23,7 +23,9 @@ class Signature extends Field implements FieldInterface {
 
 		if($a['value']){
 			$image = "<image height=\"100\" xlink:href=\"{$a['value']}\"></image>";
-			$created = "Signed on the ".\DateTime::createFromFormat("Y-m-d H:i:s", $a['created'])->format("jS \of F, Y");
+			if($a['created']){
+				$created = "Signed on the ".\DateTime::createFromFormat("Y-m-d H:i:s", $a['created'])->format("jS \of F, Y");
+			}
 			$basic = true;
 		} else {
 			$style = str::getAttrTag("style", ["display" => "none"]);
