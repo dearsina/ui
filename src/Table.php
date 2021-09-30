@@ -250,7 +250,8 @@ EOF;
 		}
 
 		if(!key_exists("id", $html)){
-			throw new \Exception("To prepare a sortable table, an id key must be included per row.");
+			throw new \Exception("To prepare a sortable table, an <code>id</code> key must be included per row.
+			This is different from a <code>row_id</code> key.");
 		}
 
 		$id = $html['id'];
