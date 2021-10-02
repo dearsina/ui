@@ -603,3 +603,11 @@ b, strong
 {
   color : map-get($theme-colors, "primary");
 }
+
+/**
+ * For when hovering over mapped elements
+ */
+.row.mapping:hover {
+  background: #e5f2e5;
+  border-radius: 0.25rem;
+}
