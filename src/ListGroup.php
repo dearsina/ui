@@ -83,6 +83,7 @@ class ListGroup {
 			}
 		}
 
+		# If there is a cap on the number of items that can be display per line
 		if($a['cap'] && count($a['items']) > $a['cap']){
 			while(!empty($a['items'])){
 				$col = "";
@@ -99,11 +100,22 @@ class ListGroup {
 				$cols[] = $col;
 			}
 			$html .= Grid::generate([$cols]);
-		} else if(is_array($a['items'])){
+		}
+
+		# If there is no cap (most common)
+		else if(is_array($a['items'])){
+			# For each item
 			foreach($a['items'] as $item){
+
+				# Generate the item if it's not in the simple items format
 				if(str::isNumericArray($item)){
+					// If the item itself is a numeric array (wrapped with [[ instead of [)
+
+					# Assume it's not HTML and needs to be generated
 					$item = Grid::generate($item);
 				}
+
+				# Then feed it to the list group item.
 				$html .= self::generateListGroupItem($item, $a['orderable']);
 			}
 		}
@@ -161,7 +173,7 @@ class ListGroup {
 		}
 
 		# ID
-		$id = str::getAttrTag("id", $id ?: str::id("list-group-item"));
+		$id = str::getAttrTag("id", $item['id'] ?: str::id("list-group-item"));
 
 		# Colour
 		$default_class[] = $item['colour'] ? "list-group-item-{$item['colour']}" : NULL;

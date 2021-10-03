@@ -45,9 +45,10 @@ EOF;
 		$label = str::newline($a['desc']);
 
 		# For the field holding the signature value
+		$a['type'] = "hidden";
 		$a['label'] = false;
 		$a['desc'] = false;
-		$a['style'] = ["display" => "none"];
+//		$a['style'] = ["display" => "none"];
 
 		return Grid::generate([[
 			"html" => [[[
