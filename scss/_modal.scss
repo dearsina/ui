@@ -53,6 +53,14 @@
 }
 
 /**
+ * Not 100% sure about any repercussions, but
+ * without it, button dropdowns drown.
+ */
+.modal-dialog-scrollable .modal-content{
+  overflow: unset;
+}
+
+/**
  * The container for tabs in modals
  */
 .modal-tabs
