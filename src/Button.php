@@ -92,6 +92,20 @@ class Button {
 			"alt" => "New"
 		],
 
+		"test" => [
+			"size" => "s",
+			"hash" => [
+				"rel_table" => "rel_table",
+				"rel_id" => "rel_id",
+				"action" => "test",
+				"vars" => "vars",
+			],
+			"icon" => "test",
+			"basic" => true,
+			"colour" => "yellow",
+			"alt" => "Test"
+		],
+
 		"edit" => [
 			"size" => "s",
 			"hash" => [
