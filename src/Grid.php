@@ -557,8 +557,7 @@ EOF;
 		$body = $body ?: $html;
 
 		$tag = $tag ?: "p";
-
-		if($body != strip_tags($body)){
+		if(is_string($body) && $body != strip_tags($body)){
 			//if the body contains HTML, it will be pushed out of the p tag, so we must switch to a div
 			$tag = "div";
 			$default_style = [
