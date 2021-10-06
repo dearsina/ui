@@ -370,6 +370,13 @@ EOF;
 		# Style
 		$style = str::getAttrTag("style", $tabs['style']);
 
+		# Tab content class
+		$content_class_array = str::getAttrArray($tabs['content_class'], ["tab-content"], $tabs['content_only_class']);
+		$content_class = str::getAttrTag("class", $content_class_array);
+
+		# Tab content style
+		$content_style = str::getAttrTag("style", $tabs['content_style']);
+
 		# The tab navigation
 		$nav_tabs_html = implode("\r\n", $nav_tabs);
 
@@ -380,7 +387,7 @@ EOF;
 <!-- Nav tabs -->
 <ul{$class}{$style}id="{$tab_id}" role="tablist">{$nav_tabs_html}</ul>
 <!-- Tab panes -->
-<div class="tab-content">{$tab_panes}</div>
+<div{$content_class}{$content_style}>{$tab_panes}</div>
 <script>
 var triggerTabList = [].slice.call(document.querySelectorAll('#{$tab_id} a'))
 triggerTabList.forEach(function (triggerEl) {
