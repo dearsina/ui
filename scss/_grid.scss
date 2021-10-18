@@ -109,9 +109,9 @@ $container-max-widths : (
 }
 
 /**
- * The z-index is set to 1 or else dropdowns will disappear. May have
+ * The z-index is set to 2 or else dropdowns will disappear. May have
  * other unintended consequences.
  */
 .card-footer .col {
-  z-index: 1;
+  z-index: 2;
 }
