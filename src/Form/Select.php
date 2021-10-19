@@ -113,32 +113,54 @@ EOF;
 	 *
 	 * @return bool|string
 	 */
-	private static function getOptionsHTML ($a)
+	private static function getOptionsHTML (array &$a): ?string
 	{
 		extract($a);
 		$matched = false;
 		$options_array = self::getOptionsArray($a, $matched);
 		if (!$matched && !$multiple) {
-			//if no options match on the value
-			//and it's _not_ a multiple situation
+			/**
+			 * If no options match on the value
+			 * and it's _not_ a multiple situation,
+			 * add a blank option that's set as
+			 * selected.
+			 *
+			 * This way, the dropdown defaults to
+			 * the placeholder.
+			 */
 			$options_array[] = [
 				"value" => "",
 				"title" => "",
 				"selected" => true
 			];
-			//add a blank option that's set as selected
-			//This way, the dropdown defaults to the placeholder
 		}
 
 		if (empty($options_array)) {
-			return false;
+			return NULL;
 		}
 
 		foreach ($options_array as $option) {
+			$data = str::getDataAttr([
+				"onChange" => self::getOnChange($option)
+			]);
+
+			if($option['script']){
+				$a['script'] .= $option['script'];
+			}
+			/**
+			 * This is a bit of a hack as the getOnChange method
+			 * adds a script to the array sent to it, because
+			 * it is usually the $a array. As in this case, we're
+			 * adding onChange to each *option* of an $a form field,
+			 * we have to add the created script back to the $a,
+			 * for it then to be displayed (and callable) if the
+			 * related option is selected.
+			 */
+
 			$value = str::getAttrTag("value", $option['value']);
 			$selected = $option['selected'] ? " selected" : NULL;
 			$disabled = $option['disabled'] ? " disabled" : NULL;
-			$options_html .= "<option{$value}{$selected}{$disabled}>{$option['title']}</option>";
+			$options_html .= "<option{$value}{$selected}{$disabled}{$data}>{$option['title']}</option>";
 		}
 
 		return $options_html;
@@ -186,15 +208,8 @@ EOF;
 		}
 
 		foreach ($options as $option_value => $option) {
-			if (is_array($option)) {
-				$option_title = $option['title'];
-				$disabled = $option['disabled'];
-			} else {
-				$option_title = $option;
-				$disabled = NULL;
-			}
-
-			if ($value_array && in_array($option_value, $value_array)) {
+			# Is *this* option selected?
+			if (in_array($option_value, $value_array ?:[])) {
 				$selected = true;
 
 				$matched = true;
@@ -207,11 +222,19 @@ EOF;
 				$selected = false;
 			}
 
+			# If the option is an array
+			if(is_array($option)){
+				$option['value'] = $option_value;
+				$option['selected'] = $selected;
+				$options_array[] = $option;
+				continue;
+			}
+
+			# If the option is a string
 			$options_array[] = [
 				"value" => $option_value,
-				"title" => $option_title,
+				"title" => $option,
 				"selected" => $selected,
-				"disabled" => $disabled,
 			];
 		}
 
