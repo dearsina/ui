@@ -54,6 +54,13 @@ class Input extends Field {
 		# Parent style
 		$parent_style = str::getAttrTag("style", $parent_style);
 
+		# Grand parent class
+		$grand_parent_class_array = str::getAttrArray($grand_parent_class, "mb-3", $only_grand_parent_class);
+		$grand_parent_class = str::getAttrTag("class", $grand_parent_class_array);
+		
+		# Grand_parent style
+		$grand_parent_style = str::getAttrTag("style", $grand_parent_style);
+
 		# Class array
 		$class_array = str::getAttrArray($class, ["form-control", $disabled_class], $only_class);
 
@@ -107,8 +114,8 @@ class Input extends Field {
 
 		return /** @lang HTML */
 			<<<EOF
-{$label}
-<div class="mb-3">
+<div{$grand_parent_class}{$grand_parent_style}>
+	{$label}
 	<div{$parent_class}{$parent_style}>
 		{$icon}
 		{$pre_button}
