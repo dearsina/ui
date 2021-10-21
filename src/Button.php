@@ -22,10 +22,7 @@ class Button {
 	const COMMON = [
 		"save" => [
 			"colour" => "green",
-			"icon" => [
-				"name" => "save",
-				"type" => "light",
-			],
+			"icon" => "save",
 			"title" => "Save",
 			"type" => "submit",
 		],

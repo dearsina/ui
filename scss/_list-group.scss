@@ -80,9 +80,7 @@ a.list-group-item:hover
 .list-group-handlebars::before
 {
   font-family : "Font Awesome 6 Pro";
-  content     : "\f0c9"; //Hamburger bars
-  font-weight : 300;
-  font-size   : small;
+  content     : "\e410"; //Grip dots
 
   cursor      : n-resize;
   float       : left;

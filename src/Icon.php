@@ -67,11 +67,6 @@ class Icon {
 	 */
 	static function getType(?string $type = NULL): string
 	{
-		# The default if type isn't specified
-		if(!$type){
-			return "fa-regular";
-		}
-
 		switch($type) {
 		case 'regular':
 		case 'solid':
@@ -93,7 +88,8 @@ class Icon {
 			return 'flag';
 
 		default:
-			return "fa-regular";
+			# The default if type isn't specified is LIGHT
+			return "fa-light";
 		}
 	}
 
@@ -266,6 +262,9 @@ class Icon {
 		$id = str::getAttrTag("id", $id);
 		$style = str::getAttrTag("style", $style);
 		$transform = str::getAttrTag("data-fa-transform", $transform);
+		if($rotate){
+			$class_array[] = "fa-rotate-{$rotate}";
+		}
 		$class = str::getAttrTag("class", $class_array);
 
 		return <<<EOF

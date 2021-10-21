@@ -113,20 +113,18 @@
 .sortable-handlebars {
   display: flex;
   align-items: center;
-  max-width: 3.5rem;
+  max-width: 2.5rem;
   cursor: n-resize;
 }
 
 /**
  * The handlebar icon is
- * the three lines, and they're
+ * grip dots, and they're
  * auto-generated.
  */
 .sortable-handlebars::after{
   font-family: "Font Awesome 6 Pro";
-  content: "\f0c9"; //Hamburger bars
-  font-weight: 300;
-  font-size: small;
+  content     : "\e410"; //Grip dots
 }
 
 /**
