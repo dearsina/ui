@@ -160,12 +160,17 @@ EOF;
 	/**
 	 * Similar to the above, but hides all headers/footers.
 	 *
+	 * I'm not sure why the fakeLoader doesn't hide by itself,
+	 * but it does seem to solve an edge case and there is no
+	 * harm in removing it.
+	 *
 	 * @return string
 	 */
 	public static function getDocFillCss(): string
 	{
 		return <<<EOF
 <style>
+		.fakeLoader {display: none;}
 		@media print {
 		  @page { margin:0; padding: 0; size: A4; }
 		  .pace { display:none; }
