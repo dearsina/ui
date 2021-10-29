@@ -678,6 +678,8 @@ nav .expand {
 .nav-dropdown {
   padding: .2rem 0 0 .5rem !important;
   width: 0;
+  font-size:90%;
+  // We're reducing the size slightly to make the lines look even, at 100% they don't
 }
 
 .nav-dropdown > a > i {

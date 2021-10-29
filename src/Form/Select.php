@@ -140,9 +140,9 @@ EOF;
 		}
 
 		foreach ($options_array as $option) {
-			$data = str::getDataAttr([
+			$data = str::getDataAttr(array_merge([
 				"onChange" => self::getOnChange($option)
-			]);
+			], $option['data'] ?:[]));
 
 			if($option['script']){
 				$a['script'] .= $option['script'];

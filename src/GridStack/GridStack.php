@@ -99,7 +99,8 @@ class GridStack {
 			}
 
 			# The max width is the difference between the very end and the starting point of this column
-			$max_width = $x - $col_x;
+			$max_width = $x - $col_x ?: 12;
+			//Edge case failsafe, if the max width is 0, set it to 12.
 
 			# Get all the cells for this column
 			$cells = self::buildGridColumnFields($col_elements, $max_width, $col_x);
