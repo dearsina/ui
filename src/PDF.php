@@ -126,34 +126,35 @@ class PDF {
 		}
 
 		return <<<EOF
-<style>
+		<style>
 		@media print {
-		  @page { size: A4; margin-top: 1cm; margin-left: 0; margin-right: 0; {$margin_bottom}}
-		  .pace { display:none; }
-		  #ui-navigation { display:none; }
-		  #ui-footer { display:none; }
-		  body { margin-top: 0; margin-left: 1cm; margin-right: 1cm; background-color: white; height: unset; zoom: 75%; }
-		  main { margin: 0; padding: 0; max-width: unset !important; }
-		  
-		  /** When printed, .containers will shrink if the max-width limit isn't removed */
-		  .container {max-width: unset !important;}
-		  /** For this to work, the .row immediately outside the card will need to be set to display:block */
-		  .card{ break-inside: avoid; page-break-inside:avoid; }
-		  /** Things we don't want to see in print view */
-		  .collapse-toggle::after /** The little chevron down */
-		  {
-		  	display:none;
-		  }
-		  
-		  /** For optional footers */
-		  footer {
-			position: fixed;
-			bottom: 0;
-			background: white;
-			color: black;
-		  }
+			@page { size: A4; margin-top: 1cm; margin-left: 0; margin-right: 0; {$margin_bottom}}
+			.pace { display:none; }
+			#ui-navigation { display:none; }
+			#ui-footer { display:none; }
+			body { margin-top: 0; margin-left: 1cm; margin-right: 1cm; background-color: white; height: unset; zoom: 75%; }
+			main { margin: 0; padding: 0; max-width: unset !important; }
+			
+			/** When printed, .containers will shrink if the max-width limit isn't removed */
+			.container {max-width: unset !important;}
+			
+			/** For this to work, the .row immediately outside the card will need to be set to display:block */
+			.card{ break-inside: avoid; page-break-inside:avoid; }
+			
+			/** Things we don't want to see in print view */
+			
+			/** The little chevron down */
+			.collapse-toggle::after {display:none;}
+			
+			/** For optional footers */
+			footer {
+				position: fixed;
+				bottom: 0;
+				background: white;
+				color: black;
+			}
 		}		
-</style>
+		</style>
 EOF;
 	}
 
@@ -169,17 +170,112 @@ EOF;
 	public static function getDocFillCss(): string
 	{
 		return <<<EOF
-<style>
-		.fakeLoader {display: none;}
+		<style>
 		@media print {
-		  @page { margin:0; padding: 0; size: A4; }
-		  .pace { display:none; }
-		  #ui-navigation { display:none; }
-		  #ui-footer { display:none; }
-		  body { margin: 0; padding: 0; background-color: white; }
-		  main { margin: 0; padding: 0; max-width: unset !important; }
+			.fakeLoader {display: none;}
+			@page { margin:0; padding: 0; size: A4; }
+			.pace { display:none; }
+			#ui-navigation { display:none; }
+			#ui-footer { display:none; }
+			body { margin: 0; padding: 0; background-color: white; }
+			main { margin: 0; padding: 0; max-width: unset !important; }
 		}
-</style>
+		</style>
+EOF;
+	}
+
+
+	public static function getDashboardCss(): string
+	{
+		return <<<EOF
+		<style>
+		@media print {
+			.fakeLoader {display: none;}
+			@page { size: A4; margin-top: 0; margin-left: 0; margin-right: 0; margin-bottom: 1.5cm;}
+			.pace { display:none; }
+			#ui-navigation { display:none; }
+			#ui-footer { display:none; }
+			body { margin-top: 0; margin-left: 1cm; margin-right: 1cm; background-color: white; height: unset; zoom: 75%;}
+			main { margin: 0; padding: 0; max-width: unset !important;}
+			
+			/** When printed, .containers will shrink if the max-width limit isn't removed */
+			.container {max-width: unset !important;}
+			
+			/** For this to work, the .row immediately outside the card will need to be set to display:block */
+			.card{ break-inside: avoid; page-break-inside:avoid; }
+			
+			/** Things we don't want to see in print view */
+			
+			/** Buttons in the header */
+			.col-buttons {display:none !important;}
+			
+			/** Population cards cannot be hidden **/ 
+			.card-body-population {
+				max-height: unset !important;
+				height: unset !important;
+			}
+			
+			/** No point having buttons either **/
+			.card-body-population .btn {
+				display: none !important;
+			}
+			
+			/** Make sure the entire list is shown **/
+			.card-body-population {
+				overflow-y: hidden !important;
+			}
+			
+			.header, .header-space{
+			  height: 3cm;
+			}
+			
+			.header {
+				position: fixed;
+				top: 0;
+				background: white;
+				color: black;
+				width: 100%;
+				right: 1cm;		
+				padding-top: 1cm;
+				padding-left: 2.2cm;
+			}
+			
+			.header-line {
+				border-bottom: 0.9px solid #d8e2e9;
+				padding-bottom:1cm;
+				margin-right:.3cm;
+				
+				text-transform: uppercase;
+				letter-spacing: 1.5px;
+				font-weight: 400;
+				font-size: smaller;
+			}
+			.header-left{
+				float: left;
+				height: 0;
+			}
+			.header-centre{
+				float: left;
+				width: 100%;
+				text-align: center;
+				height: 0;
+				font-weight: 800;
+			}
+			.header-right{
+				float:right;
+			}
+		}
+		
+		@media screen {
+			.header {
+				display: none;
+			}
+		}
+			
+		table {
+			width: 100%;
+		}
+		</style>
 EOF;
 	}
 
