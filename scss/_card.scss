@@ -118,6 +118,9 @@ box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 
  * this prevents buttons to override the text and vice versa.
  * The default padding of the container needs to stripped out,
  * to avoid double padding.
+ *
+ * The max-width limit is unset as it's irrelevant in this
+ * context and creates havoc with iframes.
  */
 .card-header > .container-fluid,
 .card-footer > .container-fluid,
@@ -125,6 +128,7 @@ box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 
 .card-footer > .container
 {
   padding : 0;
+  max-width: unset;
 }
 
 .card-footer
