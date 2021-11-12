@@ -691,12 +691,15 @@ EOF;
 		if($title_colour){
 			$color = $title_colour;
 		}
+
 		else if($colour){
 			$color = $colour;
 		}
+
 		else {
 			$color = $this->format['title_colour'];
 		}
+
 		$color = $this->getColourHexValue($color);
 
 		$default_style = [
