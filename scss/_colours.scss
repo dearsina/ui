@@ -80,6 +80,11 @@ $form-check-input-checked-bg-color: map-get($theme-colors, "primary");
 $form-check-input-checked-border-color: map-get($theme-colors, "primary");
 
 /**
+ * The colour of tabs when they're not selected
+ */
+$nav-link-color: map-get($theme-colors, "primary");
+
+/**
  * Adds the "fill" property to th bg-[colour] CSS styles
  */
 $utilities        : (
@@ -96,3 +101,12 @@ $utilities        : (
                 )
         ),
 );
+
+/**
+ * Create the .text-[COLOUR] classes.
+ */
+@each $color, $value in $theme-colors {
+  .text-#{$color} {
+    color: $value;
+  }
+}

@@ -102,3 +102,10 @@ a.list-group-item:hover
   letter-spacing : 0.5px;
 
 }
+
+/**
+ * Otherwise it wil stick out over the rounded corners.
+ */
+.list-group-flush {
+  border-radius: 0.25rem;
+}
