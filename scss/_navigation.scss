@@ -173,6 +173,12 @@ nav li .badge i {
   margin: 0.4rem 0;
 }
 
+
+.nav-link {
+  padding: 0.5rem;
+  // Reduce the padding from .5rem 1rem to just .5rem
+}
+
 /**
  * Desktop
  */
@@ -390,7 +396,8 @@ nav .parent {
 .nav-right > .parent{
   display: inline-block;
   cursor: pointer;
-  z-index: 1; //Otherwise it becomes impossible to use it form field cards
+  z-index: 3; //Otherwise it becomes impossible to use it form field cards
+  // 3 because it needs to be able to hover over the footer buttons bar
 }
 
 /**
