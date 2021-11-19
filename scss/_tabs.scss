@@ -83,6 +83,19 @@
   border-radius: 0 0 calc(0.25rem - 1px) calc(0.25rem - 1px);
 }
 
+button.nav-link .tab-close {
+  margin-left: 0.5rem;
+  font-weight: 500;
+  font-size: 80%;
+  padding: 3px;
+  color: map-get($theme-colors, "gray");
+}
+button.nav-link .tab-close:hover {
+  cursor: pointer;
+  background: $border-color;
+  border-radius: 0.25rem;
+}
+
 /*
  * Inspired by the following SCSS:
  * Responsive vertical tabs for Bootstrap 5

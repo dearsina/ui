@@ -75,6 +75,8 @@ $container-max-widths : (
   position: absolute;
   top: .5rem;
   right: .5rem;
+  z-index: 3;
+  //To allow the dropdown to over hover all other elements + be easy to access
 }
 
 /**
