@@ -41,6 +41,15 @@ form {
   color: map-get($theme-colors, "silver");
 }
 
+/**
+ * Not sure why the position needs to be relative.
+ * When it's relative, it messes with menu items
+ * that open over it.
+ */
+.input-group {
+  position: unset;
+}
+
 .input-group-text {
   background-color: $header-footer-bg;
   border-width: $form-item-border-width;
