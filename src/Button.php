@@ -512,6 +512,9 @@ class Button {
 			$tag_type = 'a';
 		}
 
+		$title_tag = str::getAttrTag("title", $alt ?: strip_tags($title));
+		//Is up here because it is used by the disabled section
+
 		# Is it disabled?
 		if($disabled){
 			$style_array["cursor"] = "default";
@@ -519,6 +522,8 @@ class Button {
 			$class_array[] = "disabled";
 			$disabled = "disabled=\"disabled\"";
 			$tag_type = "button";
+			$wrapper_pre = "<span {$title_tag} style=\"float:right;cursor:not-allowed;\">";
+			$wrapper_post = "</span>";
 		}
 
 		# Size
@@ -550,7 +555,6 @@ class Button {
 		$style_tag = str::getAttrTag("style", $style_array);
 		$id_tag = str::getAttrTag("id", $id);
 		$type_tag = str::getAttrTag("type", $type);
-		$title_tag = str::getAttrTag("title", $alt ?: strip_tags($title));
 		$data_style_tag = str::getAttrTag("data-style", "slide-left");
 
 		$button_html = /** @lang HTML */
