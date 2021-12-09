@@ -147,7 +147,7 @@ class Icon {
 		}
 
 		$name = strtolower($name);
-		//Names are case sensitive, they're all lowercase
+		//Names are case-sensitive, they're all lowercase
 
 		if($size){
 			$size = " fa-{$size}";
