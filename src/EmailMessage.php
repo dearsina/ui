@@ -476,6 +476,11 @@ EOF;
 		# Border needs to be set to zero
 		$a['border'] = "0";
 
+		# We will always want an alt tag, even without a value
+		if(!$a['alt']){
+			$a['alt_if_null'] = true;
+		}
+
 		$img = Img::generate($a);
 
 		if($a['url']){
