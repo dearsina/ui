@@ -56,7 +56,7 @@ class Field {
 		# Evert field must have an ID
 		$field['id'] = $field['id'] ?: str::id($field['type']);
 
-		# Required is a attribute that needs to be translated if present
+		# Required is an attribute that needs to be translated if present
 		$field = self::getRequiredValidation($field);
 
 		# Potential class name (based on the field type)
@@ -307,9 +307,13 @@ class Field {
 				$data["data-rule-{$rule}"] = $val['rule'];
 				$data["data-msg-{$rule}"] = $val['msg'];
 			}
-			else {
+			else if($val) {
 				$data["data-rule-{$rule}"] = $val;
 			}
+		}
+
+		if(!$data){
+			return NULL;
 		}
 
 		foreach($data as $key => $val){
