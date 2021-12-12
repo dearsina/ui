@@ -74,3 +74,11 @@
  * App specific styles.
  */
 @import "style";
+
+/**
+ * Styles related to Drawflow.js.
+ * Need to be placed last (or at least
+ * after _card.scss as it will
+ * override the default settings.
+ */
+@import "drawflow";

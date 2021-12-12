@@ -230,9 +230,6 @@ class Card extends \App\Common\Prototype {
 		# Dropdown buttons and/or button(s) in a row
 		$buttons = $this->getHeaderButtonsHTML();
 
-		# Accent
-		$this->cardHeader['class'][] = str::getColour($this->accent, "bg");
-
 		# Icon
 		$icon = Icon::generate($this->cardHeader['icon']);
 
@@ -621,6 +618,12 @@ EOF;
 	 */
 	function getHTML(){
 		$class_array = str::getAttrArray($this->class, "card", $this->only_class);
+
+		# Add the (optional) accent colour
+		if($this->accent){
+			$class_array[] = "card-bg-{$this->accent}";
+		}
+
 		$class = str::getAttrTag("class", $class_array);
 		$style = str::getAttrTag("style", $this->style);
 		$data = str::getDataAttr($this->data, true);

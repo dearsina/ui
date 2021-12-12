@@ -94,6 +94,10 @@
   width: 100%;
 }
 
+.table-body.active {
+  background-color: map-get($grays, "100");
+}
+
 /**
  * Give the table icon in a cell
  * a little breathing room.

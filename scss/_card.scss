@@ -73,6 +73,30 @@ box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 
 }
 
 /**
+ * Accent cards have a given colour as the header
+ * background and the card border.
+ */
+@each $color, $value in $theme-colors {
+  .card-bg-#{$color} {
+    border: 0.1px solid $value;
+    .card-header {
+      background-color: $value;
+    }
+    /**
+     * Cards with backgrounds need to have white text,
+     * otherwise the text disappears in the colour, but
+     * only those colours that are too dark for black text.
+     */
+    @if (contrast-ratio($value, black) < $min-contrast-ratio) {
+      .card-header .card-title {
+        color: white;
+      }
+    }
+  }
+
+}
+
+/**
  * Fixes the header to handle both buttons and buttons, even together
  */
 .card-header .col-buttons {
@@ -103,9 +127,17 @@ box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 
  * a little breathing room.
  */
 .card-header .card-title i.fa-fw:first-of-type,
-.card-footer .card-title i.fa-fw:first-of-type
+.card-footer .card-title i.fa-fw:first-of-type,
+.card-header .card-title i.flag-icon:first-of-type,
+.card-footer .card-title i.flag-icon:first-of-type
 {
   margin-right : .5rem;
+}
+
+.card-header .card-title i.flag-icon:first-of-type,
+.card-footer .card-title i.flag-icon:first-of-type
+{
+  border-radius: .15rem;
 }
 
 .card-title
