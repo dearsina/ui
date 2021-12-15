@@ -199,11 +199,21 @@ class ListGroup {
 		]);
 
 		# Left badge (badge on the LEFT side of the item)
-		$left_badge = Badge::generate($item['left_badge'], [
-			"style" => [
-				"float" => "left"
-			]
-		]);
+		if(is_array($item['left_badge'])){
+			$left_badge = Badge::generate($item['left_badge'], [
+				"style" => [
+					"float" => "left"
+				]
+			]);
+		}
+		else if ($item['left_badge']){
+			$left_badge = Grid::generate([[
+				"html" => $item['left_badge'],
+				"row_style" => [
+					"float" => "left",
+				],
+			]]);
+		}
 
 		# Button(s)
 		if($button = Button::generate($item["button"])){
