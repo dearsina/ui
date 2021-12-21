@@ -42,80 +42,85 @@ class Card extends \App\Common\Prototype {
 	/**
 	 * Create a card
 	 * <code>
-	 * 	$card = new card([
-	 * 	"accent" => "blue",
-	 * 	"header" => [
-	 * 		"title" => "Sign in to your account.",
-	 * 		"buttons" => [[
-	 * 			"title" => "Fancy header",
-	 * 			"strong" => true,
-	 * 			"colour" => "blue"
-	 * 		],[
-	 * 			"hash" => "#go/somewhere",
-	 * 			"title" => "Go somewhere",
-	 * 			"icon" => "fire",
-	 * 			"colour" => "red"
-	 * 		]]
-	 * 	],
-	 * 	"body" => $form->getHTML(),
-	 * 	"footer" => "Don't have an account yet?",
+	 *    $card = new card([
+	 *    "accent" => "blue",
+	 *    "header" => [
+	 *        "title" => "Sign in to your account.",
+	 *        "buttons" => [[
+	 *            "title" => "Fancy header",
+	 *            "strong" => true,
+	 *            "colour" => "blue"
+	 *        ],[
+	 *            "hash" => "#go/somewhere",
+	 *            "title" => "Go somewhere",
+	 *            "icon" => "fire",
+	 *            "colour" => "red"
+	 *        ]]
+	 *    ],
+	 *    "body" => $form->getHTML(),
+	 *    "footer" => "Don't have an account yet?",
 	 *
-	 * 	"id" => "", 	//The unique ID of this card div
-	 * 	"class" => [],	//Array or string of classes to add to this card div
-	 * 	"style" => [],	//Array of overriding styles for the card div
-	 * 	"draggable" => bool|[], //Make the card draggable. Can also be an array with custom settings
-	 * 	"resizable" => bool|[], //Make the card draggable. Can also be an array with custom settings
-	 * 	"script" => "", //Javascript, without the script tag.
-	 * 	"header" => [
-	 * 		"title" => "",	//If the header is just a string, it's assumed to be this key value
-	 * 		"html" => "",
-	 * 		"buttons" => [],
-	 * 		"button" => []
-	 * 	],
-	 * 	"body" => [
-	 * 		"html" => "", //If the body is just a string, it's assumed to be this key value
-	 * 		"class" => [],
-	 * 		"style" => [],
-	 * 	],
-	 * 	"footer" => [
-	 * 		"html" => "", //If the footer is just a string, it's assumed to be this key value
-	 * 		"class" => [],
-	 * 		"style" => [],
-	 * 	]
+	 *    "id" => "",    //The unique ID of this card div
+	 *    "class" => [],    //Array or string of classes to add to this card div
+	 *    "style" => [],    //Array of overriding styles for the card div
+	 *    "draggable" => bool|[], //Make the card draggable. Can also be an array with custom settings
+	 *    "resizable" => bool|[], //Make the card draggable. Can also be an array with custom settings
+	 *    "script" => "", //Javascript, without the script tag.
+	 *    "header" => [
+	 *        "title" => "",    //If the header is just a string, it's assumed to be this key value
+	 *        "html" => "",
+	 *        "buttons" => [],
+	 *        "button" => []
+	 *    ],
+	 *    "body" => [
+	 *        "html" => "", //If the body is just a string, it's assumed to be this key value
+	 *        "class" => [],
+	 *        "style" => [],
+	 *    ],
+	 *    "footer" => [
+	 *        "html" => "", //If the footer is just a string, it's assumed to be this key value
+	 *        "class" => [],
+	 *        "style" => [],
+	 *    ]
 	 * ]);
 	 * </code>
 	 *
 	 * @param array|NULL $a
 	 *
 	 */
-	function __construct ($a = NULL) {
+	function __construct(?array $a = NULL)
+	{
 		parent::__construct();
 
+		# ID is always set
+		$this->setId($a['id']);
+		// Unless it's explicitly set to false
+
 		if(!is_array($a)){
-			$this->setId();
-			return true;
+			return;
 		}
 
 		$this->setAttr($a);
-
-		return true;
 	}
 
 	/**
 	 * Generate an ID.
 	 * If one is given, use that.
+	 * If set to false, will set the ID to false.
+	 * IDs shouldn't be set to false
 	 *
-	 * @param bool|string $id
+	 * @param null $id
 	 *
-	 * @return bool
+	 * @return void
 	 */
-	public function setId($id = NULL){
+	public function setId($id = NULL): void
+	{
 		if($id === false){
 			$this->id = false;
-			return true;
+			return;
 		}
+
 		$this->id = $id ?: str::id("card");
-		return $this->id;
 	}
 
 	/**
@@ -124,28 +129,147 @@ class Card extends \App\Common\Prototype {
 	 *
 	 * @param mixed $a Can be an array or a string, if set to false, will clear the header
 	 *
-	 * @return bool
+	 * @return void
 	 */
-	public function setHeader($a = NULL){
+	public function setHeader($a = NULL): void
+	{
 		# Array
 		if(is_array($a)){
 			$this->cardHeader = $a;
-			return true;
+			return;
 		}
 
 		# Mixed
-		if ($a){
+		if($a){
 			$this->cardHeader['title'] = $a;
-			return true;
+			return;
 		}
 
 		# Clear
 		if($a === false){
 			$this->cardHeader = [];
-			return true;
+			return;
+		}
+	}
+
+	/**
+	 * Set the card footer.
+	 * Will replace existing footers.
+	 *
+	 * @param mixed $a Can be an array or a string, if set to false, will clear the footer
+	 *
+	 * @return void
+	 */
+	public function setFooter($a = NULL): void
+	{
+		# Array
+		if(is_array($a)){
+			$this->cardFooter = $a;
+			return;
 		}
 
-		return true;
+		# Mixed
+		if($a){
+			$this->cardFooter['html'] = $a;
+			return;
+		}
+
+		# Clear
+		if($a === false){
+			$this->cardFooter = [];
+			return;
+		}
+	}
+
+	/**
+	 * Set the card post.
+	 * Will replace existing posts.
+	 *
+	 * @param mixed $a Can be an array or a string, if set to false, will clear the post
+	 *
+	 * @return bool
+	 */
+	public function setPost($a = NULL): void
+	{
+		# Array
+		if(is_array($a)){
+			$this->cardPost = $a;
+			return;
+		}
+
+		# Mixed
+		if($a){
+			$this->cardPost['html'] = $a;
+			return;
+		}
+
+		# Clear
+		if($a === false){
+			$this->cardPost = [];
+			return;
+		}
+	}
+
+	public function setRows(?array $rows = NULL): void
+	{
+		$this->rows = $rows;
+	}
+
+	/**
+	 * Set the card body.
+	 * Will replace existing bodies.
+	 *
+	 * @param mixed $a Can be an array or a string, if set to false, will clear the body
+	 *
+	 * @return bool
+	 */
+	public function setBody($a = NULL): void
+	{
+		# Array
+		if(is_array($a)){
+			$a['id'] = $a['id'] ?: str::id("body");
+			$this->cardBody = $a;
+			return;
+		}
+
+		# Mixed
+		if($a){
+			$this->cardBody['html'] = $a;
+			$this->cardBody['id'] = str::id("body");
+			return;
+		}
+
+		# Clear
+		if($a === false){
+			$this->cardBody = [];
+			return;
+		}
+	}
+
+	/**
+	 * @param array|false $a
+	 */
+	public function setItems($a = NULL): void
+	{
+		# Numeric arrays
+		if(str::isNumericArray($a)){
+			$this->items['items'] = $a;
+			$this->items['id'] = str::id("items");
+			return;
+		}
+
+		# Associative arrays
+		if(str::isAssociativeArray($a)){
+			$a['id'] = $a['id'] ?: str::id("items");
+			$this->items = $a;
+			return;
+		}
+
+		# Clear
+		if($a === false){
+			$this->items = [];
+			return;
+		}
 	}
 
 	/**
@@ -209,14 +333,15 @@ class Card extends \App\Common\Prototype {
 	 * @throws Exception
 	 * @throws Exception
 	 */
-	public function getHeaderHTML(){
+	public function getHeaderHTML(): ?string
+	{
 		if(!$this->cardHeader){
 			// Headers are optional
-			return false;
+			return NULL;
 		}
 
 		# Header buttons can also be defined outside of the header key when defining card vales.
-		$this->cardHeader['buttons'] = array_merge($this->cardHeader['buttons']?:[], $this->buttons?:[]);
+		$this->cardHeader['buttons'] = array_merge($this->cardHeader['buttons'] ?: [], $this->buttons ?: []);
 
 		# Add the required Bootstrap header class very first
 		$this->cardHeader['class'] = str::getAttrArray($this->cardHeader['class'], "card-header", $this->cardHeader['only_class']);
@@ -249,7 +374,7 @@ class Card extends \App\Common\Prototype {
 		$script = str::getScriptTag($this->cardHeader['script']);
 
 		# The header title itself
-		$title = $this->cardHeader['header'].$this->cardHeader['title'].$this->cardHeader['html'];
+		$title = $this->cardHeader['header'] . $this->cardHeader['title'] . $this->cardHeader['html'];
 
 		# Title class
 		if(!empty(array_filter($class))){
@@ -283,7 +408,8 @@ EOF;
 	 * @throws Exception
 	 * @throws Exception
 	 */
-	public function getFooterHTML(?array $footer = NULL){
+	public function getFooterHTML(?array $footer = NULL): ?string
+	{
 		# Override
 		if($footer){
 			$this->cardFooter = $footer;
@@ -291,7 +417,7 @@ EOF;
 
 		if(!$this->cardFooter){
 			// Footers are optional
-			return false;
+			return NULL;
 		}
 
 		# Add the required Bootstrap footer class very first
@@ -334,7 +460,8 @@ EOF;
 	 * @return false|string
 	 * @throws Exception
 	 */
-	public function getSockHTML(?array $footer = NULL){
+	public function getSockHTML(?array $footer = NULL): ?string
+	{
 		# Override
 		if($footer){
 			$this->cardFooter = $footer;
@@ -342,7 +469,7 @@ EOF;
 
 		if(!$this->cardFooter){
 			// Footers are optional
-			return false;
+			return NULL;
 		}
 
 		# Icon
@@ -358,7 +485,7 @@ EOF;
 			$this->cardFooter['html'] = Grid::generate($this->cardFooter['html']);
 		}
 
-		if($html = $icon.$this->cardFooter['footer'].$this->cardFooter['html'].$badge){
+		if($html = $icon . $this->cardFooter['footer'] . $this->cardFooter['html'] . $badge){
 			$row_style = str::getAttrTag("style", $this->cardFooter['row_style']);
 			$row_class_array = str::getAttrArray($this->cardFooter['row_class'], ["col", "card-title"], $this->cardFooter['row_class_only']);
 			$row_class = str::getAttrTag("class", $row_class_array);
@@ -385,10 +512,11 @@ EOF;
 	 * @throws Exception
 	 * @throws Exception
 	 */
-	public function getPostHTML(){
+	public function getPostHTML(): ?string
+	{
 		if(!is_array($this->cardPost)){
 			// Posts are optional
-			return false;
+			return NULL;
 		}
 
 		# ID
@@ -412,136 +540,13 @@ EOF;
 		$cells[] = [
 			"row_class" => $class_array,
 			"row_style" => $style_array,
-			"html" => "{$icon}{$this->cardPost['html']}{$badge}"
+			"html" => "{$icon}{$this->cardPost['html']}{$badge}",
 		];
 		$html = Grid::generate($cells);
 
 		$class = str::getAttrTag("class", "card-post");
 
 		return "<div{$id}{$class}>{$html}</div>{$script}";
-	}
-
-	/**
-	 * Set the card footer.
-	 * Will replace existing footers.
-	 *
-	 * @param mixed $a Can be an array or a string, if set to false, will clear the footer
-	 *
-	 * @return bool
-	 */
-	public function setFooter($a = NULL){
-		# Array
-		if(is_array($a)){
-			$this->cardFooter = $a;
-			return true;
-		}
-
-		# Mixed
-		if ($a){
-			$this->cardFooter['html'] = $a;
-			return true;
-		}
-
-		# Clear
-		if($a === false){
-			$this->cardFooter = [];
-			return true;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Set the card post.
-	 * Will replace existing posts.
-	 *
-	 * @param mixed $a Can be an array or a string, if set to false, will clear the post
-	 *
-	 * @return bool
-	 */
-	public function setPost($a = NULL){
-		# Array
-		if(is_array($a)){
-			$this->cardPost = $a;
-			return true;
-		}
-
-		# Mixed
-		if ($a){
-			$this->cardPost['html'] = $a;
-			return true;
-		}
-
-		# Clear
-		if($a === false){
-			$this->cardPost = [];
-			return true;
-		}
-
-		return true;
-	}
-
-	public function setRows(?array $rows = NULL): void
-	{
-		$this->rows = $rows;
-	}
-
-	/**
-	 * Set the card body.
-	 * Will replace existing bodies.
-	 *
-	 * @param mixed $a Can be an array or a string, if set to false, will clear the body
-	 *
-	 * @return bool
-	 */
-	public function setBody($a = NULL){
-		# Array
-		if(is_array($a)){
-			$a['id'] = $a['id'] ?: str::id("body");
-			$this->cardBody = $a;
-			return true;
-		}
-
-		# Mixed
-		if ($a){
-			$this->cardBody['html'] = $a;
-			$this->cardBody['id'] = str::id("body");
-			return true;
-		}
-
-		# Clear
-		if($a === false){
-			$this->cardBody = [];
-			return true;
-		}
-
-		return true;
-	}
-
-	/**
-	 * @param array|false $a
-	 */
-	public function setItems($a = NULL): void
-	{
-		# Numeric arrays
-		if(str::isNumericArray($a)){
-			$this->items['items'] = $a;
-			$this->items['id'] = str::id("items");
-			return;
-		}
-
-		# Associative arrays
-		if(str::isAssociativeArray($a)){
-			$a['id'] = $a['id'] ?: str::id("items");
-			$this->items = $a;
-			return;
-		}
-
-		# Clear
-		if($a === false){
-			$this->items = [];
-			return;
-		}
 	}
 
 	/**
@@ -571,11 +576,12 @@ EOF;
 	 * Returns the body of the card.
 	 * Not optional.
 	 *
-	 * @return bool|string
+	 * @return NULL|string
 	 */
-	public function getBodyHTML(){
+	public function getBodyHTML(): ?string
+	{
 		if(!$this->cardBody){
-			return false;
+			return NULL;
 		}
 
 		if(is_array($this->cardBody['html'])){
@@ -604,117 +610,70 @@ EOF;
 	 *
 	 * @return bool|string
 	 */
-	private function getId($as_tag = NULL){
-		$this->id = $this->id ?: $this->setId();
+	private function getId($as_tag = NULL)
+	{
 		if($as_tag){
 			return str::getAttrTag("id", $this->id);
 		}
+
 		return $this->id;
 	}
 
 	/**
-	 * @return string
-	 * @throws Exception
+	 * Returns the card classes.
+	 * Includes accents.
+	 *
+	 * @return string|null
 	 */
-	function getHTML(){
+	private function getClassTag(): ?string
+	{
 		$class_array = str::getAttrArray($this->class, "card", $this->only_class);
 
 		# Add the (optional) accent colour
 		if($this->accent){
 			$class_array[] = "card-bg-{$this->accent}";
 		}
-
-		$class = str::getAttrTag("class", $class_array);
-		$style = str::getAttrTag("style", $this->style);
-		$data = str::getDataAttr($this->data, true);
-		return /** @lang HTML */<<<EOF
-<div{$this->getId(true)}{$data}{$class}{$style}>
-	{$this->getHeaderHTML()}
-	{$this->getImgHTML()}
-	{$this->getBodyHTML()}
-	{$this->getRowsHTML()}
-	{$this->getItemsHTML()}
-	{$this->getFooterHTML()}
-	
-	{$this->getScriptHTML(true)}
-</div>
-	{$this->getPostHTML()}
-EOF;
-
+		
+		return str::getAttrTag("class", $class_array);
 	}
 
-	private function getImgHTML(){
+	/**
+	 * Returns the card style. Is made into a method for the sake
+	 * of uniformity only.
+	 *
+	 * @return string|null
+	 */
+	private function getStyleTag(): ?string
+	{
+		return str::getAttrTag("style", $this->style);
+	}
+
+	/**
+	 * Get any data keys.
+	 * This is where draggable/resizable settings are also set.
+	 *
+	 * @return string|null
+	 */
+	private function getDataTag(): ?string
+	{
+		$draggable = $this->getDraggableData();
+		$resizable = $this->getResizableData();
+		if($draggable !== NULL){
+			$this->data['draggable'] = $draggable;
+		}
+		if($resizable !== NULL){
+			$this->data['resizable'] = $resizable;
+		}
+		return str::getDataAttr($this->data, true);
+	}
+
+	/**
+	 * @return bool|string
+	 */
+	private function getImgHTML()
+	{
 		return Img::generate($this->img);
 	}
-
-	function getEmailHTML(): string
-	{
-		$class_array = str::getAttrArray($this->class, ["main", "", "card-email"], $this->only_class);
-		$class = str::getAttrTag("class", $class_array);
-
-		$default_style = [
-			"border-collapse" => "separate",
-			"mso-table-lspace" => "0pt",
-			"mso-table-rspace" => "0pt",
-			"width" => "100%",
-			"background" => "#ffffff",
-			"border" => "0.9px solid #d8e2e9"
-//			"border" => "0.9px solid red"
-		];
-		$style_array = str::getAttrArray($this->style, $default_style, $this->only_style);
-		$style = str::getAttrTag("style", $style_array);
-
-		$html = <<<EOF
-	{$this->getHeaderHTML()}
-	{$this->getBodyHTML()}
-	{$this->getRowsHTML()}
-	{$this->getItemsHTML()}
-	{$this->getFooterHTML()}
-	{$this->getScriptHTML(true)}
-EOF;
-
-//		$css_url = "https://app.{$_ENV['domain']}/css/app.css";
-		$css_url = "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0-beta1/css/bootstrap.min.css";
-		if(!$css = @file_get_contents($css_url)){
-			throw new \Exception("The CSS file at <code>{$css_url}</code> could not be accessed. The email was not sent.");
-		}
-		$html = CssInliner::fromHtml($html)->inlineCss($css)->render();
-
-
-//		return <<<EOF
-//            <!-- White box -->
-//            <table class="main" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background: #ffffff; border-radius: 3px; border:0.9px solid #d8e2e9;">
-//              <tr>
-//                <td class="wrapper" style="font-family: sans-serif; font-size: 14px; vertical-align: top; box-sizing: border-box; padding: 20px;"><!-- First line of the white box. -->
-//                  <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;">
-//                    <tr>
-//                      <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;"><!-- Second line of the white box -->
-//						{$html}
-//					  </td>
-//                    </tr>
-//                  </table>
-//                </td>
-//              </tr>
-//            </table>
-//			<!-- White box end -->
-//EOF;
-
-
-		return /** @lang HTML */<<<EOF
-<table
-	{$this->getId(true)}
-	{$class}
-	{$style}
-	cellspacing="0"
-	cellpadding="0"
-><tr><td class="wrapper" style="font-family: sans-serif; font-size: 14px; vertical-align: top; box-sizing: border-box; padding: 10px;">
-	{$html}
-</td></tr></table>
-	{$this->getPostHTML()}
-EOF;
-	}
-	
-	
 
 	/**
 	 * @return bool|string
@@ -736,14 +695,13 @@ EOF;
 
 		return "<div{$class}{$id}{$style}>{$html}</div>{$script}";
 	}
-	
-	
 
 	/**
 	 * @return bool|string
 	 * @throws Exception
 	 */
-	public function getRowsHTML(){
+	public function getRowsHTML()
+	{
 		if(!$html = Grid::generateRows($this->rows)){
 			return false;
 		}
@@ -764,82 +722,93 @@ EOF;
 	 *
 	 * @return bool|string
 	 */
-	private function getScriptHTML($as_tag = FALSE){
-		$script = $this->script;
-		$script .= $this->getDraggableScript();
-		$script .= $this->getResizableScript();
-
+	private function getScriptHTML(?bool $as_tag = NULL): ?string
+	{
 		if($as_tag){
-			return str::getScriptTag($script);
+			return str::getScriptTag($this->script);
 		}
-		return $script;
+		return $this->script;
 	}
 
 	/**
-	 * Checks to see if the draggable key is set,
-	 * and if so, will return Javascript that
-	 * allows the card to be draggable using jQuery UI.
+	 * Returns a card as HTML.
 	 *
-	 * @return bool|string
+	 * @return string
+	 * @throws Exception
 	 */
-	private function getDraggableScript(){
-		if(!$this->draggable) {
-			return false;
-		}
-
-		if(is_array($this->draggable)){
-			$custom_settings_json = json_encode($this->draggable);
-		} else {
-			$custom_settings_json = "{}";
-		}
-
-		return /** @lang ECMAScript 6 */ <<<EOF
-$(document).ready(function(){
-	var default_settings = {
-		handle: ".card-header-draggable",
-		scroll: false,
-		start: function(event, ui){
-	  		$(ui.helper).css('width', $(event.target).width() + "px");
-	   }
-	};
-	
-	var custom_settings = {$custom_settings_json};
-	var settings = $.extend(default_settings, custom_settings);
-	
-	$('#{$this->getId()}').draggable(settings);
-	$('#{$this->getId()}').css("z-index", "9999");
-});
+	public function getHTML(): string
+	{
+		return /** @lang HTML */ <<<EOF
+<div
+	{$this->getId(true)}
+	{$this->getDataTag()}
+	{$this->getClassTag()}
+	{$this->getStyleTag()}
+>
+	{$this->getHeaderHTML()}
+	{$this->getImgHTML()}
+	{$this->getBodyHTML()}
+	{$this->getRowsHTML()}
+	{$this->getItemsHTML()}
+	{$this->getFooterHTML()}	
+	{$this->getScriptHTML(true)}
+</div>
+	{$this->getPostHTML()}
 EOF;
 	}
 
 	/**
-	 * Checks to see if the resizable key is set,
-	 * and if so, will return Javascript that
-	 * allows the card to be resizable using jQuery UI.
+	 * If the car is to be draggable, will return an
+	 * array with draggable settings. The array could be empty,
+	 * if the card is to be draggable but have no custom
+	 * settings. If NULL is returned, assume no dragging is
+	 * necessary.
 	 *
-	 * @return bool|string
+	 * This method should *NOT* be used, and instead,
+	 * the Window() class should be used for a better UI
+	 * experience.
+	 *
+	 * @return array|null
 	 */
-	private function getResizableScript(){
-		if($this->resizable){
-			//If resizable has been written incorrectly
-			$this->resizable = $this->resizable;
-		}
-		if(!$this->resizable) {
-			return false;
+	private function getDraggableData(): ?array
+	{
+		if(!$this->draggable){
+			return NULL;
 		}
 
-		$default_settings = [
-			"handles" => "se",
-		];
+		if(is_array($this->draggable)){
+			return $this->draggable;
+		}
+		else {
+			return [];
+		}
+	}
+
+	/**
+	 * If the card is to be resizable, will return an array
+	 * with resizable settings. The array could be empty,
+	 * if the card is to be resizable but have no custom
+	 * settings. If NULL is returned, assume no resizing is
+	 * necessary.
+	 *
+	 * @return array|null
+	 */
+	private function getResizableData(): ?array
+	{
+		if($this->resizeable){
+			//If resizable has been written incorrectly
+			$this->resizable = $this->resizeable;
+		}
+
+		if(!$this->resizable){
+			return NULL;
+		}
 
 		if(is_array($this->resizable)){
-			$resizable_settings = array_merge($default_settings, $this->resizable);
-		} else {
-			$resizable_settings = $default_settings;
+			return $this->resizable;
 		}
-
-		$resizable_settings_json = json_encode($resizable_settings, JSON_PRETTY_PRINT);
-
-		return "$('#{$this->getId()}').resizable({$resizable_settings_json});";
+		else {
+			return [];
+		}
 	}
 }

@@ -166,6 +166,34 @@ class Card extends Prototype implements ExampleInterface {
 
 		$html .= $card->getHTML();
 
+		$card = new \App\UI\Card\Card([
+			"header" => [
+				"title" => "Resizable",
+			],
+			"body" => "This card is resizable.",
+			"footer" => [
+				"html" => "This is the footer.",
+				"class" => "small",
+			],
+			"resizable" => true
+		]);
+
+		$html .= $card->getHTML();
+
+		$card = new \App\UI\Card\Card([
+			"header" => [
+				"title" => "Draggable",
+			],
+			"body" => "This card is draggable. You should use <pre>Windows()</pre> instead though.",
+			"footer" => [
+				"html" => "This is the footer.",
+				"class" => "small",
+			],
+			"draggable" => true
+		]);
+
+		$html .= $card->getHTML();
+
 		$grid = new \App\UI\Grid();
 		$grid->set($html);
 
