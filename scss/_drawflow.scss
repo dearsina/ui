@@ -3,139 +3,334 @@
  * Version 1.0
  */
 
-@use 'sass:math';
-@use 'sass:color';
+@use "sass:math";
+@use "sass:color";
+
+/**
+ * The node colours
+ */
+$node-colours          : (
+        "red": #cc0000,
+        "yellow": hsl(50deg 100% 80%),
+        "orange": hsl(45deg 100% 70%),
+        "green": #5fbf05,
+        "blue": #1469b8,
+        "purple": #c723ba,
+  //"sizzling-red": hsla(358, 100%, 67%, 1),
+  //"sunglow": hsla(44, 100%, 61%, 1),
+  //"yellow-green": hsla(83, 68%, 47%, 1),
+  //"green-blue-crayola": hsla(203, 77%, 43%, 1),
+  //"royal-purple": hsla(265, 32%, 44%, 1),
+  //"charcoal":  #264653ff,
+  //"persian-green":  #2a9d8fff,
+  //"orange-yellow-crayola":  #e9c46aff,
+  //"sandy-brown":  #f4a261ff,
+  //"burnt-sienna":  #e76f51ff,
+  //"mango":  hsla(44, 100%, 52%, 1),
+  //"orange-pantone":  hsla(19, 97%, 51%, 1),
+  //"winter-sky":  hsla(334, 100%, 50%, 1),
+  //"blue-violet":  hsla(265, 83%, 57%, 1),
+  //"azure":  hsla(217, 100%, 61%, 1),
+);
 
 // Baseline saturation percentage.
-$saturation: 60;
+$saturation            : 60%;
 
 // Baseline lightness percentage.
-$lightness: 90;
+$lightness             : 90%;
 
 // Step counter
-$step: 0;
+$step                  : 0;
 
-:root {
-  // Border colour
-  --border-color: #cacaca;
-
+// Create a range of 10 pastel colours
+@for $i from 0 through 9
+{
   // Go through the entire 360 colour cycle, in 10 steps
-  @for $i from 0 through 9 {
-    // For each step
 
-    // Step counter
-    $step: $step + 1;
+  // Step counter
+  $step         : $i + 1;
+  // $i starts with 0, $step starts with 1
 
-    // Default H/S/L
-    $h: calc(#{$i} * 36);
-    $s: $saturation;
-    $l: $lightness;
+  // Default H/S/L
+  $h            : $i * 36;
+  $s            : $saturation;
+  $l            : $lightness;
 
-    // 3-steps are one shade less saturated, one shade darker
-    @if math.div($step, 3) == math.round(math.div($step, 3)) {
-      $s: $saturation - 10;
-      $l: $lightness - 10;
-    }
+  // 3-steps are one shade less saturated, one shade darker
+  @if math.div($step, 3) == math.round(math.div($step, 3))
+  {
+    $s : $saturation - 10%;
+    $l : $lightness - 10%;
+  }
 
     // Even steps are three shades more saturated
-    @else if $step % 2 != 0 {
-      $s: $saturation + 30;
-      $l: $lightness;
-    }
+  @else if $step % 2 != 0
+  {
+    $s : $saturation + 30%;
+    $l : $lightness;
+  }
 
-    // The header is one shade darker than the body
-    $l_header: $l - 10;
+  // Add the pastel colours to the node colours array
+  $node-colours : map-merge($node-colours, ("pastel-#{$step}": hsl($h, $s, $l)));
+}
 
-    // Each step has two variables the ps-step and the ps-step-header
-    --ps-#{$step}-header: hsl(#{$h} #{$s}% #{$l_header}.0%);
-    --ps-#{$step}: hsl(#{$h} #{$s}% #{$l}.0%);
+/**
+ * Generic node card style
+ */
+.drawflow_content_node > .card
+{
+  margin-bottom : 0;
+  border-width  : 5px !important;
+  border-style  : solid !important;
+
+  // The default width. Can be overwritten by the type
+  width: 200px;
+}
+
+.drawflow_content_node > .card > .card-body
+{
+  overflow : hidden;
+  font-size: 75%;
+}
+
+.drawflow_content_node > .card.pastel > .card-header,
+.drawflow_content_node > .card.colour > .card-header,
+{
+  padding            : 5px 8px;
+  border-bottom      : none;
+  border-radius      : calc(0.25rem - 1px);
+  box-shadow         : 0px 0px 5px 0px rgba(0, 0, 0, 0.2) inset;
+  -webkit-box-shadow : 0px 0px 5px 0px rgba(0, 0, 0, 0.2) inset;
+  -moz-box-shadow    : 0px 0px 5px 0px rgba(0, 0, 0, 0.2) inset;
+}
+
+.drawflow_content_node > .card.border > card.body
+{
+
+}
+
+.drawflow_content_node > .card.border > .card-header,
+{
+
+}
+
+// These classes are placed here so that the specific card styles can override them without using !important
+
+// For each node colour, set the node colour styles
+@each $colour-name, $colour-value in $node-colours
+{
+  // Set the header colour (10% darker)
+  $header-colour-value          : darken($colour-value, 10%);
+
+  // Set the *selected* header colour
+  $selected-header-colour-value : desaturate(darken($header-colour-value, 30%), 20%);
+
+  // The card
+  .node-colour-#{$colour-name}
+  {
+    border-color     : $colour-value;
+    background-color : $colour-value;
+  }
+
+  // The card header
+  .node-colour-#{$colour-name} > .card-header
+  {
+    background-color : $header-colour-value;
+  }
+
+  // The card *selected*
+  .drawflow-node.selected .node-colour-#{$colour-name}
+  {
+    border-color     : $header-colour-value;
+    background-color : $header-colour-value;
+  }
+
+  // The card header selected
+  .drawflow-node.selected .node-colour-#{$colour-name} > .card-header
+  {
+    background-color   : $colour-value;
+
+    box-shadow         : 0px 0px 5px 0px hsl(0deg 0% 0% / 20%);
+    -webkit-box-shadow : 0px 0px 5px 0px hsl(0deg 0% 0% / 20%);
+    -moz-box-shadow    : 0px 0px 5px 0px hsl(0deg 0% 0% / 20%);
+  }
+
+  // Alternative design, the striped border card
+  .node-colour-#{$colour-name}-striped-border
+  {
+    background-image    : repeating-linear-gradient(
+                    45deg,
+                    $header-colour-value,
+                    $header-colour-value 12px,
+                    transparent 12px,
+                    transparent 19px,
+                    $header-colour-value 19px),
+    repeating-linear-gradient(135deg,
+                    $header-colour-value,
+                    $header-colour-value 12px,
+                    transparent 12px,
+                    transparent 19px,
+                    $header-colour-value 19px),
+    repeating-linear-gradient(225deg, $header-colour-value,
+                    $header-colour-value 12px,
+                    transparent 12px,
+                    transparent 19px,
+                    $header-colour-value 19px),
+    repeating-linear-gradient(315deg, $header-colour-value,
+                    $header-colour-value 12px,
+                    transparent 12px,
+                    transparent 19px,
+                    $header-colour-value 19px
+    );
+    background-size     : 4px 100%, 100% 4px, 4px 100%, 100% 4px;
+    background-position : 0 0, 0 0, 100% 0, 0 100%;
+    background-repeat   : no-repeat;
+    border              : none;
+    padding             : 10px;
   }
 }
 
-@for $step from 1 through 10 {
-  /**
- * The ps-#{$step} card.
+/**
+ * Theme colour border nodes
  */
-  .ps-#{$step}-card {
-     margin-bottom:0;
-     border:5px solid var(--ps-#{$step});
-     background-color:var(--ps-#{$step});
-   }
+@each $colour-name, $colour-value in $theme-colors
+{
+  // Set the header colour (10% darker)
+  $header-colour-value : darken($colour-value, 10%);
 
-  /**
-   * The ps-#{$step} card with striped borders.
-   */
-  .ps-#{$step}-striped-border {
-     background-image: repeating-linear-gradient(45deg, var(--ps-#{$step}-header), var(--ps-#{$step}-header) 12px, transparent 12px, transparent 19px, var(--ps-#{$step}-header) 19px), repeating-linear-gradient(135deg, var(--ps-#{$step}-header), var(--ps-#{$step}-header) 12px, transparent 12px, transparent 19px, var(--ps-#{$step}-header) 19px), repeating-linear-gradient(225deg, var(--ps-#{$step}-header), var(--ps-#{$step}-header) 12px, transparent 12px, transparent 19px, var(--ps-#{$step}-header) 19px), repeating-linear-gradient(315deg, var(--ps-#{$step}-header), var(--ps-#{$step}-header) 12px, transparent 12px, transparent 19px, var(--ps-#{$step}-header) 19px);
-     background-size: 4px 100%, 100% 4px, 4px 100% , 100% 4px;
-     background-position: 0 0, 0 0, 100% 0, 0 100%;
-     background-repeat: no-repeat;
-     border:none;
-     padding: 10px;
-   }
+  // The card
+  .node-border-colour-#{$colour-name}
+  {
+    border-color : $colour-value !important;
+  }
 
-  /**
-   * The ps-#{$step} card header.
-   */
-  .ps-#{$step}-card > .card-header {
-     background-color: var(--ps-#{$step}-header);
-     padding:5px 8px;
-     border-bottom:none;
-     border-radius: calc(0.25rem - 1px);
-     box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.09) inset;
-     -webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.09) inset;
-     -moz-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.09) inset;
-   }
+  // The card header selected
+  .drawflow-node.selected .node-border-colour-#{$colour-name} > .card-header
+  {
+    background-color   : $colour-value;
+    color              : white;
+
+    border-radius      : unset;
+    margin-top         : -0.5px;
+    margin-left        : -0.5px;
+    margin-right       : -0.5px;
+
+    box-shadow         : 0px 0px 5px 0px hsl(0deg 0% 0% / 20%);
+    -webkit-box-shadow : 0px 0px 5px 0px hsl(0deg 0% 0% / 20%);
+    -moz-box-shadow    : 0px 0px 5px 0px hsl(0deg 0% 0% / 20%);
+  }
+
+  // Alternative design, the striped border card
+  .node-border-colour-#{$colour-name}-striped-border
+  {
+    background-image    : repeating-linear-gradient(
+                    45deg,
+                    $header-colour-value,
+                    $header-colour-value 12px,
+                    transparent 12px,
+                    transparent 19px,
+                    $header-colour-value 19px),
+    repeating-linear-gradient(135deg,
+                    $header-colour-value,
+                    $header-colour-value 12px,
+                    transparent 12px,
+                    transparent 19px,
+                    $header-colour-value 19px),
+    repeating-linear-gradient(225deg, $header-colour-value,
+                    $header-colour-value 12px,
+                    transparent 12px,
+                    transparent 19px,
+                    $header-colour-value 19px),
+    repeating-linear-gradient(315deg, $header-colour-value,
+                    $header-colour-value 12px,
+                    transparent 12px,
+                    transparent 19px,
+                    $header-colour-value 19px
+    );
+    background-size     : 4px 100%, 100% 4px, 4px 100%, 100% 4px;
+    background-position : 0 0, 0 0, 100% 0, 0 100%;
+    background-repeat   : no-repeat;
+    border              : none;
+    padding             : 10px;
+  }
+}
+
+// Set any root colours
+:root
+{
+  // Node border colour
+  --node-border-colour : #cacaca;
+}
+
+.parent-drawflow {
+  height: 100%;
+}
+
+.drawflow .connection .main-path {
+  stroke: map-get($theme-colors, "primary");;
+  stroke-width: 3px;
 }
 
 /**
  * Dots background, used by questionnaires.
  */
-.bg-dots {
-  background: radial-gradient($border-color 8%, transparent 11%) -4px -1px / 31px 31px;
+.bg-dots
+{
+  //background : radial-gradient($border-color 8%, transparent 11%) -4px -1px / 31px 31px;
+  background: radial-gradient(hsl(210deg 20% 78%) 6%, transparent 8%);
+  background-size : 25px 25px;
+  background-position: -4px -1px;
 }
 
 /**
  * Lines background, used by workflows.
  */
-.bg-lines {
-  background-size: 25px 25px;
-  background-image:
-          linear-gradient(to right, #f1f1f1 1px, transparent 1px),
-          linear-gradient(to bottom, #f1f1f1 1px, transparent 1px);
+.bg-lines
+{
+  background-size  : 25px 25px;
+  background-position: -1px;
+  background-image : linear-gradient(to right, #f1f1f1 1px, transparent 1px),
+  linear-gradient(to bottom, #f1f1f1 1px, transparent 1px);
 }
 
-.bg-blueprint {
-  background-color: #269;
-  background-image:
-          linear-gradient(		rgba(0,0,0,.10) 2px, transparent 2px),
-          linear-gradient(90deg,rgba(0,0,0,.10) 2px, transparent 2px),
-          linear-gradient(		rgba(0,0,0,.05) 1px, transparent 1px),
-          linear-gradient(90deg,rgba(0,0,0,.05) 1px, transparent 1px);
-  background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
-  background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px;
+.bg-blueprint
+{
+  background-color    : #226699;
+  background-image    : linear-gradient(rgba(0, 0, 0, .10) 2px, transparent 2px),
+  linear-gradient(90deg, rgba(0, 0, 0, .10) 2px, transparent 2px),
+  linear-gradient(rgba(0, 0, 0, .05) 1px, transparent 1px),
+  linear-gradient(90deg, rgba(0, 0, 0, .05) 1px, transparent 1px);
+  background-size     : 100px 100px, 100px 100px, 20px 20px, 20px 20px;
+  background-position : -2px -2px, -2px -2px, -1px -1px, -1px -1px;
 }
 
 /**
  * Node prototype
  */
-.drawflow .drawflow-node {
-  margin-bottom:.5rem;
-  border: 1px solid var(--border-color);
-  -webkit-box-shadow: 0 2px 4px 0px var(--border-color);
-  box-shadow: 0 2px 4px 0px var(--border-color);
-  padding: 0px;
-  width: 200px;
-  border-radius: 4px;
-  background: none;
+.drawflow .drawflow-node
+{
+  margin-bottom      : .5rem;
+  //border: 1px solid var(--node-border-colour);
+  border             : none;
+  border-radius      : .25rem;
+  -webkit-box-shadow : 0 2px 4px 0px var(--node-border-colour);
+  box-shadow         : 0 2px 4px 0px var(--node-border-colour);
+  padding            : 0px;
+  width              : auto; // We're setting the width to auto, and letting the cards decide width
+  background         : none;
   //display: block;
 }
 
-.drawflow .drawflow-node.selected {
-  background: none;
-  border: 1px solid hsl(0deg 0% 36%);
-  -webkit-box-shadow: 0 2px 25px -8px hsl(0deg 0% 36%);
-  box-shadow: 0 2px 25px -8px hsl(0deg 0% 36%);
+.drawflow .drawflow-node.selected
+{
+  background         : none;
+  //border: 1px solid hsl(0deg 0% 36%);
+  border             : none;
+  border-radius      : .25rem;
+  //-webkit-box-shadow: 0 2px 25px -8px hsl(0deg 0% 36%);
+  //box-shadow: 0 2px 25px -8px hsl(0deg 0% 36%);
+
+  -webkit-box-shadow : 0 0.1rem 0.15rem rgb(40 36 89 / 15%), 0 0.25rem 0.5rem rgb(40 36 89 / 15%), 0 0.75rem 1.75rem rgb(40 36 89 / 20%);
 }
 
 .drawflow-node .inputs,
@@ -143,28 +338,192 @@ $step: 0;
 {
   //height: 25px !important;
   //width: 25px !important;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  height         : 100%;
+  display        : flex;
+  flex-direction : column;
+  align-items    : center;
 }
+
+/**
+ * Default input/output styles.
+ */
+$node-circumference    : 25px;
+$node-border-thickness : 1px;
 
 .drawflow .drawflow-node .input,
-.drawflow .drawflow-node .output {
-  height: 25px;
-  width: 25px;
-  border: 2px solid var(--border-color);
-  background: white;
-  position: unset;
+.drawflow .drawflow-node .output
+{
+  height             : $node-circumference;
+  width              : $node-circumference;
+  border             : $node-border-thickness solid var(--node-border-colour);
+  //background         : hsl(0deg 0% 100% / 100%);
+
+  /* ff 3.6+ */
+  background         : -moz-radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 1) 25%, rgba(255, 255, 255, 0.7) 100%);
+
+  /* safari 5.1+,chrome 10+ */
+  background         : -webkit-radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 1) 25%, rgba(255, 255, 255, 0.7) 100%);
+
+  /* opera 11.10+ */
+  background         : -o-radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 1) 25%, rgba(255, 255, 255, 0.7) 100%);
+
+  /* ie 10+ */
+  background         : -ms-radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 1) 25%, rgba(255, 255, 255, 0.7) 100%);
+
+  /* global 92%+ browsers support */
+  background         : radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 1) 25%, rgba(255, 255, 255, 0.7) 100%);
+
+  // Gradients generated at: https://angrytools.com/gradient/?25_FFFFFF,100_FFFFFFB3&r_90_50_50
+
+  position           : unset;
+
+  -webkit-box-shadow : 0 2px 6px -1px hsl(0deg 0% 60%);
+  box-shadow         : 0 2px 6px -1px hsl(0deg 0% 60%);
 }
 
-//.drawflow .drawflow-node .input
-//{
-//  left: -8px;
-//
-//}
-//.drawflow .drawflow-node .output
-//{
-//  left: -7px;
-//  background: white;
-//}
+.drawflow .drawflow-node .input:hover,
+.drawflow .drawflow-node .output:hover
+{
+  background : hsl(0deg 0% 100% / 100%);
+}
+
+/**
+ * Input 1 is always on top
+ */
+.drawflow .drawflow-node .input.input_1
+{
+  position : absolute;
+  left     : 45%;
+  top      : calc(0% - (#{$node-circumference} / 2));
+}
+
+/**
+ * Input 2 is always to the left
+ */
+.drawflow .drawflow-node .input.input_2
+{
+  position : absolute;
+  left     : calc((#{$node-circumference} / 2) * -1);
+  top      : calc(50% - (#{$node-circumference} / 2));
+}
+
+/**
+ * Output 1 is always on the bottom
+ */
+.drawflow .drawflow-node .output.output_1
+{
+  position : absolute;
+  left     : 45%;
+  top      : calc(100% - (#{$node-circumference} / 2));
+}
+
+/**
+ * Output 2 is always to the right
+ */
+.drawflow .drawflow-node .output.output_2
+{
+  position : absolute;
+  left     : calc(100% - (#{$node-circumference} / 2));
+  top      : calc(50% - (#{$node-circumference} / 2));
+}
+
+/**
+ * Common icon styles
+ */
+.drawflow .drawflow-node .input.input_1::before,
+.drawflow .drawflow-node .input.input_2::before,
+.drawflow .drawflow-node .output.output_1::before,
+.drawflow .drawflow-node .output.output_2::before
+{
+  font-family : "Font Awesome 6 Pro";
+  font-weight : 300;
+  color       : var(--node-border-colour);
+
+  font-size   : 11pt;
+  line-height : 1.7;
+  display     : block;
+  width       : 100%;
+  text-align  : center;
+
+  //content     : "\f04e"; /** fast-forward */
+  //content     : "\e3c2"; /** paperclip */
+  //content     : "\e131"; /** clapperboard */
+  //content     : "\e01c"; /** socket */
+}
+
+/**
+ * Delete button (both for node and connection)
+ */
+
+.drawflow > .drawflow-delete
+{
+  border             : 2px solid #43b993;
+  background         : white;
+  color              : #43b993;
+  -webkit-box-shadow : 0 2px 20px 2px #43b993;
+  box-shadow         : 0 2px 20px 2px #43b993;
+}
+
+.drawflow > .drawflow-delete:hover
+{
+  background : #43b993;
+  color      : white;
+}
+
+.drawflow-delete
+{
+  border             : 2px solid #0071b8;
+  background         : white;
+  color              : #0071b8;
+  -webkit-box-shadow : 0 2px 20px 2px #0071b8;
+  box-shadow         : 0 2px 20px 2px #0071b8;
+  /* Hide the existing text*/
+  font-size          : 0;
+
+  box-shadow         : 0 2px 10px 0px hsl(0deg 0% 30%);
+  border-color       : hsl(0deg 0% 30%);
+  color              : hsl(0deg 0% 30%);
+}
+
+.drawflow-delete:hover
+{
+  background : hsl(0deg 0% 30%);
+  color      : white;
+}
+
+.drawflow-delete::before
+{
+  font-family : "Font Awesome 6 Pro";
+  font-weight : 600;
+  content     : "\d7"; /* xmark */
+  margin-left : .5px;
+  font-size   : 11pt;
+  line-height : 1.9;
+}
+
+
+/**
+ * Selectables.js CSS
+ */
+.s-noselect
+{
+  -webkit-touch-callout : none;
+  -webkit-user-select   : none;
+  -khtml-user-select    : none;
+  -moz-user-select      : none;
+  -ms-user-select       : none;
+  user-select           : none;
+}
+
+#s-rectBox
+{
+  position            : absolute;
+  z-index             : 1090;
+  background-image    : repeating-linear-gradient(0deg, #bcc7d2, #bcc7d2 17px, transparent 17px, transparent 24px, #bcc7d2 24px),
+  repeating-linear-gradient(90deg, #bcc7d2, #bcc7d2 17px, transparent 17px, transparent 24px, #bcc7d2 24px),
+  repeating-linear-gradient(180deg, #bcc7d2, #bcc7d2 17px, transparent 17px, transparent 24px, #bcc7d2 24px),
+  repeating-linear-gradient(270deg, #bcc7d2, #bcc7d2 17px, transparent 17px, transparent 24px, #bcc7d2 24px);
+  background-size     : 1px 100%, 100% 1px, 1px 100%, 100% 1px;
+  background-position : 0 0, 0 0, 100% 0, 0 100%;
+  background-repeat   : no-repeat;
+}

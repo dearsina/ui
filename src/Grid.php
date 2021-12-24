@@ -178,7 +178,7 @@ class Grid {
 
 			# Data value (used for sorting)
 			$data_value = $this->getDataValueTag($col);
-			$data = str::getDataAttr($col['data']);
+			$data = str::getDataAttr($col['data'], true);
 
 			# Hash, URI, onClick
 			if($href = href::generate($col)){
@@ -247,22 +247,32 @@ class Grid {
 		# Style
 		$style = str::getAttrTag("style", $style);
 
+		# Close
+		if($close){
+			$close = Icon::generate([
+				"name" => "times",
+				"class" => "tab-close",
+			]);
+		}
+
 		return <<<EOF
-<a
+<button
 	{$id}
 	{$class}
 	{$style}
 	data-bs-toggle="tab"
-	href="#{$tab['id']}" 
-	role="tab" 
-	aria-controls="{$tab['id']}" 
+	data-bs-target="#{$tab['id']}"
+	type="button"
+	role="tab"
+	aria-controls="{$tab['id']}"
 	aria-selected="true"
 >
-	{$icon}
-	{$title}
-	{$html}
-	{$badge}
-</a>
+{$icon}
+{$title}
+{$html}
+{$badge}
+{$close}
+</button>
 EOF;
 	}
 
@@ -309,6 +319,135 @@ EOF;
 		//We're borrowing from the Card class
 	}
 
+	private function getVerticalTabsHTML(array $tabs): string
+	{
+		foreach($tabs['tabs'] as &$tab){
+			$tab['id'] = $tab['id'] ?: str::id("panel");
+			$tab['active'] = $tab['active'] ? "active" : NULL;
+		}
+
+		return <<<EOF
+<div class="vertical-tabs">
+	<div class="vertical-tabs-col vertical-tabs-icons">
+		{$this->getVerticalTabsListHTML($tabs)}
+	</div>
+	<div class="vertical-tabs-col vertical-tabs-content">
+		{$this->getVerticalTabsContentHTML($tabs)}
+	</div>
+</div>
+EOF;
+
+	}
+
+	private function getVerticalTabsContentHTML(array $tabs): string
+	{
+		foreach($tabs['tabs'] as $tab){
+			$li .= <<<EOF
+<div id="{$tab['id']}"
+class="tab-pane show  {$tab['active']} accordion-item"
+role="tabpanel"
+>
+	{$this->getTabBody($tab)}
+	{$this->getTabFooter($tab)}
+</div>
+EOF;
+		}
+
+		return <<<EOF
+<div id="accordion-left-tabs" class="tab-content accordion">
+	{$li}
+</div>
+EOF;
+	}
+
+	private function getVerticalTabsListHeaderHTML(array $tab): string
+	{
+		if(is_array($tab['header'])){
+			extract($tab['header']);
+		} else if ($tab['header']){
+			$title = $tab['header'];
+		} else if(!$tab['icon']){
+			throw new BadRequest("All tabs must have a header or an icon.");
+		}
+
+		# Id
+		$id = str::getAttrTag("id", "{$tab['id']}-tab");
+		//A designated title ID (in the title array) is disregarded
+
+		# Disabled
+		if($tab['disabled']){
+			$disabled = "disabled";
+		}
+
+		else {
+			$disabled = "tab-clickable";
+		}
+
+		# Class
+		$class_array = str::getAttrArray($class, ["nav-link", $tab['active'], $disabled], $only_class);
+
+		# If the tab title is just an icon, add the icon-only class
+		if(!$title){
+			$class_array[] = "icon-only";
+		}
+
+		$class = str::getAttrTag("class", $class_array);
+
+		# Icon
+		$icon = $icon ?: $tab['icon'];
+		if($icon){
+			if(is_string($icon)){
+				$icon = [
+					"name" => $icon,
+					"type" => "light"
+				];
+			}
+			$icon = Icon::generate($icon);
+		}
+
+		# Badge
+		$badge = Badge::generate($badge ?: $tab['badge']);
+
+		# Style
+		$style = str::getAttrTag("style", $style);
+
+		return <<<EOF
+<div
+	{$id}
+	{$class}
+	{$style}
+	role="tab"
+	data-bs-toggle="tab"
+	data-bs-target="#{$tab['id']}"
+	aria-controls="{$tab['id']}"
+	aria-selected="true"
+>
+	{$icon}
+	{$title}
+	{$html}
+	{$badge}
+</div>
+EOF;
+	}
+
+	private function getVerticalTabsListHTML(array $tabs): string
+	{
+		foreach($tabs['tabs'] as $tab){
+			$li .= <<<EOF
+<li class="nav-item" role="presentation">
+  {$this->getVerticalTabsListHeaderHTML($tab)}
+</li>
+EOF;
+		}
+
+		return <<<EOF
+<ul class="nav nav-tabs left-tabs" role="tablist">
+	{$li}
+</ul>
+EOF;
+
+	}
+
 	public function getTabsHTML(array $data): ?string
 	{
 		if($data['tabs']){
@@ -340,12 +479,16 @@ EOF;
 			$tabs['tabs'][0]['active'] = true;
 		}
 
+		if($tabs['vertical']){
+			return $this->getVerticalTabsHTML($tabs);
+		}
+
 		foreach($tabs['tabs'] as $tab){
 			$tab['id'] = $tab['id'] ?: str::id("panel");
 			$active = $tab['active'] ? "active" : NULL;
 			$style = str::getAttrTag("style", $tab['style']);
 			$nav_tabs[] = "<li class=\"nav-item\" role=\"presentation\">{$this->getTabHeader($tab, $active)}</li>";
-
+			$data = str::getDataAttr($tab['data'], true);
 			$tab_panes[] = <<<EOF
 			<div
 				class="tab-pane {$active}"
@@ -353,6 +496,7 @@ EOF;
 				role="tabpanel"
 				aria-labelledby="{$tab['id']}-tab"
 				{$style}
+				{$data}
 			>
 				{$this->getTabBody($tab)}
 				{$this->getTabFooter($tab)}
@@ -364,7 +508,7 @@ EOF;
 		$tab_id = $tabs['id'] ?: str::id("tab");
 
 		# Tab class
-		$class_array = str::getAttrArray($tabs['class'], ["nav", "nav-tabs"], $tabs['only_class']);
+		$class_array = str::getAttrArray($tabs['class'], ["nav", "nav-tabs", "nav-tabs-horizontal"], $tabs['only_class']);
 		$class = str::getAttrTag("class", $class_array);
 
 		# Style
