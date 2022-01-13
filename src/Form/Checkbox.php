@@ -129,9 +129,8 @@ EOF;
 		# The ID of the child field
 		$val['id'] = $val['id'] ?: str::id($val['type']);
 
-		# The label field inherits the validation of the parent
-		$val['validation'] = $validation;
-		//TODO Fix this so that if required=true, it doesn't flag that every option doesn't have a value
+		# The validations of the parent are inherited by the label field
+		$val['validation'] = array_merge($val['validation'] ?:[], $validation ?:[]);
 
 		# Adjust the label to fit the field
 		$val['parent_style'] = str::getAttrArray($val['parent_style'], $val['default_parent_style'], $val['only_parent_style']); //["margin" => "-1rem 0 0 0"]
