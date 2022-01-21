@@ -92,6 +92,9 @@ class Dropdown {
 			return false;
 		}
 
+		# Flag to see if any of the items have children or not
+		$has_children = false;
+
 		foreach($items as $item){
 			if(empty($item)){
 				continue;
@@ -115,6 +118,8 @@ class Dropdown {
 			if($item['children'] || $ul){
 				//if the item has children, or is a top level item
 				$default_parent_class[] = "parent";
+				# As at least *one* of the items have children
+				$has_children = true;
 			}
 
 			$parent_class_array = str::getAttrArray($item['parent_class'], $default_parent_class, $item['only_parent_class']);
@@ -159,12 +164,19 @@ class Dropdown {
 EOF;
 		}
 
+		if(!$has_children){
+			// If *none* of the items have children
+			$ul['style'] = is_array($ul['style']) ? $ul['style'] : [$ul['style']];
+			$ul['style']['max-height'] = "70vh";
+			$ul['style']['overflow-y'] = "auto";
+			//put in place a max-height limit to avoid menus disappearing
+		}
+
 		# ul classes (applicable primarily to the top level)
 		$class = str::getAttrTag("class", $ul['class']);
 		$style = str::getAttrTag("style", $ul['style']);
 
 		return "<ul{$class}{$style}>{$html}</ul>";
-
 	}
 
 	/**
