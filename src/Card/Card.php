@@ -7,13 +7,11 @@ use App\Common\Img;
 use App\Common\str;
 use App\UI\Badge;
 use App\UI\Button;
-use App\UI\Dropdown;
 use App\UI\Grid;
 use App\UI\Icon;
 use App\UI\ListGroup;
 use App\UI\Progress;
 use Exception;
-use Pelago\Emogrifier\CssInliner;
 
 /**
  * Class Card
@@ -394,7 +392,8 @@ class Card extends \App\Common\Prototype {
   		<div class="row">
     		<div{$parent_class}{$parent_style}>
     			{$icon}{$title}{$badge}
-    		</div>{$buttons}
+    		</div>
+  			{$buttons}
     	</div>
 	</div>{$script}
 </div>

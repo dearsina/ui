@@ -430,7 +430,6 @@ EOF;
 				else {
 					$base_query['where'][$key] = $val;
 				}
-
 			}
 		}
 

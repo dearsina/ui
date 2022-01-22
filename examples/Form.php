@@ -249,6 +249,23 @@ class Form extends Prototype implements ExampleInterface {
 		];
 
 		$fields[] = [
+			"type" => "password",
+			"name" => "password",
+			"validation" => [
+				"password" => [
+					"rule" => [
+						"min_length" => 8,
+						"uppercase" => true,
+						"lowercase" => true,
+						"special" => true,
+						"number" => true
+					]
+				]
+			],
+			"required" => true
+		];
+
+		$fields[] = [
 			"type" => "radio",
 			"name" => "numaradio",
 			"label" => "Radiofield with numerical array options",
