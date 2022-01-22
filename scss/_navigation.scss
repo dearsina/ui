@@ -296,8 +296,7 @@ nav li .badge i {
  * Expects the disabled class to be on the li belonging to the menu item
  */
 .nav-right .parent > ul li .disabled {
-  color: #dddddd;
-  cursor: default;
+    cursor: default;
 }
 
 .nav-right .parent > ul li .disabled .badge {

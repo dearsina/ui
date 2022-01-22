@@ -7,6 +7,18 @@
 @use "sass:color";
 
 /**
+ * The container holding the tab(s).
+ */
+.drawflow-tabs
+{
+  position: fixed;
+  top: 106px;
+  left: 0;
+  width: 100%;
+  height: calc(100% - 266px)
+}
+
+/**
  * The node colours
  */
 $node-colours          : (
@@ -16,6 +28,7 @@ $node-colours          : (
         "green": #5fbf05,
         "blue": #1469b8,
         "purple": #c723ba,
+        "black": hsl(0deg 0% 20%),
   //"sizzling-red": hsla(358, 100%, 67%, 1),
   //"sunglow": hsla(44, 100%, 61%, 1),
   //"yellow-green": hsla(83, 68%, 47%, 1),
@@ -130,6 +143,17 @@ $step                  : 0;
   {
     border-color     : $colour-value;
     background-color : $colour-value;
+  }
+
+  // Ensure darker cards have white text
+  @if (contrast-ratio($header-colour-value, black) < $min-contrast-ratio) {
+    .node-colour-#{$colour-name}
+    {
+      color: white;
+    }
+    .node-colour-#{$colour-name} .ui-icon {
+      filter: invert(1);
+    }
   }
 
   // The card header
@@ -288,7 +312,7 @@ $step                  : 0;
 .bg-lines
 {
   background-size  : 25px 25px;
-  background-position: -1px;
+  background-position: 0px;
   background-image : linear-gradient(to right, #f1f1f1 1px, transparent 1px),
   linear-gradient(to bottom, #f1f1f1 1px, transparent 1px);
 }
@@ -425,6 +449,14 @@ $node-border-thickness : 1px;
   position : absolute;
   left     : calc(100% - (#{$node-circumference} / 2));
   top      : calc(50% - (#{$node-circumference} / 2));
+}
+
+/**
+ * Hide the delete button from nodes that are immutable.
+ */
+.drawflow .drawflow-node.immutable .drawflow-delete
+{
+  display: none;
 }
 
 /**
