@@ -166,10 +166,8 @@ EOF;
 
 		if(!$has_children){
 			// If *none* of the items have children
-			$ul['style'] = is_array($ul['style']) ? $ul['style'] : [$ul['style']];
-			$ul['style']['max-height'] = "70vh";
-			$ul['style']['overflow-y'] = "auto";
-			//put in place a max-height limit to avoid menus disappearing
+			$ul['class'] = is_array($ul['class']) ? $ul['class'] : [$ul['class']];
+			$ul['class'][] = "dropdown-leaf";
 		}
 
 		# ul classes (applicable primarily to the top level)

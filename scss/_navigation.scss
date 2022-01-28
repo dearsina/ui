@@ -381,6 +381,24 @@ nav .nav-right {
   z-index: 5; //This is because otherwise they can disappear behind select items, buttons, etc
 }
 
+/**
+ * If a menu is in the footer, shoot it up instead of down.
+ * Experimental.
+ */
+.card-footer .nav-right .parent > ul {
+  top: auto;
+  bottom: 30px;
+}
+
+/**
+ * Put in place a max-height limit to avoid menus disappearing
+ * if the screen resolution doesn't allow for its full height.
+ */
+ul.dropdown-leaf {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
 nav .parent {
   display: block;
   position: relative;
