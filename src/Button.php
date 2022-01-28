@@ -648,6 +648,7 @@ EOF;
 
 		return Dropdown::generateButton([
 			"button" => self::generate($a),
+			"class" => $a['class'],
 			"children" => $children,
 		]);
 	}

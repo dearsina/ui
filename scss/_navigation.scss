@@ -382,11 +382,11 @@ nav .nav-right {
 }
 
 /**
- * If a menu is in the footer, shoot it up instead of down.
+ * If parent class is set to "dropup", shoot it up instead of down.
  * Experimental.
  */
-.card-footer .nav-right .parent > ul {
-  top: auto;
+.dropup + ul {
+  top: auto !important;
   bottom: 30px;
 }
 
