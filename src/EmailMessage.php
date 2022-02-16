@@ -47,7 +47,7 @@ class EmailMessage extends Prototype {
 
 		# Store the email sections
 		$this->setPreheader($sections['preheader']);
-		$this->setHeader($sections['header']);
+		$this->setHeader($sections['header'], $format);
 		$this->setBody($sections['body']);
 		$this->setFooter($sections['footer']);
 	}
@@ -92,6 +92,7 @@ class EmailMessage extends Prototype {
 	 *    * src
 	 *    * height
 	 *    * position
+	 * 	  * default (if set, it's the default logo)
 	 * * `url`
 	 * * `title`
 	 *
@@ -99,13 +100,21 @@ class EmailMessage extends Prototype {
 	 *
 	 * @param mixed|null $header
 	 */
-	public function setHeader($header = NULL): void
+	public function setHeader($header, ?array $format): void
 	{
 		if(!$header){
 			return;
 		}
 
 		if(is_array($header['logo'])){
+			if($format){
+				//if this is NOT an internal email
+				if($header['logo']['default']){
+					// And the default logo has been loaded
+					$header['logo'] = [];
+					// Strip it away (client emails should not have a default KYCDD logo)
+				}
+			}
 			$this->format = array_merge( $header['logo'], $this->format ?: []);
 		}
 
