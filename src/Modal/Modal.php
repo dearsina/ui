@@ -39,6 +39,7 @@ class Modal extends \App\Common\Prototype {
 	protected $size;
 	protected $accent;
 	protected $buttons;
+	protected ?string $script = NULL;
 
 	/**
 	 * Create a modal
@@ -641,12 +642,12 @@ EOF;
 	 *
 	 * @return bool|string
 	 */
-	private function getScriptHTML($as_tag = false)
+	private function getScriptHTML($as_tag = false): ?string
 	{
 		if($as_tag){
-			return str::getScriptTag($script);
+			return str::getScriptTag($this->script);
 		}
-		return $script;
+		return $this->script;
 	}
 
 	/**
