@@ -11,6 +11,24 @@ use App\Common\Img;
 use App\Common\Prototype;
 use App\Common\str;
 
+/**
+ * Builds the complete HTML email message,
+ * based on format and components sent
+ * to the constructor like so:
+ *
+ * <code>
+ * $email_message = new EmailMessage($format, [
+ * 	"title" => $this->getTitle(),					// String
+ * 	"head" => $this->variables['head'], 			// Optional string
+ * 	"body_style" => $this->variables['body_style'], // Optional string
+ * 	"preheader" => parent::generatePreheader(),		// Optional string
+ * 	"header" => $this->template->getHeader(),		// Array
+ * 	"body" => $body,								// Array
+ * 	"footer" => $this->template->getFooter($format) // Array
+ * ]);
+ * </code>
+ *
+ */
 class EmailMessage extends Prototype {
 	/**
 	 * Array holding the email format.
@@ -26,6 +44,8 @@ class EmailMessage extends Prototype {
 	 * @var string|null
 	 */
 	private ?string $preheader = NULL;
+	private ?string $head = NULL;
+	private ?string $body_style = NULL;
 	private ?array $header = [];
 	private ?array $body = [];
 	private ?array $footer = [];
@@ -46,6 +66,8 @@ class EmailMessage extends Prototype {
 		$this->setFormat($format ?: EmailWrapper::$defaults);
 
 		# Store the email sections
+		$this->setHead($sections['head']);
+		$this->setBodyStyle($sections['body_style']);
 		$this->setPreheader($sections['preheader']);
 		$this->setHeader($sections['header'], $format);
 		$this->setBody($sections['body']);
@@ -85,6 +107,30 @@ class EmailMessage extends Prototype {
 	}
 
 	/**
+	 * @param string|null $head
+	 */
+	public function setHead(?string $head): void
+	{
+		if(!$head){
+			return;
+		}
+
+		$this->head = $head;
+	}
+
+	/**
+	 * @param string|null $body_style
+	 */
+	public function setBodyStyle(?string $body_style): void
+	{
+		if(!$body_style){
+			return;
+		}
+
+		$this->body_style = $body_style;
+	}
+
+	/**
 	 * Header can include:
 	 *
 	 * * `logo`
@@ -92,7 +138,7 @@ class EmailMessage extends Prototype {
 	 *    * src
 	 *    * height
 	 *    * position
-	 * 	  * default (if set, it's the default logo)
+	 *      * default (if set, it's the default logo)
 	 * * `url`
 	 * * `title`
 	 *
@@ -115,7 +161,7 @@ class EmailMessage extends Prototype {
 					// Strip it away (client emails should not have a default KYCDD logo)
 				}
 			}
-			$this->format = array_merge( $header['logo'], $this->format ?: []);
+			$this->format = array_merge($header['logo'], $this->format ?: []);
 		}
 
 		if(is_array($header['title'])){
@@ -211,7 +257,7 @@ class EmailMessage extends Prototype {
 	{
 		# Get the header background colour
 		$bgcolor = $this->getColourHexValue($this->format['header_background_colour']);
-		
+
 		# If there is a logo
 		if($this->format['logo_src']){
 			# Format the logo array for use with the image methods
@@ -1065,6 +1111,18 @@ EOF;;
 		return implode("\r\n", $body);
 	}
 
+	/**
+	 * Will return a formatted HTML string consisting
+	 * of tables that constitute the email framework.
+	 *
+	 * That is unless one fo the section keys is "email",
+	 * in which case, the entire section value is sent back
+	 * unchanged.
+	 *
+	 * @param array $section
+	 *
+	 * @return string
+	 */
 	private function getSectionHTML(array $section): string
 	{
 		# Set the background colour for the section
@@ -1074,13 +1132,23 @@ EOF;;
 
 		# Image, copy, button
 		foreach($section as $item => $data){
+			if($item == "html"){
+				return $data;
+			}
+			/**
+			 * Meta-templates can opt to format the entire message
+			 * body, and thus no section work is required.
+			 */
+
 			if($item == "articles"){
 				$articles = $this->getArticlesHTML($data);
 				continue;
 			}
+
 			if(!in_array($item, ["image", "copy", "columns", "button"])){
 				continue;
 			}
+
 			$method = str::getMethodCase("get_{$item}_HTML");
 			$row = $this->{$method}($data);
 
@@ -1182,6 +1250,41 @@ EOF;
 
 	}
 
+	private function getTop()
+	{
+		if(!$head = $this->head){
+			$head = $this->getGenericHeadTagData();
+		}
+
+		return <<<EOF
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{$head}
+</head>
+<body style="margin: 0; padding: 0;{$this->body_style}">
+EOF;
+	}
+
+	/**
+	 * Returns a formatted pre-header if a pre-header has been set.
+	 *
+	 * @param string|null $preheader
+	 *
+	 * @return string|null
+	 */
+	private function getPreheaderHTML(string $preheader = NULL): ?string
+	{
+		if(!$preheader = $preheader ?: $this->preheader){
+			return NULL;
+		}
+
+		return <<<EOF
+<!-- Preheader text -->
+<div style="display: none; max-height: 0; overflow: hidden;">{$preheader}</div>
+EOF;
+	}
+
 	/**
 	 * SALTED | A RESPONSIVE EMAIL TEMPLATE
 	 * =====================================
@@ -1195,16 +1298,17 @@ EOF;
 	 * It's highly recommended that you test using a service like Litmus and your own devices.
 	 *
 	 * Enjoy!
+	 *
+	 * Returns the generic head tag data in case a custom one
+	 * has NOT been entered.
+	 *
 	 * @return string
 	 * @link https://github.com/rodriguezcommaj/salted/blob/master/salted-responsive-email-template.html
 	 */
-	private function getTop()
+	private function getGenericHeadTagData(): string
 	{
 		return <<<EOF
-<!DOCTYPE html>
-<html lang="en">
-<head>
- <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
  <meta name="viewport" content="width=device-width, initial-scale=1">
  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <style type="text/css">
@@ -1312,27 +1416,6 @@ EOF;
 
     }
 </style>
-</head>
-<body style="margin: 0; padding: 0;">
-EOF;
-	}
-
-	/**
-	 * Returns a formatted pre-header if a pre-header has been set.
-	 *
-	 * @param string|null $preheader
-	 *
-	 * @return string|null
-	 */
-	private function getPreheaderHTML(string $preheader = NULL): ?string
-	{
-		if(!$preheader = $preheader ?: $this->preheader){
-			return NULL;
-		}
-
-		return <<<EOF
-<!-- Preheader text -->
-<div style="display: none; max-height: 0; overflow: hidden;">{$preheader}</div>
 EOF;
 
 	}
