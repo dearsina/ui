@@ -22,6 +22,14 @@ class Tabs {
 		return $tab->getTabsHTML($tabs);
 	}
 
+	/**
+	 * Used exclusively by the Output class to generate tabs.
+	 *
+	 * @param array|null $data
+	 *
+	 * @return array|null
+	 * @throws \App\Common\Exception\BadRequest
+	 */
 	public static function generateTab(?array &$data = NULL): ?array
 	{
 		# Ensure there is an ID

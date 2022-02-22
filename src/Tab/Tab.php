@@ -77,7 +77,7 @@ class Tab {
 		if(is_string($icon)){
 			$icon = [
 				"name" => $icon,
-				"type" => "light"
+				"type" => "light",
 			];
 		}
 
@@ -164,7 +164,7 @@ class Tab {
 
 		# Data
 		$data = $this->getTabHeaderData($tab, $header);
-		
+
 		# Type and role
 		$button_type = str::getAttrTag("type", "button");
 		$button_role = str::getAttrTag("role", "tab");
@@ -214,7 +214,7 @@ class Tab {
 
 		if(!is_array($body)){
 			$body = [
-				"html" => $body
+				"html" => $body,
 			];
 		}
 
@@ -284,27 +284,30 @@ class Tab {
 
 	public function getTabsHTML(array $tabs): ?string
 	{
-		if(!$tabs['tabs']){
+		if(!$tabs['tabs'] && str::isNumericArray($tabs)){
 			$tabs['tabs'] = $tabs;
 		}
 
-		# Remove empty tabs
-		if(!$tabs['tabs'] = array_filter($tabs['tabs'])){
-			//if there are no real tabs left
-			return NULL;
-		}
+		if($tabs['tabs']){
 
-		# Ensure the numerical array starts from zero
-		$tabs['tabs'] = array_values($tabs['tabs']);
+			# Remove empty tabs
+			if(!$tabs['tabs'] = array_filter($tabs['tabs'])){
+				//if there are no real tabs left
+				return NULL;
+			}
+			# Ensure the numerical array starts from zero
+			$tabs['tabs'] = array_values($tabs['tabs']);
 
-		# Ensure at least one tab is active
-		if(!array_filter($tabs['tabs'], function($tab){
-			return $tab['active'];
-		})){
-			//if none of the tabs are set to be active
+			# Ensure at least one tab is active
 
-			# Set the first tab to be active by default
-			$tabs['tabs'][0]['active'] = true;
+			if(!array_filter($tabs['tabs'], function($tab){
+				return $tab['active'];
+			})){
+				//if none of the tabs are set to be active
+
+				# Set the first tab to be active by default
+				$tabs['tabs'][0]['active'] = true;
+			}
 		}
 
 		if($tabs['vertical']){
@@ -316,10 +319,15 @@ class Tab {
 
 	private function getHorizontalTabsHTML(array $tabs): string
 	{
-		foreach($tabs['tabs'] as $tab){
-			$tab['id'] = $tab['id'] ?: str::id("tab");
-			$headers[] = $this->getTabHeaderHTML($tab);
-			$panes[] = $this->getTabPaneHTML($tab);
+		$headers = [];
+		$panes = [];
+
+		if($tabs['tabs']){
+			foreach($tabs['tabs'] as $tab){
+				$tab['id'] = $tab['id'] ?: str::id("tab");
+				$headers[] = $this->getTabHeaderHTML($tab);
+				$panes[] = $this->getTabPaneHTML($tab);
+			}
 		}
 
 		# ID
@@ -399,9 +407,11 @@ EOF;
 	{
 		if(is_array($tab['header'])){
 			extract($tab['header']);
-		} else if ($tab['header']){
+		}
+		else if($tab['header']){
 			$title = $tab['header'];
-		} else if(!$tab['icon']){
+		}
+		else if(!$tab['icon']){
 			throw new BadRequest("All tabs must have a header or an icon.");
 		}
 
@@ -434,7 +444,7 @@ EOF;
 			if(is_string($icon)){
 				$icon = [
 					"name" => $icon,
-					"type" => "light"
+					"type" => "light",
 				];
 			}
 			$icon = Icon::generate($icon);

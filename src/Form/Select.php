@@ -44,11 +44,6 @@ class Select extends Field implements FieldInterface {
 		# Class
 		$class_array = str::getAttrArray($class, ["form-control", $disabled_class], $only_class);
 
-		# Tokenize
-		if($tokenize){
-			$class_array[] ='tokenize';
-		}
-
 		# Validation
 		$validation = self::getValidationTags($validation, $class_array);
 
@@ -98,6 +93,13 @@ EOF;
 		$settings['ajax'] = $ajax;
 		$settings['value'] = $value;
 		$settings['tags'] = $tags; // Allows a user to enter their own value
+
+		# Tokenize
+		if($tokenize){
+			$settings['tags'] = true;
+			$settings['createTag'] = "createTagFileName";
+		}
+
 		return str::getDataAttr([
 			"settings" => $settings,
 			"parent" => $parent,
