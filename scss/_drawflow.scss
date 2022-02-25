@@ -559,3 +559,51 @@ $node-border-thickness : 1px;
   background-position : 0 0, 0 0, 100% 0, 0 100%;
   background-repeat   : no-repeat;
 }
+
+/**
+ * CSS Tooltips.
+ * Design and what happens on hover.
+ */
+.drawflow .drawflow-node .input.input_1::after,
+.drawflow .drawflow-node .input.input_2::after,
+.drawflow .drawflow-node .output.output_1::after,
+.drawflow .drawflow-node .output.output_2::after
+{
+  position: absolute;
+  // So that the tooltip floats near the relevant port
+
+  visibility:hidden;
+  // We're using visibility instead of display, as display does not play nice with transition
+  opacity: 0;
+  // We're starting the transition with zero opacity
+
+  transition: none;
+  // This applies to mouseout only
+
+  // The rest is the UI
+  background: var(--bs-body-bg);
+  padding: 10px;
+  font-size: small;
+  width: 15vh;
+  border-radius: 0.25rem;
+  -webkit-box-shadow: 0 2px 4px 0px var(--node-border-colour);
+  box-shadow: 0 2px 4px 0px var(--node-border-colour);
+  margin-top: -50px;
+  margin-left: 20px;
+}
+
+.drawflow .drawflow-node .input.input_1:hover::after,
+.drawflow .drawflow-node .input.input_2:hover::after,
+.drawflow .drawflow-node .output.output_1:hover::after,
+.drawflow .drawflow-node .output.output_2:hover::after
+{
+  visibility:visible;
+  opacity: 1;
+  // On transition these two change
+
+  transition: all .15s ease .5s;
+  // There is a transition delay of half a second
+
+  cursor: help;
+  // For when the cursor hovers over the tooltip
+}

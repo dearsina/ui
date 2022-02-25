@@ -270,3 +270,22 @@ box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 
     border : 0.9px solid $border-color !important;
   }
 }
+
+/**
+ * Fix for buttons in the header of a drawflow card.
+ * Will give room for the buttons burger to be quasi-
+ * fixed in the top right corner of the card.
+ */
+.drawflow-node > .drawflow_content_node > .card > .card-header > .container-fluid > .row {
+  flex-wrap: nowrap;
+  margin: 0;
+}
+
+.drawflow-node > .drawflow_content_node > .card > .card-header > .container-fluid > .row > .card-title {
+  padding: 0;
+  flex-shrink: unset;
+}
+
+.drawflow-node > .drawflow_content_node > .card > .card-header > .container-fluid > .row > .col-buttons {
+  margin: 10px -5px 0 0;
+}
