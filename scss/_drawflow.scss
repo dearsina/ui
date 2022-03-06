@@ -11,11 +11,11 @@
  */
 .drawflow-tabs
 {
-  position: fixed;
-  top: 106px;
-  left: 0;
-  width: 100%;
-  height: calc(100% - 266px)
+  position : fixed;
+  top      : 106px;
+  left     : 0;
+  width    : 100%;
+  height   : calc(100% - 266px)
 }
 
 /**
@@ -97,13 +97,14 @@ $step                  : 0;
   border-style  : solid !important;
 
   // The default width. Can be overwritten by the type
-  width: 200px;
+  width         : 200px;
 }
 
 .drawflow_content_node > .card > .card-body
 {
-  overflow : hidden;
-  font-size: 75%;
+  overflow  : hidden;
+  font-size : 75%;
+  padding   : .5rem .5rem 1rem .5rem;
 }
 
 .drawflow_content_node > .card.pastel > .card-header,
@@ -127,16 +128,62 @@ $step                  : 0;
 
 }
 
-// These classes are placed here so that the specific card styles can override them without using !important
+/**
+ * These classes are placed above so that the specific
+ * card styles can override them without using !important
+ */
 
-// For each node colour, set the node colour styles
+
+/**
+ * Node card list groups.
+ */
+@mixin list-group($colour-name, $colour-value){
+  // Set the list-group colour (5% lighter)
+  $list-group-colour-value          : lighten($colour-value, 5%);
+
+  // Set the *selected* list-group colour
+  $selected-list-group-colour-value : desaturate(darken($list-group-colour-value, 30%), 20%);
+
+  .node-colour-#{$colour-name} > .container > .list-group
+  {
+    background-color   : $list-group-colour-value;
+    margin-bottom      : 1.2rem;
+    font-size          : 75%;
+    box-shadow         : inset 0px 0px 5px 0px hsl(0deg 0% 0% / 20%);
+    -webkit-box-shadow : inset 0px 0px 5px 0px hsl(0deg 0% 0% / 20%);
+    -moz-box-shadow    : inset 0px 0px 5px 0px hsl(0deg 0% 0% / 20%);
+  }
+
+  // Card list-groups *selected*
+  .drawflow-node.selected .node-colour-#{$colour-name} > .container > .list-group
+  {
+    background-color   : $colour-value;
+    box-shadow         : 0px 0px 5px 0px hsl(0deg 0% 0% / 20%);
+    -webkit-box-shadow : 0px 0px 5px 0px hsl(0deg 0% 0% / 20%);
+    -moz-box-shadow    : 0px 0px 5px 0px hsl(0deg 0% 0% / 20%);
+  }
+
+  // Card list-group items
+  .node-colour-#{$colour-name} > .container > .list-group > .list-group-item
+  {
+    background-color : unset;
+    padding          : 5px;
+  }
+}
+
+/**
+ * Node colours
+ *
+ * For each node colour,
+ * set the node colour styles.
+ */
 @each $colour-name, $colour-value in $node-colours
 {
   // Set the header colour (10% darker)
-  $header-colour-value          : darken($colour-value, 10%);
+  $header-colour-value              : darken($colour-value, 10%);
 
   // Set the *selected* header colour
-  $selected-header-colour-value : desaturate(darken($header-colour-value, 30%), 20%);
+  $selected-header-colour-value     : desaturate(darken($header-colour-value, 30%), 20%);
 
   // The card
   .node-colour-#{$colour-name}
@@ -146,20 +193,16 @@ $step                  : 0;
   }
 
   // Ensure darker cards have white text
-  @if (contrast-ratio($header-colour-value, black) < $min-contrast-ratio) {
+  @if (contrast-ratio($header-colour-value, black) < $min-contrast-ratio)
+  {
     .node-colour-#{$colour-name}
     {
-      color: white;
+      color : white;
     }
-    .node-colour-#{$colour-name} .ui-icon {
-      filter: invert(1);
+    .node-colour-#{$colour-name} .ui-icon
+    {
+      filter : invert(1);
     }
-  }
-
-  // The card header
-  .node-colour-#{$colour-name} > .card-header
-  {
-    background-color : $header-colour-value;
   }
 
   // The card *selected*
@@ -169,7 +212,13 @@ $step                  : 0;
     background-color : $header-colour-value;
   }
 
-  // The card header selected
+  // The card header
+  .node-colour-#{$colour-name} > .card-header
+  {
+    background-color : $header-colour-value;
+  }
+
+  // The card header *selected*
   .drawflow-node.selected .node-colour-#{$colour-name} > .card-header
   {
     background-color   : $colour-value;
@@ -178,6 +227,9 @@ $step                  : 0;
     -webkit-box-shadow : 0px 0px 5px 0px hsl(0deg 0% 0% / 20%);
     -moz-box-shadow    : 0px 0px 5px 0px hsl(0deg 0% 0% / 20%);
   }
+
+  // Card list-groups
+  @include list-group($colour-name, $colour-value);
 
   // Alternative design, the striped border card
   .node-colour-#{$colour-name}-striped-border
@@ -286,13 +338,15 @@ $step                  : 0;
   --node-border-colour : #cacaca;
 }
 
-.parent-drawflow {
-  height: 100%;
+.parent-drawflow
+{
+  height : 100%;
 }
 
-.drawflow .connection .main-path {
-  stroke: map-get($theme-colors, "primary");;
-  stroke-width: 3px;
+.drawflow .connection .main-path
+{
+  stroke       : map-get($theme-colors, "primary");;
+  stroke-width : 3px;
 }
 
 /**
@@ -301,9 +355,9 @@ $step                  : 0;
 .bg-dots
 {
   //background : radial-gradient($border-color 8%, transparent 11%) -4px -1px / 31px 31px;
-  background: radial-gradient(hsl(210deg 20% 78%) 6%, transparent 8%);
-  background-size : 25px 25px;
-  background-position: -4px -1px;
+  background          : radial-gradient(hsl(210deg 20% 78%) 6%, transparent 8%);
+  background-size     : 25px 25px;
+  background-position : -4px -1px;
 }
 
 /**
@@ -311,9 +365,9 @@ $step                  : 0;
  */
 .bg-lines
 {
-  background-size  : 25px 25px;
-  background-position: 0px;
-  background-image : linear-gradient(to right, #f1f1f1 1px, transparent 1px),
+  background-size     : 25px 25px;
+  background-position : 0px;
+  background-image    : linear-gradient(to right, #f1f1f1 1px, transparent 1px),
   linear-gradient(to bottom, #f1f1f1 1px, transparent 1px);
 }
 
@@ -456,7 +510,7 @@ $node-border-thickness : 1px;
  */
 .drawflow .drawflow-node.immutable .drawflow-delete
 {
-  display: none;
+  display : none;
 }
 
 /**
@@ -569,27 +623,27 @@ $node-border-thickness : 1px;
 .drawflow .drawflow-node .output.output_1::after,
 .drawflow .drawflow-node .output.output_2::after
 {
-  position: absolute;
+  position           : absolute;
   // So that the tooltip floats near the relevant port
 
-  visibility:hidden;
+  visibility         : hidden;
   // We're using visibility instead of display, as display does not play nice with transition
-  opacity: 0;
+  opacity            : 0;
   // We're starting the transition with zero opacity
 
-  transition: none;
+  transition         : none;
   // This applies to mouseout only
 
   // The rest is the UI
-  background: var(--bs-body-bg);
-  padding: 10px;
-  font-size: small;
-  width: 15vh;
-  border-radius: 0.25rem;
-  -webkit-box-shadow: 0 2px 4px 0px var(--node-border-colour);
-  box-shadow: 0 2px 4px 0px var(--node-border-colour);
-  margin-top: -50px;
-  margin-left: 20px;
+  background         : var(--bs-body-bg);
+  padding            : 10px;
+  font-size          : small;
+  width              : 15vh;
+  border-radius      : 0.25rem;
+  -webkit-box-shadow : 0 2px 4px 0px var(--node-border-colour);
+  box-shadow         : 0 2px 4px 0px var(--node-border-colour);
+  margin-top         : -50px;
+  margin-left        : 20px;
 }
 
 .drawflow .drawflow-node .input.input_1:hover::after,
@@ -597,13 +651,13 @@ $node-border-thickness : 1px;
 .drawflow .drawflow-node .output.output_1:hover::after,
 .drawflow .drawflow-node .output.output_2:hover::after
 {
-  visibility:visible;
-  opacity: 1;
+  visibility : visible;
+  opacity    : 1;
   // On transition these two change
 
-  transition: all .15s ease .5s;
+  transition : all .15s ease .5s;
   // There is a transition delay of half a second
 
-  cursor: help;
+  cursor     : help;
   // For when the cursor hovers over the tooltip
 }
