@@ -35,7 +35,7 @@ $node-colours          : (
   //"green-blue-crayola": hsla(203, 77%, 43%, 1),
   //"royal-purple": hsla(265, 32%, 44%, 1),
   //"charcoal":  #264653ff,
-  //"persian-green":  #2a9d8fff,
+        "persian-green": #2a9d8fff,
   //"orange-yellow-crayola":  #e9c46aff,
   //"sandy-brown":  #f4a261ff,
   //"burnt-sienna":  #e76f51ff,
@@ -43,7 +43,8 @@ $node-colours          : (
   //"orange-pantone":  hsla(19, 97%, 51%, 1),
   //"winter-sky":  hsla(334, 100%, 50%, 1),
   //"blue-violet":  hsla(265, 83%, 57%, 1),
-  //"azure":  hsla(217, 100%, 61%, 1),
+        "azure": hsla(217, 100%, 61%, 1),
+        "light-blue": hsl(202, 100%, 65%),
 );
 
 // Baseline saturation percentage.
@@ -137,14 +138,39 @@ $step                  : 0;
 /**
  * Node card list groups.
  */
-@mixin list-group($colour-name, $colour-value){
+@mixin list-group($design, $colour-name, $colour-value)
+{
   // Set the list-group colour (5% lighter)
   $list-group-colour-value          : lighten($colour-value, 5%);
+
+  $padding: 5px;
+
+  // Additional conditions for the border colour design only
+  @if ($design == "border-colour")
+  {
+    $list-group-colour-value          : desaturate(lighten($colour-value, 50%), 30%);
+
+    // The padding is slightly different for the border-colour style
+    $padding: 8px;
+
+    .node-#{$design}-#{$colour-name} > .container > .list-group
+    {
+      margin-left: $padding;
+      margin-right: $padding;
+    }
+
+    .drawflow-node.selected .node-#{$design}-#{$colour-name} > .container > .list-group > .list-group-item
+    {
+      color: white;
+    }
+  }
 
   // Set the *selected* list-group colour
   $selected-list-group-colour-value : desaturate(darken($list-group-colour-value, 30%), 20%);
 
-  .node-colour-#{$colour-name} > .container > .list-group
+
+
+  .node-#{$design}-#{$colour-name} > .container > .list-group
   {
     background-color   : $list-group-colour-value;
     margin-bottom      : 1.2rem;
@@ -155,7 +181,7 @@ $step                  : 0;
   }
 
   // Card list-groups *selected*
-  .drawflow-node.selected .node-colour-#{$colour-name} > .container > .list-group
+  .drawflow-node.selected .node-#{$design}-#{$colour-name} > .container > .list-group
   {
     background-color   : $colour-value;
     box-shadow         : 0px 0px 5px 0px hsl(0deg 0% 0% / 20%);
@@ -164,10 +190,53 @@ $step                  : 0;
   }
 
   // Card list-group items
-  .node-colour-#{$colour-name} > .container > .list-group > .list-group-item
+  .node-#{$design}-#{$colour-name} > .container > .list-group > .list-group-item
   {
     background-color : unset;
-    padding          : 5px;
+    padding          : $padding;
+  }
+}
+
+/**
+ * The alternative striped border design.
+ */
+@mixin striped-border($design, $colour-name, $colour-value)
+{
+  // Set the header colour (10% darker)
+  $header-colour-value : darken($colour-value, 10%);
+
+  // Alternative design, the striped border card
+  .node-#{$design}-#{$colour-name}-striped-border
+  {
+    background-image    : repeating-linear-gradient(
+                    45deg,
+                    $header-colour-value,
+                    $header-colour-value 12px,
+                    transparent 12px,
+                    transparent 19px,
+                    $header-colour-value 19px),
+    repeating-linear-gradient(135deg,
+                    $header-colour-value,
+                    $header-colour-value 12px,
+                    transparent 12px,
+                    transparent 19px,
+                    $header-colour-value 19px),
+    repeating-linear-gradient(225deg, $header-colour-value,
+                    $header-colour-value 12px,
+                    transparent 12px,
+                    transparent 19px,
+                    $header-colour-value 19px),
+    repeating-linear-gradient(315deg, $header-colour-value,
+                    $header-colour-value 12px,
+                    transparent 12px,
+                    transparent 19px,
+                    $header-colour-value 19px
+    );
+    background-size     : 4px 100%, 100% 4px, 4px 100%, 100% 4px;
+    background-position : 0 0, 0 0, 100% 0, 0 100%;
+    background-repeat   : no-repeat;
+    border              : none;
+    padding             : 10px;
   }
 }
 
@@ -179,11 +248,13 @@ $step                  : 0;
  */
 @each $colour-name, $colour-value in $node-colours
 {
+  $design                       : "colour";
+
   // Set the header colour (10% darker)
-  $header-colour-value              : darken($colour-value, 10%);
+  $header-colour-value          : darken($colour-value, 10%);
 
   // Set the *selected* header colour
-  $selected-header-colour-value     : desaturate(darken($header-colour-value, 30%), 20%);
+  $selected-header-colour-value : desaturate(darken($header-colour-value, 30%), 20%);
 
   // The card
   .node-colour-#{$colour-name}
@@ -213,13 +284,13 @@ $step                  : 0;
   }
 
   // The card header
-  .node-colour-#{$colour-name} > .card-header
+  .node-#{$design}-#{$colour-name} > .card-header
   {
     background-color : $header-colour-value;
   }
 
   // The card header *selected*
-  .drawflow-node.selected .node-colour-#{$colour-name} > .card-header
+  .drawflow-node.selected .node-#{$design}-#{$colour-name} > .card-header
   {
     background-color   : $colour-value;
 
@@ -229,41 +300,10 @@ $step                  : 0;
   }
 
   // Card list-groups
-  @include list-group($colour-name, $colour-value);
+  @include list-group($design, $colour-name, $colour-value);
 
-  // Alternative design, the striped border card
-  .node-colour-#{$colour-name}-striped-border
-  {
-    background-image    : repeating-linear-gradient(
-                    45deg,
-                    $header-colour-value,
-                    $header-colour-value 12px,
-                    transparent 12px,
-                    transparent 19px,
-                    $header-colour-value 19px),
-    repeating-linear-gradient(135deg,
-                    $header-colour-value,
-                    $header-colour-value 12px,
-                    transparent 12px,
-                    transparent 19px,
-                    $header-colour-value 19px),
-    repeating-linear-gradient(225deg, $header-colour-value,
-                    $header-colour-value 12px,
-                    transparent 12px,
-                    transparent 19px,
-                    $header-colour-value 19px),
-    repeating-linear-gradient(315deg, $header-colour-value,
-                    $header-colour-value 12px,
-                    transparent 12px,
-                    transparent 19px,
-                    $header-colour-value 19px
-    );
-    background-size     : 4px 100%, 100% 4px, 4px 100%, 100% 4px;
-    background-position : 0 0, 0 0, 100% 0, 0 100%;
-    background-repeat   : no-repeat;
-    border              : none;
-    padding             : 10px;
-  }
+  // Striped border
+  @include striped-border($design, $colour-name, $colour-value);
 }
 
 /**
@@ -271,6 +311,8 @@ $step                  : 0;
  */
 @each $colour-name, $colour-value in $theme-colors
 {
+  $design              : "border-colour";
+
   // Set the header colour (10% darker)
   $header-colour-value : darken($colour-value, 10%);
 
@@ -296,39 +338,11 @@ $step                  : 0;
     -moz-box-shadow    : 0px 0px 5px 0px hsl(0deg 0% 0% / 20%);
   }
 
+  // Card list-groups
+  @include list-group($design, $colour-name, $colour-value);
+
   // Alternative design, the striped border card
-  .node-border-colour-#{$colour-name}-striped-border
-  {
-    background-image    : repeating-linear-gradient(
-                    45deg,
-                    $header-colour-value,
-                    $header-colour-value 12px,
-                    transparent 12px,
-                    transparent 19px,
-                    $header-colour-value 19px),
-    repeating-linear-gradient(135deg,
-                    $header-colour-value,
-                    $header-colour-value 12px,
-                    transparent 12px,
-                    transparent 19px,
-                    $header-colour-value 19px),
-    repeating-linear-gradient(225deg, $header-colour-value,
-                    $header-colour-value 12px,
-                    transparent 12px,
-                    transparent 19px,
-                    $header-colour-value 19px),
-    repeating-linear-gradient(315deg, $header-colour-value,
-                    $header-colour-value 12px,
-                    transparent 12px,
-                    transparent 19px,
-                    $header-colour-value 19px
-    );
-    background-size     : 4px 100%, 100% 4px, 4px 100%, 100% 4px;
-    background-position : 0 0, 0 0, 100% 0, 0 100%;
-    background-repeat   : no-repeat;
-    border              : none;
-    padding             : 10px;
-  }
+  @include striped-border($design, $colour-name, $colour-value);
 }
 
 // Set any root colours
@@ -660,4 +674,12 @@ $node-border-thickness : 1px;
 
   cursor     : help;
   // For when the cursor hovers over the tooltip
+}
+
+/**
+ * Set the list group icons slightly tighter.
+ */
+.drawflow-node .list-group > * > i:first-of-type
+{
+  margin-right : 0.3rem;
 }
