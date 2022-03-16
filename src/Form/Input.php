@@ -109,8 +109,14 @@ class Input extends Field {
 		# $data
 		$data = self::getInputData($a);
 
+		# Setting form fields in focus
+		Input::setFocus($a);
+
 		# Script (using $a because it may have changed in getSelectData())
 		$script = str::getScriptTag($a['script']);
+
+		# Hacky way to fix issue with " in the value
+		$value = str_replace('"', '&quot;', $value);
 
 		return /** @lang HTML */
 			<<<EOF
@@ -147,6 +153,17 @@ class Input extends Field {
 	{$script}
 </div>	
 EOF;
+	}
+
+	public static function setFocus(array &$a): void
+	{
+		extract($a);
+		if($focus || $autofocus){
+			# Ensure an ID has been set, if not, set it
+			$a['id'] = $id ?: str::id();
+			# Add a line to the script tag
+			$a['script'] .= "\r\nsetTimeout( function() { $('#{$a['id']}').focus(); }, 0 );";
+		}
 	}
 
 	private static function getInputData(array &$a): ?string
