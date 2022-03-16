@@ -497,13 +497,12 @@ $sideways-tabs-height   : 1rem;
 // UI fix for tabs holding code
 .tab-pane > .body-code
 {
-  padding : 0;
+  padding : 0 !important;
 }
 
 .tab-pane > .body-code pre
 {
-  margin       : 0;
-  margin-right : -1px
+  margin       : -1px;
 }
 
 .tab-pane > .body-code code
