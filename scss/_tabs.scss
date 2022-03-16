@@ -429,3 +429,15 @@ $sideways-tabs-height: 1rem;
     display: block; // Always display (tab) content in wide view even if it was collapsed in accordion
   }
 }
+
+// UI fix for tabs holding code
+.tab-pane > .body-code pre {
+  margin: 0;
+  margin-right: -1px
+}
+
+.tab-pane > .body-code code {
+  max-height: 50vh;
+  overflow: auto;
+  display: block;
+}
