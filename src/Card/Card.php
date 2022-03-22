@@ -353,6 +353,9 @@ class Card extends \App\Common\Prototype {
 		# Dropdown buttons and/or button(s) in a row
 		$buttons = $this->getHeaderButtonsHTML();
 
+		# Window controls
+		$controls = $this->cardHeader['controls'];
+
 		# Icon
 		$icon = Icon::generate($this->cardHeader['icon']);
 
@@ -393,7 +396,7 @@ class Card extends \App\Common\Prototype {
     		<div{$parent_class}{$parent_style}>
     			{$icon}{$title}{$badge}
     		</div>
-  			{$buttons}
+  			{$buttons}{$controls}
     	</div>
 	</div>{$script}
 </div>

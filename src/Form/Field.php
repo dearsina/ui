@@ -283,44 +283,35 @@ class Field {
 	}
 
 	/**
-	 * Translates the validation tree to tags.
+	 * Translates the validation tree to data tags.
 	 * Will also add a class to the class array if validation is to be ignored.
 	 *
-	 * @param $validation
 	 *
 	 * @return bool|string
 	 */
-	static function getValidationTags($validation, ?array &$class = []): ?string
+	static function setValidationData(?array &$a, ?array &$class = []): void
 	{
-		if($validation === false){
+
+		if($a['validation'] === false){
 			//if validation is to be ignored for this field
 			$class[] = "ignore-validation";
-			return NULL;
+			return;
 		}
 
-		if(!is_array($validation)){
-			return NULL;
+		if(!is_array($a['validation'])){
+			return;
 		}
 
-		foreach($validation as $rule => $val){
+		foreach($a['validation'] as $rule => $val){
 			if(is_array($val)){
-				$data["data-rule-{$rule}"] = $val['rule'];
-				$data["data-msg-{$rule}"] = $val['msg'];
+				$a['data']["rule-{$rule}"] = $val['rule'];
+				$a['data']["msg-{$rule}"] = $val['msg'];
 			}
-			else if($val) {
-				$data["data-rule-{$rule}"] = $val;
+
+			else if($val){
+				$a['data']["rule-{$rule}"] = $val;
 			}
 		}
-
-		if(!$data){
-			return NULL;
-		}
-
-		foreach($data as $key => $val){
-			$tag_array[] = str::getAttrTag($key, $val);
-		}
-
-		return implode(" ", $tag_array);
 	}
 
 	/**

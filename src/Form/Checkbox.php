@@ -381,7 +381,7 @@ EOF;
 		$class_array = str::getAttrArray($class, ["form-check-input", $disabled_class], $aonly_class);
 
 		# Validation
-		$validation = self::getValidationTags($validation, $class_array);
+		self::setValidationData($a, $class_array);
 
 		# Class tag
 		$class_tag = str::getAttrTag("class", $class_array);
@@ -408,7 +408,6 @@ EOF;
 		{$class_tag}
 		{$style_tag}
 		{$disabled}
-		{$validation}
 		{$checked}
 		{$data}
 	>{$label}

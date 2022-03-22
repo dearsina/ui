@@ -65,7 +65,7 @@ class Input extends Field {
 		$class_array = str::getAttrArray($class, ["form-control", $disabled_class], $only_class);
 
 		# Validation
-		$validation = self::getValidationTags($validation, $class_array);
+		self::setValidationData($a, $class_array);
 
 		# Class string
 		$class = str::getAttrTag("class", $class_array);
@@ -140,7 +140,6 @@ class Input extends Field {
 			{$step}
 			{$autocomplete}
 			{$disabled}
-			{$validation}
 			{$checked}
 			{$data}
 		/>

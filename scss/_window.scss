@@ -7,29 +7,33 @@
   position   : absolute;
   overflow   : hidden;
 
-  min-height: 10vw;
-  min-width: 30vh;
+  min-height : 10vw;
+  min-width  : 30vh;
 }
 
 /**
  * Signals to the user that they can move the card.
  */
-.card-window > .card-header {
-  cursor: all-scroll;
+.card-window > .card-header
+{
+  cursor : all-scroll;
 }
 
 /**
  * The body will scroll up/down
  */
-.card-window > .card-body {
-  overflow-y: auto;
+.card-window > .card-body
+{
+  overflow-y : auto;
 }
 
 .window-controls
 {
-  position : absolute;
-  right    : 10px;
-  top      : 5px;
+  width      : auto;
+  position   : absolute;
+  right      : 10px;
+  top        : 5px;
+  background : $header-footer-bg;
 }
 
 .window-controls i

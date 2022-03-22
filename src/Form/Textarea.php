@@ -37,7 +37,7 @@ class Textarea extends Field implements FieldInterface {
 		$class_array = str::getAttrArray($class, ["form-control", $disabled_class], $only_class);
 
 		# Validation
-		$validation = self::getValidationTags($validation, $class_array);
+		self::setValidationData($a, $class_array);
 
 		# Class string
 		$class = str::getAttrTag("class", $class_array);
@@ -76,7 +76,6 @@ class Textarea extends Field implements FieldInterface {
 			{$title}
 			{$disabled}
 			{$autocomplete}
-			{$validation}
 			{$data}
 		>{$value}</textarea>
 	</div>
