@@ -511,3 +511,23 @@ $sideways-tabs-height   : 1rem;
   overflow   : auto;
   display    : block;
 }
+
+/**
+ * Fix issue of close-button being hidden
+ * when many tabs are opened.
+ */
+.nav-tabs .nav-link
+{
+  width: 100%;
+}
+.nav-tabs .nav-link .nav-title
+{
+  display: inline-flex;
+  overflow: hidden;
+}
+.nav-tabs .nav-link .nav-title-dismissible
+{
+  display: inline-flex;
+  overflow: hidden;
+  width: calc(100% - 45px);
+}

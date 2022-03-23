@@ -110,13 +110,18 @@ class Tab {
 				"name" => "times",
 				"class" => "tab-close",
 			]);
+			$class[] = "nav-title-dismissible";
 		}
 		/**
 		 * If the tab is dismissible, a cross is added as suffix to
 		 * the header and the user is able to close the tab.
 		 */
+		else {
+			$class[] = "nav-title";
+		}
+		$class = str::getAttrTag("class", $class);
 
-		return "{$icon} {$title}{$html}{$badge}{$dismissible}";
+		return "{$icon} <div{$class}>{$title}{$html}{$badge}</div>{$dismissible}";
 	}
 
 	public function getTabHeaderHTML(array $tab): string
@@ -160,6 +165,7 @@ class Tab {
 		$class = str::getAttrTag("class", $this->getTabHeaderClass($header));
 
 		# Style
+		$style = ["width" => "100%"];
 		$style = str::getAttrTag("style", $style);
 
 		# Data
