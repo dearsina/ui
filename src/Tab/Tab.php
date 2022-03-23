@@ -175,7 +175,10 @@ class Tab {
 		$button_type = str::getAttrTag("type", "button");
 		$button_role = str::getAttrTag("role", "tab");
 
-		$li_class = str::getAttrTag("class", "nav-item");
+		$li_class_array = str::getAttrArray(!$dismissible ? "immovable" : NULL, "nav-item");
+		//If a tab is not dismissible, it won't be movable
+
+		$li_class = str::getAttrTag("class", $li_class_array);
 		$li_role = str::getAttrTag("role", "presentation");
 
 		return "
