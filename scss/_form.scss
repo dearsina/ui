@@ -1,8 +1,9 @@
 /**
  * Remove the default margin bottom from forms.
  */
-form {
-  margin-bottom: 0;
+form
+{
+  margin-bottom : 0;
 }
 
 /**
@@ -19,26 +20,29 @@ form {
  * Formatting for the tick and cross
  * icons used for form validation.
  */
-.form-control-feedback {
-  margin-left: -25px;
-  margin-right: 7px;
-  margin-top: 11px;
-  z-index: 2;
+.form-control-feedback
+{
+  margin-left  : -25px;
+  margin-right : 7px;
+  margin-top   : 11px;
+  z-index      : 2;
   //background: none !important;
   //border: none !important;
   //padding-left: 0px;
   //line-height: 38px !important;
 }
 
-.form-control {
+.form-control
+{
   //font-size: 10pt;
   //No need for this
 
-  border-width: $form-item-border-width;
+  border-width : $form-item-border-width;
 }
 
-.form-control::placeholder {
-  color: map-get($theme-colors, "silver");
+.form-control::placeholder
+{
+  color : map-get($theme-colors, "silver");
 }
 
 /**
@@ -46,143 +50,165 @@ form {
  * When it's relative, it messes with menu items
  * that open over it.
  */
-.input-group {
-  position: unset;
+.input-group
+{
+  position : unset;
 }
 
-.input-group-text {
-  background-color: $header-footer-bg;
-  border-width: $form-item-border-width;
+.input-group-text
+{
+  background-color : $header-footer-bg;
+  border-width     : $form-item-border-width;
 }
 
 /**
  * The description part of a label.
  */
-.label-desc {
-  display: block;
-  font-weight: 300;
+.label-desc
+{
+  display     : block;
+  font-weight : 300;
 }
 
 /**
  * As the checkbox desc comes above the options,
  * it needs to be treted differently
  */
-.checkbox-parent-desc {
-  margin-top: -0.5rem;
-  margin-bottom: 1rem;
+.checkbox-parent-desc
+{
+  margin-top    : -0.5rem;
+  margin-bottom : 1rem;
 }
 
 /**
  * Make sure the checkbox labels have the right cursor.
  */
-.form-check > .field-label {
-  cursor: pointer;
+.form-check > .field-label
+{
+  cursor : pointer;
 }
 
-.field-label {
-  margin-bottom: .5rem;
-  font-weight: 300 !important;
+.field-label
+{
+  margin-bottom : .5rem;
+  font-weight   : 300 !important;
 }
 
-.field-label > b {
-  font-weight: 500;
+.field-label > b
+{
+  font-weight : 500;
 }
 
 /**
  * Fix so that the select2.js select box fits in to Bootstrap 4.x
  */
-.select2js {
-  border-radius: .25rem !important;
-  padding: 0 !important;
-  border: $form-item-border-width solid #e1e6ef !important;
-  min-height: calc(2.0625rem + 2px) !important;
+.select2js
+{
+  border-radius : .25rem !important;
+  padding       : 0 !important;
+  border        : $form-item-border-width solid #e1e6ef !important;
+  min-height    : calc(2.0625rem + 2px) !important;
 }
 
 /**
  * For when the select2js dropdown is in a radio or checkbox.
  */
-.field-label .select2 {
-  margin-top: 0.7rem;
+.field-label .select2
+{
+  margin-top : 0.7rem;
 }
 
 
-.select2-dropdown {
-  border: $form-item-border-width solid #e1e6ef !important;
+.select2-dropdown
+{
+  border  : $form-item-border-width solid #e1e6ef !important;
   //When dropdowns are in nested modals, they get lost, hence a slightly higher z-index
-  z-index: 1099;
+  z-index : 1099;
 }
 
-.select2js .select2-selection__rendered {
-  border-radius: 0 !important;
-  padding: 0.15rem 0.75rem !important;
+.select2js .select2-selection__rendered
+{
+  border-radius : 0 !important;
+  padding       : 0.15rem 0.75rem !important;
 }
 
-.select2js .select2-selection__arrow {
-  top: 4px !important;
-  right: 4px !important;
+.select2js .select2-selection__arrow
+{
+  top   : 4px !important;
+  right : 4px !important;
 }
 
-.select2js .select2-selection__clear {
-  color: #888888 !important;
-  margin-right: 10px;
-  margin-top: -1px;
-  font-size: x-large;
+.select2js .select2-selection__clear
+{
+  color        : #888888 !important;
+  margin-right : 10px;
+  margin-top   : -1px;
+  font-size    : x-large;
 
-  &:hover {
-    color: #ff0000 !important;
+  &:hover
+  {
+    color : #ff0000 !important;
   }
 }
 
-.select2-container {
-  width: 100% !important;
+.select2-container
+{
+  width : 100% !important;
   //margin-bottom: 1rem;
 }
 
 /**
  * Multi-select only.
  */
-.select2-container .select2-selection--multiple .select2-selection__rendered {
-  margin: -3px 0 2px -7px;
+.select2-container .select2-selection--multiple .select2-selection__rendered
+{
+  margin : -3px 0 2px -7px;
 }
 
-.select2-container--default .select2-selection--multiple .select2-selection__clear {
-  margin: -4px -9px -4px 0;
+.select2-container--default .select2-selection--multiple .select2-selection__clear
+{
+  margin : -4px -9px -4px 0;
 }
 
 /**
  * So that the little X is to the right, not the left of the text
  */
-.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
-  margin-left: 4px;
-  float: right;
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove
+{
+  margin-left : 4px;
+  float       : right;
 }
 
 /**
  * Fix so that select2.js and jQuery Validation work together
  */
-.select2js-is-valid {
-  border: 1px solid #79c447 !important;;
+.select2js-is-valid
+{
+  border : 1px solid #79c447 !important;;
 }
 
-.select2js-is-invalid {
-  border: 1px solid #ff5454 !important;;
+.select2js-is-invalid
+{
+  border : 1px solid #ff5454 !important;;
 }
 
 /**
  * Can probably be taken away once Bootstrap 5
  * is launched and this bugfix is no longer needed.
  */
-.is-invalid {
-  border-color: map-get($theme-colors, "danger");
-  border-radius: 0.25rem !important;
+.is-invalid
+{
+  border-color  : map-get($theme-colors, "danger");
+  border-radius : 0.25rem !important;
 }
 
 /**
  * so that the jQuery validation error message is bolder.
  * and placed correctly.
  */
-.invalid-feedback {
-  font-weight: 600;
+.invalid-feedback
+{
+  font-weight : 600;
   //margin-top: -0.75rem;
   //padding-bottom: .75rem;
 }
@@ -214,66 +240,73 @@ form {
 /**
  * Rangeslider background
  */
-.rangeslider {
-  background: map-get($theme-colors, "light");
-  margin-top: .5rem;
+.rangeslider
+{
+  background : map-get($theme-colors, "light");
+  margin-top : .5rem;
 }
 
 /**
  * Add additional margin on the bottom of range sliders
  */
-.input-group-range ~ .form-text {
-  margin-top: 1rem;
+.input-group-range ~ .form-text
+{
+  margin-top : 1rem;
 }
 
 /** Range button formatting **/
-.rangeslider__handle {
-  border-radius: 22px !important;
-  line-height: 37px;
-  text-align: center;
+.rangeslider__handle
+{
+  border-radius : 22px !important;
+  line-height   : 37px;
+  text-align    : center;
 
-  font-weight: 600;
+  font-weight   : 600;
   /**
    * In line with checkbox labels
    */
 
-  box-shadow: 1px 1px 3px 0 rgba(0, 0, 0, 0.2);
+  box-shadow    : 1px 1px 3px 0 rgba(0, 0, 0, 0.2);
   /**
    * Get it in line with the rest of the box shadowing.
    */
 
-  padding: 0px 15px;
-  width: auto;
+  padding       : 0px 15px;
+  width         : auto;
   /**
    * Will auto-adjust the width depending on the content.
    */
 }
 
-.rangeslider__handle:after {
-  background: 0 !important;
+.rangeslider__handle:after
+{
+  background : 0 !important;
 }
 
 /** Range ruler */
-.rangeslider__ruler {
-  cursor: pointer;
-  font-size: .7em;
-  margin: 20px 3px 0 3px;
-  position: relative;
-  top: 100%;
-  text-align: justify;
+.rangeslider__ruler
+{
+  cursor     : pointer;
+  font-size  : .7em;
+  margin     : 20px 3px 0 3px;
+  position   : relative;
+  top        : 100%;
+  text-align : justify;
 }
 
 /* Workaround to justify only one-line. */
 /* Extra element to force a new line. */
-.rangeslider__ruler:after {
-  content: "";
-  display: inline-block;
-  width: 100%;
+.rangeslider__ruler:after
+{
+  content : "";
+  display : inline-block;
+  width   : 100%;
 }
 
-.rangeslider, .rangeslider__fill {
-  border-radius: 10px !important;
-  box-shadow: inset 1px 1px 2px 0 rgba(0, 0, 0, 0.2);
+.rangeslider, .rangeslider__fill
+{
+  border-radius : 10px !important;
+  box-shadow    : inset 1px 1px 2px 0 rgba(0, 0, 0, 0.2);
 }
 
 
@@ -281,65 +314,75 @@ form {
  * International Telephone Input
  * Overriding the path to flags.png as per the setup instructions
  */
-.iti__flag {
-  background-image: url("https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.0/img/flags.png");
+.iti__flag
+{
+  background-image : url("https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.0/img/flags.png");
 }
 
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .iti__flag {
-    background-image: url("https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.0/img/flags@2x.png");
+@media (-webkit-min-device-pixel-ratio : 2), (min-resolution : 192dpi)
+{
+  .iti__flag
+  {
+    background-image : url("https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.0/img/flags@2x.png");
   }
 }
 
-.iti {
-  width: 100%; //Or else it will not stretch all the way out
+.iti
+{
+  width : 100%; //Or else it will not stretch all the way out
   //margin-bottom: -0.7rem; //For some reason there is (superfluous) buffer underneath the element
 }
 
-.iti__country-list {
-  z-index: 4; //Or button narratives will override the dropdown
-  position: fixed; // Or else it will drown in modals
+.iti__country-list
+{
+  z-index  : 4; //Or button narratives will override the dropdown
+  position : fixed; // Or else it will drown in modals
 }
 
 /**
  * When a tel field fails validation, the flag will shift,
  * unless this fix applied.
  */
-.iti__flag-container {
-  bottom: unset;
-  top: 0.7rem;
+.iti__flag-container
+{
+  bottom : unset;
+  top    : 0.7rem;
 }
 
 /**
  * Vertical dividing line
  */
-.vl {
-  border-left: .9px solid $border-color;
+.vl
+{
+  border-left : .9px solid $border-color;
 }
 
 /**
  * Form a box around one or many fields.
  */
-.field-box {
-  border: 1px solid $border-color;
-  margin: 0;
-  padding: 1rem 0;
-  border-radius: 3px;
+.field-box
+{
+  border        : 1px solid $border-color;
+  margin        : 0;
+  padding       : 1rem 0;
+  border-radius : 3px;
 }
 
 /**
  * Dropzone.js
  */
-.dropzone {
-  border: 0.3rem dashed #f1f4f7;
-  border-radius: 0.3rem;
-  min-height: auto;
-  height: 100%;
-  padding: 0;
+.dropzone
+{
+  border        : 0.3rem dashed #f1f4f7;
+  border-radius : 0.3rem;
+  min-height    : auto;
+  height        : 100%;
+  padding       : 0;
 }
 
-.dropzone .dz-message {
-  margin: 0;
+.dropzone .dz-message
+{
+  margin : 0;
 }
 
 /**
@@ -348,12 +391,13 @@ form {
  */
 .dropzone .dz-preview.dz-error:hover .dz-error-message
 {
-  margin-top: 1rem;
+  margin-top : 1rem;
 }
 
-.dropzone button.dz-button {
-  height: 100%;
-  padding: 1rem !important;
+.dropzone button.dz-button
+{
+  height  : 100%;
+  padding : 1rem !important;
 }
 
 //.dropzone button.dz-button:before {
@@ -365,22 +409,25 @@ form {
 //  color: #dce1e5;
 //}
 
-.dropzone button.dz-button:after {
-  content: "Alternatively, click anywhere in this box to select a file.";
-  font-weight: 200;
-  display: block;
-  font-size: smaller;
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
+.dropzone button.dz-button:after
+{
+  content       : "Alternatively, click anywhere in this box to select a file.";
+  font-weight   : 200;
+  display       : block;
+  font-size     : smaller;
+  margin-top    : 0.5rem;
+  margin-bottom : 0.5rem;
 }
 
 // HOVER
-.dropzone .dz-drag-hover {
-  border-style: solid;
+.dropzone .dz-drag-hover
+{
+  border-style : solid;
 }
 
-.dropzone.dz-drag-hover .dz-message {
-  color: $border-color;
+.dropzone.dz-drag-hover .dz-message
+{
+  color : $border-color;
 }
 
 //.dropzone.dz-drag-hover button.dz-button:before {
@@ -391,49 +438,85 @@ form {
  * Signature
  */
 
-.signature-pad .modal-body{
-  min-height: 50vh;
-  border-width: 0.3rem;
-  border-color: map-get($theme-colors, "silver");
-  border-style: dashed;
-  margin: 1rem;
-  padding: 0;
+.signature-pad .modal-body
+{
+  min-height   : 50vh;
+  border-width : 0.3rem;
+  border-color : map-get($theme-colors, "silver");
+  border-style : dashed;
+  margin       : 1rem;
+  padding      : 0;
 }
 
-.signature-pad canvas {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
+.signature-pad canvas
+{
+  position : absolute;
+  left     : 0;
+  top      : 0;
+  width    : 100%;
+  height   : 100%;
 }
 
-.signature-pad .signature-pad-narrative {
-  min-height: 100%;
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: xx-large;
-  font-weight: 100;
-  color: map-get($theme-colors, "silver");
+.signature-pad .signature-pad-narrative
+{
+  min-height      : 100%;
+  position        : absolute;
+  display         : flex;
+  justify-content : center;
+  align-items     : center;
+  font-size       : xx-large;
+  font-weight     : 100;
+  color           : map-get($theme-colors, "silver");
 }
 
-.signature-pad-svg {
-  border-bottom-width: 1px;
-  border-bottom-style: solid;
-  border-bottom-color: #d8e2e9;
-  height: 110px;
+.signature-pad-svg
+{
+  border-bottom-width : 1px;
+  border-bottom-style : solid;
+  border-bottom-color : #d8e2e9;
+  height              : 110px;
 }
 
-.signature-pad-desc {
-  margin-bottom: 1rem;
-  font-size: small;
-  color: #d8e2e9;
+.signature-pad-desc
+{
+  margin-bottom : 1rem;
+  font-size     : small;
+  color         : #d8e2e9;
 }
 
 .checkbox-all
 {
-  margin-right: 0.5rem;
-  cursor: pointer;
+  margin-right : 0.5rem;
+  cursor       : pointer;
+}
+
+/**
+ * Trumbowyg customisations.
+ */
+.trumbowyg-button-pane
+{
+  background : #f6f6f9;
+}
+
+.trumbowyg-button-pane .trumbowyg-button-group::after,
+.trumbowyg-button-pane::after
+{
+  height : .5px;
+}
+
+.trumbowyg-dropdown
+{
+  max-width : 40vw;
+}
+
+.trumbowyg-box.trumbowyg-editor-hidden .trumbowyg-textarea
+{
+  height    : 100% !important;
+  font-size : 85%;
+}
+
+// Shrink the button icons ever so slightly
+.trumbowyg-button-pane button > i
+{
+  font-size:80%;
 }
