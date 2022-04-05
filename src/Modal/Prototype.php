@@ -24,6 +24,7 @@ abstract class Prototype extends \App\Common\Prototype {
 				"hash" => [
 					"rel_table" => $rel_table,
 					"action" => "new",
+					"vars" => $vars
 				],
 				"title" => "New",
 				"icon" => Icon::get("new"),

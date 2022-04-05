@@ -114,7 +114,8 @@ class Field {
 	 * @param string          $name
 	 * @param int|string      $id
 	 * @param int|string|null $for   If set, will be the ID that this element's label is "for"
-	 * @param bool|null       $all If set, will add a checkbox so that all values can be selected. Only used by checkboxes.
+	 * @param bool|null       $all   If set, will add a checkbox so that all values can be selected. Only used by
+	 *                               checkboxes.
 	 *
 	 * @return false|string
 	 * @throws \Exception
@@ -473,7 +474,26 @@ class Field {
 	public static function getOnChange(array &$a)
 	{
 		extract($a);
-		$script = $onChange ?: $onchange;
+
+		$on = $onChange ?: $onchange;
+
+		# A hash array can be fed to the onChange key
+		if(is_array($on)){
+			$rel_table = $on['rel_table'] ? "\"{$on['rel_table']}\"" : "null";
+			$rel_id = $on['rel_id'] ? "\"{$on['rel_id']}\"" : "null";
+			$action = $on['action'] ? "\"{$on['action']}\"" : "null";
+			if($on['vars']){
+				$json = substr(json_encode($on['vars']), 1, -1);
+			}
+			$vars = "{\"{$name}\": $(this).val(), $json}";
+			$script = "ajaxCall({$action}, {$rel_table}, {$rel_id}, {$vars});";
+		}
+
+		# Otherwise a script
+		else {
+			$script = $on;
+		}
+
 
 		if(!$script){
 			return false;
