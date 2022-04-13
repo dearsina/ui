@@ -96,7 +96,13 @@ EOF;
 		# Tokenize
 		if($tokenize){
 			$settings['tags'] = true;
-			$settings['createTag'] = "createTagFileName";
+			if(is_string($tokenize)){
+				switch($tokenize){
+				case 'filename':
+					$settings['createTag'] = "createTagFileName";
+					break;
+				}
+			}
 		}
 
 		return str::getDataAttr([
