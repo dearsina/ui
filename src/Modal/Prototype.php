@@ -89,6 +89,7 @@ abstract class Prototype extends \App\Common\Prototype {
 		# A different modal for when tabs are being used
 		if(array_key_exists("tabs", $fields)){
 			$modal = new Modal([
+				"id" => $id,
 				"size" => $size,
 				"body" => [
 					"style" => [
@@ -104,6 +105,7 @@ abstract class Prototype extends \App\Common\Prototype {
 
 		else {
 			$modal = new Modal([
+				"id" => $id,
 				"size" => $size,
 				"header" => [
 					"icon" => Icon::get("new"),
