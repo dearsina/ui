@@ -141,13 +141,9 @@ EOF;
 			];
 		}
 
-		# Shift the label a bit closer to the field
-//		$val['label']['style']["margin-bottom"] = $val['label']['style']["margin-bottom"] ?: "-0.3rem";
-		//not sure if we need this any more
-
 		return [
 			"id" => $id,
-			"script" => NULL,//self::getLabelScript($id, $val['id']),
+			"script" => NULL,
 			'label' => [
 				"style" => [
 					"width" => "100%",

@@ -104,12 +104,12 @@ EOF;
 				}
 			}
 		}
-
-		return str::getDataAttr([
+		
+		return str::getDataAttr(array_merge($a['data'] ?:[], [
 			"settings" => $settings,
 			"parent" => $parent,
 			"onChange" => self::getOnChange($a)
-		]);
+		]));
 	}
 
 	/**
