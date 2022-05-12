@@ -484,7 +484,11 @@ EOF;
 		$script = str::getScriptTag($this->cardFooter['script']);
 
 		if(is_array($this->cardFooter['html'])){
-			$this->cardFooter['html'] = Grid::generate($this->cardFooter['html']);
+			if(!str::isNumericArray($this->cardFooter['html'])){
+				$this->cardFooter['html'] = [$this->cardFooter['html']];
+			}
+			$this->cardFooter['html'] = Grid::generate([$this->cardFooter['html']]);
+			// The html key needs to be loaded as a numeric array
 		}
 
 		if($html = $icon . $this->cardFooter['footer'] . $this->cardFooter['html'] . $badge){
