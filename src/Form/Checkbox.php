@@ -53,7 +53,7 @@ class Checkbox extends Field implements FieldInterface {
 			$title = $label;
 		}
 
-		else if (is_array($label)){
+		else if(is_array($label)){
 			$title = $label['title'] ?: $label['html'];
 		}
 
@@ -65,7 +65,7 @@ class Checkbox extends Field implements FieldInterface {
 			$basic = false;
 		}
 
-		else if (is_array($value)){
+		else if(is_array($value)){
 			$basic = false;
 		}
 
@@ -75,7 +75,7 @@ class Checkbox extends Field implements FieldInterface {
 
 		$button = Button::generate([
 			"icon" => $icon,
-			"title" => "{$title} ".Icon::generate("chevron-down"),
+			"title" => "{$title} " . Icon::generate("chevron-down"),
 			"alt" => $alt,
 			"basic" => $basic,
 			"colour" => $colour,
@@ -100,14 +100,13 @@ EOF;
 	/**
 	 * A checkbox or a radio item label can itself be a field.
 	 *
-	 * @param $val
-	 * @param $type
-	 *
-	 * @param $validation
+	 * @param string|array $val
+	 * @param string       $type
+	 * @param array|null   $validation
 	 *
 	 * @return array
 	 */
-	private static function getLabelArray($val, $type, $validation)
+	private static function getLabelArray($val, string $type, ?array $validation): ?array
 	{
 		# Label is just a string (not an array)
 		if(!is_array($val)){
@@ -130,7 +129,11 @@ EOF;
 		$val['id'] = $val['id'] ?: str::id($val['type']);
 
 		# The validations of the parent are inherited by the label field
-		$val['validation'] = array_merge($val['validation'] ?:[], $validation ?:[]);
+		unset($validation['minLength'], $validation['maxLength']);
+		// Except minlength and maxlength, because they mean different things for different form field types
+
+		# Parent validation can be overwritten by child verification
+		$val['validation'] = array_merge( $validation ?: [], $val['validation'] ?: []);
 
 		# Adjust the label to fit the field
 		$val['parent_style'] = str::getAttrArray($val['parent_style'], $val['default_parent_style'], $val['only_parent_style']); //["margin" => "-1rem 0 0 0"]
@@ -294,7 +297,7 @@ EOF;
 
 			if(!empty($values)){
 				//Applies to checkbox
-				$val_array['checked'] = strlen($key) && in_array((string) $key, $values) ? "checked" : false;
+				$val_array['checked'] = strlen($key) && in_array((string)$key, $values) ? "checked" : false;
 				//if the key is int 0 it will be boolean true in the in_array, so we convert it to string 0, this is no longer an issue in PHP8
 			}
 
