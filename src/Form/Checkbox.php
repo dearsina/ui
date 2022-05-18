@@ -317,7 +317,7 @@ EOF;
 		return /** @lang HTML */ <<<EOF
 <div{$parent_class}>
 	{$parent_label}{$parent_desc}
-	{$options_html}
+	<div>{$options_html}</div>
 </div>
 {$parent_script}
 EOF;
@@ -341,6 +341,9 @@ EOF;
 		 * has been set.
 		 */
 
+		# Single checkboxes cannot be placed inline
+		$a['inline'] = NULL;
+
 		$html = self::getCheckboxHTML($a);
 		return /** @lang HTML */ <<<EOF
 <div class="mb-3">
@@ -360,8 +363,11 @@ EOF;
 	{
 		extract($a);
 
+		# Is the option to be placed inline (horizontally)?
+		$form_check_inline = $inline ? " form-check-inline" : NULL;
+
 		# Parent class
-		$parent_class_array = str::getAttrArray($parent_class, "form-check", $only_parent_class);
+		$parent_class_array = str::getAttrArray($parent_class, "form-check{$form_check_inline}", $only_parent_class);
 		$parent_class_tag = str::getAttrTag("class", $parent_class_array);
 
 		# Parent style

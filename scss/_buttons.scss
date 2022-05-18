@@ -133,6 +133,12 @@ form .btn i
   //line-height: 1;
   margin: .25rem 0 .25rem .5rem;
 }
+.card .btn-float-right .btn-group,
+.modal .btn-float-right .btn-group,
+.tab-pane .btn-float-right .btn-group,
+{
+  float: right !important;
+}
 
 /**
  * Outlined buttons are by default still too loud.
@@ -161,4 +167,37 @@ form .btn i
 .btn-success
 {
   color: #fff;
+}
+
+/**
+ * Split buttons
+ */
+
+.dropdown-toggle-split {
+  margin-left: 0 !important;
+}
+
+// Give padding to each item in the menu
+ul.dropdown-menu > li > * {
+  padding: 0.3rem 1rem;
+  display: block;
+  font-weight: 400;
+
+}
+
+// Give space for each icon
+ul.dropdown-menu > li i {
+  margin-right: 0.75rem;
+}
+
+// Make sure text stays black, even as link
+ul.dropdown-menu > li a {
+  color: #000000;
+}
+
+// Hover only changed background, not text colour or decoration
+ul.dropdown-menu > li a:hover {
+  color: #000000;
+  background-color: #f0f0f0;
+  text-decoration: none !important;
 }

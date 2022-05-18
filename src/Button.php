@@ -86,7 +86,7 @@ class Button {
 			],
 			"icon" => "new",
 			"colour" => "primary",
-			"alt" => "New"
+			"alt" => "New",
 		],
 
 		"test" => [
@@ -100,7 +100,7 @@ class Button {
 			"icon" => "test",
 			"basic" => true,
 			"colour" => "yellow",
-			"alt" => "Test"
+			"alt" => "Test",
 		],
 
 		"edit" => [
@@ -113,7 +113,7 @@ class Button {
 			],
 			"icon" => "edit",
 			"basic" => true,
-			"alt" => "Edit"
+			"alt" => "Edit",
 		],
 
 		"duplicate" => [
@@ -127,7 +127,7 @@ class Button {
 			],
 			"icon" => "copy",
 			"basic" => true,
-			"alt" => "Duplicate"
+			"alt" => "Duplicate",
 		],
 
 		"remove" => [
@@ -147,7 +147,7 @@ class Button {
 			"icon" => "trash",
 			"basic" => true,
 			"colour" => "danger",
-			"alt" => "Remove"
+			"alt" => "Remove",
 		],
 	];
 
@@ -343,6 +343,23 @@ class Button {
 		return "<div{$parent_class}{$parent_style}>{$button}</div>";
 	}
 
+	private static function buildClassArray(array $a): array
+	{
+		extract($a);
+
+		# Is it a basic button?
+		if($basic || $outline){
+			$outline = "-outline";
+		}
+
+		# What colour is the button?
+		$colour = $colour ?: "dark";
+		//default is a b&w theme
+
+		# Class with override
+		return str::getAttrArray($class, ["btn", "btn{$outline}-{$colour}"], $only_class);
+	}
+
 	/**
 	 * Generates a button based on an array of settings
 	 * <code>
@@ -394,22 +411,28 @@ class Button {
 			return self::generateWithChildren($a);
 		}
 
+		# Buttons with splits are to be treated a little differently
+		else if($split){
+			return self::generateWithSplit($a);
+		}
+
 		$href = href::generate($a);
 
 		# Style with override
 		$style_array = str::getAttrArray($style, false, $only_style);
 
-		# Is it a basic button?
-		if($basic || $outline){
-			$outline = "-outline";
-		}
-
-		# What colour is the button?
-		$colour = $colour ?: "dark";
-		//default is a b&w theme
-
-		# Class with override
-		$class_array = str::getAttrArray($class, ["btn", "btn{$outline}-{$colour}"], $only_class);
+//		# Is it a basic button?
+//		if($basic || $outline){
+//			$outline = "-outline";
+//		}
+//
+//		# What colour is the button?
+//		$colour = $colour ?: "dark";
+//		//default is a b&w theme
+//
+//		# Class with override
+//		$class_array = str::getAttrArray($class, ["btn", "btn{$outline}-{$colour}"], $only_class);
+		$class_array = Button::buildClassArray($a);
 
 		# Who is directing the button?
 		if($approve){
@@ -651,6 +674,56 @@ EOF;
 			"class" => $a['class'],
 			"children" => $children,
 		]);
+	}
+
+	/**
+	 * A split button is a button with a menu on the right.
+	 * To make one, add children buttons to the split key.
+	 *
+	 * @param array $a
+	 *
+	 * @return string
+	 * @throws \Exception
+	 */
+	public static function generateWithSplit(array $a): string
+	{
+		# Separate out the children
+		$children = $a['split'];
+		unset($a['split']);
+
+		# Build the main button
+		$button = Button::generate($a);
+
+		# Take the classes from the main and apply it to the dropdown trigger
+		$class_array = Button::buildClassArray($a);
+		$class_array[] = "dropdown-toggle dropdown-toggle-split";
+		$class = str::getAttrTag("class", $class_array);
+
+		# Build the menu buttons
+		$menu .= Dropdown::getMultiLevelItemsHTML($children, [
+			"class" => "dropdown-menu",
+			// This sets the <ul> class
+		]);
+
+		return <<<EOF
+<div class="btn-group">
+  {$button}
+  <button type="button" {$class} data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="visually-hidden">Toggle Dropdown</span>
+  </button>
+  {$menu}
+</div>
+EOF;
+		/**
+		<!--  <ul class="dropdown-menu">-->
+		<!--	<li><a class="dropdown-item" href="#">Action</a></li>-->
+		<!--	<li><a class="dropdown-item" href="#">Another action</a></li>-->
+		<!--	<li><hr class="dropdown-divider"></li>-->
+		<!--	<li><a class="dropdown-item" href="#">Something else here</a></li>-->
+		<!--	<li><a class="dropdown-item" href="#">Separated link</a></li>-->
+		<!--  </ul>-->
+		 */
+
 	}
 
 	/**
