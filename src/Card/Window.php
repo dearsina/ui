@@ -28,7 +28,7 @@ class Window extends Card{
 
 		# Header
 		$a['header'] = is_array($a['header']) ? $a['header'] : [
-			"html" => $a['header']
+			"title" => $a['header']
 		];
 
 		# Window controls
