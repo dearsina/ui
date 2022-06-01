@@ -490,6 +490,19 @@ form
   cursor       : pointer;
 }
 
+.input-group
+{
+  &:not(.has-validation)
+  {
+    > :not(:last-child):not(.dropdown-toggle):not(.dropdown-menu),
+    > .dropdown-toggle:nth-last-child(n + 3)
+    {
+      border-top-right-radius: $border-radius;
+      border-bottom-right-radius: $border-radius;
+    }
+  }
+}
+
 /**
  * Trumbowyg customisations.
  */
@@ -518,5 +531,44 @@ form
 // Shrink the button icons ever so slightly
 .trumbowyg-button-pane button > i
 {
-  font-size:80%;
+  font-size : 80%;
+}
+
+/**
+ * Format modal, including header, buttons.
+ */
+.trumbowyg-modal-box
+{
+  font-size: unset;
+}
+
+.trumbowyg-modal-box .trumbowyg-modal-button
+{
+  font-family   : $font-family-base;
+  border-radius : 0.25rem;
+  position: absolute !important;
+  padding: unset !important;
+}
+
+.trumbowyg-modal-box .trumbowyg-modal-button.trumbowyg-modal-submit
+{
+  background : map-get($theme-colors, "success");
+}
+
+.trumbowyg-modal-box .trumbowyg-modal-title
+{
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-weight: 400;
+  text-align: left;
+  padding: 1rem;
+  font-size: smaller;
+  border-top-left-radius: $border-radius;
+  border-top-right-radius: $border-radius;
+  background: #f6f6f9; // The trumbowyg buttons background
+}
+
+.trumbowyg-modal-box .trumbowyg-input-row
+{
+  border-radius: $border-radius;
 }
