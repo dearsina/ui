@@ -5,6 +5,7 @@ namespace App\UI\Form;
 
 
 use App\Common\str;
+use App\UI\Button;
 use App\UI\Icon;
 
 class Dropzone extends Field implements FieldInterface {
@@ -54,12 +55,12 @@ class Dropzone extends Field implements FieldInterface {
 
             $a['settings']['dictDefaultMessage'] .= "<div>".Icon::generate([
                     "type" => "light",
-                    "name" => $a['icon'] ?: "folder",
+                    "name" => $a['icon'] ?: "cloud-arrow-up",
                     "size" => "3x",
                     "style" => [
                         "font-weight" => "100",
                         "font-size" => "50pt",
-                        "color" => "#dce1e5"
+                        "color" => "#f2f5f8"
                     ]
                 ])."</div>";
         }
@@ -67,6 +68,23 @@ class Dropzone extends Field implements FieldInterface {
 		if($a['placeholder']){
 			$a['settings']['dictDefaultMessage'] .= $a['placeholder'];
 		}
+
+		# Add a faux-browse button
+		$a['settings']['dictDefaultMessage'] .= "<div>".Button::generate([
+			"disabled" => true,
+			"title" => "Browse...",
+			"basic" => true,
+			"size" => "s",
+			"ladda" => false,
+			"style" => [
+				"cursor" => "default",
+				"width" => "100px",
+				"color" => "#a0a8b1",
+				"border-color" => "#a0a8b1",
+				"opacity" => "1",
+			]
+		])."</div>";
+
 		return str::getDataAttr(["settings" => $a['settings']]);
 	}
 }

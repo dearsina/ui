@@ -201,3 +201,15 @@ ul.dropdown-menu > li a:hover {
   background-color: #f0f0f0;
   text-decoration: none !important;
 }
+
+/**
+ * For buttons that are to be hidden on mobile devices
+ */
+.btn-desktop-only {
+  display: none;
+}
+@include media-breakpoint-up(sm) {
+  .btn-desktop-only {
+    display: inline-block;
+  }
+}

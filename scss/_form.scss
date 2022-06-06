@@ -371,18 +371,22 @@ form
 /**
  * Dropzone.js
  */
+
 .dropzone
 {
   border        : 0.3rem dashed #f1f4f7;
   border-radius : 0.3rem;
-  min-height    : auto;
-  height        : 100%;
   padding       : 0;
 }
 
 .dropzone .dz-message
 {
-  margin : 0;
+  margin         : 0;
+
+  display        : flex;
+  flex-direction : column;
+  align-items    : center;
+  padding-bottom : 1rem;
 }
 
 /**
@@ -400,18 +404,9 @@ form
   padding : 1rem !important;
 }
 
-//.dropzone button.dz-button:before {
-//  content: "\f07b";
-//  font-family: "Font Awesome 6 Pro";
-//  font-weight: 300;
-//  font-size: 50pt;
-//  display: block;
-//  color: #dce1e5;
-//}
-
 .dropzone button.dz-button:after
 {
-  content       : "Alternatively, click anywhere in this box to select a file.";
+  content       : "Alternatively, click browse to select a file.";
   font-weight   : 200;
   display       : block;
   font-size     : smaller;
@@ -497,8 +492,8 @@ form
     > :not(:last-child):not(.dropdown-toggle):not(.dropdown-menu),
     > .dropdown-toggle:nth-last-child(n + 3)
     {
-      border-top-right-radius: $border-radius;
-      border-bottom-right-radius: $border-radius;
+      border-top-right-radius    : $border-radius;
+      border-bottom-right-radius : $border-radius;
     }
   }
 }
@@ -539,15 +534,15 @@ form
  */
 .trumbowyg-modal-box
 {
-  font-size: unset;
+  font-size : unset;
 }
 
 .trumbowyg-modal-box .trumbowyg-modal-button
 {
   font-family   : $font-family-base;
   border-radius : 0.25rem;
-  position: absolute !important;
-  padding: unset !important;
+  position      : absolute !important;
+  padding       : unset !important;
 }
 
 .trumbowyg-modal-box .trumbowyg-modal-button.trumbowyg-modal-submit
@@ -557,18 +552,18 @@ form
 
 .trumbowyg-modal-box .trumbowyg-modal-title
 {
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  font-weight: 400;
-  text-align: left;
-  padding: 1rem;
-  font-size: smaller;
-  border-top-left-radius: $border-radius;
-  border-top-right-radius: $border-radius;
-  background: #f6f6f9; // The trumbowyg buttons background
+  text-transform          : uppercase;
+  letter-spacing          : 1.5px;
+  font-weight             : 400;
+  text-align              : left;
+  padding                 : 1rem;
+  font-size               : smaller;
+  border-top-left-radius  : $border-radius;
+  border-top-right-radius : $border-radius;
+  background              : #f6f6f9; // The trumbowyg buttons background
 }
 
 .trumbowyg-modal-box .trumbowyg-input-row
 {
-  border-radius: $border-radius;
+  border-radius : $border-radius;
 }
