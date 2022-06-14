@@ -193,6 +193,17 @@ form
 }
 
 /**
+ * For when form fields are to have
+ * a monospace font.
+ */
+input.monospace
+{
+  font-family: 'Roboto Mono', monospace;
+  font-size: 85%;
+  font-weight: bold;
+}
+
+/**
  * Can probably be taken away once Bootstrap 5
  * is launched and this bugfix is no longer needed.
  */
