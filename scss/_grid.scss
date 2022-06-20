@@ -69,6 +69,14 @@ $container-max-widths : (
    */
 }
 
+/**
+ * Solves the issue of <img> overflowing.
+ */
+.grid-stack-item-content .row
+{
+  display: block;
+}
+
 // The buttons to control the card
 .grid-card-control-buttons
 {

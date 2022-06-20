@@ -196,7 +196,8 @@ form
  * For when form fields are to have
  * a monospace font.
  */
-input.monospace
+input.monospace,
+textarea.monospace
 {
   font-family: 'Roboto Mono', monospace;
   font-size: 85%;
