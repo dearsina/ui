@@ -421,25 +421,8 @@ class Button {
 		# Style with override
 		$style_array = str::getAttrArray($style, false, $only_style);
 
-//		# Is it a basic button?
-//		if($basic || $outline){
-//			$outline = "-outline";
-//		}
-//
-//		# What colour is the button?
-//		$colour = $colour ?: "dark";
-//		//default is a b&w theme
-//
-//		# Class with override
-//		$class_array = str::getAttrArray($class, ["btn", "btn{$outline}-{$colour}"], $only_class);
+		# Build the class
 		$class_array = Button::buildClassArray($a);
-
-		# Who is directing the button?
-		if($approve){
-			//if an approval dialogue is to prepend the action
-			$approve_attr = str::getApproveAttr($a['approve']);
-			$class_array[] = "approve-decision";
-		}
 
 		# OnClicks aren't treated as true buttons, fix it
 		if($onClick){
@@ -462,8 +445,15 @@ class Button {
 			$icon = false;
 		}
 
+		# Who is directing the button?
+		if($approve){
+			//if an approval dialogue is to prepend the action
+			$approve_attr = str::getApproveAttr($a['approve'], $icon, $colour);
+			$class_array[] = "approve-decision";
+		}
+
 		# Does it have an icon?
-		else if($icon){
+		if($icon){
 			$icon = Icon::generate($icon);
 		}
 

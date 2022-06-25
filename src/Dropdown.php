@@ -142,7 +142,7 @@ class Dropdown {
 			}
 
 			# Approval needed?
-			if($approve_attr = str::getApproveAttr($item['approve'])){
+			if($approve_attr = str::getApproveAttr($item['approve'], $item['icon'], $item['colour'])){
 				$default_class[] = "approve-decision";
 				$id = str::getAttrTag("id", $item['id'] ?: str::id());
 			}

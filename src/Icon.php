@@ -246,7 +246,7 @@ class Icon {
 			$id = $id ?: str::id("icon");
 			// We'll need an ID
 
-			$approve_attr = str::getApproveAttr($a['approve']);
+			$approve_attr = str::getApproveAttr($a['approve'], $icon_array, $colour);
 			$default[] = "approve-decision";
 		}
 

@@ -84,7 +84,7 @@ class Badge {
 		$id = str::getAttrTag("id", $id);
 
 		# Optional approval attributes
-		$approve_attr = str::getApproveAttr($a['approve']);
+		$approve_attr = str::getApproveAttr($a['approve'], $a['icon'], $a['colour']);
 
 		# Is the badge a link?
 		if($href = href::generate($a)){
