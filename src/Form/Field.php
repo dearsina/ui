@@ -316,6 +316,62 @@ class Field {
 	}
 
 	/**
+	 * Qualifier    Type     Description
+	 * enabled      Boolean  If true, then dependency must not have the "disabled" attribute.
+	 * checked      Boolean  If true, then dependency must not have the "checked" attribute.
+	 *                       Used for checkboxes and radio buttons.
+	 * values       Array    Dependency value must equal one of the provided values.
+	 * not          Array    Dependency value must not equal any of the provided values.
+	 * match        RegEx    Dependency value must match the regular expression.
+	 * contains     Array    One of the provided values must be contained in an array of dependency values.
+	 *                       Used for select fields with the "multiple" attribute.
+	 * email        Boolean  If true, dependency value must match an email address.
+	 * url          Boolean  If true, Dependency value must match a URL.
+	 * function     String   Name of a custom function which returns true or false.
+	 *
+	 * value        Boolean     True matches on any value, false matches on any empty
+	 * < <= > >=    Float    Mathematical equations
+	 *
+	 * <code>
+	 * "dependency" => [
+	 *    "col_name" => [
+	 *        "checked" => true
+	 *    ]
+	 * ]
+	 * </code>
+	 * @link https://dstreet.github.io/dependsOn
+	 *
+	 * @param array|null $a
+	 */
+	static function setDependencyData(?array &$a): void
+	{
+		if(!is_array($a['dependency'])){
+			return;
+		}
+
+		foreach($a['dependency'] as $key => $val){
+			if(is_int($key)){
+				foreach($val as $k => $v){
+					$a['data']['dependency'][$key][self::getKey($k)] = $v;
+				}
+				continue;
+			}
+
+			$a['data']['dependency'][self::getKey($key)] = $val;
+		}
+	}
+
+	private static function getKey(string $key): string
+	{
+		if(preg_match("/[#.]/", "key")){
+			return $key;
+		}
+
+		//if the key is "just" a form value name
+		return "[name='{$key}']";
+	}
+
+	/**
 	 * Translates the required attribute
 	 * to a more complex validation array tree.
 	 *

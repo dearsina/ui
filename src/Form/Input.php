@@ -67,6 +67,9 @@ class Input extends Field {
 		# Validation
 		self::setValidationData($a, $class_array);
 
+		# Set dependency data
+		self::setDependencyData($a);
+
 		# Class string
 		$class = str::getAttrTag("class", $class_array);
 		

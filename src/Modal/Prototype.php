@@ -52,7 +52,6 @@ abstract class Prototype extends \App\Common\Prototype {
 		]);
 
 		return $modal->getHTML();
-
 	}
 
 	/**

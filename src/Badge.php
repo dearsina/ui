@@ -23,7 +23,7 @@ class Badge {
 	const GENERIC = [
 		"deleted" => [
 			"title" => "DELETED",
-			"colour" => "red"
+			"colour" => "red",
 		],
 	];
 
@@ -45,29 +45,34 @@ class Badge {
 	 * Badge::generate([$badgeA, $badgeB, ..., $badgeN]);
 	 * </code>
 	 *
-	 * @param null $array_or_string
+	 * @param array|string|null $array_or_string
 	 *
 	 * @return string
 	 * @throws \Exception
 	 */
-	static function generate($array_or_string = null, ?array $overrides = NULL){
+	static function generate($array_or_string = NULL, ?array $overrides = NULL): ?string
+	{
 		if(!is_array($array_or_string) && !strlen($array_or_string)){
-			return false;
+			return NULL;
 		}
 
 		if(!is_array($array_or_string)){
 			//if the only thing passed is the name of a generic button
-			if(!$a = Badge::GENERIC[$array_or_string]) {
+			if(!$a = Badge::GENERIC[$array_or_string]){
 				//if a generic version is NOT found
 				$a['title'] = strtoupper($array_or_string);
 			}
-		} else if (str::isNumericArray($array_or_string)){
+		}
+
+		else if(str::isNumericArray($array_or_string)){
 			//if there are more than one badge
 			foreach($array_or_string as $badge){
 				$badge_array[] = Badge::generate($badge);
 			}
-			return implode("&nbsp;",$badge_array);
-		} else {
+			return implode("&nbsp;", $badge_array);
+		}
+
+		else {
 			$a = $array_or_string;
 		}
 
@@ -78,6 +83,9 @@ class Badge {
 		# Give it an ID
 		$a['id'] = $a['id'] ?: str::id("badge");
 		//placed here because IDs are used by the get_approve_script method
+
+		# Generate any tooltips
+		Tooltip::generate($a);
 
 		extract($a);
 
@@ -90,7 +98,8 @@ class Badge {
 		if($href = href::generate($a)){
 			//if the badge is to be a link
 			$tag_type = "a";
-		} else {
+		}
+		else {
 			$tag_type = "div";
 			$style["cursor"] = "default";
 		}
@@ -103,7 +112,8 @@ class Badge {
 		# Is the given colour a hex colour?
 		if(str::isHexColour($colour)){
 			$style["background-color"] = $colour;
-		} else {
+		}
+		else {
 			$colour = $colour ?: "dark";
 			//default is a b&w theme
 		}
@@ -113,26 +123,27 @@ class Badge {
 			//for better spacing between icon and title
 		}
 
-		$class = str::getAttrTag("class", [
-			"badge",
-			$pill ? "rounded-pill" : "", //pill shape
-			$basic ? "badge-outline-{$colour}" : "bg-{$colour}",
-			$right ? "float-right" : "", //legacy shortcut
-			"text-white",
-			$class,
-			$approve_attr ? "approve-decision" : ""
-		]);
-
 		$style_array = str::getAttrArray($style, NULL, $only_style);
+		$class_array = str::getAttrArray($class, ["badge", "text-white"], $only_class);
+
+		$class_array[] = $pill ? "rounded-pill" : ""; //pill shape
+		$class_array[] = $basic ? "badge-outline-{$colour}" : "bg-{$colour}";
+		$class_array[] = $right ? "float-right" : ""; // Legacy shortcut
+		$class_array[] = $approve_attr ? "approve-decision" : ""; // Legacy shortcut
+		$class_array[] = $tooltip ? "tooltip-trigger" : ""; // Legacy shortcut
+
 		$style = str::getAttrTag("style", $style_array);
+		$class = str::getAttrTag("class", $class_array);
 
 		$script = str::getScriptTag($script);
+		$data = str::getDataAttr($data);
 
-		$alt = $alt ? $alt : $desc;
+		$alt = $alt ?: $desc;
+
 		$title_attr = str::getAttrTag("title", strip_tags($alt ?: $title));
 
-		return /** @lang HTML */<<<EOF
-<{$tag_type}{$href}{$id}{$class}{$style}{$title_attr}{$approve_attr}>{$icon}{$title}</{$tag_type}>{$script}
+		return /** @lang HTML */ <<<EOF
+<{$tag_type}{$href}{$id}{$class}{$style}{$title_attr}{$approve_attr}{$data}>{$icon}{$title}</{$tag_type}>{$script}
 EOF;
 	}
 }

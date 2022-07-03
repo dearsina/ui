@@ -404,6 +404,9 @@ class Button {
 			$a['id'] = "button_" . rand();
 		}
 
+		# Add a tooltip to the button
+		Tooltip::generate($a);
+
 		extract($a);
 
 		# Buttons with children are to be treated a little differently

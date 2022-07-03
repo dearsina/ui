@@ -86,8 +86,8 @@ class Table {
 
 		$grid = new Grid($grid);
 
-		# Header row (if it's not be ignored), or if we're NOT only interested in the rows
-		if(!$ignore_header && !$rows_only){
+		# Header row (if it's not be ignored)
+		if(!$ignore_header){
 			$row = $rows[0]['html'] ?: $rows[0];
 			$grid->set([
 				"row_class" => str::getAttrArray($row['header_class'], "table-header", $row['only_header_class']),
@@ -268,7 +268,7 @@ EOF;
 				"class" => $id ? "sortable-handlebars" : "",
 				"sm" => 1,
 				"header_style" => [
-					"max-width" => "3.5rem",
+					"max-width" => "2.5rem",
 				],
 			],
 		], $html);
@@ -503,15 +503,11 @@ EOF;
 			//if a custom row handler has been included
 			foreach($rows as $id => $row){
 				$rows[$id] = ($row_handler)($row);
-				//run the row handler thru each row
+				//run the row handler through each row
 			}
 		}
-		//		echo json_encode($rows);exit;
 
-		# Due to the data being loaded piecemeal, it is not sortable
-		//		$a['sortable'] = false;
-
-		$output->setVar("rows", self::generate($rows, $a, $ignore_header));
+		$output->setVar("rows", self::generate($rows, $a, $ignore_header, true));
 
 		return true;
 	}

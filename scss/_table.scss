@@ -1,101 +1,150 @@
 /**
- * The table header
+ * The table header is sticky, allowing
+ * for it to remain on top even after
+ * scrolling down a set height card.
  */
-.table-header {
-  font-weight: bold;
-  vertical-align: bottom;
-  border-bottom: 2px solid #dee2e6;
+.table-header
+{
+  font-weight    : bold;
+  vertical-align : bottom;
+  border-bottom  : none;
+  position       : sticky;
+  background     : white;
+  top            : -1rem;
+  border-bottom : 2px solid #dee2e6;
+  z-index        : 4;
 }
+
+/**
+ * Additional padding and colour
+ * to ensure the header doesn't
+ * drown when the user scrolls.
+ */
+.table-header > div
+{
+  padding-top   : 1rem;
+  background    : white;
+}
+
+/**
+ * Un-does the default card-body margin.
+ */
+.table-orderable,
+.table-sortable,
+.table-ondemand
+{
+  padding: 0rem 1rem 1rem 1rem;
+  margin: -1rem;
+}
+
+
 /**
  * Only sortable headers get the cursor pointer.
  */
-.table-sortable > .table-header {
-  cursor: pointer;
+.table-sortable > .table-header
+{
+  cursor : pointer;
 }
 
 /**
  * Template for the sort after
  */
-.table-sortable > .table-header > div::after{
-  float: right;
-  font-family: "Font Awesome 6 Pro";
+.table-sortable > .table-header > div::after
+{
+  float       : right;
+  font-family : "Font Awesome 6 Pro";
 }
 
 /**
  * When user hovers over a column header
  */
-.table-sortable > .table-header > div:hover::after {
-  content: "\f15d"; //A-Z
-  opacity: 1;
+.table-sortable > .table-header > div:hover::after
+{
+  content : "\f15d"; //A-Z
+  opacity : 1;
 }
 
 /**
  * If a column is not sortable.
  */
-.table-sortable > .table-header > div.sorted-ignore {
-  cursor: initial;
+.table-sortable > .table-header > div.sorted-ignore
+{
+  cursor : initial;
 }
-.table-sortable > .table-header > div.sorted-ignore::after {
-  content: ""; //A-Z
+
+.table-sortable > .table-header > div.sorted-ignore::after
+{
+  content : ""; //A-Z
 }
+
 /**
  * When a user hovers a column header that's already sorted ASC
  */
-.table-sortable > .table-header > div.sorted-asc:hover::after {
-  content: "\f881"; //Z-A
-  opacity: 1;
+.table-sortable > .table-header > div.sorted-asc:hover::after
+{
+  content : "\f881"; //Z-A
+  opacity : 1;
 }
+
 /**
  * When a user hovers a column header that's already sorted DESC
  */
-.table-sortable > .table-header > div.sorted-desc:hover::after {
-  content: "\f15d"; //A-Z
-  opacity: 1;
+.table-sortable > .table-header > div.sorted-desc:hover::after
+{
+  content : "\f15d"; //A-Z
+  opacity : 1;
 }
 
 /**
  * When a column gets sorted ASC
  */
-.table-sortable > .table-header > div.sorted-asc::after {
-  content: "\f15d"; //A-Z
-  opacity: .1;
+.table-sortable > .table-header > div.sorted-asc::after
+{
+  content : "\f15d"; //A-Z
+  opacity : .1;
 }
+
 /**
  * When a column gets sorted DESC
  */
-.table-sortable > .table-header > div.sorted-desc::after {
-  content: "\f881"; //Z-A
-  opacity: .1;
+.table-sortable > .table-header > div.sorted-desc::after
+{
+  content : "\f881"; //Z-A
+  opacity : .1;
 }
 
 /**
 * The table body
 */
-.table-body {
-  vertical-align: top;
-  border-top: 1px solid #dee2e6;
-  padding: 0.25rem;
+.table-body
+{
+  vertical-align : top;
+  border-top     : 1px solid #dee2e6;
+  padding        : 0.25rem;
 }
 
 /**
  * The load more button at the bottom of the on demand table.
  */
-.load-more-button {
-  margin: 0 auto;
-  display: table;
-  margin-top: 1rem;
+.load-more-button
+{
+  margin     : 0 auto;
+  display    : table;
+  margin-top : 1rem;
 }
 
-.table-body .author {
-  font-size: smaller;
-  font-style: italic;
-  float: left;
-  margin: .5rem 0;
-  width: 100%;
+.table-body .author
+{
+  font-size  : smaller;
+  font-style : italic;
+  float      : left;
+  margin     : .5rem 0;
+  width      : 100%;
 }
 
-.table-body.active {
-  background-color: map-get($grays, "100");
+.table-body.active
+{
+  background-color : map-get($grays, "100");
 }
 
 /**
@@ -104,7 +153,7 @@
  */
 .table-body > .col > i:first-of-type,
 {
-  margin-right: .5rem;
+  margin-right : .5rem;
 }
 
 /**
@@ -114,11 +163,12 @@
 /**
  * The div the icon sits in
  */
-.sortable-handlebars {
-  display: flex;
-  align-items: center;
-  max-width: 2.5rem;
-  cursor: n-resize;
+.sortable-handlebars
+{
+  display     : flex;
+  align-items : center;
+  max-width   : 2.5rem;
+  cursor      : n-resize;
 }
 
 /**
@@ -126,8 +176,9 @@
  * grip dots, and they're
  * auto-generated.
  */
-.sortable-handlebars::after{
-  font-family: "Font Awesome 6 Pro";
+.sortable-handlebars::after
+{
+  font-family : "Font Awesome 6 Pro";
   content     : "\e410"; //Grip dots
 }
 
@@ -137,58 +188,67 @@
  * is also hidden as it's superfluous in
  * its current context.
  */
-.sortable-chosen{
-  background-color: aliceblue;
+.sortable-chosen
+{
+  background-color : aliceblue;
 }
-.sortable-drag{
-  opacity: 0;
+
+.sortable-drag
+{
+  opacity : 0;
 }
 
 /**
  * Excel table look-alike
  */
-.excel-table {
-  border: 1px solid #B0CBEF;
-  border-width: 1px 0px 0px 1px;
-  font-size: 90%;
-  font-family: Calibri;
-  font-weight: lighter;
-  border-spacing: 0px;
-  border-collapse: collapse;
+.excel-table
+{
+  border          : 1px solid #b0cbef;
+  border-width    : 1px 0px 0px 1px;
+  font-size       : 90%;
+  font-family     : Calibri;
+  font-weight     : lighter;
+  border-spacing  : 0px;
+  border-collapse : collapse;
 }
 
-.excel-table th {
-  font-weight: normal;
-  border: 1px solid #9EB6CE;
-  border-width: 0px 1px 1px 0px;
-  height: 17px;
-  padding: 5px;
-  min-width: 25px;
-  background-color: #E4ECF7;
+.excel-table th
+{
+  font-weight      : normal;
+  border           : 1px solid #9eb6ce;
+  border-width     : 0px 1px 1px 0px;
+  height           : 17px;
+  padding          : 5px;
+  min-width        : 25px;
+  background-color : #e4ecf7;
 }
 
-.excel-table tbody tr {
-  background-color: white;
+.excel-table tbody tr
+{
+  background-color : white;
 }
 
-.excel-table tbody tr:hover {
-  cursor: cell;
-  background: #e4ecf7;
+.excel-table tbody tr:hover
+{
+  cursor     : cell;
+  background : #e4ecf7;
 }
 
-.excel-table td {
-  border: 0px;
-  padding: 0px 4px 0px 4px;
-  border: 1px solid #D0D7E5;
-  border-width: 0px 1px 1px 0px;
+.excel-table td
+{
+  border       : 0px;
+  padding      : 0px 4px 0px 4px;
+  border       : 1px solid #d0d7e5;
+  border-width : 0px 1px 1px 0px;
 }
 
-.excel-table td:first-child {
-  background-color: #E4ECF7;
-  text-align: center;
-  border: 1px solid #9EB6CE;
-  border-width: 0px 1px 1px 0px;
-  padding: 5px;
-  font-weight: 400;
-  width: 35px;
+.excel-table td:first-child
+{
+  background-color : #e4ecf7;
+  text-align       : center;
+  border           : 1px solid #9eb6ce;
+  border-width     : 0px 1px 1px 0px;
+  padding          : 5px;
+  font-weight      : 400;
+  width            : 35px;
 }

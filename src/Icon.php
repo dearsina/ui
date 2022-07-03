@@ -232,6 +232,9 @@ class Icon {
 			$icon_array = $a;
 		}
 
+		# Tooltips
+		Tooltip::generate($icon_array);
+
 		extract(Icon::getArray($icon_array));
 
 		if(!$default[] = Icon::getClass($icon_array)){
@@ -262,13 +265,16 @@ class Icon {
 		$id = str::getAttrTag("id", $id);
 		$style = str::getAttrTag("style", $style);
 		$transform = str::getAttrTag("data-fa-transform", $transform);
+
 		if($rotate){
 			$class_array[] = "fa-rotate-{$rotate}";
 		}
+
 		$class = str::getAttrTag("class", $class_array);
+		$data = str::getDataAttr($data);
 
 		return <<<EOF
-{$a_pre}<i{$id}{$class}{$style}{$transform}{$title}{$approve_attr} aria-hidden="true"></i>{$a_post}
+{$a_pre}<i{$id}{$class}{$style}{$transform}{$title}{$approve_attr}{$data} aria-hidden="true"></i>{$a_post}
 EOF;
 	}
 
