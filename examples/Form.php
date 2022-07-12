@@ -119,7 +119,7 @@ class Form extends Prototype implements ExampleInterface {
 			"footer" => "Footer",
 		]);
 
-//		$card_array[] = $card->getHTML();
+		$card_array[] = $card->getHTML();
 
 		$fields = [];
 
@@ -146,7 +146,7 @@ class Form extends Prototype implements ExampleInterface {
 			"footer" => "Footer",
 		]);
 
-		$card_array[] = $card->getHTML();
+//		$card_array[] = $card->getHTML();
 
 		$fields = [];
 
@@ -255,10 +255,10 @@ class Form extends Prototype implements ExampleInterface {
 				"password" => [
 					"rule" => [
 						"min_length" => 8,
-						"uppercase" => true,
-						"lowercase" => true,
-						"special" => true,
-						"number" => true
+						"uppercase" => 1,
+						"lowercase" => 1,
+						"special" => 1,
+						"number" => 1
 					]
 				]
 			],

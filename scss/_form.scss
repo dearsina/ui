@@ -205,16 +205,6 @@ textarea.monospace
 }
 
 /**
- * Can probably be taken away once Bootstrap 5
- * is launched and this bugfix is no longer needed.
- */
-.is-invalid
-{
-  border-color  : map-get($theme-colors, "danger");
-  border-radius : 0.25rem !important;
-}
-
-/**
  * so that the jQuery validation error message is bolder.
  * and placed correctly.
  */
@@ -495,19 +485,6 @@ textarea.monospace
 {
   margin-right : 0.5rem;
   cursor       : pointer;
-}
-
-.input-group
-{
-  &:not(.has-validation)
-  {
-    > :not(:last-child):not(.dropdown-toggle):not(.dropdown-menu),
-    > .dropdown-toggle:nth-last-child(n + 3)
-    {
-      border-top-right-radius    : $border-radius;
-      border-bottom-right-radius : $border-radius;
-    }
-  }
 }
 
 /**

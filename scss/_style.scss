@@ -24,6 +24,12 @@ b, strong
   font-weight    : 800;
   float          : left;
 }
+.service-currency
+{
+  font-size: small;
+  letter-spacing: -0.5pt;
+  font-family: $font-family-monospace;
+}
 
 .plan-price
 {

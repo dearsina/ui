@@ -24,7 +24,8 @@ class Progress {
 	 * progress::generate([
 	 * 	"height" => "px",
 	 * 	"width" => "%",
-	 * 	"colour" => "primary"
+	 * 	"colour" => "primary",
+	 * 	"seconds" => 10,
 	 * ]);
 	 * </code>
 	 *
@@ -43,6 +44,8 @@ class Progress {
 			$width = $a;
 		}
 
+		$id = $id ?: str::id("progress");
+
 		$style_array = str::getAttrArray($style, ["height" => $height ?: self::HEIGHT], $only_style);
 		$style = str::getAttrTag("style", $style_array);
 
@@ -57,9 +60,21 @@ class Progress {
 			$label = $label ?: $width;
 		}
 
+		if($seconds){
+			$transition = <<<EOF
+<script>
+setTimeout(function(){
+	$("#{$id} > .progress-bar").css({"width":"100%"});
+}, 1000);
+</script>
+EOF;
+			$width = "0%";
+		}
+
 		return /** @lang HTML */<<<EOF
-<div id="bar" class="progress"{$style}>
-	<div class="bar progress-bar progress-bar-striped bg-{$colour}" style="width: {$width};">{$label}</div>
+<div id="{$id}" class="progress"{$style}>
+	<div class="bar progress-bar progress-bar-striped progress-bar-animated bg-{$colour}" style="width: {$width}; transition-duration:{$seconds}s;">{$label}</div>
+	{$transition}
 </div>
 EOF;
 	}

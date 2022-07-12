@@ -349,26 +349,7 @@ class Field {
 			return;
 		}
 
-		foreach($a['dependency'] as $key => $val){
-			if(is_int($key)){
-				foreach($val as $k => $v){
-					$a['data']['dependency'][$key][self::getKey($k)] = $v;
-				}
-				continue;
-			}
-
-			$a['data']['dependency'][self::getKey($key)] = $val;
-		}
-	}
-
-	private static function getKey(string $key): string
-	{
-		if(preg_match("/[#.]/", "key")){
-			return $key;
-		}
-
-		//if the key is "just" a form value name
-		return "[name='{$key}']";
+		$a['data']['dependency'] = $a['dependency'];
 	}
 
 	/**
