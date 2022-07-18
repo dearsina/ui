@@ -69,7 +69,8 @@ class Dropdown {
 			}
 
 			# Or if the line item is a child
-			else {
+			else if(is_array($item)){
+				//Must be an array
 				$child_a = self::generateChildTag($item);
 				$children[] = "<li>{$child_a}</li>";
 			}
