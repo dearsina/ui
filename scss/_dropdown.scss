@@ -15,16 +15,17 @@
  * A single dropdown item.
  */
 .dropdown-item {
-  //display: block;
-  //width: 100%;
   padding: 0.25rem 0.75rem;
-  //clear: both;
-  //font-weight: 400;
-  //color: #212529;
-  //text-align: inherit;
-  //white-space: nowrap;
-  //background-color: transparent;
-  //border: 0;
+}
+
+/**
+ * When the dropdown item is in
+ * a menu on the right.
+ */
+.nav-right > li > .dropdown-item
+{
+  padding: 0;
+  margin-left: 1rem;
 }
 
 /**
@@ -107,10 +108,6 @@
   &:last-child{
     border-bottom: 0;
   }
-}
-
-.dropdown-menu ul {
-  padding: 0.5rem 0 !important;
 }
 
 .dropdown-menu .nav-left ul ul, .dropdown-menu .nav-left ul ul ul {

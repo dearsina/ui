@@ -29,7 +29,8 @@ class Horizontal {
 	 * @param array|null $levels
 	 * @param array|null $footers
 	 */
-	public function __construct (?array $levels, ?array $footers) {
+	public function __construct(?array $levels, ?array $footers)
+	{
 		$this->levels = $levels;
 		$this->footers = $footers;
 	}
@@ -39,42 +40,53 @@ class Horizontal {
 	 *
 	 * @return string
 	 */
-	private function getLevel1HTML(){
-		if(empty($this->levels[1])){
-			return false;
-		}
-		if($this->levels[1]['items']){
-			$this->levels[1]['items'] = array_reverse($this->levels[1]['items']);
-		}
-		$html .= "<div id=\"navbar-level1\">";
-		$html .= $this->getTitleHTML($this->levels[1]['title'], "navbar-level1-logo");
-		$html .= "<div id=\"navbar-level1-buttons\">";
-		$html .= Dropdown::getMultiLevelItemsHTML($this->levels[1]['items'], ["class" => "nav-right"]);
-		$html .= "</div>";
-		$html .= "</div>";
-		return $html;
+	private function getLevel1HTML()
+	{
+		$brand = $this->getBrandHtml($this->levels[1]['title'], "navbar-level1-logo");
+		$items = Dropdown::generateRootUl($this->levels[1]['items']);
+
+		return <<<EOF
+<div class="nav-scroller fixed-top" id="navbar-level1">
+  <nav class="nav">
+  	{$brand}
+	<div id="navbar-level1-items">
+		<button id="navbar-level2-toggle-button" class="navbar-toggler p-0 border-0" type="button">
+			<i class="fa-light fa-bars fa-fw" aria-hidden="true"></i>
+		</button>
+		{$items}
+	</div>
+  </nav>
+</div>
+EOF;
 	}
 
 	/**
 	 * Generates the level 2 navigation bar below level 1.
-	 * @return string
+	 *
+	 * @return string|null
+	 * @throws \Exception
 	 */
-	private function getLevel2HTML(){
-		if(empty($this->levels[2])){
-			return false;
+	private function getLevel2HTML(): ?string
+	{
+		# If there are no items, omit the entire level 2 navbar
+		if(!$items = Dropdown::generateRootUl($this->levels[2]['items'])){
+			return NULL;
 		}
-		$html .= "<div id=\"navbar-level2\" class=\"navbar navbar-expand-md navbar-dark\">";
-		$html .= $this->getTitleHTML($this->levels[2]['title'], "navbar-title");
-		$html .= "<div class=\"navbar-sidebar-toggle\" onClick=\"$('#ui-sidebar-right').toggleClass('show');$(this).toggleClass('show');\"><i class=\"fa-light fa-bars\"></i></div>";
-		$html .= "<div id=\"ui-sidebar-right\">";
-		$html .= Dropdown::getMultiLevelItemsHTML($this->levels[2]['items'], ["class" => "nav-left"]);
-		$html .= "</div>";
-		$html .= "</div>";
-		return $html;
+
+		return <<<EOF
+<nav class="navbar navbar-expand-lg fixed-top nav-scroller" id="navbar-level2">
+	<div class="container-fluid">
+		<span></span>
+		<div class="navbar-collapse offcanvas-collapse" id="navbar-level2-items">
+			{$items}
+		</div>
+	</div>
+</nav>
+EOF;
 	}
 
 	/**
-	 * Generates titles
+	 * Generates the brand text or image
 	 *
 	 * @param $a
 	 *
@@ -85,7 +97,8 @@ class Horizontal {
 	 * @throws \Exception
 	 * @throws \Exception
 	 */
-	private function getTitleHTML($a, $default_class){
+	private function getBrandHtml($a, $default_class)
+	{
 		if(!$a){
 			return false;
 		}
@@ -94,11 +107,12 @@ class Horizontal {
 			$a = ["title" => $a];
 		}
 
-        extract($a);
+		extract($a);
 
 		if($href = href::generate($a)){
 			$tag = "a";
-		} else {
+		}
+		else {
 			$tag = "span";
 		}
 
@@ -116,68 +130,12 @@ class Horizontal {
 		return "<{$tag}{$id}{$class}{$style}{$href}>{$img}{$icon}{$title}{$badge}</{$tag}>";
 	}
 
-//	/**
-//	 * Generates a multilevel menu based on parent-children items.
-//	 *
-//	 * @param      $items
-//	 * @param null $ul
-//	 *
-//	 * @return bool|string
-//	 */
-//	private function getMultiLevelItemsHTML($items, $ul = NULL){
-//		if(!is_array($items)){
-//			return false;
-//		}
-//
-//		foreach($items as $item){
-//			if(empty($item)){
-//				continue;
-//			}
-//
-//			if($item['children'] || $ul) {
-//				//if the item has children, or is a top level item
-//				$item['class'] = ["parent", $item['class']];
-//			}
-//
-//			if(!$href = href::generate($item)){
-////				$href = str::getAttrTag("href", "#");
-//			}
-//			$icon = Icon::generate($item['icon']);
-//			$badge = Badge::generate($item['badge']);
-//
-//			if($item['disabled']){
-//				$item['class'] = [$item['class'], "disabled"];
-////				$href = str::getAttrTag("href", "#");
-//			}
-//			$class = str::getAttrTag("class", $item['class']);
-//			$style = str::getAttrTag("style", $item['style']);
-//
-//			# Hovertext
-//			$title = str::getAttrTag("title", $item['alt']);
-//
-//
-//			$html .= <<<EOF
-//<li{$class}{$style}{$title}>
-//	<a {$href}>{$icon}{$item['title']}{$badge}</a>
-//	{$this->getMultiLevelItemsHTML($item['children'])}
-//</li>
-//EOF;
-//		}
-//
-//		# ul classes (applicable primarily to the top level)
-//		$class = str::getAttrTag("class", $ul['class']);
-//		$style = str::getAttrTag("style", $ul['style']);
-//
-//		return "<ul{$class}{$style}>{$html}</ul>";
-//
-//	}
-
 	/**
 	 * Generates the HTML for ui-navigation.
 	 *
 	 * @return string
 	 */
-	public function getHTML () : string
+	public function getHTML(): string
 	{
 		$html .= $this->getLevel1HTML();
 		$html .= $this->getLevel2HTML();
@@ -189,7 +147,7 @@ class Horizontal {
 	 *
 	 * @return string
 	 */
-	public function getFooterHTML() : string
+	public function getFooterHTML(): string
 	{
 		$html .= $this->getLevel2FooterHTML();
 		$html .= $this->getLevel1FooterHTML();
@@ -199,7 +157,7 @@ class Horizontal {
 	/**
 	 * @return string
 	 */
-	private function getLevel2FooterHTML() : string
+	private function getLevel2FooterHTML(): string
 	{
 		if(!$this->footers[2]){
 			return false;
@@ -213,7 +171,8 @@ class Horizontal {
 					$items .= "<li><a{$href}>{$item['title']}</a></li>";
 				}
 				$items .= "</ul>";
-			} else {
+			}
+			else {
 				$items = false;
 			}
 
@@ -241,14 +200,14 @@ EOF;
 	 *
 	 * @return string
 	 */
-	private function getLevel1FooterHTML() : string
+	private function getLevel1FooterHTML(): string
 	{
 		if(!$this->footers[1]){
 			return false;
 		}
 
 		$grid = new Grid([
-			"unstackable" => true
+			"unstackable" => true,
 		]);
 
 		$grid->set($this->footers[1]);

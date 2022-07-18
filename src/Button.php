@@ -321,7 +321,7 @@ class Button {
 
 		# Dropdown buttons
 		if($a['buttons']){
-			return Dropdown::generate(["buttons" => $a['buttons']]);
+			return self::generateDropdown(["buttons" => $a['buttons']]);
 			//Done this way to not drag in the other keys like icon
 		}
 
@@ -341,6 +341,39 @@ class Button {
 		$parent_style = str::getAttrTag("style", $a['button']['parent_style']);
 
 		return "<div{$parent_class}{$parent_style}>{$button}</div>";
+	}
+
+	/**
+	 * Generates a dropdown with a default dropdown button.
+	 * Primarily used by cards and modals.
+	 *
+	 * @param array $a
+	 *
+	 * @return string|null
+	 */
+	private static function generateDropdown(array $a): ?string
+	{
+		extract($a);
+
+		if(!$buttons){
+			return NULL;
+		}
+
+		# The generic dropdown icon
+		$icon = $icon ?: [
+			"name" => "bars",
+			"type" => "light",
+		];
+
+		return Dropdown::generateRootUl([
+			"items" => [[
+				"icon" => $icon,
+				"alt" => $alt ?: "Click to open the menu",
+				"direction" => $dierction ?: "left",
+				"children" => $buttons,
+			]],
+			"class" => "navbar-nav nav-right"
+		]);
 	}
 
 	private static function buildClassArray(array $a): array
@@ -655,17 +688,23 @@ EOF;
 		# Remove the ladda from the button itself
 		$a['ladda'] = false;
 
+		# Add a chevron-down suffix
 		$a['title'] .= "&nbsp;" . Icon::generate([
-				"style" => [
-					"font-weight" => "500 !important",
-				],
-				"name" => "chevron-down",
-			]);
+			"style" => [
+				"font-weight" => "500 !important",
+			],
+			"name" => "chevron-down",
+		]);
 
-		return Dropdown::generateButton([
-			"button" => self::generate($a),
-			"class" => $a['class'],
-			"children" => $children,
+		$class = is_array($a['class']) ? $a['class'] : [$a['class']];
+		array_unshift($class, ["navbar-nav nav-button"]);
+
+		return Dropdown::generateRootUl([
+			"items" => [[
+				"title" => self::generate($a),
+				"children" => $children
+			]],
+			"class" => $class
 		]);
 	}
 
@@ -692,10 +731,10 @@ EOF;
 		$class_array[] = "dropdown-toggle dropdown-toggle-split";
 		$class = str::getAttrTag("class", $class_array);
 
-		# Build the menu buttons
-		$menu .= Dropdown::getMultiLevelItemsHTML($children, [
-			"class" => "dropdown-menu",
-			// This sets the <ul> class
+		# Generates the root
+		$menu = Dropdown::generateRootUl([
+			"items" => $children,
+			"class" => "dropdown-menu"
 		]);
 
 		return <<<EOF
@@ -707,15 +746,6 @@ EOF;
   {$menu}
 </div>
 EOF;
-		/**
-		<!--  <ul class="dropdown-menu">-->
-		<!--	<li><a class="dropdown-item" href="#">Action</a></li>-->
-		<!--	<li><a class="dropdown-item" href="#">Another action</a></li>-->
-		<!--	<li><hr class="dropdown-divider"></li>-->
-		<!--	<li><a class="dropdown-item" href="#">Something else here</a></li>-->
-		<!--	<li><a class="dropdown-item" href="#">Separated link</a></li>-->
-		<!--  </ul>-->
-		 */
 
 	}
 

@@ -123,7 +123,15 @@ form .btn i
 {
   margin: -0.5rem 0 -0.5rem 0;
   display: flow-root;
-  // Will fix the margin issue
+  /**
+   * Is set by design.
+   * Do not set it to flex, it will mess with float-left/right.
+   * It will mean that button order matters, if we're mixing dropdowns
+   * with traditional buttons, and can result in buttons piling on top
+   * of each other instead of being horizontal.
+   */
+  z-index: 0;
+  // Set to zero allow buttons from the body to hover *over* buttons in the footer
 }
 .card .btn-float-right .btn,
 .modal .btn-float-right .btn,
@@ -180,7 +188,6 @@ form .btn i
 // Give padding to each item in the menu
 ul.dropdown-menu > li > * {
   padding: 0.3rem 1rem;
-  display: block;
   font-weight: 400;
 
 }

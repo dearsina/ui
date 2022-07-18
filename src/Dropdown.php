@@ -8,173 +8,226 @@ use App\Common\str;
 
 /**
  * Class Dropdown
+ *
+ * Builds the HTML for dropdown menus, split buttons,
+ * and buttons that are dropdowns.
+ *
+ * Should not be accessed directly, but instead accessed
+ * through the Buttons class.
+ *
  * @package App\UI
  */
 class Dropdown {
 	/**
-	 * Generates a dropdown button,
-	 * with a dropdown menu.
-	 * Primarily used by cards.
+	 * Generates the root UL element that contains the
+	 * dropdown menu.
 	 *
-	 * @param $a
+	 * @param array|null $items
+	 * @param int|null   $level
 	 *
-	 * @return string
+	 * @return string|null
 	 */
-	static function generate($a)
+	static function generateRootUl(?array $items, ?int $level = 0): ?string
 	{
-		extract($a);
-
-		if(!$buttons){
-			return false;
+		if(!$items){
+			return NULL;
 		}
-
-		$icon = $icon ?: [
-			"name" => "bars",
-			"type" => "light",
-		];
-
-		$class = str::getAttrArray($class, ["nav-right nav-dropdown"], $only_class);
-
-		$parent = [[
-			"icon" => $icon,
-			"children" => $buttons,
-			"class" => $class,
-		]];
-
-		$parent_class = str::getAttrArray($parent_class, ["nav-right"], $only_class);
-
-		$html = self::getMultiLevelItemsHTML($parent, ["class" => $parent_class]);
-		return "<nav>$html</nav>";
-	}
-
-	static function generateButton(array $a): string
-	{
-		extract($a);
-
-		if(!$children){
-			return false;
+		
+		if($items['items']){
+			$meta = $items;
+			$items = $items['items'];
+			unset($meta['items']);
 		}
-
-		$class = str::getAttrArray($class, ["nav-right nav-dropdown"], $only_class);
-
-		$parent = [[
-			"title" => $button,
-			"children" => $children,
-			"class" => $class,
-		]];
-
-		$parent_class = str::getAttrArray($parent_class, ["nav-right"], $only_class);
-
-		$html = self::getMultiLevelItemsHTML($parent, [
-			"class" => $parent_class,
-			"style" => [
-				"padding" => "0",
-				"margin" => "0",
-			],
-		]);
-
-		return "<nav class=\"dropdown-button\">$html</nav>";
-	}
-
-	/**
-	 * Generates a multilevel menu based on parent-children items.
-	 *
-	 * @param      $items
-	 * @param null $ul
-	 *
-	 * @return bool|string
-	 * @throws \Exception
-	 * @throws \Exception
-	 */
-	public static function getMultiLevelItemsHTML($items, $ul = NULL)
-	{
-		if(!is_array($items)){
-			return false;
-		}
-
-		# Flag to see if any of the items have children or not
-		$has_children = false;
 
 		foreach($items as $item){
-			if(empty($item)){
-				continue;
+			# If the line item has html instead of children
+			if($item['html']){
+				$class = str::getAttrTag("class", self::getDirectionClass($item, $level));
+				$parent_div = self::generateParentDiv($item);
+				$content = self::generateMenuContent($item);
+				$children[] = "<li{$class}>{$parent_div}{$content}</li>";
 			}
 
-			$default_parent_class = [];
-			$default_class = [];
+			# If the line item is a parent with children
+			else if($item['children']){
+				$class = str::getAttrTag("class", self::getDirectionClass($item, $level));
+				$parent_div = self::generateParentDiv($item);
+				$content = self::generateRootUl($item['children'], $level + 1);
+				$children[] = "<li{$class}>{$parent_div}{$content}</li>";
+			}
 
 			# If the item is just a divider
-			if($item === true){
-				$html .= "<li class=\"dropdown-divider\"></li>";
+			else if($item === true){
+				$children[] = "<li class=\"dropdown-divider\"></li>";
 				continue;
 			}
 
 			# If the items is a header
-			if($item['header']){
-				$html .= self::getHeaderHTML($item);
+			else if($item['header']){
+				$children[] = self::getHeaderHTML($item);
 				continue;
 			}
 
-			if($item['children'] || $ul){
-				//if the item has children, or is a top level item
-				$default_parent_class[] = "parent";
-				# As at least *one* of the items have children
-				$has_children = true;
+			# Or if the line item is a child
+			else {
+				$child_a = self::generateChildTag($item);
+				$children[] = "<li>{$child_a}</li>";
 			}
-
-			$parent_class_array = str::getAttrArray($item['parent_class'], $default_parent_class, $item['only_parent_class']);
-			$parent_class = str::getAttrTag("class", $parent_class_array);
-			$parent_style = str::getAttrTag("style", $item['parent_style']);
-
-			if($href = href::generate($item)){
-				$tag = "a";
-			} else {
-				$tag = "div";
-			}
-			$icon = Icon::generate($item['icon']);
-			$badge = Badge::generate($item['badge']);
-
-			# Disabled element?
-			if($item['disabled']){
-				$default_class[] = "disabled";
-				$tag = "div";
-				$href = false;
-			}
-
-			# Approval needed?
-			if($approve_attr = str::getApproveAttr($item['approve'], $item['icon'], $item['colour'])){
-				$default_class[] = "approve-decision";
-				$id = str::getAttrTag("id", $item['id'] ?: str::id());
-			}
-
-			$class_array = str::getAttrArray($item['class'], $default_class, $item['only_class']);
-			$class = str::getAttrTag("class", $class_array);
-			$style = str::getAttrTag("style", $item['style']);
-
-			# Hovertext
-			$title = str::getAttrTag("title", $item['alt']);
-
-			$children = self::getMultiLevelItemsHTML($item['children']);
-
-			$html .= <<<EOF
-<li{$parent_class}{$parent_style}>
-	<{$tag}{$id}{$class}{$style}{$title}{$href}{$approve_attr}>{$icon}{$item['title']}{$badge}</{$tag}>
-	{$children}
-</li>
-EOF;
 		}
 
-		if(!$has_children){
-			// If *none* of the items have children
-			$ul['class'] = is_array($ul['class']) ? $ul['class'] : [$ul['class']];
-			$ul['class'][] = "dropdown-leaf";
+		$id = str::getAttrTag("id", $meta['id']);
+		$style = str::getAttrTag("style", $meta['style']);
+		$content = implode("\r\n", $children);
+		$class = str::getAttrTag("class", self::getRootClass($level, $meta['class']));
+		return "<ul{$id}{$class}{$style}>{$content}</ul>";
+	}
+
+	/**
+	 * If the entire menu has been passed as a single HTML string,
+	 * wrap it in a div and return it.
+	 *
+	 * @param array $item
+	 *
+	 * @return string
+	 */
+	private static function generateMenuContent(array $item): string
+	{
+		$class[] = "dropdown-menu";
+		$class[] = $item['class'];
+		$class = str::getAttrTag("class", $class);
+		$style = str::getAttrTag("style", $item['style']);
+		return "<div{$class}{$style}>{$item['html']}</div>";
+	}
+
+	/**
+	 * The class of the <ui> tag root.
+	 *
+	 * The root class can be passed, or it's generated based
+	 * on the level.
+	 *
+	 * @param int               $level
+	 * @param array|string|null $root_class
+	 *
+	 * @return string
+	 */
+	private static function getRootClass(int $level, $root_class): string
+	{
+		# Custom class
+		if(is_array($root_class)){
+			$root_class = implode(" ", str::flatten($root_class));
+		}
+		if($root_class){
+			$class = $root_class;
 		}
 
-		# ul classes (applicable primarily to the top level)
-		$class = str::getAttrTag("class", $ul['class']);
-		$style = str::getAttrTag("style", $ul['style']);
+		# Level 1-n class
+		else if($level){
+			$class = "dropdown-menu dropdown-submenu shadow";
+		}
 
-		return "<ul{$class}{$style}>{$html}</ul>";
+		# Level 0 class
+		else {
+			$class = "navbar-nav";
+		}
+
+		# Add animation
+		$class .= " animate slideIn";
+
+		return $class;
+	}
+
+	/**
+	 * Unless specified by the direction key, will
+	 * send child menu items down for level 0,
+	 * then right for all subsequent levels.
+	 *
+	 * @param array $item
+	 * @param int   $level
+	 *
+	 * @return string
+	 */
+	private static function getDirectionClass(array $item, int $level): string
+	{
+		switch($item['direction']) {
+		case 'left':
+			return "dropstart";
+		case 'right':
+			return "dropend";
+		case 'up':
+			return "dropup";
+		}
+
+		return $level ? "dropend" : "dropdown";
+	}
+
+	/**
+	 * Separated out to avoid confusion as some attributes
+	 * are shared with the parent <li> tag.
+	 *
+	 * @param array $item
+	 *
+	 * @return string
+	 */
+	private static function generateParentDiv(array $item): string
+	{
+		$data = str::getDataAttr([
+			"bs-auto-close" => $item['auto_close']
+		]);
+		$alt = str::getAttrTag("title", $item['alt'] ?: $item['title']);
+		$class = str::getAttrTag("class", "dropdown-item dropdown-toggle");
+		$icon = Icon::generate($item['icon']);
+		$title = $item['title'];
+		return "<div data-bs-toggle=\"dropdown\"{$data}{$auto_close}{$class}{$alt}>{$icon}{$title}</div>";
+	}
+
+	/**
+	 * Separated out to match the parent separation.
+	 *
+	 * @param array $item
+	 *
+	 * @return string
+	 */
+	private static function generateChildTag(array $item): string
+	{
+		# Href (can be onClick)
+		$href = href::generate($item);
+
+		# Tag, based on whether there is a href or not
+		$tag = $href ? "a" : "div";
+
+		# Icon
+		$icon = Icon::generate($item['icon']);
+
+		# Badges
+		$badge = Badge::generate($item['badge']);
+
+		# Disabled element
+		if($item['disabled']){
+			$default_class[] = "disabled";
+			$tag = "div";
+			$href = false;
+		}
+
+		# Approval
+		if($approve = str::getApproveAttr($item['approve'], $item['icon'], $item['colour'])){
+			$default_class[] = "approve-decision";
+		}
+
+		# Alt
+		$alt = str::getAttrTag("title", $item['alt'] ?: $item['title']);
+
+		# Class
+		$default_class[] = "dropdown-item";
+		$class_array = str::getAttrArray($item['class'], $default_class, $item['only_class']);
+		$class = str::getAttrTag("class", $class_array);
+
+		# Style
+		$style = str::getAttrTag("style", $item['style']);
+
+		# Title
+		$title = $item['title'];
+
+		return "<{$tag}{$class}{$style}{$href}{$alt}{$approve}>{$icon}{$title}{$badge}</{$tag}>";
 	}
 
 	/**
@@ -191,7 +244,7 @@ EOF;
 	 *
 	 * @return string
 	 */
-	static function getHeaderHTML($button)
+	private static function getHeaderHTML($button)
 	{
 		extract($button);
 
@@ -200,9 +253,11 @@ EOF;
 
 		if($html){
 			//do nothing
-		} else if($strong){
+		}
+		else if($strong){
 			$html = "<strong>{$header}</strong>";
-		} else {
+		}
+		else {
 			$html = $header;
 		}
 
@@ -223,5 +278,4 @@ EOF;
 
 		return "<li{$class_tag}{$style_tag}><span>{$html}</span></li>";
 	}
-
 }

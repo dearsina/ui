@@ -164,7 +164,7 @@ class Modal extends \App\Common\Prototype {
 
 		# Dropdown buttons
 		if($this->elements['header']['buttons']){
-			$buttons = Dropdown::generate($this->elements['header']);
+			$buttons = Button::get($this->elements['header']);
 		}
 
 		# Button(s) in a row
@@ -255,7 +255,7 @@ EOF;
 
 		# Dropdown buttons
 		if($this->elements['footer']['buttons']){
-			$buttons = Dropdown::generate($this->elements['footer']);
+			$buttons = Button::get($this->elements['footer']);
 		}
 
 		# Button(s) in a row

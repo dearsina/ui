@@ -32,3 +32,8 @@ $enable-rounded: true;
  * XXL modals
  */
 $modal-xxl: 1320px !default;
+
+/**
+ * Dropdown menu items on active.
+ */
+$dropdown-link-active-bg:           map-get($grays, "800") !important;
