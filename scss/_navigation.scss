@@ -248,7 +248,7 @@ a.navbar-level1-logo > object
   display: none;
 }
 
-@media (max-width: map-get($grid-breakpoints, "md")) {
+@media (max-width: map-get($grid-breakpoints, "lg")) {
   .offcanvas-collapse {
     position: fixed;
     top: 3rem; /* Height of navbar */

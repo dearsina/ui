@@ -97,7 +97,8 @@ class Dropdown {
 		$class[] = $item['class'];
 		$class = str::getAttrTag("class", $class);
 		$style = str::getAttrTag("style", $item['style']);
-		return "<div{$class}{$style}>{$item['html']}</div>";
+		$data = str::getDataAttr($item['data']);
+		return "<div{$class}{$style}{$data}>{$item['html']}</div>";
 	}
 
 	/**
