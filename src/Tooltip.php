@@ -83,15 +83,17 @@ class Tooltip {
 		 # We need to add a class to the parent
 		 $a['class'][] = "tooltip-trigger";
 
+		 # Set the tooltip as a data attribute
+		 $a['data']['bs-original-title'] = $tooltip['title'];
+
+		 # Settings
 		 $a['data']['bs-toggle'] = "tooltip";
+		 $a['data']['bs-html'] = "true";
 		 $a['data']['bs-placement'] = $tooltip['placement'] ?: "top";
 
 		 # Tooltips can also have their own custom classes
 		 if($tooltip['class']){
 			 $a['data']['bs-custom-class'] = $tooltip['class'];
 		 }
-
-		 # We add the actual tooltip to the alt key
-		 $a['alt'] = str_replace('"', '\\"', $tooltip['title']);
 	 }
 }

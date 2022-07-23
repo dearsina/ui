@@ -140,7 +140,8 @@ class Badge {
 
 		$alt = $alt ?: $desc;
 
-		$title_attr = str::getAttrTag("title", strip_tags($alt ?: $title));
+		# Set the title, but only if there is no tooltip
+		$title_attr = $tooltip ? NULL : str::getAttrTag("title", strip_tags($alt ?: $title));
 
 		return /** @lang HTML */ <<<EOF
 <{$tag_type}{$href}{$id}{$class}{$style}{$title_attr}{$approve_attr}{$data}>{$icon}{$title}</{$tag_type}>{$script}

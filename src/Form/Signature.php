@@ -51,6 +51,8 @@ EOF;
 //		$a['style'] = ["display" => "none"];
 
 		return Grid::generate([[
+			"row_class" => "col-signature",
+			// The class is a way of identifying the _entire_ signature block, ex. for dependencies
 			"html" => [[[
 				"title" => [
 					"style" => [
