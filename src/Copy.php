@@ -42,20 +42,12 @@ class Copy {
 		}
 
 		if(is_array($a)){
+			# Clean up text (Escape double quotes)
+			self::cleanUpText($a);
 			extract($a);
 		}
 
-		# Clean up text (Escape double quotes)
-		$text = str_replace("\"", "&quot;", $text);
-
-		# Secret?
-		if($secret){
-			# If the string is to stay secret, replace it with the $secret text (or asterixes if no text is given)
-			$text_truncated = is_string($secret) ? $secret : "***";
-		} else {
-			# Produce truncated version for display purposes
-			$text_truncated = strlen($text) > 50 ? substr($text, 0, 50). "..." : $text;
-		}
+		$text_truncated = self::getTruncatedText($copy);
 
 		# ID (optional)
 		$id = str::getAttrTag("id", $id);
@@ -86,5 +78,65 @@ class Copy {
 		$tag = $tag ?: "span";
 
 		return "<{$tag}{$id}{$class}{$style}{$data}{$alt}></{$tag}>";
+	}
+
+	private static function cleanUpText(array &$copy): void
+	{
+		$copy['text'] = str_replace("\"", "&quot;", $copy['text']);
+	}
+
+	/**
+	 * Returns the truncated text that will be displayed
+	 * in the alert to the user.
+	 *
+	 * @param array $copy
+	 *
+	 * @return string
+	 */
+	private static function getTruncatedText(array $copy): string
+	{
+		extract($copy);
+
+		# Secret?
+		if($secret){
+			# If the string is to stay secret, replace it with the $secret text (or asterisks if no text is given)
+			return is_scalar($secret) ? $secret : "***";
+		}
+
+		# Produce truncated version for display purposes
+		return strlen($text) > 50 ? substr($text, 0, 50). "..." : $text;
+	}
+
+	public static function generateButton(array &$a): void
+	{
+		extract($a);
+
+		switch(true){
+		case is_scalar($copy):
+			$copy = ["text" => $copy];
+			break;
+		case is_bool($copy):
+			$copy = ["text" => str::useFirst([$title, $alt, $html])];
+			break;
+		default:
+			return;
+		}
+
+		# if the text is an array, convert it to JSON
+		if(is_array($copy['text'])){
+			$copy['text'] = json_encode($copy['text']);
+		}
+
+		self::cleanUpText($copy);
+		$a['data']['clipboard-text'] = $copy['text'];
+		$a['data']['clipboard-text-truncated'] = self::getTruncatedText($copy);
+
+		# Add the clipboard class
+		$a['class'] = is_array($a['class']) ? $a['class'] : [$a['class']];
+		$a['class'][] = "clipboard";
+
+		# Disable ladda
+		$a['ladda'] = false;
+
 	}
 }

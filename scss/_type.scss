@@ -1,93 +1,111 @@
 /**
  * The colour of links.
  */
-a{
-  color: map-get($theme-colors, "primary");
-  text-decoration: none;
+a
+{
+  color           : map-get($theme-colors, "primary");
+  text-decoration : none;
 }
+
 a:not(.btn):hover
 {
-  color: map-get($theme-colors, "primary");
-  text-decoration: underline;
+  color           : map-get($theme-colors, "primary");
+  text-decoration : underline;
 }
 
-.align-text-center {
-  text-align: center;
-  width: 100% !important;
+.align-text-center
+{
+  text-align : center;
+  width      : 100% !important;
 }
 
 
-smaller, .smaller {
-  font-size: 90%;
-  font-weight: 300;
+smaller, .smaller
+{
+  font-size   : 90%;
+  font-weight : 300;
 }
 
-smallest, .smallest {
-  font-size: 80%;
-  font-weight: 300;
+smallest, .smallest
+{
+  font-size   : 80%;
+  font-weight : 300;
 }
 
-.text-silent {
-  color: hsla(207, 7%, 86%, 1) !important;
+.text-silent
+{
+  color : hsla(207, 7%, 86%, 1) !important;
 }
-.text-italic {
-  font-style: italic;
+
+.text-italic
+{
+  font-style : italic;
 }
 
 /**
  * For when text in Grids is placed in title/body keys instead of HTML.
  */
-.text-title {
-  font-weight: 500;
-  line-height: 24pt;
+.text-title
+{
+  font-weight : 500;
+  line-height : 24pt;
 }
+
 /**
  * An override for when text titles are in modals
  */
-.modal .text-title {
-  line-height: unset;
+.modal .text-title
+{
+  line-height : unset;
 }
 
-.text-body {
-  font-weight: 300;
+.text-body
+{
+  font-weight : 300;
 }
 
 /**
  * Formatting for monospace (money, amounts) text.
  */
-.text-monospace {
-  font-family: $font-family-monospace;
-  font-weight: 600;
-  font-size: smaller;
+.text-monospace
+{
+  font-family : $font-family-monospace;
+  font-weight : 600;
+  font-size   : smaller;
 }
 
 /**
  * For when text is displayed as headline and body copy.
  * This is the header.
  */
-.text-header{
-  font-weight:600;
+.text-header
+{
+  font-weight : 600;
 }
+
 /**
  * This is the description
  */
-.text-desc {
-  color: $gray-600;
-  font-weight:300;
-  font-style: italic;
-  overflow-wrap: anywhere;
+.text-desc
+{
+  color         : $gray-600;
+  font-weight   : 300;
+  font-style    : italic;
+  overflow-wrap : anywhere;
 }
 
 /**
  * For text that needs to stay on one line,
  * with overflow hidden. Useful for mobile.
  */
-.text-flat {
-  overflow: hidden;
-  white-space: nowrap;
+.text-flat
+{
+  overflow    : hidden;
+  white-space : nowrap;
 }
 
-.code-mute {
+.code-mute
+{
   //background: #f9f9f9;
   //padding: 1rem;
   //box-shadow: inset 0px 0px 4px 0px rgba(0, 0, 0, 0.2);
@@ -96,45 +114,48 @@ smallest, .smallest {
 /**
  * When you hover over code in a table, it pops out.
  */
-.table-body .code-mute:hover{
-  background: white;
-  z-index: 999;
-  position: absolute;
-  padding: 1rem;
-  margin: -1rem;
+.table-body .code-mute:hover
+{
+  background : white;
+  z-index    : 999;
+  position   : absolute;
+  padding    : 1rem;
+  margin     : -1rem;
 
-  background: $header-footer-bg;
-  box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.2);
+  background : $header-footer-bg;
+  box-shadow : 1px 1px 2px 0 rgba(0, 0, 0, 0.2);
 }
 
 /**
  * Hide scroll bars for big chunks of code
  */
-.code-mute > pre {
-  overflow: hidden;
+.code-mute > pre
+{
+  overflow : hidden;
 }
 
 /**
  * Overriding the normal code formatting
  */
-.code-mute > pre > code{
-  font-weight: normal !important;
-  font-size: smaller;
+.code-mute > pre > code
+{
+  font-weight : normal !important;
+  font-size   : smaller;
 }
 
-.clipboard::after
+.clipboard:not(.btn)::after
 {
-  content: "\f0c5";
-  font-family: "Font Awesome 6 Pro";
-  font-size: small;
-  margin: 0 0.2rem;
-  opacity: .5;
+  content     : "\f0c5";
+  font-family : "Font Awesome 6 Pro";
+  font-size   : small;
+  margin      : 0 0.2rem;
+  opacity     : 0.5;
 }
 
-.clipboard:hover::after
+.clipboard:not(.btn):hover::after
 {
-  opacity: 1;
-  cursor: pointer;
+  opacity : 1;
+  cursor  : pointer;
 }
 
 /**

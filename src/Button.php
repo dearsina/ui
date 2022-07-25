@@ -440,6 +440,9 @@ class Button {
 		# Add a tooltip to the button
 		Tooltip::generate($a);
 
+		# Add copy feature
+		Copy::generateButton($a);
+
 		extract($a);
 
 		# Buttons with children are to be treated a little differently

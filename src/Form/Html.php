@@ -15,11 +15,17 @@ class Html extends Field implements FieldInterface {
 	 */
 	public static function generateHTML(array $a)
 	{
+		$row_id = $a['id'];
+
 		# This will just confuse the Grid class.
 		unset($a['type']);
 		unset($a['id']);
 
+		# Set dependency data
+		self::setDependencyData($a);
+
 		return Grid::generate([[
+			"row_id" => $row_id,
 			"html" => $a
 		]]);
 	}
