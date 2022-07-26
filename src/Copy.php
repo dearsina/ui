@@ -42,11 +42,12 @@ class Copy {
 		}
 
 		if(!is_array($a)){
-			$a['text'] = $a;
+			$a = ["text" => $a];
 		}
 
 		# Clean up text (Escape double quotes)
 		self::cleanUpText($a);
+		
 		extract($a);
 
 		$text_truncated = self::getTruncatedText($a);
