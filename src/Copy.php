@@ -41,13 +41,15 @@ class Copy {
 			return NULL;
 		}
 
-		if(is_array($a)){
-			# Clean up text (Escape double quotes)
-			self::cleanUpText($a);
-			extract($a);
+		if(!is_array($a)){
+			$a['text'] = $a;
 		}
 
-		$text_truncated = self::getTruncatedText($copy);
+		# Clean up text (Escape double quotes)
+		self::cleanUpText($a);
+		extract($a);
+
+		$text_truncated = self::getTruncatedText($a);
 
 		# ID (optional)
 		$id = str::getAttrTag("id", $id);
