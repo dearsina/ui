@@ -11,7 +11,7 @@
 }
 
 /**
- * Elllipsis
+ * Ellipsis
  */
 .loading:after {
   overflow: hidden;
@@ -48,6 +48,15 @@
   top: 0;
   z-index: 9999999999;
   background-color: $body-bg;
+}
+
+/**
+ * Hide the fake loader when printing.
+ */
+@media print {
+  .fakeLoader {
+    display: none !important;
+  }
 }
 
 // The spinner colour is the primary colour for the website
