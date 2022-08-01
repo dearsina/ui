@@ -125,3 +125,30 @@ $container-max-widths : (
 .card-footer .col {
   z-index: 2;
 }
+
+/**
+ * Remove gutters to fit split.js
+ */
+.no-gutters {
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+  flex-wrap: unset !important;
+
+  > .col,
+  > [class*="col-"] {
+    padding-right: 0;
+    padding-left: 0;
+  }
+}
+
+/**
+ * Split.js styles
+ */
+.split {
+  display: flex;
+  flex-direction: row;
+}
+
+.gutter.gutter-horizontal:hover {
+  cursor: col-resize;
+}

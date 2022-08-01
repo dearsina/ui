@@ -76,13 +76,21 @@ class Grid {
 			if(!is_array($row)){
 				$row_html = $this->getColHTML(["html" => $row]);
 				$row = [];
-			} else if(str::isNumericArray($row)){
+			}
+
+			else if(str::isNumericArray($row)){
 				$row_html = $this->getColHTML($row);
-			} else if(str::isNumericArray($row['html'])){
+			}
+
+			else if(str::isNumericArray($row['html'])){
 				$row_html = $this->getColHTML($row['html']);
-			} else if($row['html']){
+			}
+
+			else if($row['html']){
 				$row_html = $this->getColHTML([$row['html']]);
-			} else {
+			}
+
+			else {
 				$row_html = $this->getColHTML([$row]);
 			}
 
@@ -91,6 +99,13 @@ class Grid {
 
 			# Class
 			$class_array = str::getAttrArray($row['row_class'], "row", $row['only_row_class']);
+
+			# Splits
+			if($row['split']){
+				$class_array[] = "col-split";
+			}
+
+			# Class tag
 			$class_tag = str::getAttrTag("class", $class_array);
 
 			# Style
@@ -119,22 +134,34 @@ class Grid {
 			if(!is_array($col)){
 				$col_html = $col;
 				$col = [];
-			} else if(str::isNumericArray($col)){
+			}
+
+			else if(str::isNumericArray($col)){
 				//if it goes deeper (without other metadata)
 				$col_html = $this->getRowHTML($col);
-			} else if(str::isNumericArray($col['html'])){
+			}
+
+			else if(str::isNumericArray($col['html'])){
 				//if it goes deeper (with metadata)
 				$col_html = $this->getRowHTML($col['html']);
-			} else if(is_array($col['tabs']) && array_filter($col['tabs'])){
+			}
+
+			else if(is_array($col['tabs']) && array_filter($col['tabs'])){
 				//If tabs exist (throw in the optional formatter also)
 				$col_html = Tabs::generate($col['tabs'], $this->formatter);
-			} else if($this->formatter){
+			}
+
+			else if($this->formatter){
 				//If a custom formatter has been designated
 				$col_html = ($this->formatter)($col);
-			} else if($col['accordion']){
+			}
+
+			else if($col['accordion']){
 				//if the cell is an accordion
 				$col_html = Accordion::generate($col['accordion']);
-			} else {
+			}
+
+			else {
 				$col_html = self::generateTitle($col['title']);
 				$col_html .= self::generateBody($col['body']);
 				$col_html .= $col['html'];
