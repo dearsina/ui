@@ -74,7 +74,8 @@ $container-max-widths : (
  */
 .grid-stack-item-content .row
 {
-  display: block;
+  //display: block;
+  // Causes a lot more problems than it solves with .table-containers and .btns
 }
 
 // The buttons to control the card
