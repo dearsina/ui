@@ -106,7 +106,7 @@ abstract class Prototype extends \App\Common\Prototype {
 			$modal = new Modal([
 				"id" => $id,
 				"size" => $size,
-				"header" => [
+				"header" => $header ?: [
 					"icon" => Icon::get("new"),
 					"title" => str::title("New {$rel_table}"),
 				],

@@ -11,12 +11,9 @@
   margin-right : 1rem;
 }
 
-/**
- * Bootstrap fix
- */
-.list-group-item-action
+.list-group-item-title > i:first-of-type
 {
-  width : auto;
+  margin-right: 0.5rem
 }
 
 /**

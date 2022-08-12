@@ -100,6 +100,14 @@ form
 }
 
 /**
+ * Ensure label icons have space
+ */
+label i:first-of-type
+{
+  margin-right:0.25rem
+}
+
+/**
  * Fix so that the select2.js select box fits in to Bootstrap 4.x
  */
 .select2js
