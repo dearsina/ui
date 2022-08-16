@@ -175,10 +175,21 @@ class Dropdown {
 		$data = str::getDataAttr([
 			"bs-auto-close" => $item['auto_close']
 		]);
-		$alt = str::getAttrTag("title", $item['alt'] ?: $item['title']);
+		$alt = str::getAttrTag("title", $item['alt'] ?: trim(strip_tags($item['title'])));
 		$class = str::getAttrTag("class", "dropdown-item dropdown-toggle");
 		$icon = Icon::generate($item['icon']);
 		$title = $item['title'];
+
+		# Beta-fix for titles that are too long
+		if($item['title'] == strip_tags($item['title']) && strlen($item['title']) > 25){
+			$style = str::getAttrTag("style", [
+				"width" => "calc(100% - 60px)",
+				"overflow" => "hidden",
+				"display" => "inline-flex",
+			]);
+			$title = "<span{$style}>{$title}</span>";
+		}
+
 		return "<div data-bs-toggle=\"dropdown\"{$data}{$auto_close}{$class}{$alt}>{$icon}{$title}</div>";
 	}
 

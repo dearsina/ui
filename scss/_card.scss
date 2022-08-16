@@ -165,6 +165,14 @@ box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 
 {
   padding : 0;
   max-width: unset;
+
+  /**
+   * We're adding the below so that dropdown buttons
+   * don't get obfuscated by a whole bunch of other
+   * elements that at times have better positions.
+   */
+  z-index: 1031;
+  position: relative;
 }
 
 .card-footer

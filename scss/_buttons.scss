@@ -53,6 +53,15 @@ a.disabled-waiting{
 }
 
 /**
+ * There is no need for the label to be position relative.
+ * And it interferes with dropdown menus.
+ */
+.ladda-label
+{
+  position: unset !important;
+}
+
+/**
  * Grey overrides
  */
 .btn-outline-gray,
@@ -133,12 +142,26 @@ form .btn i
   z-index: 0;
   // Set to zero allow buttons from the body to hover *over* buttons in the footer
 }
+
+/**
+ * Buttons in the button-float-right
+ * should, err, float right.
+ */
 .card .btn-float-right .btn,
 .modal .btn-float-right .btn,
 .tab-pane .btn-float-right .btn
 {
   float: right !important;
-  //line-height: 1;
+}
+
+/**
+ * But only actual buttons (and
+ * not dropdowns) need margins
+ */
+.card .btn-float-right > .btn,
+.modal .btn-float-right > .btn,
+.tab-pane .btn-float-right > .btn
+{
   margin: .25rem 0 .25rem .5rem;
 }
 .card .btn-float-right .btn-group,
