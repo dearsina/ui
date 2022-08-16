@@ -113,6 +113,14 @@
   opacity : .1;
 }
 
+.table-container > i:first-of-type
+{
+  line-height: 36pt;
+  color : hsla(207, 7%, 86%, 1) !important;
+  font-size   : 90%;
+  font-weight : 300;
+}
+
 /**
 * The table body
 */

@@ -450,7 +450,7 @@ EOF;
 			if(!$total_results){//echo $_SESSION['query'];exit;
 				//If no rows can be found
 				$output->setVar('start', 1);
-				$output->setVar("rows", "<i class=\"text-silent\">No rows found</i>");
+				$output->setVar("rows", "<i>No rows found</i>");
 				return true;
 			}
 
