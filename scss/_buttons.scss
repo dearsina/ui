@@ -152,6 +152,7 @@ form .btn i
 .tab-pane .btn-float-right .btn
 {
   float: right !important;
+  margin: .25rem 0 .25rem .5rem;
 }
 
 /**
@@ -162,7 +163,7 @@ form .btn i
 .modal .btn-float-right > .btn,
 .tab-pane .btn-float-right > .btn
 {
-  margin: .25rem 0 .25rem .5rem;
+
 }
 .card .btn-float-right .btn-group,
 .modal .btn-float-right .btn-group,

@@ -78,7 +78,8 @@
 /**
  * Drop-end caret
  */
-.dropend .dropdown-toggle::after
+ul:not(.nav-button) > li.dropup .dropdown-toggle::after,
+ul:not(.nav-button) > li.dropend .dropdown-toggle::after
 {
   content     : "›";
   float       : right;
@@ -319,12 +320,12 @@ a.navbar-level1-logo > object
 
 /**
  * For nav buttons that are placed in a row with
- * other buttons.
+ * other buttons. Ensures the dropdown appears away
+ * from the button itself.
  */
 .navbar-nav.nav-button
 {
   display: inline-block;
-  margin-right: -7px;
 }
 
 .navbar-nav.nav-button > .dropdown > .dropdown-item

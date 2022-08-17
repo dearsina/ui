@@ -13,8 +13,9 @@
 
 /**
  * A single dropdown item.
+ * We're excluding the padding from buttons
  */
-.dropdown-item {
+.navbar-nav:not(.nav-button) > li > .dropdown-item {
   padding: 0.25rem 0.75rem;
 }
 
