@@ -180,14 +180,9 @@ class Dropdown {
 		$icon = Icon::generate($item['icon']);
 		$title = $item['title'];
 
-		# Beta-fix for titles that are too long
+		# Wrap titles that are longer than 25 chars in a span to be picked up by CSS
 		if($item['title'] == strip_tags($item['title']) && strlen($item['title']) > 25){
-			$style = str::getAttrTag("style", [
-				"width" => "calc(100% - 60px)",
-				"overflow" => "hidden",
-				"display" => "inline-flex",
-			]);
-			$title = "<span{$style}>{$title}</span>";
+			$title = "<span>{$title}</span>";
 		}
 
 		return "<div data-bs-toggle=\"dropdown\"{$data}{$auto_close}{$class}{$alt}>{$icon}{$title}</div>";

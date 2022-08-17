@@ -20,6 +20,16 @@
 }
 
 /**
+ * Truncates text in dropdowns if it's too long.
+ */
+ul:not(.navbar-nav) > li > .dropdown-item > span
+{
+  width: calc(100% - 60px);
+  overflow: hidden;
+  display: inline-flex;
+}
+
+/**
  * When the dropdown item is in
  * a menu on the right.
  */
