@@ -6,7 +6,6 @@
   box-shadow : #34324e26 0px 0px 4px, #34324e26 0px 4px 12px, #34324e26 6px 6px 14px;
   position   : absolute;
   overflow   : hidden;
-
   min-height : 10vw;
   min-width  : 30vh;
 }
@@ -31,8 +30,10 @@
 {
   width      : auto;
   position   : absolute;
-  right      : 10px;
-  top        : 5px;
+  //right      : 10px;
+  //top        : 5px;
+  right      : -12px;
+  top        : -12px;
   background : $header-footer-bg;
 }
 

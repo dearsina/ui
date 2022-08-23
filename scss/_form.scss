@@ -527,6 +527,16 @@ textarea.monospace
 }
 
 /**
+ * Trumbowyg by default sets the z-index to 99999,
+ * which screws with the select2 form fields.
+ * Setting is to 10 fixes the problem.
+ */
+.trumbowyg-modal
+{
+  z-index: 10 !important;;
+}
+
+/**
  * Format modal, including header, buttons.
  */
 .trumbowyg-modal-box
