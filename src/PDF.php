@@ -55,6 +55,9 @@ class PDF {
 				"log-level" => "3",
 				# Give Chrome privileges
 				"no-sandbox" => true,
+				# Fixes the ERROR:command_buffer_proxy_impl.cc(128)] ContextResult::kTransientFailure: Failed to send GpuControl.CreateCommandBuffer. isue
+				"disable-blink-features" => true,
+				// Experimental
 
 				//				"enable-logging" => "stderr",
 				//				"v" => 1,
