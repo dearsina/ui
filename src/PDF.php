@@ -55,9 +55,10 @@ class PDF {
 				"log-level" => "3",
 				# Give Chrome privileges
 				"no-sandbox" => true,
-				# Fixes the ERROR:command_buffer_proxy_impl.cc(128)] ContextResult::kTransientFailure: Failed to send GpuControl.CreateCommandBuffer. isue
+				# Fixes the ERROR:command_buffer_proxy_impl.cc(128)] ContextResult::kTransientFailure: Failed to send GpuControl.CreateCommandBuffer. issue
 				"disable-blink-features" => true,
 				// Experimental
+				// @link https://stackoverflow.com/questions/70245747/webdriver-headless-issue
 
 				//				"enable-logging" => "stderr",
 				//				"v" => 1,
