@@ -122,6 +122,16 @@ form .btn i
 }
 
 /**
+ * Buttons in the button-float-right
+ * should, err, float right.
+ */
+.btn-float-right
+{
+  //position: relative;
+  //z-index: 6;
+}
+
+/**
  * Used if several buttons are to be floated right
  * in a card header or footer.
  */
@@ -143,16 +153,18 @@ form .btn i
   // Set to zero allow buttons from the body to hover *over* buttons in the footer
 }
 
-/**
- * Buttons in the button-float-right
- * should, err, float right.
- */
 .card .btn-float-right .btn,
 .modal .btn-float-right .btn,
 .tab-pane .btn-float-right .btn
 {
   float: right !important;
   margin: .25rem 0 .25rem .5rem;
+}
+
+.btn-float-right > .dropdown,
+.btn-float-right > .dropup
+{
+  float: right !important;
 }
 
 /**
@@ -165,6 +177,7 @@ form .btn i
 {
 
 }
+
 .card .btn-float-right .btn-group,
 .modal .btn-float-right .btn-group,
 .tab-pane .btn-float-right .btn-group,
@@ -211,8 +224,8 @@ form .btn i
 
 // Give padding to each item in the menu
 ul.dropdown-menu > li > * {
-  padding: 0.3rem 1rem;
-  font-weight: 400;
+  //padding: 0.3rem 1rem;
+  //font-weight: 400;
 
 }
 

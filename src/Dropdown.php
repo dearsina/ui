@@ -18,6 +18,71 @@ use App\Common\str;
  * @package App\UI
  */
 class Dropdown {
+	private static function generateChildren(array $item, ?int $level = 0): string
+	{
+		$icon = Icon::generate($item['icon']);
+		$title = $item['title'];
+
+		if($item['children']){
+			if($item['children']['items']){
+				$meta = $item['children'];
+				$item['children'] = $item['children']['items'];
+				unset($meta['items']);
+			}
+			foreach($item['children'] as $child){
+				if($child['children']){
+					$lis .= "<li>".self::generateChildren($child, $level + 1)."</li>";
+					continue;
+				}
+
+				# If the child is just a divider
+				if($child === true){
+					$lis .= "<li class=\"dropdown-divider\"></li>";
+					continue;
+				}
+
+				# If the child is a header
+				if($child['header']){
+					$lis .= self::getHeaderHTML($child);
+					continue;
+				}
+
+				$lis .= "<li>".self::generateChildTag($child)."</li>";
+			}
+		}
+
+		switch($item['direction']){
+		case 'left':
+		case 'start':
+			$direction = "dropstart";
+			break;
+		case 'right':
+		case 'end':
+			$direction = "dropend";
+			break;
+		case 'up':
+			$direction = "dropup";
+			break;
+		default:
+			$direction = $level ? "dropend" : "dropdown";
+			break;
+		}
+
+		$class = str::getAttrTag("class", [$direction, $item['class']]);
+		$style = str::getAttrTag("style", $item['style']);
+
+		$button_class = str::getAttrTag("class", ["dropdown-item dropdown-toggle", $item['button_class']]);
+		$ul_class = str::getAttrTag("class", ["dropdown-menu", $item['ul_class']]);
+
+		return <<<EOF
+<div{$class}{$style}>
+  <button{$button_class} type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    {$icon}{$title}
+  </button>
+  <ul{$ul_class}>{$lis}</ul>
+</div>
+EOF;
+	}
 	/**
 	 * Generates the root UL element that contains the
 	 * dropdown menu.
@@ -45,42 +110,15 @@ class Dropdown {
 				$class = str::getAttrTag("class", self::getDirectionClass($item, $level));
 				$parent_div = self::generateParentDiv($item);
 				$content = self::generateMenuContent($item);
-				$children[] = "<li{$class}>{$parent_div}{$content}</li>";
-			}
-
-			# If the line item is a parent with children
-			else if($item['children']){
-				$class = str::getAttrTag("class", self::getDirectionClass($item, $level));
-				$parent_div = self::generateParentDiv($item);
-				$content = self::generateRootUl($item['children'], $level + 1);
-				$children[] = "<li{$class}>{$parent_div}{$content}</li>";
-			}
-
-			# If the item is just a divider
-			else if($item === true){
-				$children[] = "<li class=\"dropdown-divider\"></li>";
+				$html .= "<div{$class}>{$parent_div}{$content}</div>";
 				continue;
 			}
 
-			# If the items is a header
-			else if($item['header']){
-				$children[] = self::getHeaderHTML($item);
-				continue;
-			}
-
-			# Or if the line item is a child
-			else if(is_array($item)){
-				//Must be an array
-				$child_a = self::generateChildTag($item);
-				$children[] = "<li>{$child_a}</li>";
-			}
+			# Otherwise, generate the item children
+			$html .= self::generateChildren($item);
 		}
 
-		$id = str::getAttrTag("id", $meta['id']);
-		$style = str::getAttrTag("style", $meta['style']);
-		$content = implode("\r\n", $children);
-		$class = str::getAttrTag("class", self::getRootClass($level, $meta['class']));
-		return "<ul{$id}{$class}{$style}>{$content}</ul>";
+		return $html;
 	}
 
 	/**

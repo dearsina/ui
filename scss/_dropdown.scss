@@ -1,4 +1,40 @@
 /**
+ * Ensure dropdown buttons float right when told to,
+ * and are aligned to the other non-dropdown buttons.
+ */
+.btn-float-right > .dropdown > .dropdown-item
+{
+  width: unset;
+  clear: unset;
+  float: right;
+  margin-left: -0.25rem;
+}
+
+/**
+ * Removes the default (ugly, unnecessary
+ * Bootstrap caret from the element).
+ */
+.dropstart .dropdown-toggle::before {
+  border: none;
+}
+
+/**
+ * Used by burger menus to stay right.
+ */
+.drop-float-right
+{
+  float: right;
+}
+
+
+
+/**
+ * MOST OF THE BELOW IS REDUNDANT
+ */
+
+
+
+/**
  * The dropdown caret (three bars actually).
  */
 .dropdown-caret {
@@ -15,7 +51,10 @@
  * A single dropdown item.
  * We're excluding the padding from buttons.
  */
-.navbar-nav:not(.nav-button, .nav-right) > li > .dropdown-item {
+//.navbar-nav:not(.nav-button, .nav-right) > li > .dropdown-item {
+//  padding: 0.25rem 0.75rem;
+//}
+.navbar-collapse .dropdown-item {
   padding: 0.25rem 0.75rem;
 }
 

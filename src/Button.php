@@ -370,9 +370,12 @@ class Button {
 				"icon" => $icon,
 				"alt" => $alt ?: "Click to open the menu",
 				"direction" => $dierction ?: "left",
-				"children" => $buttons,
+				"children" => [
+					"direction" => $dierction ?: "left",
+					"items" => $buttons
+				],
+				"class" => "drop-float-right"
 			]],
-			"class" => "navbar-nav nav-right"
 		]);
 	}
 

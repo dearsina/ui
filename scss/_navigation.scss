@@ -21,19 +21,34 @@
 {
   justify-content : space-between;
   flex-wrap: nowrap;
+
+  // Ensures items are vertically centered
+  height: 100%;
+  align-items: center;
 }
 
 /**
  * Places the level 1 items horizontally
  */
-#navbar-level1-items > .navbar-nav
-{
-  flex-direction : row-reverse;
+//#navbar-level1-items > .navbar-nav
+//{
+//  flex-direction : row-reverse;
+//  /**
+//   * It's by design in reverse because we want
+//   * the role level items to come before the
+//   * app level items, the opposite of level 2.
+//   */
+//}
+
+#navbar-level1-items {
+  display: flex;
+  flex-direction: row-reverse;
   /**
-   * It's by design in reverse because we want
-   * the role level items to come before the
-   * app level items, the opposite of level 2.
-   */
+ * It's by design in reverse because we want
+ * the role level items to come before the
+ * app level items, the opposite of level 2.
+ */
+  align-items: center;
 }
 
 /**
@@ -58,7 +73,15 @@
 /**
  * Drop-start caret
  */
-.dropstart .dropdown-toggle::before
+//.dropstart .dropdown-toggle::before
+//{
+//  content     : "‹";
+//  float       : right;
+//  margin-left : 1rem;
+//  border      : none;
+//}
+
+li > .dropstart > .dropdown-toggle::before
 {
   content     : "‹";
   float       : right;
@@ -67,19 +90,19 @@
 }
 
 /**
- * Removes the caret from root objects
- */
-.nav-right > .dropstart > .dropdown-toggle::before
-{
-  content : "";
-  margin  : 0;
-}
-
-/**
  * Drop-end caret
  */
-ul:not(.nav-button) > li.dropup .dropdown-toggle::after,
-ul:not(.nav-button) > li.dropend .dropdown-toggle::after
+//ul:not(.nav-button) > li.dropup .dropdown-toggle::after,
+//ul:not(.nav-button) > li.dropend .dropdown-toggle::after
+//{
+//  content     : "›";
+//  float       : right;
+//  margin-left : 1rem;
+//  border      : none;
+//}
+li > .dropdown > .dropdown-toggle::after,
+li > .dropup > .dropdown-toggle::after,
+li > .dropend > .dropdown-toggle::after
 {
   content     : "›";
   float       : right;
@@ -117,7 +140,8 @@ div.dropdown-item
  * Ensure level 2 top level buttons also
  * have icon spacing.
  */
-#navbar-level2-items li i:not(.fa-bars)
+//#navbar-level2-items li i:not(.fa-bars)
+#navbar-level2-items div.dropdown i:not(.fa-bars)
 {
   margin-right : .75rem;
 }
@@ -285,7 +309,7 @@ a.navbar-level1-logo > object
 
 .navbar-nav
 {
-  z-index  : 5;
+  z-index  : 1031;
   position : relative;
 }
 
@@ -325,7 +349,7 @@ a.navbar-level1-logo > object
  */
 .navbar-nav.nav-button
 {
-  display: inline-block;
+  //display: inline-block;
 }
 
 .navbar-nav.nav-button > .dropdown > .dropdown-item
