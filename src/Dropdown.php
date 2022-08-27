@@ -18,38 +18,49 @@ use App\Common\str;
  * @package App\UI
  */
 class Dropdown {
+	/**
+	 * Generates the root UL element that contains the
+	 * dropdown menu.
+	 *
+	 * @param array|null $items
+	 * @param int|null   $level
+	 *
+	 * @return string|null
+	 */
+	static function generateRootUl(?array $items, ?int $level = 0): ?string
+	{
+		if(!$items){
+			return NULL;
+		}
+
+		if($items['items']){
+			$meta = $items;
+			$items = $items['items'];
+			unset($meta['items']);
+		}
+
+		foreach($items as $item){
+			# If the line item has html instead of children
+			if($item['html']){
+				$class = str::getAttrTag("class", self::getDirectionClass($item, $level));
+				$parent_div = self::generateParentDiv($item);
+				$content = self::generateMenuContent($item);
+				$html .= "<div{$class}>{$parent_div}{$content}</div>";
+				continue;
+			}
+
+			# Otherwise, generate the item children
+			$html .= self::generateChildren($item);
+		}
+
+		return $html;
+	}
 	private static function generateChildren(array $item, ?int $level = 0): string
 	{
 		$icon = Icon::generate($item['icon']);
 		$title = $item['title'];
 
-		if($item['children']){
-			if($item['children']['items']){
-				$meta = $item['children'];
-				$item['children'] = $item['children']['items'];
-				unset($meta['items']);
-			}
-			foreach($item['children'] as $child){
-				if($child['children']){
-					$lis .= "<li>".self::generateChildren($child, $level + 1)."</li>";
-					continue;
-				}
 
-				# If the child is just a divider
-				if($child === true){
-					$lis .= "<li class=\"dropdown-divider\"></li>";
-					continue;
-				}
-
-				# If the child is a header
-				if($child['header']){
-					$lis .= self::getHeaderHTML($child);
-					continue;
-				}
-
-				$lis .= "<li>".self::generateChildTag($child)."</li>";
-			}
-		}
 
 		switch($item['direction']){
 		case 'left':
@@ -72,53 +83,47 @@ class Dropdown {
 		$style = str::getAttrTag("style", $item['style']);
 
 		$button_class = str::getAttrTag("class", ["dropdown-item dropdown-toggle", $item['button_class']]);
-		$ul_class = str::getAttrTag("class", ["dropdown-menu", $item['ul_class']]);
+		$menu = self::generateUl($item);
 
 		return <<<EOF
 <div{$class}{$style}>
   <button{$button_class} type="button" data-bs-toggle="dropdown" aria-expanded="false">
     {$icon}{$title}
   </button>
-  <ul{$ul_class}>{$lis}</ul>
+  {$menu}
 </div>
 EOF;
 	}
-	/**
-	 * Generates the root UL element that contains the
-	 * dropdown menu.
-	 *
-	 * @param array|null $items
-	 * @param int|null   $level
-	 *
-	 * @return string|null
-	 */
-	static function generateRootUl(?array $items, ?int $level = 0): ?string
+
+	public static function generateUl(array $item): string
 	{
-		if(!$items){
-			return NULL;
-		}
-		
-		if($items['items']){
-			$meta = $items;
-			$items = $items['items'];
-			unset($meta['items']);
-		}
+		if($item['children']){
+			$item['children'] = $item['children']['items'] ?: $item['children'];
+			$children = $item['children'];
+			foreach($children as $child){
+				if($child['children']){
+					$lis .= "<li>".self::generateChildren($child, $level + 1)."</li>";
+					continue;
+				}
 
-		foreach($items as $item){
-			# If the line item has html instead of children
-			if($item['html']){
-				$class = str::getAttrTag("class", self::getDirectionClass($item, $level));
-				$parent_div = self::generateParentDiv($item);
-				$content = self::generateMenuContent($item);
-				$html .= "<div{$class}>{$parent_div}{$content}</div>";
-				continue;
+				# If the child is just a divider
+				if($child === true){
+					$lis .= "<li class=\"dropdown-divider\"></li>";
+					continue;
+				}
+
+				# If the child is a header
+				if($child['header']){
+					$lis .= self::getHeaderHTML($child);
+					continue;
+				}
+				$lis .= "<li>".self::generateChildTag($child)."</li>";
 			}
-
-			# Otherwise, generate the item children
-			$html .= self::generateChildren($item);
 		}
 
-		return $html;
+		$ul_class = str::getAttrTag("class", ["dropdown-menu", $item['ul_class']]);
+
+		return "<ul{$ul_class}>{$lis}</ul>";
 	}
 
 	/**

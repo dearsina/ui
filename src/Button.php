@@ -738,10 +738,9 @@ EOF;
 		$class_array[] = "dropdown-toggle dropdown-toggle-split";
 		$class = str::getAttrTag("class", $class_array);
 
-		# Generates the root
-		$menu = Dropdown::generateRootUl([
-			"items" => $children,
-			"class" => "dropdown-menu"
+		# Generates the menu only
+		$menu = Dropdown::generateUl([
+			"children" => $children,
 		]);
 
 		return <<<EOF
