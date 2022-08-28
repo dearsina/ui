@@ -140,10 +140,9 @@ div.dropdown-item
  * Ensure level 2 top level buttons also
  * have icon spacing.
  */
-//#navbar-level2-items li i:not(.fa-bars)
-#navbar-level2-items div.dropdown i:not(.fa-bars)
+#navbar-level2-items i:not(.fa-bars)
 {
-  margin-right : .75rem;
+  margin-right: 0.75rem;
 }
 
 nav li .badge i
