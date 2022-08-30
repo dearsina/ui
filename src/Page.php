@@ -11,6 +11,7 @@ use App\Common\str;
  * @package App\UI
  */
 class Page {
+	private ?int $sm = NULL;
 	private $title;
 	private $subtitle;
 	private $script;
@@ -91,6 +92,20 @@ class Page {
 		}
 		$this->title["html"] = $title;
 		return true;
+	}
+
+	function setSm($sm): void
+	{
+		if($sm === false){
+			$this->sm = NULL;
+			return;
+		}
+
+		if(!$sm){
+			return;
+		}
+
+		$this->sm = $sm;
 	}
 
 	/**
@@ -191,7 +206,7 @@ class Page {
 
 		# Style
 		$style = str::getAttrTag("style", $this->title['style']);
-		
+
 		return "<h2{$id}{$class}{$style}>{$icon}{$svg} {$this->title['html']} {$badge}</h2>";
 	}
 
@@ -281,14 +296,24 @@ class Page {
 	 * @return string
 	 */
 	public function getHTML(){
-		return <<<EOF
-{$this->getScriptHTML()}
-{$this->getTitleHTML()}
-{$this->getSubtitleHTML()}
-{$this->getButtonHTML()}
-{$this->getHeadsUpHTML()}
-{$this->grid->getHTML()}
-EOF;
 
+		$html .= $this->getScriptHTML();
+
+		if($this->sm){
+			$html .= Grid::generate([[[
+				"sm" => $this->sm,
+				"html" => "&nbsp;"
+			],[
+				"html" => $this->getTitleHTML().$this->getSubtitleHTML()
+			]]]);
+		}
+
+		else {
+			$html .= $this->getTitleHTML().$this->getSubtitleHTML();
+		}
+
+		$html .= $this->getButtonHTML().$this->getHeadsUpHTML().$this->grid->getHTML();
+
+		return $html;
 	}
 }
