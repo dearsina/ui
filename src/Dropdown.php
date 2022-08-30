@@ -97,7 +97,10 @@ EOF;
 	{
 		if($item['children']){
 			$item['children'] = $item['children']['items'] ?: $item['children'];
-			$children = $item['children'];
+
+			$children = array_filter($item['children']);
+			//Removes empty (false, null) children
+
 			foreach($children as $child){
 				if($child['children']){
 					$lis .= "<li>".self::generateChildren($child, $level + 1)."</li>";
