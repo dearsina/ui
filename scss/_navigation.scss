@@ -40,7 +40,9 @@
 //   */
 //}
 
-#navbar-level1-items {
+#navbar-level1-items,
+#navbar-level1-items > .navbar-nav
+{
   display: flex;
   flex-direction: row-reverse;
   /**
