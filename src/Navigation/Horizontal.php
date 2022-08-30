@@ -46,7 +46,7 @@ class Horizontal {
 		$items = Dropdown::generateRootUl($this->levels[1]['items']);
 
 		return <<<EOF
-<div class="nav-scroller fixed-top" id="navbar-level1">
+<div class="nav-scroller" id="navbar-level1">
   <nav class="nav">
   	{$brand}
 	<div id="navbar-level1-items">
@@ -74,7 +74,7 @@ EOF;
 		}
 
 		return <<<EOF
-<nav class="navbar navbar-expand-lg fixed-top nav-scroller" id="navbar-level2">
+<nav class="navbar navbar-expand-lg nav-scroller" id="navbar-level2">
 	<div class="container-fluid">
 		<span></span>
 		<div class="navbar-collapse offcanvas-collapse" id="navbar-level2-items">

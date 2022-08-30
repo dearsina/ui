@@ -3,14 +3,16 @@
  */
 #navbar-level1
 {
-  height     : 3rem;
+  //height     : 3rem;
   background : #1f2c32;
-  top        : 0;
-  left       : 0;
+  //top        : 0;
+  //left       : 0;
   width      : 100%;
   padding    : 7px;
   color      : white;
   z-index    : 1031;
+  min-height : 3rem;
+  display    : flex;
 }
 
 /**
@@ -20,11 +22,12 @@
 #navbar-level1 > .nav
 {
   justify-content : space-between;
-  flex-wrap: nowrap;
+  flex-wrap       : nowrap;
 
   // Ensures items are vertically centered
-  height: 100%;
-  align-items: center;
+  //height: 100%;
+  align-items     : center;
+  width           : 100%;
 }
 
 /**
@@ -42,22 +45,23 @@
 
 #navbar-level1-items
 {
-  display: flex;
-  flex-direction: row-reverse;
+  display        : flex;
+  flex-direction : row-reverse;
   /**
  * It's by design in reverse because we want
  * the role level items to come before the
  * app level items, the opposite of level 2.
  */
-  align-items: center;
+  align-items    : center;
 }
 
 /**
  * Ensure icons have the same line height
  * as the text.
  */
-#navbar-level1 .dropdown-item > i {
-  line-height: var(--bs-body-line-height);
+#navbar-level1 .dropdown-item > i
+{
+  line-height : var(--bs-body-line-height);
 }
 
 /**
@@ -65,8 +69,8 @@
  */
 #navbar-level2
 {
-  top           : 3rem;
-  height        : 3rem;
+  //top           : 3rem;
+  //height        : 3rem;
   background    : #ffffff;
   border-bottom : 0.9px solid #d8e2e9;
 }
@@ -132,9 +136,10 @@ div.dropdown-item
 /**
  * Align badges with the text
  */
-.dropdown-item .badge {
-  float: right;
-  margin-top: 7px;
+.dropdown-item .badge
+{
+  float      : right;
+  margin-top : 7px;
 }
 
 /**
@@ -143,7 +148,7 @@ div.dropdown-item
  */
 #navbar-level2-items i:not(.fa-bars)
 {
-  margin-right: 0.75rem;
+  margin-right : 0.75rem;
 }
 
 nav li .badge i
@@ -165,7 +170,7 @@ nav li .badge i
  */
 .dropdown > ul > li,
 .dropstart > ul > li,
-.dropend  > ul > li
+.dropend > ul > li
 {
   line-height : 30px;
   width       : 100%;
@@ -182,7 +187,7 @@ nav li .badge i
   margin-left     : 0.25rem;
   color           : white !important;
   text-decoration : none !important;
-  align-self: center;
+  align-self      : center;
 }
 
 /**
@@ -270,40 +275,43 @@ a.navbar-level1-logo > object
 
 #navbar-level2-toggle-button
 {
-  display: none;
+  display : none;
 }
 
-@media (max-width: map-get($grid-breakpoints, "lg")) {
-  .offcanvas-collapse {
-    position: fixed;
-    top: 3rem; /* Height of navbar */
-    left: 100%;
-    width: 100%;
-    padding: 1rem;
-    color: white;
-    overflow-y: auto;
-    visibility: hidden;
-    font-size: 125%;
-    background-color: #394146;
-    transition: transform .3s ease-in-out, visibility .3s ease-in-out;
+@media (max-width : map-get($grid-breakpoints, "lg"))
+{
+  .offcanvas-collapse
+  {
+    position         : fixed;
+    //top: 3rem; /* Height of navbar */
+    left             : 100%;
+    width            : 100%;
+    padding          : 1rem;
+    color            : white;
+    overflow-y       : auto;
+    visibility       : hidden;
+    font-size        : 125%;
+    background-color : #394146;
+    transition       : transform .3s ease-in-out, visibility .3s ease-in-out;
   }
-  .offcanvas-collapse.open {
-    visibility: visible;
-    transform: translateX(-100%);
+  .offcanvas-collapse.open
+  {
+    visibility : visible;
+    transform  : translateX(-100%);
   }
 
   #navbar-level2
   {
-    height: 0;
-    padding: 0;
+    height  : 0;
+    padding : 0;
   }
 
   #navbar-level2-toggle-button
   {
-    float: right;
-    margin: 8px;
-    font-size: 125%;
-    display: unset;
+    float     : right;
+    margin    : 8px;
+    font-size : 125%;
+    display   : unset;
   }
 }
 
@@ -319,7 +327,7 @@ a.navbar-level1-logo > object
 .card-footer .btn-float-right .navbar-nav,
 .modal-footer .btn-float-right .navbar-nav
 {
-  float: right;
+  float : right;
 }
 
 .navbar-nav .dropdown-menu
