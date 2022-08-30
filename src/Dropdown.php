@@ -60,8 +60,6 @@ class Dropdown {
 		$icon = Icon::generate($item['icon']);
 		$title = $item['title'];
 
-
-
 		switch($item['direction']){
 		case 'left':
 		case 'start':
