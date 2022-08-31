@@ -189,6 +189,8 @@ nav li .badge i
   text-decoration : none !important;
   align-self      : center;
   overflow        : hidden;
+  z-index: 1;
+  // Set so that SVG logos don't disappear
 }
 
 /**
