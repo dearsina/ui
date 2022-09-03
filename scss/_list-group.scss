@@ -105,3 +105,12 @@ a.list-group-item:hover
 .list-group-flush {
   border-radius: 0.25rem;
 }
+
+/**
+ * Not sure why the default is 2.
+ * Will mess with dropdown menus.
+ */
+.list-group-item.active
+{
+  z-index: unset;
+}
