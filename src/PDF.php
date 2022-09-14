@@ -4,6 +4,7 @@
 namespace App\UI;
 
 
+use App\Common\Log;
 use App\Common\str;
 
 class PDF {
@@ -12,14 +13,18 @@ class PDF {
 	 * Saves the PDF as a temporary file and returns either the file contents
 	 * or temporary file name.
 	 *
-	 * @param           $url
-	 * @param bool|null $return_filename_only
+	 * @param            $url
+	 * @param int|null   $seconds
+	 * @param bool|null  $refresh
+	 * @param bool|null  $return_filename_only
+	 * @param int|null   $rerun
+	 * @param array|null $older_output
 	 *
-	 * @return string
+	 * @return ?string String or NULL on error
 	 * @throws \Exception
 	 * @link https://developers.google.com/web/updates/2017/04/headless-chrome
 	 */
-	static function print($url, ?int $seconds = 10, ?bool $refresh = NULL, ?bool $return_filename_only = NULL, ?int $rerun = 0): string
+	static function print($url, ?int $seconds = 10, ?bool $refresh = NULL, ?bool $return_filename_only = NULL, ?int $rerun = 0, ?array $older_output = []): ?string
 	{
 		# Get the MD5 hash from the URL
 		$md5 = md5($url);
@@ -27,7 +32,7 @@ class PDF {
 		# Generate temporary filename
 		$tmp_filename = PDF::generateTemporaryFilename($md5);
 
-		# Force refresh the file?
+		# Force-refresh the file?
 		if($refresh){
 			if(file_exists($tmp_filename)){
 				unlink($tmp_filename);
@@ -55,9 +60,10 @@ class PDF {
 				"log-level" => "3",
 				# Give Chrome privileges
 				"no-sandbox" => true,
-				# Fixes the ERROR:command_buffer_proxy_impl.cc(128)] ContextResult::kTransientFailure: Failed to send GpuControl.CreateCommandBuffer. issue
+
+				# Attempts to fix the ERROR:command_buffer_proxy_impl.cc(128)] ContextResult::kTransientFailure: Failed to send GpuControl.CreateCommandBuffer. issue
 				"disable-blink-features" => true,
-				// Experimental
+				// Experimental, doesn't seem to have much impact
 				// @link https://stackoverflow.com/questions/70245747/webdriver-headless-issue
 
 				//				"enable-logging" => "stderr",
@@ -80,13 +86,31 @@ class PDF {
 		# Ensure the PDF was generated successfully, if not, try again (up to 10 times)
 		if(!file_exists($tmp_filename) || filesize($tmp_filename) < 3000){
 			//if the file isn't created or if file is less than 3kb (if it's dud)
+
+			# Merge any older output together so that we have a log of all the errors
+			$output = array_merge($older_output, $output);
+
 			if($rerun == 10){
 				//if 10 attempts have been made to create this PDF with no luck
 
 				$error = implode("\r\n", $output);
-				throw new \Exception("
-				10 attempts were made to make a PDF from the following URL without success: <code>{$url}</code>.
-				The following error message was returned: <code>{$error}</code>");
+
+				# Error to the user
+				Log::getInstance()->error([
+					"log" => false,
+					"title" => "PDF generation failed",
+					"message" => "PDF generation failed, please try that again. Apologies for the inconvenience."
+				]);
+
+				# Error for the log
+				Log::getInstance()->error([
+					"display" => false,
+					"title" => "PDF generation failed",
+					"message" => "10 attempts were made to make a PDF from the following URL without success: <code>{$url}</code>.
+					The following error messages was returned: <code>{$error}</code>"
+				]);
+
+				return NULL;
 			}
 
 			# Count the number of attempts
@@ -95,8 +119,11 @@ class PDF {
 			# Increase the seconds given to load the page
 			$seconds++;
 
+			# Relax for a second
+			sleep(1);
+
 			# Run again
-			return self::print($url, $seconds, $refresh, $return_filename_only, $rerun);
+			return self::print($url, $seconds, $refresh, $return_filename_only, $rerun, $output);
 		}
 
 		if($return_filename_only){
