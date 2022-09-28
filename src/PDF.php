@@ -62,7 +62,7 @@ class PDF {
 				"no-sandbox" => true,
 
 				# Attempts to fix the ERROR:command_buffer_proxy_impl.cc(128)] ContextResult::kTransientFailure: Failed to send GpuControl.CreateCommandBuffer. issue
-				"disable-blink-features" => true,
+				"disable-blink-features" => "AutomationControlled",
 				// Experimental, doesn't seem to have much impact
 				// @link https://stackoverflow.com/questions/70245747/webdriver-headless-issue
 
