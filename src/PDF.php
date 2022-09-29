@@ -163,6 +163,10 @@ class PDF {
 			.pace { display:none; }
 			#ui-navigation { display:none; }
 			#ui-footer { display:none; }
+			
+			#ui-view {margin-top: unset !important; }
+			/** Will ignore the automatically generated margin top **/
+			
 			body { margin-top: 0; margin-left: 1cm; margin-right: 1cm; background-color: white; height: unset; zoom: 75%; }
 			main { margin: 0; padding: 0; max-width: unset !important; }
 			
@@ -208,6 +212,10 @@ EOF;
 			.pace { display:none; }
 			#ui-navigation { display:none; }
 			#ui-footer { display:none; }
+			
+			#ui-view {margin-top: unset !important; }
+			/** Will ignore the automatically generated margin top **/
+			
 			body { margin: 0; padding: 0; background-color: white; }
 			main { margin: 0; padding: 0; max-width: unset !important; }
 		}
@@ -226,6 +234,10 @@ EOF;
 			.pace { display:none; }
 			#ui-navigation { display:none; }
 			#ui-footer { display:none; }
+			
+			#ui-view {margin-top: unset !important; }
+			/** Will ignore the automatically generated margin top **/
+			
 			body { margin-top: 0; margin-left: 1cm; margin-right: 1cm; background-color: white; height: unset; zoom: 75%;}
 			main { margin: 0; padding: 0; max-width: unset !important;}
 			
