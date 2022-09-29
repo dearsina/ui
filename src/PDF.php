@@ -66,8 +66,16 @@ class PDF {
 				// Experimental, doesn't seem to have much impact
 				// @link https://stackoverflow.com/questions/70245747/webdriver-headless-issue
 
-				//				"enable-logging" => "stderr",
-				//				"v" => 1,
+				# Attempts to fix the WARNING:sandbox_linux.cc(376)] InitializeSandbox() called with multiple threads in process gpu-process.
+				//				"disable-gpu" => true,
+				"disable-software-rasterizer" => true,
+				// Experimental, addressing the error by avoiding the GPU hardware acceleration with the above flags
+				// @link https://stackoverflow.com/a/69037769/429071
+				// @link https://stackoverflow.com/a/67578811/429071
+
+				// Adds a lot more output in case there is an error
+				"enable-logging" => "stderr",
+				"v" => 1,
 
 				"user-data-dir" => "/var/www/tmp",
 			]);
@@ -81,19 +89,24 @@ class PDF {
 		}
 
 		$command = "chmod 777 {$tmp_filename} 2>&1";
-		exec($command, $output);
+//		exec($command, $output);
 
-		# Ensure the PDF was generated successfully, if not, try again (up to 10 times)
+		$output = $older_output;
+		$output .= PHP_EOL."RUN{$rerun}".PHP_EOL;
+		$output .= shell_exec($command);
+
+		# Ensure the PDF was generated successfully, if not, try again (up to 2 times)
 		if(!file_exists($tmp_filename) || filesize($tmp_filename) < 3000){
 			//if the file isn't created or if file is less than 3kb (if it's dud)
 
 			# Merge any older output together so that we have a log of all the errors
-			$output = array_merge($older_output, $output);
+//			$output = array_merge($older_output, $output);
 
-			if($rerun == 10){
-				//if 10 attempts have been made to create this PDF with no luck
+			if($rerun == 2){
+				//if 2 additional attempts have been made to create this PDF with no luck
 
-				$error = implode("\r\n", $output);
+//				$error = implode("\r\n", $output);
+				$error = $output;
 
 				# Error to the user
 				Log::getInstance()->error([
