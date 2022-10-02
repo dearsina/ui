@@ -45,7 +45,12 @@ EOF;
 		$label = str::newline($a['desc']);
 
 		# For the field holding the signature value
-		$a['type'] = "hidden";
+		$a['style'] = [
+			"opacity" => "0",
+			"position" => "absolute"
+		];
+		// Hide the field, but don't make it "hidden"
+		
 		$a['label'] = false;
 		$a['desc'] = false;
 //		$a['style'] = ["display" => "none"];
