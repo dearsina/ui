@@ -4,6 +4,7 @@
 namespace App\UI\Form;
 
 
+use App\ClientSignature\ClientSignature;
 use App\Common\str;
 use App\UI\Button;
 use App\UI\Card\Card;
@@ -12,10 +13,130 @@ use App\UI\Icon;
 
 class Signature extends Field implements FieldInterface {
 
+	public static function generateHTML(array $a): string
+	{
+		extract($a);
+
+		return Grid::generate([[
+			"row_class" => "col-signature",
+			// The class is a way of identifying the _entire_ signature block, ex. for dependencies
+			"html" => [[[
+				"title" => [
+					"style" => [
+						# The following two settings are set so that float-right badges can be applied to the field
+						"width" => "max-content",
+						"line-height" => "unset",
+					],
+					"title" => $title,
+				],
+				"body" => str::newline($desc),
+				"row_style" => [
+					"padding-bottom" => "1rem",
+				],
+			], [
+				"html" => self::generateButtonHtml($a),
+				"row_style" => [
+					"margin-bottom" => ".5rem",
+				],
+			], [[
+				"id" => ClientSignature::getId($a),
+				"html" =>
+					ClientSignature::getSignatureFields($a)
+				]],
+			]],
+		]]);
+	}
+
+	/**
+	 * We add a hidden field so that we can trigger
+	 * requirement validation.
+	 *
+	 * @param array $a
+	 *
+	 * @return string
+	 * @throws \Exception
+	 */
+	public static function generateHiddenField(array $a): string
+	{
+		# For the field holding the signature value
+		$a['style'] = [
+			"opacity" => "0",
+			"position" => "absolute",
+		];
+		// Hide the field, but don't make it "hidden"
+
+		$a['label'] = false;
+		$a['desc'] = false;
+
+		if($a['validation']['required'] || $a['form_group_form_field']['required']){
+			/**
+			 * As this method is primarily called from outside the class,
+			 * we need to check for the required flag from the form group
+			 * form field also.
+			 */
+			$a['validation']['required'] = [
+				"rule" => true,
+				"msg" => "A signature is required."
+			];
+		}
+
+		return Input::generateHTML($a);
+	}
+
+	/**
+	 * Generates the button that opens the modal that controls
+	 * the signature flow.
+	 *
+	 * @param array $a
+	 *
+	 * @return string
+	 * @throws \Exception
+	 */
+	private static function generateButtonHtml(array $a): string
+	{
+		extract($a);
+
+		# AES
+		if($aes){
+			$alt = "Click here to sign securely";
+		}
+
+		# SES
+		else {
+			$alt = "Click here to sign";
+		}
+
+		if($client_id){
+			# The hash to either pick up an existing client signature record or create a new one
+			$hash = [
+				"rel_table" => "client_signature",
+				"vars" => [
+					"client_id" => $client_id,
+					"form_group_form_field_id" => $form_group_form_field_id,
+				],
+			];
+		}
+
+		else {
+			# If no client ID has been passed, disable the signature button
+			$disabled = true;
+			$alt = "The signature button is disabled as this is just a preview.";
+		}
+
+		return Button::generate([
+			"icon" => ClientSignature::getIcon($aes),
+			"alt" => $alt,
+			"title" => "Click here to sign",
+			"colour" => "primary",
+			"hash" => $hash,
+			"disabled" => $disabled,
+		]);
+	}
+
 	/**
 	 * @inheritDoc
 	 */
-	public static function generateHTML(array $a)
+	/*public static function generateHTMLOld(array $a)
 	{
 		$signature_id = str::id("signature");
 
@@ -50,7 +171,7 @@ EOF;
 			"position" => "absolute"
 		];
 		// Hide the field, but don't make it "hidden"
-		
+
 		$a['label'] = false;
 		$a['desc'] = false;
 //		$a['style'] = ["display" => "none"];
@@ -94,5 +215,5 @@ EOF;
 				"html" => Input::generateHTML($a)
 			]]]
 		]]);
-	}
+	}*/
 }

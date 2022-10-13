@@ -28,7 +28,8 @@ class Hidden extends Field implements FieldInterface {
 		$type = str::getAttrTag("type", "hidden");
 		$name = str::getAttrTag("name", $name);
 		$value = str::getAttrTag("value", $value);
+		$class = str::getAttrTag("class", $class);
 		$data = str::getDataAttr($data);
-		return "<input{$id}{$type}{$name}{$value}{$data}>";
+		return "<input{$id}{$type}{$name}{$class}{$value}{$data}>";
 	}
 }

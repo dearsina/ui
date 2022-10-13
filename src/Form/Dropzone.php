@@ -60,7 +60,7 @@ class Dropzone extends Field implements FieldInterface {
                     "style" => [
                         "font-weight" => "100",
                         "font-size" => "50pt",
-                        "color" => "#f2f5f8"
+                        "color" => "hsl(214deg 10% 89%)"
                     ]
                 ])."</div>";
         }

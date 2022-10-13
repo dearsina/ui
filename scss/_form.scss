@@ -104,7 +104,7 @@ form
  */
 label i:first-of-type
 {
-  margin-right:0.25rem
+  margin-right : 0.25rem
 }
 
 /**
@@ -207,9 +207,9 @@ label i:first-of-type
 input.monospace,
 textarea.monospace
 {
-  font-family: 'Roboto Mono', monospace;
-  font-size: 85%;
-  font-weight: bold;
+  font-family : "Roboto Mono", monospace;
+  font-size   : 85%;
+  font-weight : bold;
 }
 
 /**
@@ -384,7 +384,8 @@ textarea.monospace
 
 .dropzone
 {
-  border        : 0.3rem dashed #f1f4f7;
+  //border        : 0.3rem dashed #f1f4f7;
+  border        : 3px dashed hsl(214deg 9% 86%);
   border-radius : 0.3rem;
   padding       : 0;
 }
@@ -465,6 +466,7 @@ textarea.monospace
 .signature-pad .signature-pad-narrative
 {
   min-height      : 100%;
+  width           : 100%;
   position        : absolute;
   display         : flex;
   justify-content : center;
@@ -533,7 +535,7 @@ textarea.monospace
  */
 .trumbowyg-modal
 {
-  z-index: 11 !important;;
+  z-index : 11 !important;;
 }
 
 /**
@@ -541,8 +543,8 @@ textarea.monospace
  */
 .trumbowyg-modal-box
 {
-  font-size : unset;
-  text-align: unset;
+  font-size  : unset;
+  text-align : unset;
 }
 
 .trumbowyg-modal-box .trumbowyg-modal-button

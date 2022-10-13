@@ -24,7 +24,7 @@ class PDF {
 	 * @throws \Exception
 	 * @link https://developers.google.com/web/updates/2017/04/headless-chrome
 	 */
-	static function print($url, ?int $seconds = 10, ?bool $refresh = NULL, ?bool $return_filename_only = NULL, ?int $rerun = 0, ?array $older_output = []): ?string
+	static function print($url, ?int $seconds = 10, ?bool $refresh = NULL, ?bool $return_filename_only = NULL, ?int $rerun = 0): ?string
 	{
 		# Get the MD5 hash from the URL
 		$md5 = md5($url);
@@ -43,88 +43,19 @@ class PDF {
 		if($refresh || !file_exists($tmp_filename)){
 
 			# An easier way to structure the CLI settings
-			$settings = self::formatHeadlessChromeSettings([
-				# Run Chrome headless
-				"headless" => true,
-				# Wait till Javascript has done it's job before drawing/printing
-				"run-all-compositor-stages-before-draw" => true,
-				# Set the user agent to be a hidden key, used on the recipient end to ensure this is a headless command
-				"user-agent" => $_ENV['db_password'],
-				# Wait n milliseconds before printing (gives script time to load JS)
-				"virtual-time-budget" => $seconds * 1000,
-				# Print the page to PDF (and give filename)
-				"print-to-pdf" => $tmp_filename,
-				# Remove the header and footer
-				"print-to-pdf-no-header" => true,
-				# Only log fatal errors (0 will log everything, 3 will only log fatal)
-				"log-level" => "3",
-				# Give Chrome privileges
-				"no-sandbox" => true,
+			$settings = self::getChromeSettings($seconds, $tmp_filename);
 
-				# Attempts to fix the ERROR:command_buffer_proxy_impl.cc(128)] ContextResult::kTransientFailure: Failed to send GpuControl.CreateCommandBuffer. issue
-				"disable-blink-features" => "AutomationControlled",
-				// Experimental, doesn't seem to have much impact
-				// @link https://stackoverflow.com/questions/70245747/webdriver-headless-issue
-
-				# Attempts to fix the WARNING:sandbox_linux.cc(376)] InitializeSandbox() called with multiple threads in process gpu-process.
-				//				"disable-gpu" => true,
-				"disable-software-rasterizer" => true,
-				// Experimental, addressing the error by avoiding the GPU hardware acceleration with the above flags
-				// @link https://stackoverflow.com/a/69037769/429071
-				// @link https://stackoverflow.com/a/67578811/429071
-
-				// Adds a lot more output in case there is an error
-				"enable-logging" => "stderr",
-				"v" => 1,
-
-				"user-data-dir" => "/var/www/tmp",
-			]);
-
-			# Write the headless command
-			$chrome_command = "google-chrome {$settings} '{$url}' 2>&1";
+			# Execute the headless command
+			$log = shell_exec("google-chrome {$settings} '{$url}' 2>&1");
 			// 2>&1 means that any output is piped to the stdout (stored in the $output variable)
-
-			# Execute the command
-			exec($chrome_command, $output);
 		}
 
-		$command = "chmod 777 {$tmp_filename} 2>&1";
-//		exec($command, $output);
+		# Ensure the file can be accessed by all
+		shell_exec("chmod 777 {$tmp_filename} 2>&1");
 
-		$output = $older_output;
-		$output .= PHP_EOL."RUN{$rerun}".PHP_EOL;
-		$output .= shell_exec($command);
-
-		# Ensure the PDF was generated successfully, if not, try again (up to 2 times)
-		if(!file_exists($tmp_filename) || filesize($tmp_filename) < 3000){
-			//if the file isn't created or if file is less than 3kb (if it's dud)
-
-			# Merge any older output together so that we have a log of all the errors
-//			$output = array_merge($older_output, $output);
-
-			if($rerun == 2){
-				//if 2 additional attempts have been made to create this PDF with no luck
-
-//				$error = implode("\r\n", $output);
-				$error = $output;
-
-				# Error to the user
-				Log::getInstance()->error([
-					"log" => false,
-					"title" => "PDF generation failed",
-					"message" => "PDF generation failed, please try that again. Apologies for the inconvenience."
-				]);
-
-				# Error for the log
-				Log::getInstance()->error([
-					"display" => false,
-					"title" => "PDF generation failed",
-					"message" => "10 attempts were made to make a PDF from the following URL without success: <code>{$url}</code>.
-					The following error messages was returned: <code>{$error}</code>"
-				]);
-
-				return NULL;
-			}
+		# Ensure the PDF was generated successfully, if not, keep trying until it is
+		if(!file_exists($tmp_filename) || (filesize($tmp_filename) < 3000) || (strpos($log, "ERROR:") !== false)){
+			//if the file isn't created or if file is less than 3kb (if it's dud), or if the Chrome log contains an error
 
 			# Count the number of attempts
 			$rerun++;
@@ -132,11 +63,39 @@ class PDF {
 			# Increase the seconds given to load the page
 			$seconds++;
 
-			# Relax for a second
-			sleep(1);
+			if($rerun < 1000){
+				$dt = \DateTime::createFromFormat('U.u', microtime(true));
+				file_put_contents($_ENV['tmp_dir'] . "pdf.log", "RUN{$rerun} {$md5} " . $dt->format("H:i:s.u") ." ".str::stopTimer(). PHP_EOL . $log . PHP_EOL, FILE_APPEND);
+				// Should only be used for testing purposes
 
-			# Run again
-			return self::print($url, $seconds, $refresh, $return_filename_only, $rerun, $output);
+				# Run it again
+				return self::print($url, $seconds, $refresh, $return_filename_only, $rerun);
+			}
+
+			# Error to the user
+			Log::getInstance()->error([
+				"log" => false,
+				"title" => "PDF generation failed",
+				"message" => "PDF generation failed, please try that again. Apologies for the inconvenience.",
+			]);
+
+			# Error for the log
+			Log::getInstance()->error([
+				"display" => false,
+				"title" => "PDF generation failed",
+				"message" => "{$rerun} attempts were made to make a PDF from the following URL without success: <code>{$url}</code> <code>{$settings}</code>.
+					The following error message was returned: <code>{$log}</code> That took ".str::stopTimer()." seconds.",
+			]);
+
+			return NULL;
+		}
+
+		if($rerun > 10){
+			Log::getInstance()->error([
+				"display" => false,
+				"title" => "PDF took {$rerun} tries",
+				"message" => "{$rerun} attempts were made before a PDF was made from the following URL: <code>{$url}</code> <code>{$settings}</code>. That took ".str::stopTimer()." seconds.",
+			]);
 		}
 
 		if($return_filename_only){
@@ -150,6 +109,111 @@ class PDF {
 		}
 
 		return $tmp_contents;
+	}
+
+	/**
+	 * Contains all the settings required to launch Google Chrome
+	 * headless via CLI in a minimum-viable-product type way to
+	 * consume as little memory as possible. Returns a string
+	 * with the settings formatted in the required way.
+	 *
+	 * @param int    $seconds
+	 * @param string $tmp_filename
+	 *
+	 * @return string
+	 * @link https://peter.sh/experiments/chromium-command-line-switches
+	 */
+	public static function getChromeSettings(int $seconds, string $tmp_filename): string
+	{
+		return self::formatHeadlessChromeSettings([
+			# Run Chrome headless
+			"headless" => true,
+			# Wait till Javascript has done its job before drawing/printing
+			"run-all-compositor-stages-before-draw" => true,
+			# Set the user agent to be a hidden key, used on the recipient end to ensure this is a headless command
+			"user-agent" => $_ENV['db_password'],
+			# Wait n milliseconds before printing (gives script time to load JS)
+			"virtual-time-budget" => $seconds * 1000,
+			# Print the page to PDF (and give filename)
+			"print-to-pdf" => $tmp_filename,
+			# Remove the header and footer
+			"print-to-pdf-no-header" => true,
+			# Only log fatal errors (0 will log everything, 3 will only log fatal)
+			"log-level" => "3",
+			# Give Chrome privileges
+			"no-sandbox" => true,
+
+			# Attempts to fix the ERROR:command_buffer_proxy_impl.cc(128)] ContextResult::kTransientFailure: Failed to send GpuControl.CreateCommandBuffer. issue
+			"disable-blink-features" => "AutomationControlled",
+			// Experimental, doesn't seem to have much impact
+			// @link https://stackoverflow.com/questions/70245747/webdriver-headless-issue
+
+			# Attempts to fix the WARNING:sandbox_linux.cc(376)] InitializeSandbox() called with multiple threads in process gpu-process.
+			"disable-software-rasterizer" => true,
+			// Experimental, addressing the error by avoiding the GPU hardware acceleration with the above flags
+			// @link https://stackoverflow.com/a/69037769/429071
+			// @link https://stackoverflow.com/a/67578811/429071
+
+			"disable-crash-reporter" => true,
+			// Disable crash reporter for headless. It is enabled by default in official builds.
+
+			"disable-seccomp-filter-sandbox" => true,
+			// Disable the seccomp filter sandbox (seccomp-bpf) (Linux only).
+
+			"disable-setuid-sandbox" => true,
+			//	Disable the setuid sandbox (Linux only).
+
+			"no-zygote" => true,
+			/**
+			 * Disables the use of a zygote process for forking child processes.
+			 * Instead, child processes will be forked and exec'd directly.
+			 * Note that --no-sandbox should also be used together with this flag because the sandbox needs the zygote to work.
+			 */
+
+			"disable-background-networking" => true,
+			"disable-default-apps" => true,
+			"disable-extensions" => true,
+			"disable-sync" => true,
+			"disable-translate" => true,
+			"hide-scrollbars" => true,
+			"metrics-recording-only" => true,
+			"mute-audio" => true,
+			"no-first-run" => true,
+			"ignore-certificate-errors" => true,
+			"ignore-ssl-errors" => true,
+			"ignore-certificate-errors-spki-list" => true,
+			/**
+			 * Inspired by the below message. Gets rid of a
+			 * bunch of stuff not needed for pdf printing.
+			 * Depreciated flags have been removed.
+			 *
+			 * @link https://groups.google.com/a/chromium.org/g/headless-dev/c/f_tQUs__Yqw/m/nNYisdDBCwAJ
+			 */
+
+			// "trace-startup" => "*,disabled-by-default-memory-infra"
+			// Will produce massive startup log file, is NOT needed
+
+
+			// "disable-gpu" => true, // Only useful on Windows, will fail in Linux
+			// Will give the following error: ERROR:gpu_init.cc(521) Passthrough is not supported, GL is disabled, ANGLE is
+
+			// "disable-webgl" => true,
+
+			// "use-gl" => "desktop",
+			// Will fail
+
+			// Adds a lot more output in case there is an error
+			//"enable-logging" => "stderr",
+			//"v" => 1,
+
+			// "user-data-dir" => "/var/www/tmp",
+			/**
+			 * Directory where the browser stores the user profile.
+			 * Note that if this switch is added, the session will no longer be Incognito,
+			 * unless Incognito mode is forced with --incognito switch
+			 */
+
+		]);
 	}
 
 	/**
