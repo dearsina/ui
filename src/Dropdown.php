@@ -77,14 +77,15 @@ class Dropdown {
 			break;
 		}
 
-		if($level){
-			$class = str::getAttrTag("class", [$direction, $item['class']]);
-			$style = str::getAttrTag("style", $item['style']);
+		if($meta && !$level){
+			// If we're at the root, and a meta array has been passed
+			$class = str::getAttrTag("class", [$direction, $meta['class']]);
+			$style = str::getAttrTag("style", $meta['style']);
 		}
 
 		else {
-			$class = str::getAttrTag("class", [$direction, $meta['class']]);
-			$style = str::getAttrTag("style", $meta['style']);
+			$class = str::getAttrTag("class", [$direction, $item['class']]);
+			$style = str::getAttrTag("style", $item['style']);
 		}
 
 
