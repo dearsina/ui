@@ -50,12 +50,12 @@ class Dropdown {
 			}
 
 			# Otherwise, generate the item children
-			$html .= self::generateChildren($item);
+			$html .= self::generateChildren($item, 0, $meta);
 		}
 
 		return $html;
 	}
-	private static function generateChildren(array $item, ?int $level = 0): string
+	private static function generateChildren(array $item, ?int $level = 0, ?array $meta = NULL): string
 	{
 		$icon = Icon::generate($item['icon']);
 		$title = $item['title'];
@@ -77,8 +77,16 @@ class Dropdown {
 			break;
 		}
 
-		$class = str::getAttrTag("class", [$direction, $item['class']]);
-		$style = str::getAttrTag("style", $item['style']);
+		if($level){
+			$class = str::getAttrTag("class", [$direction, $item['class']]);
+			$style = str::getAttrTag("style", $item['style']);
+		}
+
+		else {
+			$class = str::getAttrTag("class", [$direction, $meta['class']]);
+			$style = str::getAttrTag("style", $meta['style']);
+		}
+
 
 		$button_class = str::getAttrTag("class", ["dropdown-item dropdown-toggle", $item['button_class']]);
 		$menu = self::generateUl($item);

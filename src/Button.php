@@ -706,13 +706,19 @@ EOF;
 		$class = is_array($a['class']) ? $a['class'] : [$a['class']];
 		array_unshift($class, ["navbar-nav nav-button"]);
 
+		if($a['parent_style']){
+			$parent_style = $a['parent_style'];
+			unset($a['parent_style']);
+		}
+
 		return Dropdown::generateRootUl([
 			"items" => [[
 				"title" => self::generate($a),
 				"children" => $children,
 				"direction" => $a['direction'],
 			]],
-			"class" => $class
+			"class" => $class,
+			"style" => $parent_style
 		]);
 	}
 
