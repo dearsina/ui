@@ -292,9 +292,12 @@ class Grid {
 			return NULL;
 		}
 
+		# Allow for the row barrier to be moved by the user
+		$row_class[] = "col-split";
+
 		# If the breakpoint key is set to false, the columns won't fold on small screens
 		if($rows['breakpoint'] === false){
-			$row_class = "row-cols-2";
+			$row_class[] = "row-cols-2";
 		}
 
 		foreach($rows['rows'] as $key => $val){
