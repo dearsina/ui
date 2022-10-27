@@ -153,3 +153,8 @@ $container-max-widths : (
 .gutter.gutter-horizontal:hover {
   cursor: col-resize;
 }
+
+// Removes the flex that at times prevents column adjustment
+.row.no-gutters > .col-sm {
+  flex: inherit;
+}
