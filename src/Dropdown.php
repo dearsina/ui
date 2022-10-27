@@ -285,10 +285,13 @@ EOF;
 		# Style
 		$style = str::getAttrTag("style", $item['style']);
 
+		# Data
+		$data = str::getDataAttr($item['data']);
+
 		# Title
 		$title = $item['title'];
 
-		return "<{$tag}{$class}{$style}{$href}{$alt}{$approve}>{$icon}{$title}{$badge}</{$tag}>";
+		return "<{$tag}{$class}{$style}{$href}{$alt}{$approve}{$data}>{$icon}{$title}{$badge}</{$tag}>";
 	}
 
 	/**
