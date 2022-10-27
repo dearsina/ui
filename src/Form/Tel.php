@@ -20,23 +20,25 @@ class Tel extends Field implements FieldInterface {
 		$a['id'] = $a['id'] ?: str::id($a['type']);
 
 		/**
-		 * The b field is a hidden field that will carry
+		 * The b-field is a hidden field that will carry
 		 * the actual telephone number value.
 		 *
-		 * The reason for that is that the a field may
+		 * The reason for that is that the a-field may
 		 * hold the number without the international prefix,
-		 * and with wonky formatting, while the b field
+		 * and with wonky formatting, while the b-field
 		 * wil hold it in its "pure" form, with the correct
 		 * international prefix.
 		 */
 		$b['id'] = str::id("hidden");
 		$b['value'] = $a['value'];
 
-		# Move the name from the a field to the b field
+		# Move the name from the a-field to the b-field
 		$b['name'] = $a['name'];
 		$a['name'] = false;
 
-		$a['data'] = self::getTelSettings($b['id']);
+		$b['data'] = $a['data'];
+		self::setTelSettings($a, $b['id']);
+
 		return Input::generateHTML($a).Hidden::generateHTML($b);
 	}
 
@@ -44,15 +46,17 @@ class Tel extends Field implements FieldInterface {
 	 * Get the user's geolocation,
 	 * uses the country as the default country for the
 	 * telephone number international prefix.
+	 *
+	 * @param array  $a
 	 * @param string $value_field_id
 	 *
 	 * @return array
 	 */
-	private static function getTelSettings(string $value_field_id): array
+	private static function setTelSettings(array &$a, string $value_field_id): void
 	{
 		$geolocation = Geolocation::get();
 
-		return [
+		$a['data'] = [
 			"value_field_id" => $value_field_id,
 			"settings" => [
 				"initialCountry" => $geolocation['country_code'],

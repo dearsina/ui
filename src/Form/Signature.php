@@ -17,6 +17,9 @@ class Signature extends Field implements FieldInterface {
 	{
 		extract($a);
 
+		# Set dependency data
+		self::setDependencyData($a);
+
 		return Grid::generate([[
 			"row_class" => "col-signature",
 			// The class is a way of identifying the _entire_ signature block, ex. for dependencies
@@ -38,6 +41,9 @@ class Signature extends Field implements FieldInterface {
 				"row_style" => [
 					"margin-bottom" => ".5rem",
 				],
+			],[
+				# Enable any dependencies
+				"data" => $a['data']
 			], [[
 				"id" => ClientSignature::getId($a),
 				"html" =>
