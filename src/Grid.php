@@ -301,9 +301,11 @@ class Grid {
 		}
 
 		foreach($rows['rows'] as $key => $val){
-			if(str::isNumericArray($rows['rows'])){
+			if(is_int($key)
+			&& is_array($val)){
 				/**
 				 * If the value is itself an array,
+				 * and the key is just a number,
 				 * which can be done if there is a
 				 * chance there is more than one
 				 * row with the same key.
