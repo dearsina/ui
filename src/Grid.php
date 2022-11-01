@@ -301,6 +301,26 @@ class Grid {
 		}
 
 		foreach($rows['rows'] as $key => $val){
+			if(str::isNumericArray($val)){
+				/**
+				 * If the value is itself an array,
+				 * which can be done if there is a
+				 * chance there is more than one
+				 * row with the same key.
+				 */
+				foreach($val as $key => $val){
+					$left = [
+						"class" => "small",
+						"sm" => $rows['sm'],
+						"html" => $key,
+					];
+					$grid[] = [
+						"row_class" => $row_class,
+						"html" => [$left, $val]
+					];
+				}
+				continue;
+			}
 			$left = [
 				"class" => "small",
 				"sm" => $rows['sm'],
