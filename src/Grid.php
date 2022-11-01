@@ -301,7 +301,7 @@ class Grid {
 		}
 
 		foreach($rows['rows'] as $key => $val){
-			if(is_array($val)){
+			if(str::isNumericArray($rows['rows'])){
 				/**
 				 * If the value is itself an array,
 				 * which can be done if there is a
