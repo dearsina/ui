@@ -332,6 +332,20 @@ class Field {
 	 * value        Boolean     True matches on any value, false matches on any empty
 	 * < <= > >=    Float    Mathematical equations
 	 *
+	 * Full format
+	 * <code>
+	 * "dependency" => [
+	 * 	"and" => [[
+	 * 		"selector" => "service",
+	 * 		"checked" => $service['service_id']
+	 * 	]],
+	 * 	"settings" => [
+	 * 		"wrapper" => false,
+	 * 	]
+	 * ]
+	 * </code>
+	 *
+	 * Quick format
 	 * <code>
 	 * "dependency" => [
 	 *    "col_name" => [
@@ -349,7 +363,17 @@ class Field {
 			return;
 		}
 
-		$a['data']['dependency'] = $a['dependency'];
+		# If the full format is expressed
+		if($a['dependency']['and'] || $a['dependency']['or']){
+			$a['data']['dependency'] = $a['dependency'];
+			return;
+		}
+
+		# If the quick format is expressed
+		foreach($a['dependency'] as $selector => $condition){
+			$condition['selector'] = $selector;
+			$a['data']['dependency']['and'][] = $condition;
+		}
 	}
 
 	/**
