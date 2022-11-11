@@ -371,6 +371,10 @@ class Field {
 
 		# If the quick format is expressed
 		foreach($a['dependency'] as $selector => $condition){
+			# Failsafe, shouldn't happen
+			if(!is_array($condition)){
+				continue;
+			}
 			$condition['selector'] = $selector;
 			$a['data']['dependency']['and'][] = $condition;
 		}
