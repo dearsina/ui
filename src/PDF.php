@@ -5,6 +5,7 @@ namespace App\UI;
 
 
 use App\Common\Log;
+use App\Common\PrintRun\PrintRun;
 use App\Common\str;
 
 class PDF {
@@ -15,40 +16,39 @@ class PDF {
 	 *
 	 * @param            $url
 	 * @param int|null   $seconds
-	 * @param bool|null  $refresh
-	 * @param bool|null  $return_filename_only
-	 * @param int|null   $rerun
 	 * @param array|null $older_output
+	 * @param bool|null  $return_tmp_filename_only
+	 * @param int|null   $rerun
 	 *
-	 * @return ?string String or NULL on error
+	 * @return ?string Returns the actual PDF string or filename (if requested) or NULL on error
 	 * @throws \Exception
 	 * @link https://developers.google.com/web/updates/2017/04/headless-chrome
 	 */
-	static function print($url, ?int $seconds = 10, ?bool $refresh = NULL, ?bool $return_filename_only = NULL, ?int $rerun = 0): ?string
+	static function print($url, ?int $seconds = 10, ?string $filename = NULL, ?bool $return_tmp_filename_only = NULL, ?int $rerun = 0): ?string
 	{
 		# Get the MD5 hash from the URL
 		$md5 = md5($url);
 
+		# Log the start of this print run
+		if(!PrintRun::start($md5, $filename, $rerun)){
+			// If we cannot start, we stop
+			return NULL;
+		}
+
 		# Generate temporary filename
 		$tmp_filename = PDF::generateTemporaryFilename($md5);
 
-		# Force-refresh the file?
-		if($refresh){
-			if(file_exists($tmp_filename)){
-				unlink($tmp_filename);
-			}
+		# If for some reason the temporary file already exists, remove it
+		if(file_exists($tmp_filename)){
+			unlink($tmp_filename);
 		}
 
-		# If the file doesn't already exist, create it
-		if($refresh || !file_exists($tmp_filename)){
+		# An easier way to structure the CLI settings
+		$settings = self::getChromeSettings($seconds, $tmp_filename);
 
-			# An easier way to structure the CLI settings
-			$settings = self::getChromeSettings($seconds, $tmp_filename);
-
-			# Execute the headless command
-			$log = shell_exec("google-chrome {$settings} '{$url}' 2>&1");
-			// 2>&1 means that any output is piped to the stdout (stored in the $output variable)
-		}
+		# Execute the headless command
+		$log = shell_exec("google-chrome {$settings} '{$url}' 2>&1");
+		// 2>&1 means that any output is piped to the stdout (stored in the $output variable)
 
 		# Ensure the file can be accessed by all
 		shell_exec("chmod 777 {$tmp_filename} 2>&1");
@@ -69,8 +69,11 @@ class PDF {
 				// Should only be used for testing purposes
 
 				# Run it again
-				return self::print($url, $seconds, $refresh, $return_filename_only, $rerun);
+				return self::print($url, $seconds, $filename, $return_tmp_filename_only, $rerun);
 			}
+
+			# Stop this print run
+			PrintRun::stop($md5, $rerun);
 
 			# Error to the user
 			Log::getInstance()->error([
@@ -98,7 +101,10 @@ class PDF {
 			]);
 		}
 
-		if($return_filename_only){
+		# Log the finish of this print run
+		PrintRun::stop($md5, $rerun);
+
+		if($return_tmp_filename_only){
 			return $tmp_filename;
 		}
 
