@@ -24,13 +24,13 @@ class PDF {
 	 * @throws \Exception
 	 * @link https://developers.google.com/web/updates/2017/04/headless-chrome
 	 */
-	static function print($url, ?int $seconds = 10, ?string $filename = NULL, ?bool $return_tmp_filename_only = NULL, ?int $rerun = 0): ?string
+	static function print($url, ?int $seconds = 10, ?string $filename = NULL, ?bool $return_tmp_filename_only = NULL, ?int $rerun = 0, ?bool $silent = NULL): ?string
 	{
 		# Get the MD5 hash from the URL
 		$md5 = md5($url);
 
 		# Log the start of this print run
-		if(!PrintRun::start($md5, $filename, $rerun)){
+		if(!PrintRun::start($md5, $filename, $rerun, $silent)){
 			// If we cannot start, we stop
 			return NULL;
 		}
