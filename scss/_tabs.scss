@@ -80,9 +80,37 @@
   border-top-left-radius : unset;
 }
 
+/**
+ * Adjusts the UI so that tabs become
+ * better embedded as a part of a modal.
+ * Requires a .modal-tab class in the modal
+ */
+.modal-tab .tab-pane.active
+{
+  height : calc(100% - 40px);
+}
+.modal-tab .modal-body > form
+{
+  height : auto;
+}
+.modal-tab .modal-body
+{
+  padding-bottom   : 0;
+  background-color : #fcfdfd;
+}
+.modal-tab .modal-body > form > div.row
+{
+  height : 100%;
+}
+.modal-tab .tab-pane > .body
+{
+  overflow-y : auto;
+}
+
 .tab-content > .active > .body
 {
   padding : 1rem;
+  height  : 100%;
 }
 
 .tab-content > .active > .footer
@@ -502,7 +530,7 @@ $sideways-tabs-height   : 1rem;
 
 .tab-pane > .body-code pre
 {
-  margin       : -1px;
+  margin : -1px;
 }
 
 .tab-pane > .body-code code
@@ -518,16 +546,18 @@ $sideways-tabs-height   : 1rem;
  */
 .nav-tabs .nav-link
 {
-  width: 100%;
+  width : 100%;
 }
+
 .nav-tabs .nav-link .nav-title
 {
-  display: inline-flex;
-  overflow: hidden;
+  display  : inline-flex;
+  overflow : hidden;
 }
+
 .nav-tabs .nav-link .nav-title-dismissible
 {
-  display: inline-flex;
-  overflow: hidden;
-  width: calc(100% - 45px);
+  display  : inline-flex;
+  overflow : hidden;
+  width    : calc(100% - 45px);
 }

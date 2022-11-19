@@ -88,14 +88,10 @@ abstract class Prototype extends \App\Common\Prototype {
 		# A different modal for when tabs are being used
 		if(array_key_exists("tabs", $fields)){
 			$modal = new Modal([
+				"class" => "modal-tab",
 				"id" => $id,
 				"size" => $size,
-				"body" => [
-					"style" => [
-						"background-color" => "#fcfdfd",
-					],
-					"html" => $form->getHTML(),
-				],
+				"body" => $form->getHTML(),
 				"approve" => "change",
 				"draggable" => true,
 				"resizable" => true,
@@ -156,14 +152,10 @@ abstract class Prototype extends \App\Common\Prototype {
 		# A different modal for when tabs are being used
 		if(array_key_exists("tabs", $fields)){
 			$modal = new Modal([
+				"class" => "modal-tab",
 				"id" => $id,
 				"size" => $size,
-				"body" => [
-					"style" => [
-						"background-color" => "#fcfdfd",
-					],
-					"html" => $form->getHTML(),
-				],
+				"body" => $form->getHTML(),
 				"approve" => "change",
 				"draggable" => true,
 				"resizable" => true,

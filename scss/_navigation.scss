@@ -320,7 +320,8 @@ a.navbar-level1-logo > object
 
 .navbar-nav
 {
-  z-index  : 1031;
+  z-index  : 1000;
+  /** Any higher and they start interfering with dropdowns and other menu items */
   position : relative;
 }
 
