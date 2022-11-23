@@ -5,11 +5,10 @@ namespace App\UI\Form;
 
 
 use App\ClientSignature\ClientSignature;
+use App\Common\Img;
 use App\Common\str;
 use App\UI\Button;
-use App\UI\Card\Card;
 use App\UI\Grid;
-use App\UI\Icon;
 
 class Signature extends Field implements FieldInterface {
 
@@ -41,16 +40,56 @@ class Signature extends Field implements FieldInterface {
 				"row_style" => [
 					"margin-bottom" => ".5rem",
 				],
-			],[
+			], [
 				# Enable any dependencies
-				"data" => $a['data']
+				"data" => $a['data'],
 			], [[
 				"id" => ClientSignature::getId($a),
-				"html" =>
-					ClientSignature::getSignatureFields($a)
-				]],
+				"html" => [
+					ClientSignature::getSignatureFields($a),
+					(new Form())->getFieldsHTML(self::generateSignatureFields($a)),
+				],
+			]],
 			]],
 		]]);
+
+
+	}
+
+	/**
+	 * Displays the signature for internal signatures captured only.
+	 *
+	 * @param $a
+	 *
+	 * @return array|null
+	 */
+	public static function generateSignatureFields($a): ?array
+	{
+		extract($a);
+
+		if(!$value){
+			return NULL;
+		}
+
+		$fields[] = [
+			"type" => "html",
+			"html" => Img::generate([
+				"style" => [
+					"max-height" => "100px",
+					"margin" => "1rem 0",
+					"max-width" => "100%",
+				],
+				"src" => $value,
+			]),
+		];
+
+		$fields[] = [
+			"type" => "hidden",
+			"name" => "signature",
+			"value" => $value,
+		];
+
+		return $fields;
 	}
 
 	/**
@@ -82,7 +121,7 @@ class Signature extends Field implements FieldInterface {
 			 */
 			$a['validation']['required'] = [
 				"rule" => true,
-				"msg" => "A signature is required."
+				"msg" => "A signature is required.",
 			];
 		}
 
@@ -125,8 +164,13 @@ class Signature extends Field implements FieldInterface {
 
 		else {
 			# If no client ID has been passed, disable the signature button
-			$disabled = true;
-			$alt = "The signature button is disabled as this is just a preview.";
+			$hash = [
+				"rel_table" => "client_signature",
+				"action" => "new",
+				"vars" => [
+					"id" => $id,
+				],
+			];
 		}
 
 		return Button::generate([
@@ -137,6 +181,17 @@ class Signature extends Field implements FieldInterface {
 			"hash" => $hash,
 			"disabled" => $disabled,
 		]);
+	}
+
+	public static function formatSignatureVal(array &$a, string $key): void
+	{
+		extract($a);
+
+		if(!$vars['signature']){
+			return;
+		}
+
+		$a['vars'][$key] = $vars['signature'];
 	}
 
 	/**
