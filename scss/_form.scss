@@ -452,6 +452,15 @@ textarea.monospace
   border-style : dashed;
   margin       : 1rem;
   padding      : 0;
+  overflow     : hidden;
+}
+
+.signature-pad .modal-header,
+.signature-pad .modal-footer,
+.signature-pad .card-header,
+.signature-pad .card-footer
+{
+  z-index : 1;
 }
 
 .signature-pad canvas
