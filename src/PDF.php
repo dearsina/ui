@@ -285,13 +285,13 @@ EOF;
 	 *
 	 * @return string
 	 */
-	public static function getDocFillCss(): string
+	public static function getDocFillCss(?string $format = "A4"): string
 	{
 		return <<<EOF
 		<style>
 		@media print {
 			.fakeLoader {display: none;}
-			@page { margin:0; padding: 0; size: A4; }
+			@page { margin:0; padding: 0; size: $format; }
 			.pace { display:none; }
 			#ui-navigation { display:none; }
 			#ui-footer { display:none; }
