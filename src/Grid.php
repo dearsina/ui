@@ -293,7 +293,9 @@ class Grid {
 		}
 
 		# Allow for the row barrier to be moved by the user
-		$row_class[] = "col-split";
+		if($rows['split'] !== false){
+			$row_class[] = "col-split";
+		}
 
 		# If the breakpoint key is set to false, the columns won't fold on small screens
 		if($rows['breakpoint'] === false){
