@@ -285,8 +285,10 @@ EOF;
 	 *
 	 * @return string
 	 */
-	public static function getDocFillCss(?string $format = "A4"): string
+	public static function getDocFillCss(?string $format = NULL): string
 	{
+		$format = $format ?: "A4";
+
 		return <<<EOF
 		<style>
 		@media print {
