@@ -287,6 +287,7 @@ EOF;
 	 */
 	public static function getDocFillCss(?string $format = NULL): string
 	{
+		# If no format is given, assume it's A4
 		$format = $format ?: "A4";
 
 		return <<<EOF

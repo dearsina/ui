@@ -130,7 +130,7 @@ EOF;
 		$options_array = self::getOptionsArray($a, $matched);
 		if (!$matched && !$multiple) {
 			/**
-			 * If no options match on the value
+			 * If no options match on the value,
 			 * and it's _not_ a multiple situation,
 			 * add a blank option that's set as
 			 * selected.

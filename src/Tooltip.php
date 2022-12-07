@@ -13,13 +13,16 @@ class Tooltip {
 	 *
 	 * <code>
 	 * Tooltip::generate([
-	 * 	"title" => $service['desc'], //The tooltip itself
-	 * 	"html" => $html, //The HTML that will trigger the tooltip on hover
-	 * 	"style" => [
-	 * 		"cursor" => "default"
-	 * 	]
+	 *    "title" => $service['desc'], //The tooltip itself
+	 *    "direction" => "top",
+	 * 	  "tag" => "span",
+	 *    "html" => $html, //The HTML that will trigger the tooltip on hover
+	 *    "style" => [
+	 *        "cursor" => "default"
+	 *    ]
 	 * ]);
 	 * </code>
+	 *
 	 * @param array $a
 	 *
 	 * @return string|null
@@ -28,7 +31,7 @@ class Tooltip {
 	{
 		extract($a);
 
-		$title = str::getAttrTag("title", htmlentities($title));
+		$title = str::getAttrTag("title", str_replace('"', '\"', $title));
 
 		$data = [
 			"bs-placement" => $direction ?: "top",
@@ -40,7 +43,9 @@ class Tooltip {
 		$class = str::getAttrTag("class", $class);
 		$style = str::getAttrTag("style", $style);
 
-		return "<span{$class}{$style}{$data}{$title}>{$html}</span>";
+		$tag = $tag ?: "span";
+
+		return "<{$tag}{$class}{$style}{$data}{$title}>{$html}</{$tag}>";
 	}
 
 	/**
@@ -55,45 +60,45 @@ class Tooltip {
 	 *
 	 * @param array $a
 	 */
-	 public static function generate(array &$a): void
-	 {
-		 if(!$tooltip = $a['tooltip']){
-			 return;
-		 }
+	public static function generate(array &$a): void
+	{
+		if(!$tooltip = $a['tooltip']){
+			return;
+		}
 
-		 /**
-		  * If the tooltip is boolean, it will assume the
-		  * element alt or title is the tooltip itself.
-		  */
-		 if(is_bool($tooltip)){
-			 $tooltip = [
-				 "title" => $a['alt'] ?: $a['title']
-			 ];
-		 }
+		/**
+		 * If the tooltip is boolean, it will assume the
+		 * element alt or title is the tooltip itself.
+		 */
+		if(is_bool($tooltip)){
+			$tooltip = [
+				"title" => $a['alt'] ?: $a['title'],
+			];
+		}
 
-		 else if(!is_array($tooltip)){
-			 $tooltip = ["title" => $tooltip];
-		 }
+		else if(!is_array($tooltip)){
+			$tooltip = ["title" => $tooltip];
+		}
 
-		 # Ensure the class value is an array
-		 if(!is_array($a['class'])){
-			 $a['class'] = [$a['class']];
-		 }
+		# Ensure the class value is an array
+		if(!is_array($a['class'])){
+			$a['class'] = [$a['class']];
+		}
 
-		 # We need to add a class to the parent
-		 $a['class'][] = "tooltip-trigger";
+		# We need to add a class to the parent
+		$a['class'][] = "tooltip-trigger";
 
-		 # Set the tooltip as a data attribute
-		 $a['data']['bs-original-title'] = $tooltip['title'];
+		# Set the tooltip as a data attribute
+		$a['data']['bs-original-title'] = $tooltip['title'];
 
-		 # Settings
-		 $a['data']['bs-toggle'] = "tooltip";
-		 $a['data']['bs-html'] = "true";
-		 $a['data']['bs-placement'] = $tooltip['placement'] ?: "top";
+		# Settings
+		$a['data']['bs-toggle'] = "tooltip";
+		$a['data']['bs-html'] = "true";
+		$a['data']['bs-placement'] = $tooltip['placement'] ?: "top";
 
-		 # Tooltips can also have their own custom classes
-		 if($tooltip['class']){
-			 $a['data']['bs-custom-class'] = $tooltip['class'];
-		 }
-	 }
+		# Tooltips can also have their own custom classes
+		if($tooltip['class']){
+			$a['data']['bs-custom-class'] = $tooltip['class'];
+		}
+	}
 }
