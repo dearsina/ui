@@ -240,6 +240,11 @@ class PDF {
 		}
 
 		return <<<EOF
+		<script>
+		$.initialize("svg > g", function(e){
+			$(this).attr("transform", "translate(0,0)scale(1)");            
+		});		
+		</script>
 		<style>
 		@media print {
 			@page { size: A4; margin-top: 1cm; margin-left: 0; margin-right: 0; {$margin_bottom}}
