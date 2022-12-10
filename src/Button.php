@@ -577,9 +577,8 @@ class Button {
 			$class_array[] = "disabled";
 			$disabled = "disabled=\"disabled\"";
 			$tag_type = "button";
-			$wrapper_pre = "<span {$title_tag} style=\"cursor:not-allowed;\">";
-//			$wrapper_pre = "<span {$title_tag} style=\"float:right;cursor:not-allowed;\">";
-			$wrapper_post = "</span>";
+			$wrapper_pre = "<div {$title_tag} style=\"cursor:not-allowed;width:100%;height:100%;\">";
+			$wrapper_post = "</div>";
 		}
 
 		# Size
