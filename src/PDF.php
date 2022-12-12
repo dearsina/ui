@@ -240,11 +240,6 @@ class PDF {
 		}
 
 		return <<<EOF
-		<script>
-		$.initialize("svg > g", function(e){
-			$(this).attr("transform", "translate(0,0)scale(1)");            
-		});		
-		</script>
 		<style>
 		@media print {
 			@page { size: A4; margin-top: 1cm; margin-left: 0; margin-right: 0; {$margin_bottom}}
@@ -255,7 +250,7 @@ class PDF {
 			#ui-view {margin-top: unset !important; }
 			/** Will ignore the automatically generated margin top **/
 			
-			body { margin-top: 0; margin-left: 1cm; margin-right: 1cm; background-color: white; height: unset; zoom: 75%; }
+			body { margin-top: 0; margin-left: 1cm; margin-right: 1cm; background-color: white; height: unset;}
 			main { margin: 0; padding: 0; max-width: unset !important; }
 			
 			/** When printed, .containers will shrink if the max-width limit isn't removed */
@@ -266,6 +261,11 @@ class PDF {
 			
 			/** Things we don't want to see in print view */
 			
+			/** This will avoid card colliding with the footer */
+			main > .row > .col-sm > .row {
+			    padding-bottom: 0.6cm;
+			}
+			
 			/** The little chevron down */
 			.collapse-toggle::after {display:none;}
 			
@@ -273,8 +273,9 @@ class PDF {
 			footer {
 				position: fixed;
 				bottom: 0;
-				background: white;
+				width: 100%;
 				color: black;
+				background: white;
 			}
 		}		
 		</style>
