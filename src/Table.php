@@ -396,6 +396,11 @@ EOF;
 			$base_query['table'] = $rel_table;
 		}
 
+		# If the table doesn't exist, return false
+		if(!$sql->tableExists($base_query['db'], $base_query['table'])){
+			return false;
+		}
+
 		# UrlDEcode the variables
 		$vars = str::urldecode($vars);
 
