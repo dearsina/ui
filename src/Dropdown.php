@@ -373,7 +373,7 @@ EOF;
 	/**
 	 * Recursive function that joins chunks of children
 	 * together.
-	 * 
+	 *
 	 * @param array       $chunks
 	 * @param string|null $title
 	 *

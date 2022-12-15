@@ -65,7 +65,7 @@ class PDF {
 
 			if($rerun < 1000){
 				$dt = \DateTime::createFromFormat('U.u', microtime(true));
-				file_put_contents($_ENV['tmp_dir'] . "pdf.log", "RUN{$rerun} {$md5} " . $dt->format("H:i:s.u") ." ".str::stopTimer(). PHP_EOL . $log . PHP_EOL, FILE_APPEND);
+				file_put_contents($_ENV['tmp_dir'] . "pdf.log", "RUN{$rerun} {$md5} " . $dt->format("H:i:s.u") . " " . str::stopTimer() . PHP_EOL . $log . PHP_EOL, FILE_APPEND);
 				// Should only be used for testing purposes
 
 				# Run it again
@@ -87,7 +87,7 @@ class PDF {
 				"display" => false,
 				"title" => "PDF generation failed",
 				"message" => "{$rerun} attempts were made to make a PDF from the following URL without success: <code>{$url}</code> <code>{$settings}</code>.
-					The following error message was returned: <code>{$log}</code> That took ".str::stopTimer()." seconds.",
+					The following error message was returned: <code>{$log}</code> That took " . str::stopTimer() . " seconds.",
 			]);
 
 			return NULL;
@@ -97,7 +97,7 @@ class PDF {
 			Log::getInstance()->error([
 				"display" => false,
 				"title" => "PDF took {$rerun} tries",
-				"message" => "{$rerun} attempts were made before a PDF was made from the following URL: <code>{$url}</code> <code>{$settings}</code>. That took ".str::stopTimer()." seconds.",
+				"message" => "{$rerun} attempts were made before a PDF was made from the following URL: <code>{$url}</code> <code>{$settings}</code>. That took " . str::stopTimer() . " seconds.",
 			]);
 		}
 
@@ -250,7 +250,9 @@ class PDF {
 			#ui-view {margin-top: unset !important; }
 			/** Will ignore the automatically generated margin top **/
 			
-			body { margin-top: 0; margin-left: 1cm; margin-right: 1cm; background-color: white; height: unset;}
+			body { margin-top: 0; margin-left: 1cm; margin-right: 1cm; background-color: white; height: unset; zoom: 75%; }
+			/** We're zooming out to 75% to allow for text to be legible */
+			
 			main { margin: 0; padding: 0; max-width: unset !important; }
 			
 			/** When printed, .containers will shrink if the max-width limit isn't removed */
