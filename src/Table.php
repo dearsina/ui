@@ -397,7 +397,7 @@ EOF;
 		}
 
 		# If the table doesn't exist, return false
-		if(!$sql->tableExists($base_query['db'], $base_query['table'])){
+		if(!$sql->tableExists($base_query['db'] ?: $_ENV['db_database'], $base_query['table'])){
 			return false;
 		}
 

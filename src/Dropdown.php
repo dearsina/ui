@@ -385,6 +385,7 @@ EOF;
 
 		if($chunks){
 			$chunk[] = [
+				"icon" => "chevrons-right",
 				"title" => $title,
 				"children" => self::joinChildren($chunks)
 			];
