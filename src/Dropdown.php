@@ -112,6 +112,7 @@ EOF;
 			//Removes empty (false, null) children
 
 			foreach($children as $child){
+				# If the child itself has children
 				if($child['children']){
 					$lis .= "<li>" . self::generateChildren($child, $level + 1) . "</li>";
 					continue;
@@ -128,6 +129,8 @@ EOF;
 					$lis .= self::getHeaderHTML($child);
 					continue;
 				}
+
+				# Generate the child
 				$lis .= "<li>" . self::generateChildTag($child) . "</li>";
 			}
 		}
