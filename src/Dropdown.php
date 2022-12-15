@@ -55,12 +55,13 @@ class Dropdown {
 
 		return $html;
 	}
+
 	private static function generateChildren(array $item, ?int $level = 0, ?array $meta = NULL): string
 	{
 		$icon = Icon::generate($item['icon']);
 		$title = $item['title'];
 
-		switch($item['direction']){
+		switch($item['direction']) {
 		case 'left':
 		case 'start':
 			$direction = "dropstart";
@@ -112,7 +113,7 @@ EOF;
 
 			foreach($children as $child){
 				if($child['children']){
-					$lis .= "<li>".self::generateChildren($child, $level + 1)."</li>";
+					$lis .= "<li>" . self::generateChildren($child, $level + 1) . "</li>";
 					continue;
 				}
 
@@ -127,7 +128,7 @@ EOF;
 					$lis .= self::getHeaderHTML($child);
 					continue;
 				}
-				$lis .= "<li>".self::generateChildTag($child)."</li>";
+				$lis .= "<li>" . self::generateChildTag($child) . "</li>";
 			}
 		}
 
@@ -226,7 +227,7 @@ EOF;
 	private static function generateParentDiv(array $item): string
 	{
 		$data = str::getDataAttr([
-			"bs-auto-close" => $item['auto_close']
+			"bs-auto-close" => $item['auto_close'],
 		]);
 		$alt = str::getAttrTag("title", $item['alt'] ?: trim(strip_tags($item['title'])));
 		$class = str::getAttrTag("class", "dropdown-item dropdown-toggle");
@@ -341,5 +342,57 @@ EOF;
 		$style_tag = str::getAttrTag("style", $style_array);
 
 		return "<li{$class_tag}{$style_tag}><span>{$html}</span></li>";
+	}
+
+	/**
+	 * If a menu has more than the limit of items,
+	 * will break it up and add a sub-child. Will
+	 * keep doing it as long as the child has more
+	 * than the limit.
+	 *
+	 * @param array|null $children
+	 * @param int|null   $limit
+	 *
+	 * @return array|null
+	 */
+	public static function breakUpBigChildren(?array $children, ?int $limit = 10): ?array
+	{
+		if(!$children){
+			return $children;
+		}
+
+		if(count($children) <= $limit){
+			return $children;
+		}
+
+		$chunks = array_chunk($children, $limit);
+
+		return self::joinChildren($chunks);
+	}
+
+	/**
+	 * Recursive function that joins chunks of children
+	 * together.
+	 * 
+	 * @param array       $chunks
+	 * @param string|null $title
+	 *
+	 * @return array
+	 */
+	private static function joinChildren(array $chunks, ?string $title = "More..."): array
+	{
+		$chunk = array_shift($chunks);
+
+		if($chunks){
+			$chunk[] = [
+				"title" => $title,
+				"children" => self::joinChildren($chunks)
+			];
+			return $chunk;
+		}
+
+		else {
+			return $chunk;
+		}
 	}
 }
