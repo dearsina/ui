@@ -326,6 +326,14 @@ a.navbar-level1-logo > object
 }
 
 /**
+ * Making an exception for tables so that the dropdown of one row isn't covered
+ * by the dropdown butoton of the row below it.
+ */
+.table-container .nav-button {
+  z-index: unset;
+}
+
+/**
  * Otherwise the buttons will bunch up vertically.
  */
 .card-footer .btn-float-right .navbar-nav,

@@ -132,6 +132,13 @@
 }
 
 /**
+ * Remove the paragraph margin bottom.
+ */
+.table-body > .col > p {
+  margin-bottom: unset;
+}
+
+/**
  * The load more button at the bottom of the on demand table.
  */
 .load-more-button

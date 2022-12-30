@@ -22,14 +22,20 @@ a:not(.btn):hover
 
 smaller, .smaller
 {
-  font-size   : 90%;
-  font-weight : 300;
+  font-size   : 90% !important;
+  font-weight : 300 !important;
 }
 
 smallest, .smallest
 {
-  font-size   : 80%;
-  font-weight : 300;
+  font-size   : 80% !important;
+  font-weight : 300 !important;
+}
+
+tiny, .tiny
+{
+  font-size   : 70% !important;
+  font-weight : 300 !important;
 }
 
 .text-silent
