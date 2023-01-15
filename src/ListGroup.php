@@ -33,13 +33,15 @@ class ListGroup {
 	 * # Complex
 	 * ListGroup::generate([
 	 *    "items" => $items,
-	 * 	  "pre" => "Text",
-	 * 	  "post" => "Text",
+	 *      "pre" => "Text",
+	 *      "post" => "Text",
 	 *    "flush" => true,
 	 *    "horizontal" => true,
 	 *    "orderable" => [
-	 * 		"" => "",
-	 *     ]
+	 *		"rel_table" => "doc_type_col_string",
+	 *		"limiting_key" => "doc_type_col_id",
+	 *		"limiting_val" => $doc_type_col_id,
+	 * 	]
 	 * ]);
 	 * </code>
 	 *
@@ -49,7 +51,7 @@ class ListGroup {
 	 * @throws \Exception
 	 * @throws \Exception
 	 */
-	public static function generate(?array $a) : ?string
+	public static function generate(?array $a): ?string
 	{
 		if(!$a){
 			return NULL;
@@ -63,7 +65,8 @@ class ListGroup {
 
 		if($a['pre']){
 			$pre = Grid::generate(is_string($a['pre']) ? [$a['pre']] : $a['pre']);
-		} else if($a['html']){
+		}
+		else if($a['html']){
 			$pre = Grid::generate(is_string($a['html']) ? [$a['html']] : $a['html']);
 		}
 
@@ -78,14 +81,15 @@ class ListGroup {
 		if($a['horizontal']){
 			if(is_string($a['horizontal'])){
 				$default_class[] = "list-group-horizontal-{$a['horizontal']}";
-			} else {
+			}
+			else {
 				$default_class[] = "list-group-horizontal";
 			}
 		}
 
 		# If there is a cap on the number of items that can be display per line
 		if($a['cap'] && count($a['items']) > $a['cap']){
-			while(!empty($a['items'])){
+			while(!empty($a['items'])) {
 				$col = "";
 				for($i = 0; $i < $a['cap']; $i++){
 					if(empty($a['items'])){
@@ -146,7 +150,7 @@ class ListGroup {
 	 * @return string
 	 * @throws \Exception
 	 */
-	private static function generateListGroupItem($item, ?array $orderable = []) : string
+	private static function generateListGroupItem($item, ?array $orderable = []): string
 	{
 		if(!is_array($item)){
 			$item = ["html" => $item];
@@ -157,10 +161,12 @@ class ListGroup {
 		if($href = href::generate($item)){
 			$tag = "a";
 			$default_class[] = "list-group-item-action";
-		} else if($orderable){
+		}
+		else if($orderable){
 			$tag = "span style=\"padding: 0.5rem 1rem;display: block;\"";
 			//little bit of a fudge in the cases where the item is NOT a link, but needs to be orderable
-		} else {
+		}
+		else {
 			$tag = "li";
 		}
 
@@ -194,19 +200,19 @@ class ListGroup {
 		# Badge
 		$badge = Badge::generate($item['badge'], [
 			"style" => [
-				"margin-left" => ".5rem"
-			]
+				"margin-left" => ".5rem",
+			],
 		]);
 
 		# Left badge (badge on the LEFT side of the item)
 		if(is_array($item['left_badge'])){
 			$left_badge = Badge::generate($item['left_badge'], [
 				"style" => [
-					"float" => "left"
-				]
+					"float" => "left",
+				],
 			]);
 		}
-		else if ($item['left_badge']){
+		else if($item['left_badge']){
 			$left_badge = Grid::generate([[
 				"html" => $item['left_badge'],
 				"row_style" => [
@@ -336,7 +342,7 @@ EOF;
 		# Style
 		$style_array = str::getAttrArray($style, [
 			"letter-spacing" => "-.5px",
-			"line-height" => "16pt"
+			"line-height" => "16pt",
 		], $only_style);
 		$style = str::getAttrTag("style", $style_array);
 

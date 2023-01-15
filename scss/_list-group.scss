@@ -103,7 +103,7 @@ a.list-group-item:hover
  * Otherwise it wil stick out over the rounded corners.
  */
 .list-group-flush {
-  border-radius: 0.25rem;
+  border-radius: var(--bs-card-inner-border-radius);
 }
 
 /**

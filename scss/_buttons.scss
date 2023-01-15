@@ -157,7 +157,9 @@ form .btn i
 .modal .btn-float-right .btn,
 .tab-pane .btn-float-right .btn
 {
-  float: right !important;
+  //float: right !important;
+  float: right;
+  // We've removed the important flag, not sure if it's necessary
   margin: .25rem 0 .25rem .5rem;
 }
 
@@ -244,6 +246,28 @@ ul.dropdown-menu > li a:hover {
   color: #000000;
   background-color: #f0f0f0;
   text-decoration: none !important;
+}
+
+/**
+ * For when a button is disabled, a wrapper is placed around it
+ * otherwise, the disabled message cannot be presented to the user.
+ *
+ * float is unset, otherwise, the width/height of the wrapper becomes
+ * 0x0 and the disabled message is not visible.
+ */
+.disabled-wrapper
+{
+  cursor: not-allowed;
+  float: unset;
+}
+
+/**
+ * Make the disabled wrapper float right if it's placed inside a
+ * btn-float-right div.
+ */
+.btn-float-right .disabled-wrapper
+{
+  float: right;
 }
 
 /**

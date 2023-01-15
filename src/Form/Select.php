@@ -126,9 +126,16 @@ EOF;
 	private static function getOptionsHTML (array &$a): ?string
 	{
 		extract($a);
-		$matched = false;
-		$options_array = self::getOptionsArray($a, $matched);
-		if (!$matched && !$multiple) {
+
+		# Get the options array (formatted)
+		if(!$options_array = self::getOptionsArray($a)){
+			return null;
+		}
+
+		# Add a blank option if needed
+		if (!$multiple && !array_filter($options_array ?:[], function ($option){
+				return $option['selected'];
+		})){
 			/**
 			 * If no options match on the value,
 			 * and it's _not_ a multiple situation,
@@ -143,10 +150,6 @@ EOF;
 				"title" => "",
 				"selected" => true
 			];
-		}
-
-		if (empty($options_array)) {
-			return NULL;
 		}
 
 		foreach ($options_array as $option) {
@@ -185,7 +188,7 @@ EOF;
 	 *
 	 * @return array|bool
 	 */
-	private static function getOptionsArray ($a, &$matched = false)
+	private static function getOptionsArray ($a): ?array
 	{
 		extract($a);
 
@@ -202,41 +205,23 @@ EOF;
 			}
 		}
 
-		if (is_array($value)) {
-			//Many values
-			$value_array = $value;
-		} else if ($value || "0" == (string) $value) {
-			//One value (and that value could be "0" or 0
-			$value_array = [$value];
-		} else {
-			//No value(s)
-			$value_array = [];
-		}
-
+		# If there are no options, pencils down
 		if (!is_array($options)) {
-			return false;
+			return NULL;
 		}
 
-		foreach ($options as $option_value => $option) {
-			# Is *this* option selected?
-			if (in_array($option_value, $value_array ?:[])) {
-				$selected = true;
+		# Set the value(s) as an array
+		$value_array = is_array($value) ? $value : [$value];
 
-				$matched = true;
-				/**
-				 * If one of the options are matched, set variable to true.
-				 * There are scenarios where the values in the value array,
-				 * do not match any option values.
-				 */
-			} else {
-				$selected = false;
-			}
+		# Go through each option, format the data and add it to the array
+		foreach ($options as $option_value => $option) {
+			# Check to see if the option is selected or not
+			$selected = in_array($option_value, $value_array ?:[]);
 
 			# If the option is an array
 			if(is_array($option)){
-				$option['value'] = $option_value;
-				$option['selected'] = $selected;
-				$options_array[] = $option;
+				$select_option = new SelectOption($option_value, $option, $selected);
+				$options_array[] = $select_option->getOption();
 				continue;
 			}
 

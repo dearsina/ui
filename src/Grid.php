@@ -392,7 +392,12 @@ class Grid {
 		# Tag
 		$tag = $tag ?: "div";
 
-		return "<{$tag}{$id}{$class}{$style}{$href}{$alt}>{$icon}{$title}{$badge}{$button}</{$tag}>";
+		# Subtitle
+		if($subtitle){
+			$subtitle = "<div class='text-subtitle'>{$subtitle}</div>";
+		}
+
+		return "<{$tag}{$id}{$class}{$style}{$href}{$alt}>{$icon}{$title}{$badge}{$button}{$subtitle}</{$tag}>";
 	}
 
 	/**

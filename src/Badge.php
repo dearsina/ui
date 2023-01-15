@@ -69,7 +69,7 @@ class Badge {
 			foreach($array_or_string as $badge){
 				$badge_array[] = Badge::generate($badge);
 			}
-			return implode("&nbsp;", $badge_array);
+			return implode("&nbsp;", array_filter($badge_array));
 		}
 
 		else {
@@ -101,7 +101,7 @@ class Badge {
 		}
 		else {
 			$tag_type = "div";
-			$style["cursor"] = "default";
+			$style["cursor"] = $style["cursor"] ?: "default";
 		}
 
 		# Is there a tag override?

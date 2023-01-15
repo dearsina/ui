@@ -57,6 +57,43 @@
   overflow      : hidden;
 }
 
+.tab-content
+{
+  --bs-card-spacer-y            : 1rem;
+  --bs-card-spacer-x            : 1rem;
+  --bs-card-title-spacer-y      : 0.5rem;
+  --bs-card-border-width        : 1px;
+  --bs-card-border-color        : var(--bs-border-color-translucent);
+  --bs-card-border-radius       : 0.375rem;
+  --bs-card-inner-border-radius : calc(0.375rem - 1px);
+  --bs-card-cap-padding-y       : 0.5rem;
+  --bs-card-cap-padding-x       : 1rem;
+  --bs-card-cap-bg              : rgba(0, 0, 0, 0.03);
+  --bs-card-bg                  : #ffffff;
+  --bs-card-img-overlay-padding : 1rem;
+  --bs-card-group-margin        : 0.75rem;
+}
+
+/**
+ * Allows for box shadows on tabs also
+ */
+.tab-content
+{
+  box-shadow    : 0 3px 6px rgb(171 187 196 / 16%), 0 -1px 4px rgb(25 32 36 / 4%);
+  border-radius : 0.375rem;
+}
+
+/**
+ * And tab headers
+ */
+.nav-tabs .nav-item.active
+{
+  box-shadow : 0 3px 6px rgb(171 187 196 / 16%), 0 -1px 4px hsl(202deg 18% 12% / 4%);
+  clip-path  : inset(-15px -15px 0px -15px);
+  border-top-left-radius: var(--bs-nav-tabs-border-radius);
+  border-top-right-radius: var(--bs-nav-tabs-border-radius);
+}
+
 .tab-content > .active
 {
   background    : white;
@@ -89,19 +126,23 @@
 {
   height : calc(100% - 40px);
 }
+
 .modal-tab .modal-body > form
 {
   height : auto;
 }
+
 .modal-tab .modal-body
 {
   padding-bottom   : 0;
   background-color : #fcfdfd;
 }
+
 .modal-tab .modal-body > form > div.row
 {
   height : 100%;
 }
+
 .modal-tab .tab-pane > .body
 {
   overflow-y : auto;

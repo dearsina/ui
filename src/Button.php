@@ -573,11 +573,15 @@ class Button {
 		# Is it disabled?
 		if($disabled){
 			$style_array["cursor"] = "default";
+
 			$class_array[] = "btn-outline-{$colour}";
 			$class_array[] = "disabled";
+
 			$disabled = "disabled=\"disabled\"";
 			$tag_type = "button";
-			$wrapper_pre = "<div {$title_tag} style=\"cursor:not-allowed;width:100%;height:100%;\">";
+
+			# Put the entire button inside a disabled wrapper div
+			$wrapper_pre = "<div {$title_tag} class=\"disabled-wrapper\">";
 			$wrapper_post = "</div>";
 		}
 
