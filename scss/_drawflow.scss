@@ -408,7 +408,7 @@ $step                  : 0;
   margin-bottom      : .5rem;
   //border: 1px solid var(--node-border-colour);
   border             : none;
-  border-radius      : .25rem;
+  border-radius      : var(--bs-card-border-radius);
   -webkit-box-shadow : 0 2px 4px 0px var(--node-border-colour);
   box-shadow         : 0 2px 4px 0px var(--node-border-colour);
   padding            : 0px;
