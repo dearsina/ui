@@ -5,12 +5,10 @@ namespace App\UI\Form;
 
 
 use App\Common\Hash;
-use App\Common\Output;
+use App\Common\Log;
 use App\Common\str;
 use App\UI\Button;
 use App\UI\Grid;
-use App\UI\Icon;
-use App\UI\Modal\Modal;
 
 /**
  * Class Form
@@ -288,8 +286,12 @@ class Form {
 			$hash = Hash::getInstance();
 			$hash->set("reload");
 
-			throw new \Exception("There was an issue with the encrypted form you just submitted. The page will now refresh, please try again.");
-//			throw new \Exception("The associated private key cannot be found. This is either because your public key is invalid or has expired. Please refresh the form and try again.");
+			Log::getInstance()->warning([
+				"title" => "Timed out form",
+				"message" => "There was an issue with the encrypted form you just submitted.
+				This is most probably due to the form being open for too long.
+				The page will now refresh, please try again. Apologies for the inconvenience.",
+			]);
 		}
 
 		# For each variable, decrypt and save the value
