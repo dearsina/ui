@@ -266,20 +266,24 @@ EOF;
 		# Badges
 		$badge = Badge::generate($item['badge']);
 
+		# Alt
+		$alt = str::getAttrTag("title", $item['alt'] ?: $item['title']);
+
 		# Disabled element
 		if($item['disabled']){
 			$default_class[] = "disabled";
 			$tag = "div";
 			$href = false;
+
+			# Put the entire button inside a disabled wrapper div
+			$wrapper_pre = "<div {$alt} class=\"disabled-wrapper\">";
+			$wrapper_post = "</div>";
 		}
 
 		# Approval
 		if($approve = str::getApproveAttr($item['approve'], $item['icon'], $item['colour'])){
 			$default_class[] = "approve-decision";
 		}
-
-		# Alt
-		$alt = str::getAttrTag("title", $item['alt'] ?: $item['title']);
 
 		# Class
 		$default_class[] = "dropdown-item";
@@ -295,7 +299,7 @@ EOF;
 		# Title
 		$title = $item['title'];
 
-		return "<{$tag}{$class}{$style}{$href}{$alt}{$approve}{$data}>{$icon}{$title}{$badge}</{$tag}>";
+		return "{$wrapper_pre}<{$tag}{$class}{$style}{$href}{$alt}{$approve}{$data}>{$icon}{$title}{$badge}</{$tag}>{$wrapper_post}";
 	}
 
 	/**
