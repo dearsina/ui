@@ -153,11 +153,14 @@
   padding : 1rem;
 }
 
-.modal .tab-content > .active > .body
+.modal form .tab-content > .active > .body
 {
-  //height  : 100%;
-  // Causes havoc, probably more than it does good. Removed for now, check with API docs modal if added back
+  height  : 100%;
 }
+/**
+ * Caused havoc for the API docs modal, added form
+ * to fix it as we do need it for the form modal tabs.
+ */
 
 .tab-content > .active > .footer
 {
