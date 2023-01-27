@@ -433,7 +433,7 @@ class Grid {
 		$class = str::getAttrTag("class", $class_array);
 		$style_array = str::getAttrArray($style, $default_style, $only_style);
 		$style = str::getAttrTag("style", $style_array);
-		$alt = str::getAttrTag("title", str::truncateIf(strip_tags($body), 200));
+		$alt = str::getAttrTag("title", $alt);
 
 		return "<{$tag}{$id}{$class}{$style}{$alt}>{$body}{$button}</{$tag}>";
 	}

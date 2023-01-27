@@ -70,17 +70,18 @@ class Form {
 	 * Form constructor.
 	 * <code>
 	 * $form = new Form([
-	 * 	"action" => "insert",
-	 * 	"rel_table" => NULL,
-	 * 	"rel_id" => NULL,
-	 * 	"fields" => $fields,
-	 * 	"buttons" => $buttons
+	 *    "action" => "insert",
+	 *    "rel_table" => NULL,
+	 *    "rel_id" => NULL,
+	 *    "fields" => $fields,
+	 *    "buttons" => $buttons
 	 * ]);
 	 * </code>
 	 *
 	 * @param null $a
 	 */
-	public function __construct ($a = NULL) {
+	public function __construct($a = NULL)
+	{
 		$this->hash = Hash::getInstance();
 
 		# Empty form
@@ -111,7 +112,7 @@ class Form {
 
 		# Fields
 		$this->setFields($fields);
-		
+
 		# Buttons
 		$this->setButtons($buttons);
 
@@ -137,27 +138,28 @@ class Form {
 	 *
 	 * @return bool
 	 */
-	function setScript($script) {
-//		$this->script = /** @lang ECMAScript 6 */<<<EOF
-//
-//var {$this->getId()}_form_is_valid = $("#{$this->getId()}").validate(validationSettings);
-//$('#{$this->getId()}').submit(function(event){
-//    event.preventDefault();
-//    if({$this->getId()}_form_is_valid.form()){
-//		submitForm(event, "{$this->getId()}");
-//    } else {
-//        Ladda.stopAll();
-//    }
-//});
-//
-//EOF;
+	function setScript($script)
+	{
+		//		$this->script = /** @lang ECMAScript 6 */<<<EOF
+		//
+		//var {$this->getId()}_form_is_valid = $("#{$this->getId()}").validate(validationSettings);
+		//$('#{$this->getId()}').submit(function(event){
+		//    event.preventDefault();
+		//    if({$this->getId()}_form_is_valid.form()){
+		//		submitForm(event, "{$this->getId()}");
+		//    } else {
+		//        Ladda.stopAll();
+		//    }
+		//});
+		//
+		//EOF;
 		if($script){
 			$this->script = $script;
 		}
 
-//		if($only_script){
-//			$this->script = $only_script;
-//		}
+		//		if($only_script){
+		//			$this->script = $only_script;
+		//		}
 
 		return true;
 	}
@@ -170,15 +172,17 @@ class Form {
 	 *
 	 * @return bool
 	 */
-	public function setButtons($buttons){
-		if (!$buttons) {
+	public function setButtons($buttons)
+	{
+		if(!$buttons){
 			return true;
 		}
 		if(str::isNumericArray($buttons)){
 			foreach($buttons as $button){
 				$this->buttons[] = $button;
 			}
-		} else {
+		}
+		else {
 			$this->buttons[] = $buttons;
 		}
 		return true;
@@ -193,13 +197,14 @@ class Form {
 	 *
 	 * @return bool
 	 */
-	public function setFields($fields){
-		if($fields === FALSE){
+	public function setFields($fields)
+	{
+		if($fields === false){
 			$this->fields = [];
-			return  true;
+			return true;
 		}
 
-		if (!$fields) {
+		if(!$fields){
 			return true;
 		}
 
@@ -207,10 +212,11 @@ class Form {
 			foreach($fields as $field){
 				$this->fields[] = $field;
 			}
-		} else {
+		}
+		else {
 			$this->fields[] = $fields;
 		}
-		
+
 		return true;
 	}
 
@@ -245,14 +251,14 @@ class Form {
 		$this->setFields([
 			"type" => "hidden",
 			"name" => "meta_public_key",
-			"value" => $public_key
+			"value" => $public_key,
 		]);
 
 		# Store the names of the fields to encrypt, as its own form field
 		$this->setFields([
 			"type" => "hidden",
 			"name" => "meta_encrypt",
-			"value" => json_encode($encrypt)
+			"value" => json_encode($encrypt),
 		]);
 
 		return true;
@@ -265,12 +271,13 @@ class Form {
 	 * Assumes the user who instigated the form is the same
 	 * that is asking for decryption, as the keys are stored
 	 * in the $_SESSION.
+	 *
 	 * @param $vars
 	 *
 	 * @return bool
 	 * @throws \Exception
 	 */
-	public static function decryptVars(&$vars) : bool
+	public static function decryptVars(&$vars): bool
 	{
 		# Ensure there are vars to be decrypted
 		if(!$vars['meta_public_key'] || !$vars['meta_encrypt']){
@@ -306,7 +313,8 @@ class Form {
 	 *
 	 * @return string
 	 */
-	private function setId($id = NULL){
+	private function setId($id = NULL)
+	{
 		$this->id = $id ?: str::id("form");
 		return $this->id;
 	}
@@ -319,8 +327,9 @@ class Form {
 	 *
 	 * @return string
 	 */
-	function getId ($tag = NULL) {
-		if ($tag){
+	function getId($tag = NULL)
+	{
+		if($tag){
 			return str::getAttrTag("id", $this->getId());
 		}
 		return $this->id ?: $this->setId();
@@ -336,22 +345,23 @@ class Form {
 	 *
 	 * @return bool|string
 	 */
-	function getFieldsHTML($fields = NULL){
+	function getFieldsHTML($fields = NULL)
+	{
 		$this->setFields($fields);
 
 		$grid = new Grid([
 			"formatter" => function(&$field){
 				return Field::getHTML($field);
-			}
+			},
 		]);
 
 		# Slightly hacky way to add a class to the modal tab header to allow for draggable (if enabled)
-		if(count($this->fields ?:[]) == 1 && reset($this->fields)['tabs'] && $this->modal){
+		if(count($this->fields ?: []) == 1 && reset($this->fields)['tabs'] && $this->modal){
 			$this->fields = [[
 				"tabs" => [
 					"tabs" => reset($this->fields)['tabs'],
-					"class" => "modal-header-draggable"
-				]
+					"class" => "modal-header-draggable",
+				],
 			]];
 		}
 
@@ -368,7 +378,8 @@ class Form {
 	 *
 	 * @param $a
 	 */
-	private function prepareButtonsForModals(&$a){
+	private function prepareButtonsForModals(&$a)
+	{
 		if(str::isNumericArray($a)){
 			foreach($a as $id => $button){
 				$this->prepareButtonsForModals($a[$id]);
@@ -395,8 +406,9 @@ class Form {
 	 * @throws \Exception
 	 * @throws \Exception
 	 */
-	public function getButtonsHTML(){
-		if (!$this->buttons) {
+	public function getButtonsHTML()
+	{
+		if(!$this->buttons){
 			return false;
 		}
 
@@ -449,7 +461,8 @@ EOF;
 	/**
 	 * @return bool|string
 	 */
-	public function getScriptHTML(){
+	public function getScriptHTML()
+	{
 		return str::getScriptTag($this->script);
 	}
 
@@ -458,8 +471,8 @@ EOF;
 	 *
 	 * @return string
 	 */
-	public function getHTML(){
-		
+	public function getHTML()
+	{
 		$id = str::getAttrTag("id", $this->id);
 		$class = str::getAttrTag("class", $this->class);
 		$style = str::getAttrTag("style", $this->style);
