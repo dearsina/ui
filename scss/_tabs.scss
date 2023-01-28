@@ -153,14 +153,15 @@
   padding : 1rem;
 }
 
-.modal form .tab-content > .active > .body
-{
-  height  : 100%;
-}
+
 /**
  * Caused havoc for the API docs modal, added form
  * to fix it as we do need it for the form modal tabs.
  */
+.modal form .tab-content > .active > .body
+{
+  height  : 100%;
+}
 
 .tab-content > .active > .footer
 {
