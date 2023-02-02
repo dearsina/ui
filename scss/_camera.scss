@@ -1,0 +1,145 @@
+/**
+ * The parent div, encasing all other
+ * video modal divs. Takes over the whole
+ * screen.
+ */
+.modal-video
+{
+  z-index: 1030;
+  position: absolute;
+  display: flex;
+  top:0;
+  bottom:0;
+  right:0;
+  left:0;
+  background: white;
+  flex-direction: column;
+  align-items: center;
+}
+
+/**
+ * The header and footer of the video.
+ * The header can be used to display
+ * any pointers to the user.
+ */
+.modal-video-header,
+.modal-video-footer
+{
+  height: 20%;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-direction: column;
+}
+
+.modal-video-header
+{
+  font-size: 125%;
+  font-weight: 500;
+  background: white;
+  z-index: 1;
+  width: 100%;
+}
+
+.modal-video-narrative
+{
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+/**
+ * The close button on the top right.
+ */
+.modal-video-close-button
+{
+  margin-bottom: 1rem;
+  position: absolute;
+  z-index: 1;
+  top: 1%;
+  right: 1%;
+  font-size: 200%;
+  border: none;
+}
+
+/**
+ * The wrapper around the video object.
+ */
+.modal-video-wrapper
+{
+  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+  /*display: none; Will switch to flex on load*/
+  display: flex;
+  background: black;
+  width: 100%;
+  height: 60%;
+}
+
+/**
+ * The video object itself
+ */
+.modal-video-wrapper > video
+{
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+
+  -moz-transform: scale(-1, 1);
+  -webkit-transform: scale(-1, 1); -o-transform: scale(-1, 1);
+  transform: scale(-1, 1);
+  filter: FlipH;
+}
+
+.modal-video-wrapper > canvas
+{
+  position: absolute;
+}
+
+/**
+ * The canvas object isn't used for anything
+ * bar converting video data to an image. It may
+ * even be superfluous. For now it's just hidden.
+ */
+.modal-video-canvas
+{
+  display: none;
+}
+
+/**
+ * Will contain the base64 image data. Could
+ * eventually becomes superfluous and data
+ * is just sent to a variable.
+ */
+.modal-video-image
+{
+  display: none;
+}
+
+.modal-video-proximity-bar-container
+{
+  position: absolute;
+  /*top: 0;*/
+  left: 0;
+  width: 100%;
+  height: 60%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  display: none;
+}
+
+.modal-video-proximity-bar-container svg {
+  display: block;
+  height: 80%;
+  width: 80%;
+  opacity: 0.5;
+}
+
+.modal-video-aspect-ratio {
+  width: 100%;
+  height: 100%;
+}
