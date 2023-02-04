@@ -3,6 +3,7 @@
 namespace App\UI;
 
 use App\Common\href;
+use App\Common\Img;
 use App\Common\SQL\Factory;
 use App\Common\str;
 
@@ -232,6 +233,13 @@ class Icon {
 			$icon_array = $a;
 		}
 
+		if($icon_array['svg']){
+			$icon_array['style']['width'] = $icon_array['style']['width'] ?: "1.25em";
+			$icon_array['style']['margin-right'] = $icon_array['style']['margin-right'] ?: "0.75rem";
+			$icon_array['style']['margin-bottom'] = $icon_array['style']['margin-bottom'] ?: "-4px";
+			return Img::generate($icon_array);
+		}
+
 		# Tooltips
 		Tooltip::generate($icon_array);
 
@@ -240,6 +248,7 @@ class Icon {
 		if(!$default[] = Icon::getClass($icon_array)){
 			return false;
 		}
+
 		if($colour){
 			$default[] = " text-{$colour}";
 		}

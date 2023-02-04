@@ -226,6 +226,9 @@ class ListGroup {
 			$button = "<div class=\"btn-float-right\">{$button}</div>";
 		}
 
+		# Tooltips
+		Tooltip::generate($item);
+
 		# Class
 		$class_array = str::getAttrArray($item['class'], $default_class, $item['only_class']);
 		$class = str::getAttrTag("class", $class_array);
