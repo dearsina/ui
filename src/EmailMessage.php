@@ -553,6 +553,9 @@ EOF;
 	 * Will return the hex value of the colour name,
 	 * or the colour name itself if no hex value is found.
 	 *
+	 * Must be a hex (#000000), not HSL, or else it will be
+	 * ignored.
+	 *
 	 * @param $colour_name
 	 *
 	 * @return string
@@ -562,7 +565,16 @@ EOF;
 		if(!$colour_name){
 			return NULL;
 		}
-		return $this->app_colours[$colour_name] ?: $colour_name;
+		$colour = $this->app_colours[$colour_name] ?: $colour_name;
+
+		# If it's an HSL value, return the hex value (or else it will be ignored by email clients)
+		if(preg_match("/hsl\(([^,]+)deg,\s?([^,]+)%,\s?([^,]+)%\)/", $colour, $matches)){
+			array_shift($matches);
+			return str::hsl2hex(array_values($matches));
+		}
+
+		# Otherwise, return the hex value
+		return $colour;
 	}
 
 	private function generateTag(string $tag, $a): string
