@@ -11,6 +11,7 @@ use App\UI\Grid;
 use App\UI\Icon;
 use App\UI\ListGroup;
 use App\UI\Progress;
+use App\UI\Tooltip;
 use Exception;
 
 /**
@@ -98,6 +99,7 @@ class Card extends \App\Common\Prototype {
 			return;
 		}
 
+		Tooltip::generate($a);
 		$this->setAttr($a);
 	}
 

@@ -235,6 +235,7 @@ class Icon {
 
 		if($icon_array['svg']){
 			$icon_array['style']['width'] = $icon_array['style']['width'] ?: "1.25em";
+			$icon_array['style']['height'] = $icon_array['style']['height'] ?: "1.25em";
 			$icon_array['style']['margin-right'] = $icon_array['style']['margin-right'] ?: "0.75rem";
 			$icon_array['style']['margin-bottom'] = $icon_array['style']['margin-bottom'] ?: "-4px";
 			return Img::generate($icon_array);
