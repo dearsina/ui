@@ -302,9 +302,15 @@ class Grid {
 			$row_class[] = "row-cols-2";
 		}
 
-		foreach($rows['rows'] as $key => $val){
+		foreach($rows['rows'] as $key => $value){
+			# Formatting of the left side of the row
+			$left = [
+				"class" => "small",
+				"sm" => $rows['sm'],
+			];
+
 			if(is_int($key)
-			&& is_array($val)){
+				&& is_array($value)){
 				/**
 				 * If the value is itself an array,
 				 * and the key is just a number,
@@ -312,27 +318,20 @@ class Grid {
 				 * chance there is more than one
 				 * row with the same key.
 				 */
-				foreach($val as $key => $val){
-					$left = [
-						"class" => "small",
-						"sm" => $rows['sm'],
-						"html" => $key,
-					];
+				foreach($value as $k => $v){
+					$left['html'] = $k;
 					$grid[] = [
 						"row_class" => $row_class,
-						"html" => [$left, $val]
+						"html" => [$left, $v]
 					];
 				}
 				continue;
 			}
-			$left = [
-				"class" => "small",
-				"sm" => $rows['sm'],
-				"html" => $key,
-			];
+
+			$left['html'] = $key;
 			$grid[] = [
 				"row_class" => $row_class,
-				"html" => [$left, $val]
+				"html" => [$left, $value]
 			];
 		}
 

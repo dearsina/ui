@@ -13,6 +13,9 @@
   top            : -1rem;
   border-bottom : 2px solid #dee2e6;
   z-index        : 4;
+
+  // Tables UI V2
+  border-bottom : 1px solid hsl(210deg 14% 80%);
 }
 
 /**
@@ -24,6 +27,10 @@
 {
   padding-top   : 1rem;
   background    : white;
+
+  // Tables UI V2
+  padding-top: 8px;
+  padding-bottom: 4px;
 }
 
 /**
