@@ -136,6 +136,8 @@
 {
   padding-bottom   : 0;
   background-color : #fcfdfd;
+  border-radius: var(--bs-modal-border-radius);
+  overflow: hidden; // Could be controversial, but it's the only way to avoid double scrollbars
 }
 
 .modal-tab .modal-body > form > div.row

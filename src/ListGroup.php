@@ -5,6 +5,7 @@ namespace App\UI;
 
 
 use App\Common\href;
+use App\Common\Img;
 use App\Common\str;
 
 /**
@@ -194,6 +195,9 @@ class ListGroup {
 		# HTML (After/instead of title/subtitle/body)
 		$html .= $item['html'];
 
+		# Image
+		$image = Img::generate($item['img'] ?: $item['image']);
+
 		# Icon
 		$icon = Icon::generate($item['icon']);
 
@@ -259,12 +263,12 @@ class ListGroup {
 			}
 
 			return <<<EOF
-<li{$id}{$class}{$style}{$draggable}{$ondragstart}{$data}{$title}>{$handlebars}{$button}<{$tag}{$href}>{$icon}{$left_badge}{$html}{$badge}</{$tag}></li>
+<li{$id}{$class}{$style}{$draggable}{$ondragstart}{$data}{$title}>{$handlebars}{$button}<{$tag}{$href}>{$image}{$icon}{$left_badge}{$html}{$badge}</{$tag}></li>
 EOF;
 		}
 
 		return <<<EOF
-<{$tag}{$id}{$class}{$style}{$href}{$draggable}{$ondragstart}{$data}{$title}>{$button}{$icon}{$left_badge}{$html}{$badge}</{$tag}>
+<{$tag}{$id}{$class}{$style}{$href}{$draggable}{$ondragstart}{$data}{$title}>{$button}{$image}{$icon}{$left_badge}{$html}{$badge}</{$tag}>
 EOF;
 
 	}
