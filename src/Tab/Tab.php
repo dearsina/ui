@@ -168,6 +168,8 @@ class Tab {
 		$style = ["width" => "100%"];
 		$style = str::getAttrTag("style", $style);
 
+		self::setDependencyData($header);
+
 		# Data
 		$data = $this->getTabHeaderData($tab, $header);
 
@@ -187,6 +189,42 @@ class Tab {
 				{$this->getTabHeaderContent($header)}
 			</button>
 		</li>";
+	}
+
+	/**
+	 * Sets the dependency data for the tab header.
+	 * This is used to hide/show the tab header based on the
+	 * value of another setting.
+	 *
+	 *
+	 * @param array|null $a
+	 *
+	 * @return void
+	 */
+	private static function setDependencyData(?array &$a): void
+	{
+		if(!is_array($a['dependency'])){
+			return;
+		}
+
+		# If the full format is expressed
+		if($a['dependency']['and'] || $a['dependency']['or']){
+			$a['data']['dependency'] = $a['dependency'];
+			return;
+		}
+
+		# If the quick format is expressed
+		foreach($a['dependency'] as $selector => $condition){
+			# Failsafe, shouldn't happen
+			if(!is_array($condition)){
+				continue;
+			}
+			$condition['selector'] = $selector;
+			$a['data']['dependency']['and'][] = $condition;
+		}
+
+		# Set a custom wrapper so that only the header is hidden
+		$a['data']['dependency']['settings']['wrapper'] = "li";
 	}
 
 	private function getTabPaneClass(array $tab): array

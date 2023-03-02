@@ -192,8 +192,8 @@ box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 
   //padding-bottom: .5rem;
   border-top : unset;
   background : $header-footer-bg;
-
   border-top : .9px solid $border-color;
+  border-radius: 0 0 var(--bs-card-inner-border-radius) var(--bs-card-inner-border-radius);
 }
 
 .card-body

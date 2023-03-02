@@ -11,11 +11,11 @@
   position       : sticky;
   background     : white;
   top            : -1rem;
-  border-bottom : 2px solid #dee2e6;
+  border-bottom  : 2px solid #dee2e6;
   z-index        : 4;
 
   // Tables UI V2
-  border-bottom : 1px solid hsl(210deg 14% 80%);
+  border-bottom  : 1px solid hsl(210deg 14% 80%);
 }
 
 /**
@@ -25,12 +25,12 @@
  */
 .table-header > div
 {
-  padding-top   : 1rem;
-  background    : white;
+  padding-top    : 1rem;
+  background     : white;
 
   // Tables UI V2
-  padding-top: 8px;
-  padding-bottom: 4px;
+  padding-top    : 8px;
+  padding-bottom : 4px;
 }
 
 /**
@@ -40,8 +40,8 @@
 .table-sortable,
 .table-ondemand
 {
-  padding: 0rem 1rem 1rem 1rem;
-  margin: -1rem;
+  padding : 0rem 1rem 1rem 1rem;
+  margin  : -1rem;
 }
 
 
@@ -122,8 +122,8 @@
 
 .table-container > i:first-of-type
 {
-  line-height: 36pt;
-  color : hsla(207, 7%, 86%, 1) !important;
+  line-height : 36pt;
+  color       : hsla(207, 7%, 86%, 1) !important;
   font-size   : 90%;
   font-weight : 300;
 }
@@ -141,8 +141,9 @@
 /**
  * Remove the paragraph margin bottom.
  */
-.table-body > .col > p {
-  margin-bottom: unset;
+.table-body > .col > p
+{
+  margin-bottom : unset;
 }
 
 /**
@@ -177,6 +178,15 @@
 .table-body > .col > .text-title > i:first-of-type
 {
   margin-right : .5rem;
+}
+
+/**
+ * Tables where all the data must be visisble
+ */
+.table-show-all .text-flat,
+.table-show-all .col
+{
+  white-space : unset;
 }
 
 /**
