@@ -160,10 +160,16 @@
  * Caused havoc for the API docs modal, added form
  * to fix it as we do need it for the form modal tabs.
  */
-.modal form .tab-content > .active > .body
-{
-  height  : 100%;
+.modal form .tab-content > .active > .body {
+  height: calc(100% - 57px);
+  // Makes space for a row of footer buttons
 }
+
+.modal form .tab-content > .active > .body:last-child {
+  // But if there is no footer, set the height to 100%
+  height: 100%;
+}
+
 
 .tab-content > .active > .footer
 {
