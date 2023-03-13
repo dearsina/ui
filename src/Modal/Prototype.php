@@ -55,7 +55,15 @@ abstract class Prototype extends \App\Common\Prototype {
 	}
 
 	/**
-	 * Generic new modal frame.
+	 * Prototype new modal.
+	 *
+	 * You can override the following variables to avoid
+	 * having to recreate this method for a small change:
+	 * - id (modal)
+	 * - size
+	 * - buttons
+	 * - fields
+	 * - header
 	 *
 	 * @param array  $a
 	 * @param string $size
@@ -71,7 +79,7 @@ abstract class Prototype extends \App\Common\Prototype {
 
 		[$field_class, $method] = $this->getFieldClassAndMethod($rel_table);
 
-		if(!$fields = $field_class::{$method}($a['vars'])){
+		if(!$fields = $fields ?: $field_class::{$method}($a['vars'])){
 			throw new \Exception("No form fields were found running the <code>{$field_class}::{$method}</code> class method.");
 		}
 

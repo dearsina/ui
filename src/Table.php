@@ -434,6 +434,7 @@ EOF;
 		}
 
 		$count_query = $base_query;
+		unset($count_query['offset']);
 		$count_query['distinct'] = true;
 		$count_query['count'] = "{$rel_table}_id";
 
@@ -447,16 +448,19 @@ EOF;
 			$output->setVar('query', $_SESSION['query']);
 			$output->setVar('total_results', $total_results ?: 0);
 
-			if(!$total_results){//echo $_SESSION['query'];exit;
+			if(!$total_results){
 				//If no rows can be found
 				$output->setVar('start', 1);
 				$output->setVar("rows", "<i>No rows found</i>");
 				return true;
 			}
 
-
 			$ignore_header = is_bool($ignore_header) ? $ignore_header : false;
 			//if the variable is already set, will not re-set or change it
+
+			# If an offset is given, we need to adjust the start value
+			$start = $base_query['offset'];
+			unset($base_query['offset']);
 		}
 		else {
 			//If this is not the first batch, no need to post the header again
