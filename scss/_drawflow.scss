@@ -174,7 +174,8 @@ $step                  : 0;
 
 
 
-  .node-#{$design}-#{$colour-name} > .container > .list-group
+  .node-#{$design}-#{$colour-name} > .container > .list-group,
+  .node-#{$design}-#{$colour-name} .masonry-grid-tile-inner
   {
     background-color   : $list-group-colour-value;
     margin-bottom      : 1.2rem;
@@ -185,7 +186,8 @@ $step                  : 0;
   }
 
   // Card list-groups *selected*
-  .drawflow-node.selected .node-#{$design}-#{$colour-name} > .container > .list-group
+  .drawflow-node.selected .node-#{$design}-#{$colour-name} > .container > .list-group,
+  .drawflow-node.selected .node-#{$design}-#{$colour-name} .masonry-grid-tile-inner
   {
     background-color   : $colour-value;
     box-shadow         : 0px 0px 5px 0px hsl(0deg 0% 0% / 20%);

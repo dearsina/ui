@@ -775,8 +775,13 @@ a.masonry-grid-tile-inner {
   cursor: pointer;
 }
 
+a.masonry-grid-tile-inner:hover {
+  text-decoration: none;
+  color: black;
+}
+
 .masonry-grid-tile-inner {
-  background: hsl(181deg 48% 62%);
+  //background: hsl(181deg 48% 62%);
   height: 100%;
   width: 100%;
   border: .1px solid hsl(181deg 45% 35%);
@@ -786,5 +791,6 @@ a.masonry-grid-tile-inner {
   align-items: center;
   white-space: nowrap;
   overflow: hidden;
-  font-size: 4cqw;
+  font-size: 4cqw !important;
+  //box-shadow: inset 0px 0px 5px 0px hsla(0deg, 0%, 0%, 0.2);
 }
