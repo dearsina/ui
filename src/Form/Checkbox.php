@@ -7,6 +7,7 @@ namespace App\UI\Form;
 use App\Common\str;
 use App\UI\Button;
 use App\UI\Icon;
+use App\UI\Tooltip;
 
 /**
  * Class Checkbox
@@ -162,10 +163,13 @@ EOF;
 			$a = ["title" => $a];
 		}
 
-		# onChange + data
-		$data = self::getInputData($a);
+		# Tooltips
+		Tooltip::generate($a);
 
 		extract($a);
+
+		# onChange + data
+		$data = self::getInputData($a);
 
 		# Id
 		$id = $id ?: str::id("btncheck");
@@ -191,8 +195,8 @@ EOF;
 		$script = str::getScriptTag($script);
 
 		return <<<EOF
-<input{$data} type="checkbox" class="btn-check" id="{$id}" name="{$name}" autocomplete="off" value="{$key}">
-<label{$class}{$style} for="{$id}">{$icon}{$title}{$script}</label>
+<input type="checkbox" class="btn-check" id="{$id}" name="{$name}" autocomplete="off" value="{$key}">
+<label{$data}{$class}{$style} for="{$id}">{$icon}{$title}{$script}</label>
 EOF;
 
 	}
