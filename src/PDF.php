@@ -54,8 +54,9 @@ class PDF {
 		shell_exec("chmod 777 {$tmp_filename} 2>&1");
 
 		# Ensure the PDF was generated successfully, if not, keep trying until it is
-		if(!file_exists($tmp_filename) || (filesize($tmp_filename) < 3000) || (strpos($log, "ERROR:") !== false)){
-			//if the file isn't created or if file is less than 3kb (if it's dud), or if the Chrome log contains an error
+		if(!file_exists($tmp_filename) || (filesize($tmp_filename) < 3000) && (strpos($log, "ERROR:") !== false)){
+			// If the file isn't created, or the Chrome log contains an error and the file is less than 3kb (if it's a dud)
+			// At times, the log will contain an error but the PDF will still be generated, so we need to check the filesize
 
 			# Count the number of attempts
 			$rerun++;
@@ -129,7 +130,7 @@ class PDF {
 	 * @return string
 	 * @link https://peter.sh/experiments/chromium-command-line-switches
 	 */
-	public static function getChromeSettings(int $seconds, string $tmp_filename): string
+	public static function getChromeSettings(?int $seconds, string $tmp_filename): string
 	{
 		return self::formatHeadlessChromeSettings([
 			# Run Chrome headless
@@ -201,16 +202,16 @@ class PDF {
 
 
 			// "disable-gpu" => true, // Only useful on Windows, will fail in Linux
-			// Will give the following error: ERROR:gpu_init.cc(521) Passthrough is not supported, GL is disabled, ANGLE is
+			// Will give the following error: ERROR:gpu_init.cc(523) Passthrough is not supported, GL is disabled, ANGLE is
 
 			// "disable-webgl" => true,
 
 			// "use-gl" => "desktop",
 			// Will fail
 
-			// Adds a lot more output in case there is an error
-			//"enable-logging" => "stderr",
-			//"v" => 1,
+			// Adds a lot more output, not super useful, makes the PDF log very big
+//			"enable-logging" => "stderr",
+//			"v" => 1,
 
 			// "user-data-dir" => "/var/www/tmp",
 			/**
