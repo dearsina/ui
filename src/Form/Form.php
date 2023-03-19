@@ -274,7 +274,7 @@ class Form {
 	 *
 	 * @param $vars
 	 *
-	 * @return bool
+	 * @return bool Will return false if there is an issue.
 	 * @throws \Exception
 	 */
 	public static function decryptVars(&$vars): bool
@@ -299,11 +299,31 @@ class Form {
 				This is most probably due to the form being open for too long.
 				The page will now refresh, please try again. Apologies for the inconvenience.",
 			]);
+
+			return false;
 		}
 
 		# For each variable, decrypt and save the value
 		foreach(json_decode($vars['meta_encrypt'], true) as $key){
-			$vars[$key] = sodium_crypto_box_seal_open(sodium_hex2bin($vars[$key]), $_SESSION['pgp'][$vars['meta_public_key']]);
+			try {
+				$vars[$key] = sodium_crypto_box_seal_open(sodium_hex2bin($vars[$key]), $_SESSION['pgp'][$vars['meta_public_key']]);
+			}
+			catch(\SodiumException $e){
+				// If the key is not valid (it's because the page needs refreshing)
+
+				# Request a page reload
+				$hash = Hash::getInstance();
+				$hash->set("reload");
+
+				Log::getInstance()->warning([
+					"title" => "Timed out form",
+					"message" => "There was an issue with the encrypted form you just submitted.
+					This is most probably due to the form being open for too long.
+					The page will now refresh, please try again. Apologies for the inconvenience.",
+				]);
+
+				return false;
+			}
 		}
 		return true;
 	}
