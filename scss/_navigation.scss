@@ -97,14 +97,6 @@ li > .dropstart > .dropdown-toggle::before
 /**
  * Drop-end caret
  */
-//ul:not(.nav-button) > li.dropup .dropdown-toggle::after,
-//ul:not(.nav-button) > li.dropend .dropdown-toggle::after
-//{
-//  content     : "›";
-//  float       : right;
-//  margin-left : 1rem;
-//  border      : none;
-//}
 li > .dropdown > .dropdown-toggle::after,
 li > .dropup > .dropdown-toggle::after,
 li > .dropend > .dropdown-toggle::after
@@ -113,6 +105,15 @@ li > .dropend > .dropdown-toggle::after
   float       : right;
   margin-left : 1rem;
   border      : none;
+  display     : inline;
+}
+
+li > .dropdown > .dropdown-toggle::before,
+li > .dropup > .dropdown-toggle::before,
+li > .dropend > .dropdown-toggle::before
+{
+  margin: -2px;
+  // Not 100% sure why we need to reduce the margin, but it works
 }
 
 /**
@@ -189,7 +190,7 @@ nav li .badge i
   text-decoration : none !important;
   align-self      : center;
   overflow        : hidden;
-  z-index: 1;
+  z-index         : 1;
   // Set so that SVG logos don't disappear
 }
 
@@ -329,8 +330,9 @@ a.navbar-level1-logo > object
  * Making an exception for tables so that the dropdown of one row isn't covered
  * by the dropdown butoton of the row below it.
  */
-.table-container .nav-button {
-  z-index: unset;
+.table-container .nav-button
+{
+  z-index : unset;
 }
 
 /**
