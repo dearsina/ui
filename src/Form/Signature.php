@@ -183,11 +183,31 @@ class Signature extends Field implements FieldInterface {
 		]);
 	}
 
-	public static function formatSignatureVal(array &$a, string $key): void
+	/**
+	 * Used a catch-all method to clean up signature
+	 * meta data.
+	 *
+	 * @param array       $a
+	 * @param string|null $key
+	 *
+	 * @return void
+	 */
+	public static function formatSignatureVal(array &$a, ?string $key = NULL): void
 	{
 		extract($a);
 
+		# Break up the signature parts if they have been passed
+		$parts = explode(":", $vars['form_group_form_field_id']);
+		if(count($parts) == 2){
+			$a['vars']['form_group_form_field_id'] = $parts[0];
+			$a['vars']['signature_part'] = $parts[1];
+		}
+
 		if(!$vars['signature']){
+			return;
+		}
+
+		if(!$key){
 			return;
 		}
 
