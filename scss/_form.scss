@@ -546,7 +546,27 @@ textarea.monospace
  */
 .trumbowyg-modal
 {
-  z-index : 11 !important;;
+  z-index : 11 !important;
+}
+
+/**
+ * We need to adjust this down if two trumbowyg
+ * elements are on the same page, in succession,
+ * otherwise the second one will obscure modals
+ * from the first. Setting it to 10 will fix this.
+ */
+.trumbowyg-button-pane
+{
+  z-index: 10;
+}
+
+/**
+ * The editor height is not fixed, thus the parent
+ * element cannot be fixed either.
+ */
+.trumbowyg-box.trumbowyg-editor-visible
+{
+  min-height: unset;
 }
 
 /**
