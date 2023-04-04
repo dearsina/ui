@@ -82,6 +82,8 @@ $container-max-widths : (
 .grid-card-control-buttons
 {
   position: absolute;
+  width: auto !important;
+  // Important to trump .card-body > * widths that are set to fill-available
   top: .5rem;
   right: .5rem;
   //z-index: 3;
