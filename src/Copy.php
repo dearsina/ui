@@ -107,7 +107,7 @@ class Copy {
 		}
 
 		# Produce truncated version for display purposes
-		return strlen($text) > 50 ? substr($text, 0, 50). "..." : $text;
+		return mb_strlen($text) > 50 ? mb_substr($text, 0, 50). "..." : $text;
 	}
 
 	public static function generateButton(array &$a): void
