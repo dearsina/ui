@@ -1268,6 +1268,10 @@ EOF;
 			$head = $this->getGenericHeadTagData();
 		}
 
+		if($this->format['css']){
+			$head .= "<style>{$this->format['css']}</style>";
+		}
+
 		return <<<EOF
 <!DOCTYPE html>
 <html lang="en">
