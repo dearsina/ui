@@ -3,7 +3,8 @@
  * video modal divs. Takes over the whole
  * screen.
  */
-.modal-video
+.modal-video,
+.modal-video-liveness
 {
   z-index        : 1030;
   position       : absolute;
