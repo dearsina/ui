@@ -267,7 +267,7 @@ EOF;
 		$badge = Badge::generate($item['badge']);
 
 		# Alt
-		$alt = str::getAttrTag("title", $item['alt'] ?: $item['title']);
+		$alt = str::getAttrTag("title", $item['alt'] ?: strip_tags($item['title']));
 
 		# Disabled element
 		if($item['disabled']){
