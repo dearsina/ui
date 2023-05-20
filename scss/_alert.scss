@@ -44,3 +44,7 @@ code {
   max-height: 95vh;
   overflow-y: auto;
 }
+
+.tooltip-wide .tooltip-inner {
+  max-width: 25vh;
+}
