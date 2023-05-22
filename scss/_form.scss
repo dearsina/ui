@@ -557,7 +557,7 @@ textarea.monospace
  */
 .trumbowyg-button-pane
 {
-  z-index: 10;
+  z-index : 10;
 }
 
 /**
@@ -566,7 +566,7 @@ textarea.monospace
  */
 .trumbowyg-box.trumbowyg-editor-visible
 {
-  min-height: unset;
+  min-height : unset;
 }
 
 /**
@@ -607,4 +607,29 @@ textarea.monospace
 .trumbowyg-modal-box .trumbowyg-input-row
 {
   border-radius : $border-radius;
+}
+
+/**
+ * Add some styles to the Picker element
+ * to make it conform to the rest of the
+ * application.
+ */
+.picker_editor input
+{
+  font-family: "Roboto Mono", monospace !important;
+  font-size: 10pt !important;
+  font-weight: 600;
+}
+.picker_sample,
+.picker_sample::before
+{
+  border-radius: .35rem;
+}
+
+/**
+ * Undo some Bootstrap overrides that square input elements that are validated
+ */
+.input-group > :not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback),
+.input-group:not(.has-validation) > .dropdown-toggle:nth-last-child(n+3) {
+  border-radius: 0.375rem;
 }
