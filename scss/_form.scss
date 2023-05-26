@@ -625,11 +625,3 @@ textarea.monospace
 {
   border-radius: .35rem;
 }
-
-/**
- * Undo some Bootstrap overrides that square input elements that are validated
- */
-.input-group > input:not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback),
-.input-group:not(.has-validation) > .dropdown-toggle:nth-last-child(n+3) {
-  border-radius: 0.375rem;
-}
