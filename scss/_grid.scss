@@ -70,6 +70,19 @@ $container-max-widths : (
 }
 
 /**
+ * Hide the border unless you're hovering over the element.
+ */
+.card.grid-stack-item
+{
+  border-color : white;
+}
+
+.card.grid-stack-item:hover
+{
+  border-color : $border-color;
+}
+
+/**
  * Solves the issue of <img> overflowing.
  */
 .grid-stack-item-content .row
