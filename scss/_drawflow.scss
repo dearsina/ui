@@ -689,3 +689,11 @@ $node-border-thickness : 1px;
 {
   margin-right : 0.3rem;
 }
+
+/**
+ * Remove unnecessary padding from items with HTML
+ * descriptions.
+ */
+.controller-button p {
+  margin: 0;
+}
