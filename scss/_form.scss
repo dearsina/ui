@@ -117,6 +117,7 @@ label i.fa-fw:first-of-type
   padding       : 0 !important;
   border        : $form-item-border-width solid #e1e6ef !important;
   min-height    : calc(2.0625rem + 2px) !important;
+  height        : auto !important; // Set to auto to accommodate for custom HTML options
 }
 
 /**
@@ -616,12 +617,13 @@ textarea.monospace
  */
 .picker_editor input
 {
-  font-family: "Roboto Mono", monospace !important;
-  font-size: 10pt !important;
-  font-weight: 600;
+  font-family : "Roboto Mono", monospace !important;
+  font-size   : 10pt !important;
+  font-weight : 600;
 }
+
 .picker_sample,
 .picker_sample::before
 {
-  border-radius: .35rem;
+  border-radius : .35rem;
 }
