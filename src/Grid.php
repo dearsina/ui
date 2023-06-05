@@ -195,6 +195,9 @@ class Grid {
 			# Badges
 			$col_html .= Badge::generate($col['badge']);
 
+			# Tooltip
+			Tooltip::generate($col);
+
 			# Class
 			$class_array = str::getAttrArray($col['class'], $col_width, $col['only_class']);
 			$class_tag = str::getAttrTag("class", $class_array);
