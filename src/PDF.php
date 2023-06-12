@@ -144,7 +144,7 @@ class PDF {
 			# Print the page to PDF (and give filename)
 			"print-to-pdf" => $tmp_filename,
 			# Remove the header and footer
-			"print-to-pdf-no-header" => true,
+			"no-pdf-header-footer" => true,
 			# Only log fatal errors (0 will log everything, 3 will only log fatal)
 			"log-level" => "3",
 			# Give Chrome privileges
