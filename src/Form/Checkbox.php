@@ -240,7 +240,7 @@ EOF;
 	 * @param $a
 	 *
 	 * @return string
-	 * @return string
+	 * @throws \Exception
 	 */
 	private static function getMultiCheckboxHTML($a)
 	{
