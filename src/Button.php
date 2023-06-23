@@ -499,7 +499,7 @@ class Button {
 			$icon = Icon::generate($icon);
 		}
 
-		# Does it have an badge?
+		# Does it have a badge?
 		if($badge){
 			$badge = Badge::generate($badge);
 		}
@@ -815,9 +815,9 @@ EOF;
 
 		switch($size) {
 		case 's':
-			return "btn-sm";
 		case 'small':
 			return "btn-sm";
+		case 'l':
 		case 'large':
 			return "btn-lg";
 		default:
