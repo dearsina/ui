@@ -98,6 +98,19 @@ class Field {
 		case 'int':
 			$a['type'] = "number";
 			break;
+		case 'color':
+			// We convert the colour input to a text input and use our own colour picker, not the browser HTML5 picker
+			$a['type'] = "input";
+			if(is_array($a['class'])){
+				$a['class'][] = "colour-picker";
+			}
+			else if($a['class']){
+				$a['class'] .= " colour-picker";
+			}
+			else {
+				$a['class'][] = "colour-picker";
+			}
+			break;
 		default:
 			$a['type'] = $type;
 		}
