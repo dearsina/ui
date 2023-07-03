@@ -3,12 +3,13 @@
  * a bootstrap progress bar.
  */
 .progress-bar-pre {
-  font-weight: 500;
-  margin-bottom: 3px;
+  margin-bottom: 1rem;
+  font-size: 85%;
 }
+
 .progress-bar-post {
   font-size: 80%;
   width: 100%;
   text-align: right;
-  margin-top: 5px;
+  margin-top: 1rem;
 }
