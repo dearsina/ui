@@ -241,7 +241,8 @@ class ListGroup {
 		$style = str::getAttrTag("style", $item['style']);
 
 		# Alt
-		$title = str::getAttrTag("title", $item['alt']);
+		$title = str::getAttrTag("title", str_replace('"', "''", $item['alt']));
+		// We have to convert the " to '' because otherwise it breaks the HTML when wrapped in JSON
 
 		# Draggable
 		$draggable = str::getAttrTag("draggable", $item['draggable'] ? "true" : NULL);
