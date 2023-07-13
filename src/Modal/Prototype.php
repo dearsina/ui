@@ -33,10 +33,15 @@ abstract class Prototype extends \App\Common\Prototype {
 			"close_md",
 		];
 
+		if($rel_table){
+			$id = $id ?: "modal-all-{$rel_table}";
+		}
+
 		$modal = new Modal([
+			"id" => $id,
 			"size" => $size,
 			"icon" => Icon::get($rel_table),
-			"header" => str::title("All " . str::pluralise($rel_table)),
+			"header" => $header ?: str::title("All " . str::pluralise($rel_table)),
 			"body" => [
 				"style" => [
 					"overflow-y" => "auto",
@@ -83,6 +88,10 @@ abstract class Prototype extends \App\Common\Prototype {
 			throw new \Exception("No form fields were found running the <code>{$field_class}::{$method}</code> class method.");
 		}
 
+		if($rel_table){
+			$id = $id ?: "modal-new-{$rel_table}";
+		}
+
 		$form = new Form([
 			"action" => "insert",
 			"rel_table" => $rel_table,
@@ -96,11 +105,11 @@ abstract class Prototype extends \App\Common\Prototype {
 		# A different modal for when tabs are being used
 		if(array_key_exists("tabs", $fields)){
 			$modal = new Modal([
-				"class" => "modal-tab",
 				"id" => $id,
+				"class" => "modal-tab",
 				"size" => $size,
 				"body" => $form->getHTML(),
-				"approve" => "change",
+				"approve" => $approve ?: "change",
 				"draggable" => true,
 				"resizable" => true,
 			]);
@@ -115,7 +124,7 @@ abstract class Prototype extends \App\Common\Prototype {
 					"title" => str::title("New {$rel_table}"),
 				],
 				"body" => $form->getHTML(),
-				"approve" => "change",
+				"approve" => $approve ?: "change",
 				"draggable" => true,
 				"resizable" => true,
 			]);
@@ -147,6 +156,10 @@ abstract class Prototype extends \App\Common\Prototype {
 
 		$fields = $field_class::{$method}($$rel_table);
 
+		if($rel_table){
+			$id = $id ?: "modal-edit-{$rel_table}";
+		}
+
 		$form = new Form([
 			"action" => "update",
 			"rel_table" => $rel_table,
@@ -160,8 +173,8 @@ abstract class Prototype extends \App\Common\Prototype {
 		# A different modal for when tabs are being used
 		if(array_key_exists("tabs", $fields)){
 			$modal = new Modal([
-				"class" => "modal-tab",
 				"id" => $id,
+				"class" => "modal-tab",
 				"size" => $size,
 				"body" => $form->getHTML(),
 				"approve" => "change",

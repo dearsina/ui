@@ -3,6 +3,7 @@
 
 namespace App\UI\Modal;
 
+use App\Common\Resizable\Resizable;
 use App\Common\str;
 use App\UI\Badge;
 use App\UI\Button;
@@ -27,6 +28,7 @@ class Modal extends \App\Common\Prototype {
 	protected $resizeable;
 	protected $approve;
 	protected $dismissible;
+	protected ?array $data = NULL;
 	protected $style;
 	protected $only_class;
 	protected $class;
@@ -623,16 +625,20 @@ EOF;
 	private function getModalDataAttr()
 	{
 		$modal['show'] = true;
+
 		if($this->dismissible === false){
 			$modal['backdrop'] = "static";
 		}
 
-		return [
+		# If there are logged dimensions for this modal for this user, use them
+		Resizable::setDimensions($this->data, $this->id);
+
+		return array_merge($this->data ?:[], [
 			"settings" => $modal,
 			"draggable" => $this->getDraggableSettings(),
 			"resizable" => $this->getResizableSettings(),
 			"approve" => $this->getApproveSettings(),
-		];
+		]);
 	}
 
 	/**
