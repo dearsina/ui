@@ -12,7 +12,7 @@ class Tooltip {
 	 * HTML.
 	 *
 	 * <code>
-	 * Tooltip::generate([
+	 * Tooltip::generateHtmlWrapper([
 	 *    "title" => $service['desc'], //The tooltip itself
 	 *    "direction" => "top",
 	 * 	  "tag" => "span",

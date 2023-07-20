@@ -53,6 +53,10 @@ class Dropdown {
 			$html .= self::generateChildren($item, 0, $meta);
 		}
 
+		if($meta['script']){
+			$html .= "<script>{$meta['script']}</script>";
+		}
+
 		return $html;
 	}
 

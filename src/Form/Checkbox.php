@@ -341,16 +341,23 @@ EOF;
 		$a['value'] = $a['value'] ?: true;
 		/**
 		 * Value attribute is optional for single checkboxes.
-		 * Instead a binary "1" or "" will be used if none
+		 * Instead, a binary "1" or "" will be used if none
 		 * has been set.
 		 */
 
 		# Single checkboxes cannot be placed inline
 		$a['inline'] = NULL;
 
+		# Grandparent class
+		$grand_parent_class_array = str::getAttrArray($a['grand_parent_class'], "mb-3", $a['only_grand_parent_class']);
+		$grand_parent_class = str::getAttrTag("class", $grand_parent_class_array);
+
+		# Grandparent style
+		$grand_parent_style = str::getAttrTag("style", $a['grand_parent_style']);
+
 		$html = self::getCheckboxHTML($a);
 		return /** @lang HTML */ <<<EOF
-<div class="mb-3">
+<div{$grand_parent_class}{$grand_parent_style}>
 	{$html}
 </div>
 EOF;

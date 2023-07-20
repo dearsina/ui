@@ -12,6 +12,8 @@
   margin-right : 1rem;
 }
 
+.controller-button .list-group > * > i.fa-fw:first-of-type,
+// Making an exception for the controller lists
 .list-group-item-title > i.fa-fw:first-of-type,
 .list-group-item-title > i.flag-icon:first-of-type
 {

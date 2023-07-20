@@ -5,6 +5,7 @@ namespace App\UI;
 
 use App\Common\href;
 use App\Common\str;
+use App\UI\Form\Form;
 
 /**
  * Static class to generate buttons
@@ -448,8 +449,14 @@ class Button {
 
 		extract($a);
 
+		# Checkboxes are to be treated a little differently
+		if($checkbox){
+			return self::generateCheckboxes($a);
+			// And must be placed before children, but they can *also* have children
+		}
+
 		# Buttons with children are to be treated a little differently
-		if($children){
+		else if($children){
 			return self::generateWithChildren($a);
 		}
 
@@ -722,6 +729,82 @@ EOF;
 			]],
 			"class" => $class,
 			"style" => $parent_style
+		]);
+	}
+
+	static function generateCheckboxes(array $a): string
+	{
+		# Separate out the checkboxes
+		$checkboxes = $a['checkbox'];
+		unset($a['checkbox']);
+
+		# Remove the ladda from the button itself
+		$a['ladda'] = false;
+
+		# Add a chevron-down suffix
+		$a['title'] .= "&nbsp;" . Icon::generate([
+			"style" => [
+				"font-weight" => "500 !important",
+			],
+			"name" => "chevron-down",
+		]);
+
+		$class = is_array($a['class']) ? $a['class'] : [$a['class']];
+		$class[] = "dropdown-checkbox";
+		array_unshift($class, ["navbar-nav nav-button"]);
+
+		if($a['parent_style']){
+			$parent_style = $a['parent_style'];
+			unset($a['parent_style']);
+		}
+
+		foreach($checkboxes as $checkbox){
+			$form = new Form();
+
+			# Set the type for the field generation
+			$checkbox['type'] = "checkbox";
+
+			# Checkbox style
+			$checkbox['style'] = [
+				"margin" => "8px",
+				"margin-left" => "-25px",
+			];
+
+			# Undo the mb-3 class style
+			$checkbox['grand_parent_style'] = [
+				"margin" => "0 0 0 0 !important",
+			];
+
+			# Label style
+			if($checkbox['label'] && !is_array($checkbox['label'])){
+				$checkbox['label'] = [
+					"html" => $checkbox['label']
+				];
+			}
+			$checkbox['label']['style'] = [
+				"margin" => "0 0 0 0 !important",
+			];
+
+			# Add the HTML as a title
+			$children[] = [
+				"title" => $form->getFieldsHTML($checkbox),
+			];
+		}
+
+		if($a['children']){
+			$children = array_merge($children, $a['children']);
+			unset($a['children']);
+		}
+
+		return Dropdown::generateRootUl([
+			"items" => [[
+				"title" => self::generate($a),
+				"children" => $children,
+				"direction" => $a['direction'],
+			]],
+			"class" => $class,
+			"style" => $parent_style,
+			"script" => $a['script']
 		]);
 	}
 

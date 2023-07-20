@@ -537,6 +537,24 @@ EOF;
 	}
 
 	/**
+	 * Use this method to generate a string that can be used
+	 * to display a message when a table is empty.
+	 *
+	 * @param string $string
+	 *
+	 * @return string
+	 */
+	public static function emptyTableString(string $string): string
+	{
+		return <<<EOF
+<p style="font-size: 85%;font-style: italic;font-weight: 200;margin-top: 0.5rem;">
+	{$string}
+</p>
+EOF;
+
+	}
+
+	/**
 	 * Given a list of filters, will turn them into a checkbox form,
 	 * connected to the on-demand table. When a checkbox is clicked,
 	 * the table is refreshed with the filter.
