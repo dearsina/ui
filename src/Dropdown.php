@@ -97,9 +97,12 @@ class Dropdown {
 		$button_class = str::getAttrTag("class", ["dropdown-item dropdown-toggle", $item['button_class']]);
 		$menu = self::generateUl($item);
 
+		# Add a title attribute if one is set
+		$alt = str::getAttrTag("title", $item['alt']);
+
 		return <<<EOF
 <div{$class}{$style}>
-  <button{$button_class} type="button" data-bs-toggle="dropdown" aria-expanded="false">
+  <button{$button_class}{$alt} type="button" data-bs-toggle="dropdown" aria-expanded="false">
     {$icon}{$title}
   </button>
   {$menu}
