@@ -33,10 +33,6 @@ abstract class Prototype extends \App\Common\Prototype {
 			"close_md",
 		];
 
-		if($rel_table){
-			$id = $id ?: "modal-all-{$rel_table}";
-		}
-
 		$modal = new Modal([
 			"id" => $id,
 			"size" => $size,
@@ -86,10 +82,6 @@ abstract class Prototype extends \App\Common\Prototype {
 
 		if(!$fields = $fields ?: $field_class::{$method}($a['vars'])){
 			throw new \Exception("No form fields were found running the <code>{$field_class}::{$method}</code> class method.");
-		}
-
-		if($rel_table){
-			$id = $id ?: "modal-new-{$rel_table}";
 		}
 
 		$form = new Form([
@@ -155,10 +147,6 @@ abstract class Prototype extends \App\Common\Prototype {
 		[$field_class, $method] = $this->getFieldClassAndMethod($rel_table);
 
 		$fields = $field_class::{$method}($$rel_table);
-
-		if($rel_table){
-			$id = $id ?: "modal-edit-{$rel_table}";
-		}
 
 		$form = new Form([
 			"action" => "update",

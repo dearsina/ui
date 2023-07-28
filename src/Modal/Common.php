@@ -20,7 +20,6 @@ abstract class Common extends \App\Common\Common {
 		extract($a);
 
 		$modal = new \App\UI\Modal\Modal([
-			"id" => "modal-all_{$rel_table}",
 			"size" => $size,
 			"icon" => Icon::get($rel_table),
 			"header" => str::title("All ".str::pluralise($rel_table)),
@@ -77,7 +76,6 @@ abstract class Common extends \App\Common\Common {
 		]);
 
 		$modal = new \App\UI\Modal\Modal([
-			"id" => "modal-new_{$rel_table}",
 			"size" => $size,
 			"header" => [
 				"icon" => Icon::get("new"),
@@ -124,7 +122,6 @@ abstract class Common extends \App\Common\Common {
 		]);
 
 		$modal = new \App\UI\Modal\Modal([
-			"id" => "modal-edit_{$rel_table}",
 			"size" => $size,
 			"icon" => Icon::get("edit"),
 			"header" => str::title("Edit {$rel_table}"),

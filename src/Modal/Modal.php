@@ -75,36 +75,79 @@ class Modal extends \App\Common\Prototype {
 	 * @param array|NULL $a
 	 *
 	 */
-	function __construct($a = NULL)
+	function __construct(?array $a = NULL)
 	{
 		parent::__construct();
 
+		# If nothing is passed, just set the modal ID
 		if(!is_array($a)){
 			$this->setId();
 			return true;
 		}
 
+		# Set the attributes
 		$this->setAttr($a);
 
 		return true;
 	}
 
 	/**
-	 * Generate an ID.
-	 * If one is given, use that.
+	 * Set an ID for the modal.
 	 *
-	 * @param bool|string $id
+	 * If the ID has been given explicitly, use that.
+	 * Otherwise, generate an id based on the calling class:
+	 * modal-[class]-[function]
+	 *
+	 * Each modal must have an ID.
+	 *
+	 * @param null     $id
+	 * @param int|null $n The steps back to take in the debug trace to find the calling class
 	 *
 	 * @return bool
 	 */
-	public function setId($id = NULL)
+	public function setId($id = NULL, ?int $n = 3): void
 	{
+		# If an ID has been explicitly set, use that
+		if($id){
+			$this->id = $id;
+			return;
+		}
+
+		# If the ID has explicitly been set to false, don't use an ID
 		if($id === false){
 			$this->id = false;
-			return true;
+			return;
 		}
-		$this->id = $id ?: str::id("modal");
-		return $this->id;
+
+		# Otherwise, generate an ID based on who called the modal
+		$trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, $n + 1);
+
+		# If the modal was called from a prototype, skip that level
+		if($trace[$n]['class'] == "App\\UI\\Modal\\Prototype"){
+			$n++;
+		}
+
+		# If for some reason there isn't a class name, just use a generic ID
+		if(!$full_class_name = $trace[$n]['class']){
+			$this->id = $id ?: str::id("modal");
+			return;
+		}
+
+		# Get the class name, ignore the Modal class name
+		$class_name_parts = explode("\\", $full_class_name);
+		$class_name = array_pop($class_name_parts);
+		if($class_name == "Modal"){
+			$class_name = array_pop($class_name_parts);
+		}
+
+		# Get the function name
+		$function = $trace[$n]['function'];
+
+		# Build the ID
+		$id_parts[] = "modal";
+		$id_parts[] = str::camelToSnakeCase($class_name, "-");
+		$id_parts[] = str::camelToSnakeCase($function, "-");
+		$this->id = implode("-", $id_parts);
 	}
 
 	/**
@@ -527,13 +570,16 @@ EOF;
 	/**
 	 * Return the ID.
 	 *
-	 * @param bool $as_tag If set to TRUE return the ID as a HTML tag.
+	 * @param bool $as_tag If set to TRUE return the ID as an HTML tag.
 	 *
 	 * @return bool|string
 	 */
 	private function getId($as_tag = NULL)
 	{
-		$this->id = $this->id ?: $this->setId();
+		if(!$this->id && $this->id !== false){
+			$this->setId();
+		}
+
 		if($as_tag){
 			return str::getAttrTag("id", $this->id);
 		}

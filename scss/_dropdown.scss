@@ -1,4 +1,23 @@
 /**
+ * Undo some Bootstrap defaults.
+ */
+.card-header button.dropdown-item.dropdown-toggle
+{
+  padding : 0;
+}
+// With one exception
+.dropend > .dropdown-item
+{
+  padding: var(--bs-dropdown-item-padding-y) var(--bs-dropdown-item-padding-x) !important;
+}
+
+.card-header button.dropdown-item.dropdown-toggle:hover,
+.card-header button.dropdown-item.dropdown-toggle:focus
+{
+  background-color : unset;
+}
+
+/**
  * Ensure dropdown buttons float right when told to,
  * and are aligned to the other non-dropdown buttons.
  */
@@ -287,18 +306,4 @@ ul:not(.navbar-nav) > li > .dropdown-item > span
 {
   background : map-get($theme-colors, "primary");
   color      : white !important;
-}
-
-/**
- * Undo some Bootstrap defaults.
- */
-.card-header button.dropdown-item.dropdown-toggle
-{
-  padding : 0;
-}
-
-.card-header button.dropdown-item.dropdown-toggle:hover,
-.card-header button.dropdown-item.dropdown-toggle:focus
-{
-  background-color : unset;
 }
