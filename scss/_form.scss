@@ -203,6 +203,14 @@ label i.fa-fw:first-of-type
 }
 
 /**
+ * Show the entire select2 dropdown value.
+ */
+.select2-selection__rendered > div > div {
+    white-space: normal;
+}
+
+
+/**
  * For when form fields are to have
  * a monospace font.
  */
