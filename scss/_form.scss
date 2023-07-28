@@ -611,6 +611,28 @@ textarea.monospace
 }
 
 /**
+ * When a marker modal is open, makes any text
+ * behind it blurry but still legible.
+ */
+.trumbowyg-box-blur .trumbowyg-editor *, .trumbowyg-box-blur .trumbowyg-editor::before {
+  color: unset !important;
+  text-shadow: unset;
+  filter: blur(.5px);
+  opacity: .75;
+}
+
+/**
+ * Makes the marker text legible when a
+ * modal is opened on top of it.
+ */
+.trumbowyg-box-blur .trumbowyg-editor input
+{
+  color: white !important;
+}
+
+
+
+/**
  * Add some styles to the Picker element
  * to make it conform to the rest of the
  * application.
