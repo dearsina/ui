@@ -151,6 +151,9 @@ form .btn i
    */
   z-index: 0;
   // Set to zero allow buttons from the body to hover *over* buttons in the footer
+
+  align-self: center;
+  // Will position the buttons in the vertical middle of the footer
 }
 
 .card .btn-float-right .btn,
@@ -161,6 +164,11 @@ form .btn i
   float: right;
   // We've removed the important flag, not sure if it's necessary
   margin: .25rem 0 .25rem .5rem;
+}
+
+// Bootstrap override for split buttons
+.btn-group > .btn:not(:first-child) {
+  margin-left: -0.5px !important;
 }
 
 .btn-float-right > .dropdown,
@@ -224,6 +232,7 @@ form .btn i
   margin-left: 0 !important;
 }
 
+
 // Give padding to each item in the menu
 ul.dropdown-menu > li > * {
   //padding: 0.3rem 1rem;
@@ -265,7 +274,7 @@ ul.dropdown-menu > li a:hover {
  * Make the disabled wrapper float right if it's placed inside a
  * btn-float-right div.
  */
-.btn-float-right .disabled-wrapper
+.btn-float-right > .disabled-wrapper
 {
   float: right;
 }
