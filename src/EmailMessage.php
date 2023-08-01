@@ -88,7 +88,7 @@ class EmailMessage extends Prototype {
 
 		if($format['subscription_id'] && $format['logo_id']){
 			$azure = new Azure();
-			$format['logo_src'] = $azure->getURL($format['subscription_id'], $format['logo_id']);
+			$format['logo_src'] = $azure->getURL($format['subscription_id'], $format['logo_id'], "logo.png");
 		}
 
 		$this->format = $format;
