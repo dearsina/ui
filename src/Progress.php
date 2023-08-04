@@ -102,6 +102,35 @@ EOF;
 		]);
 	}
 
+	static function updateTotalCount(string $id, int $total_count, ?array $recipients = NULL): void
+	{
+		Output::getInstance()->function("updateTotalCount", [
+			"id" => $id,
+			"total_count" => $total_count,
+		], $recipients);
+	}
+
+	/**
+	 * @param mixed      $id_or_array Can be just the progress ID, or an array of options.
+	 * @param array|null $recipients
+	 *
+	 * @return void
+	 */
+	static function updateCountByOne($id_or_array, ?array $recipients = NULL): void
+	{
+		if(!is_array($id_or_array)){
+			$a = [
+				"id" => $id_or_array,
+			];
+		}
+
+		else {
+			$a = $id_or_array;
+		}
+
+		Output::getInstance()->function("updateCountByOne", $a, $recipients);
+	}
+
 	/**
 	 * A more complete way of building out a progress bar.
 	 *
@@ -142,14 +171,14 @@ EOF;
 				"basic" => true,
 				"colour" => "danger",
 				"icon" => "times",
-				"onClick" => "ajaxCall(".json_encode($kill).");",
+				"onClick" => "ajaxCall(" . json_encode($kill) . ");",
 				"style" => [
 					"float" => "right",
 					"margin-left" => "1rem",
 					"margin-top" => "-3px",
 				],
 				"alt" => "Cancel",
-				"approve" => true
+				"approve" => true,
 			]);
 		}
 
