@@ -132,6 +132,27 @@ EOF;
 	}
 
 	/**
+	 * @param mixed      $id_or_array Can be just the progress ID, or an array of options.
+	 * @param array|null $recipients
+	 *
+	 * @return void
+	 */
+	static function stopProgressBar($id_or_array, ?array $recipients = NULL): void
+	{
+		if(!is_array($id_or_array)){
+			$a = [
+				"id" => $id_or_array,
+			];
+		}
+
+		else {
+			$a = $id_or_array;
+		}
+
+		Output::getInstance()->function("stopProgressBar", $a, $recipients);
+	}
+
+	/**
 	 * A more complete way of building out a progress bar.
 	 *
 	 * @param string            $id
