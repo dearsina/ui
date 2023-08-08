@@ -15,7 +15,7 @@ class Select extends Field implements FieldInterface {
 	/**
 	 * @inheritDoc
 	 */
-	public static function generateHTML (array $a)
+	public static function generateHTML(array $a)
 	{
 		extract($a);
 
@@ -60,6 +60,13 @@ class Select extends Field implements FieldInterface {
 		# Description
 		$desc = self::getDesc($desc);
 
+		# Other
+		$other = self::getOther($a);
+
+		# Name
+		$name = self::otherValueSelected($a) ? NULL : $name;
+		// If an "other" value is selected, remove the name from the main select
+
 		# Settings
 		$data = self::getSelectData($a);
 
@@ -82,12 +89,96 @@ class Select extends Field implements FieldInterface {
 	{$options_html}
 	</select>
 	{$desc}
+	{$other}
 </div>
 {$script}
 EOF;
 	}
 
-	private static function getSelectData (array &$a): string
+	private static function otherValueSelected(array $a): bool
+	{
+		extract($a);
+
+		if(!$other){
+			return false;
+		}
+
+		if($multiple){
+			// Other is not available for multi-select dropdowns
+			return false;
+		}
+
+		# Get the select-options array (formatted)
+		if(!$options_array = self::getOptionsArray($a)){
+			return false;
+		}
+
+		# Get the selected value if it's an "other" value
+		if(strlen($value) && !in_array($value, array_column($options_array, "value"))){
+			//if the selected value is not from one of the dropdown options, it must be the "other" value
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Generate and return the "other" input field
+	 * that will sit right under the select, if required.
+	 *
+	 * @param array $a
+	 *
+	 * @return string|null
+	 */
+	private static function getOther(array $a): ?string
+	{
+		extract($a);
+
+		if(!$other){
+			return NULL;
+		}
+
+		if($multiple){
+			// Other is not available for multi-select dropdowns
+			return NULL;
+		}
+
+		# Get the selected value if it's an "other" value
+		if(self::otherValueSelected($a)){
+			//if the selected value is not from one of the dropdown options, it must be the "other" value
+			$other_value = $value;
+		}
+
+		# If there isn't an "other" value, hide the field
+		else {
+			$grand_parent_class = "d-none";
+			$disabled = true;
+			$name = NULL;
+		}
+
+		# Create the "other" input field array to generate the HTML
+		$other_a = [
+			"id" => "{$id}-other",
+			"name" => $name,
+			"grand_parent_class" => $grand_parent_class,
+			"grand_parent_style" => [
+				"margin-top" => "0.5rem",
+				"width" => "100%",
+			],
+			"label" => false,
+			"placeholder" => false,
+			"pre" => $other,
+			"value" => $other_value,
+			"required" => "As you've selected <i>{$other}</i>, you must enter a value here.",
+			// "Other" input fields are always required (otherwise, why select "other"?)
+			"disabled" => $disabled,
+		];
+
+		# Return the HTML
+		return Input::getHTML($other_a);
+	}
+
+	private static function getSelectData(array &$a): string
 	{
 		extract($a);
 		$class_array = str::getAttrArray($class, "select2js", $only_class);
@@ -101,18 +192,19 @@ EOF;
 		if($tokenize){
 			$settings['tags'] = true;
 			if(is_string($tokenize)){
-				switch($tokenize){
+				switch($tokenize) {
 				case 'filename':
 					$settings['createTag'] = "createTagFileName";
 					break;
 				}
 			}
 		}
-		
-		return str::getDataAttr(array_merge($a['data'] ?:[], [
+
+		return str::getDataAttr(array_merge($a['data'] ?: [], [
+			"other" => $other,
 			"settings" => $settings,
 			"parent" => $parent,
-			"onChange" => self::getOnChange($a)
+			"onChange" => self::getOnChange($a),
 		]));
 	}
 
@@ -124,19 +216,19 @@ EOF;
 	 *
 	 * @return bool|string
 	 */
-	private static function getOptionsHTML (array &$a): ?string
+	private static function getOptionsHTML(array &$a): ?string
 	{
 		extract($a);
 
 		# Get the options array (formatted)
 		if(!$options_array = self::getOptionsArray($a)){
-			return null;
+			return NULL;
 		}
 
 		# Add a blank option if needed
-		if (!$multiple && !array_filter($options_array ?:[], function ($option){
+		if(!$multiple && !array_filter($options_array ?: [], function($option){
 				return $option['selected'];
-		})){
+			})){
 			/**
 			 * If no options match on the value,
 			 * and it's _not_ a multiple situation,
@@ -149,14 +241,14 @@ EOF;
 			$options_array[] = [
 				"value" => "",
 				"title" => "",
-				"selected" => true
+				"selected" => true,
 			];
 		}
 
-		foreach ($options_array as $option) {
+		foreach($options_array as $option){
 			$data = str::getDataAttr(array_merge([
-				"onChange" => self::getOnChange($option)
-			], $option['data'] ?:[]));
+				"onChange" => self::getOnChange($option),
+			], $option['data'] ?: []));
 
 			if($option['script']){
 				$a['script'] .= $option['script'];
@@ -189,7 +281,7 @@ EOF;
 	 *
 	 * @return array|bool
 	 */
-	private static function getOptionsArray ($a): ?array
+	private static function getOptionsArray($a): ?array
 	{
 		extract($a);
 
@@ -207,17 +299,25 @@ EOF;
 		}
 
 		# If there are no options, pencils down
-		if (!is_array($options)) {
+		if(!is_array($options)){
 			return NULL;
 		}
 
 		# Set the value(s) as an array
-		$value_array = is_array($value) ? $value : [$value];
+		$value_array = array_filter(is_array($value) ? $value : [$value]);
 
 		# Go through each option, format the data and add it to the array
-		foreach ($options as $option_value => $option) {
+		foreach($options as $option_value => $option){
 			# Check to see if the option is selected or not
-			$selected = in_array($option_value, $value_array ?:[]);
+			$selected = in_array($option_value, $value_array ?: []);
+
+			if(!$multiple && $option_value == $other){
+				# Check if the $value_array contains any values that aren't in the $options array
+				if($value_array && array_diff($value_array ?: [], array_keys($options))){
+					# If so, set the $other value as selected
+					$selected = true;
+				}
+			}
 
 			# If the option is an array
 			if(is_array($option)){
