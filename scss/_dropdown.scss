@@ -5,10 +5,11 @@
 {
   padding : 0;
 }
+
 // With one exception
 .nav-button .dropend > .dropdown-item
 {
-  padding: var(--bs-dropdown-item-padding-y) var(--bs-dropdown-item-padding-x) !important;
+  padding : var(--bs-dropdown-item-padding-y) var(--bs-dropdown-item-padding-x) !important;
 }
 
 .card-header button.dropdown-item.dropdown-toggle:hover,
@@ -306,4 +307,21 @@ ul:not(.navbar-nav) > li > .dropdown-item > span
 {
   background : map-get($theme-colors, "primary");
   color      : white !important;
+}
+
+/**
+ * To ensure that the first and last items are always rounded.
+ */
+ul.dropdown-menu > li:first-child > a,
+ul.dropdown-menu > li:first-child > div > button
+{
+  border-top-right-radius : var(--bs-border-radius);
+  border-top-left-radius  : var(--bs-border-radius);
+}
+
+ul.dropdown-menu > li:last-child > a,
+ul.dropdown-menu > li:last-child > div > button
+{
+  border-bottom-right-radius : var(--bs-border-radius);
+  border-bottom-left-radius  : var(--bs-border-radius);
 }
