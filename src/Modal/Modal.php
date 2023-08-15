@@ -120,12 +120,13 @@ class Modal extends \App\Common\Prototype {
 		}
 
 		# Otherwise, generate an ID based on who called the modal
-		$trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, $n + 1);
+		$trace = debug_backtrace(0, $n + 1);
 
-		# If the modal was called from a prototype, use the filename as a faux class name
+		# If the modal was called from a prototype, use the arguments instead
 		if($trace[$n]['class'] == "App\\UI\\Modal\\Prototype"){
-			# Convert the file path to a class path and remove the .php file suffix
-			$trace[$n]['class'] = str_replace(".php", "", str_replace("/", "\\", $trace[$n]['file']));
+			$vars = $trace[$n]['args'][0];
+			$trace[$n]['class'] = str::getClassCase($vars['rel_table']);
+			$trace[$n]['function'] = str::getClassCase($vars['action']);
 		}
 
 		# If for some reason there still isn't a class name, just use a generic ID
