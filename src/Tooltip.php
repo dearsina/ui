@@ -15,7 +15,7 @@ class Tooltip {
 	 * Tooltip::generateHtmlWrapper([
 	 *    "title" => $service['desc'], //The tooltip itself
 	 *    "direction" => "top",
-	 * 	  "tag" => "span",
+	 *      "tag" => "span",
 	 *    "html" => $html, //The HTML that will trigger the tooltip on hover
 	 *    "style" => [
 	 *        "cursor" => "default"
@@ -46,6 +46,60 @@ class Tooltip {
 		$tag = $tag ?: "span";
 
 		return "<{$tag}{$class}{$style}{$data}{$title}>{$html}</{$tag}>";
+	}
+
+	/**
+	 * Generate a tooltip attached to an info icon.
+	 *
+	 * <code>
+	 * Tooltip::i("Tooltip");
+	 * </code>
+	 *
+	 * or
+	 *
+	 * <code>
+	 * Tooltip::i([
+	 *     "title" => "Tooltip",
+	 *     "icon" => [
+	 *         "name" => "info-circle",
+	 *         "colour" => "blue",
+	 *         "size" => "sm",
+	 *         "style" => [
+	 *             "margin-left" => "0.25rem",
+	 *         ],
+	 *     ],
+	 * ]);
+	 * </code>
+	 *
+	 * @param mixed|NULL $a
+	 *
+	 * @return string
+	 */
+	public static function i($a): ?string
+	{
+		if(!$a){
+			return NULL;
+		}
+
+		if(!is_array($a)){
+			$a = [
+				"title" => $a,
+			];
+		}
+
+		$icon_default = [
+			"name" => "info-circle",
+			"colour" => "blue",
+			"size" => "sm",
+			"style" => [
+				"cursor" => "help",
+				"margin-left" => "0.25rem",
+			],
+		];
+
+		$a['html'] = Icon::generate(array_merge($icon_default, $a['icon'] ?: []));
+
+		return self::generateHtmlWrapper($a);
 	}
 
 	/**
