@@ -86,7 +86,7 @@ class Table {
 
 		$grid = new Grid($grid);
 
-		# Header row (if it's not be ignored)
+		# Header row (if it's not to be ignored)
 		if(!$ignore_header){
 			$row = $rows[0]['html'] ?: $rows[0];
 			$grid->set([
@@ -183,16 +183,18 @@ EOF;
 
 	/**
 	 * Generates the (optional) header row.
+	 * Special header keys can be added to the first row of a table to be used
+	 * in a header.
 	 *
 	 * @param array|NULL $row
 	 * @param array      $options
 	 *
 	 * @return array
 	 */
-	private static function generateHeaderRow(?array $row, array $options)
+	private static function generateHeaderRow(?array $row, array $options): ?array
 	{
 		if(!is_array($row)){
-			return [];
+			return NULL;
 		}
 
 		extract($options);
@@ -221,8 +223,11 @@ EOF;
 				"html" => $key,
 				"sm" => $col['sm'],
 				"class" => $header_class,
-				"style" => $col['header_style'],
 				"data" => $data,
+				"style" => $col['header_style'],
+				"icon" => $col['header_icon'],
+				"buttons" => $col['header_buttons'],
+				"button" => $col['header_button']
 			];
 		}
 		return $header_cols;
