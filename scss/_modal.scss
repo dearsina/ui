@@ -32,7 +32,8 @@
 .modal-footer
 {
   padding : 1rem 0;
-  border  : none;
+  //border  : none;
+  // Part of Tabs 2.0
 }
 
 /**
@@ -67,6 +68,15 @@
 {
   padding    : 0.7rem;
   background : $header-footer-bg;
+  border-radius: var(--bs-modal-border-radius);
+    height: 100%;
+  // Part of Tabs 2.0
+}
+
+.modal-tabs > .row
+{
+  height: calc(100% - 45px);
+  // Part of Tabs 2.0
 }
 
 /**
@@ -149,6 +159,23 @@
 .modal-footer > *
 {
   margin : 0.25rem 0;
+}
+
+/**
+ * The content sits behind the tabs.
+ * This will give it the same background color.
+ */
+.modal-tab > .modal-content {
+  background: $header-footer-bg;
+}
+
+.modal-tab .modal-footer {
+  margin: -14px 16px 11px 0;
+}
+.modal-tab .modal-footer > .container {
+  margin-top: 12px;
+  margin-bottom: -12px;
+  margin-right: -27px;
 }
 
 /**

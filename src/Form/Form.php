@@ -445,7 +445,7 @@ class Form {
 			$buttons_html = <<<EOF
 	</div>
 </div>
-<div class="modal-footer" style="padding:12px 4px 8px 0;"{$id}>
+<div class="modal-footer"{$id}>
 	<div class="container">
 		<div class="footer-content"></div>
 		<div class="btn-float-right" style="width: 100%;">

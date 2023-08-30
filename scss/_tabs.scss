@@ -125,6 +125,8 @@
 .modal-tab .tab-pane.active
 {
   height : calc(100% - 40px);
+  overflow: auto;
+  // Part of Tabs 2.0
 }
 
 .modal-tab .modal-body > form
@@ -140,7 +142,8 @@
   overflow: hidden; // Could be controversial, but it's the only way to avoid double scrollbars
 }
 
-.modal-tab .modal-body > form > div.row
+.modal-tab .modal-body > form > div.row,
+.modal-tab .modal-body > form > div.row > .col-sm
 {
   height : 100%;
 }

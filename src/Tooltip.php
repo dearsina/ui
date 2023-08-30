@@ -14,7 +14,7 @@ class Tooltip {
 	 * <code>
 	 * Tooltip::generateHtmlWrapper([
 	 *    "title" => $service['desc'], //The tooltip itself
-	 *    "direction" => "top",
+	 *    "placement" => "top",
 	 *      "tag" => "span",
 	 *    "html" => $html, //The HTML that will trigger the tooltip on hover
 	 *    "style" => [
@@ -34,7 +34,7 @@ class Tooltip {
 		$title = str::getAttrTag("title", str_replace('"', '\"', $title));
 
 		$data = [
-			"bs-placement" => $direction ?: "top",
+			"bs-placement" => $placement ?: "top",
 		];
 
 		$data = str::getDataAttr($data);

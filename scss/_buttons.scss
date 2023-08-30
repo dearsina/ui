@@ -102,9 +102,13 @@ a.disabled-waiting{
 .modal-header .btn-float-right{
   margin: -0.5rem 0 0.5rem 0;
 }
-.modal-footer .btn-float-right
+.modal-dialog:not(.modal-tab) .modal-footer div.btn-float-right
 {
   margin: -0.5rem 0 0 0;
+}
+.modal-dialog.modal-tab .modal-footer .btn-float-right
+{
+  margin: -0.5rem 1rem 0 0;
 }
 .modal-header .btn-float-right .btn,
 .modal-footer .btn-float-right .btn

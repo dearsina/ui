@@ -3,6 +3,7 @@
 namespace App\UI\Tab;
 
 use App\Common\Exception\BadRequest;
+use App\Common\Img;
 use App\Common\str;
 use App\UI\Badge;
 use App\UI\Card\Card;
@@ -119,9 +120,32 @@ class Tab {
 		else {
 			$class[] = "nav-title";
 		}
+
+		# If an image array or src has been provided
+		if($img){
+			if(!is_array($img)){
+				$img = [
+					"src" => $img,
+					"style" => [
+						"max-width" => "30px",
+						"max-height" => "20px",
+					],
+				];
+			}
+
+			# Create the image tag itself
+			$img = Img::generate($img);
+
+			# The image tag wrapper is positioned absolutely
+			$img = "<div style=\"max-height:20px;max-width:30px;position:absolute;\">{$img}</div>";
+
+			# So we need to add a spacer to the right of the image
+			$img .= "<div style=\"width:37.5px;height:18px;\"></div>";
+		}
+
 		$class = str::getAttrTag("class", $class);
 
-		return "{$icon} <div{$class}>{$title}{$html}{$badge}</div>{$dismissible}";
+		return "{$icon} <div{$class}>{$img}{$title}{$html}{$badge}</div>{$dismissible}";
 	}
 
 	public function getTabHeaderHTML(array $tab): string
