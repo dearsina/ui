@@ -143,7 +143,7 @@ class Tooltip {
 		$a['class'][] = "tooltip-trigger";
 
 		# Set the tooltip as a data attribute
-		$a['data']['bs-original-title'] = $tooltip['title'];
+		$a['data']['bs-original-title'] = htmlentities($tooltip['title']);
 
 		# Settings
 		$a['data']['bs-toggle'] = "tooltip";
