@@ -39,10 +39,10 @@ class ListGroup {
 	 *    "flush" => true,
 	 *    "horizontal" => true,
 	 *    "orderable" => [
-	 *		"rel_table" => "doc_type_col_string",
-	 *		"limiting_key" => "doc_type_col_id",
-	 *		"limiting_val" => $doc_type_col_id,
-	 * 	]
+	 *        "rel_table" => "doc_type_col_string",
+	 *        "limiting_key" => "doc_type_col_id",
+	 *        "limiting_val" => $doc_type_col_id,
+	 *    ]
 	 * ]);
 	 * </code>
 	 *
@@ -274,6 +274,12 @@ EOF;
 
 	}
 
+	/**
+	 * @param string|array|null $a
+	 *
+	 * @return string|null
+	 * @throws \Exception
+	 */
 	private static function generateTitle($a): ?string
 	{
 		if(!$a){
@@ -281,6 +287,7 @@ EOF;
 		}
 
 		$a = is_array($a) ? $a : ["title" => $a];
+		Tooltip::generate($a);
 		extract($a);
 
 		$id = str::getAttrTag("id", $id);
@@ -293,15 +300,31 @@ EOF;
 		$class_array = str::getAttrArray($class, "list-group-item-title", $only_class);
 		$class = str::getAttrTag("class", $class_array);
 		$style = str::getAttrTag("style", $style);
-
+		$parent_alt = str::getAttrTag("title", $parent_alt);
+		$alt = str::getAttrTag("title", $alt);
+		$data = str::getDataAttr($data);
 
 		if($href = href::generate($a)){
-			return "<div{$parent_class}{$parent_style}><div{$id}{$class}{$style}><a{$href}>{$icon}{$title}</a>{$badge}{$button}</div></div>";
+			$href_start = "<a{$href}>";
+			$href_end = "</a>";
 		}
 
-		return "<div{$parent_class}{$parent_style}><div{$id}{$class}{$style}{$href}>{$icon}{$title}{$badge}{$button}</div></div>";
+		return <<<EOF
+<div{$parent_class}{$parent_style}{$parent_alt}>
+	<div{$id}{$class}{$style}{$alt}{$data}>
+		{$href_start}{$icon}{$title}{$href_end}{$badge}{$button}
+	</div>
+</div>
+EOF;
+
 	}
 
+	/**
+	 * @param string|array|null $a
+	 *
+	 * @return string|null
+	 * @throws \Exception
+	 */
 	private static function generateSubtitle($a): ?string
 	{
 		if(!$a){
@@ -309,6 +332,7 @@ EOF;
 		}
 
 		$a = is_array($a) ? $a : ["title" => $a];
+		Tooltip::generate($a);
 		extract($a);
 
 		$id = str::getAttrTag("id", $id);
@@ -321,13 +345,22 @@ EOF;
 		$class_array = str::getAttrArray($class, "list-group-item-subtitle", $only_class);
 		$class = str::getAttrTag("class", $class_array);
 		$style = str::getAttrTag("style", $style);
-
+		$parent_alt = str::getAttrTag("title", $parent_alt);
+		$alt = str::getAttrTag("title", $alt);
+		$data = str::getDataAttr($data);
 
 		if($href = href::generate($a)){
-			return "<div{$parent_class}{$parent_style}><h5{$id}{$class}{$style}><a{$href}>{$icon}{$title}</a>{$badge}{$button}</h5></div>";
+			$href_start = "<a{$href}>";
+			$href_end = "</a>";
 		}
 
-		return "<div{$parent_class}{$parent_style}><div{$id}{$class}{$style}{$href}>{$icon}{$title}{$badge}{$button}</div></div>";
+		return <<<EOF
+<div{$parent_class}{$parent_style}{$parent_alt}>
+	<h5{$id}{$class}{$style}{$alt}{$data}>
+		{$href_start}{$icon}{$title}{$href_end}{$badge}{$button}
+	</h5>
+</div>
+EOF;
 	}
 
 	private static function generateBody($a): ?string
