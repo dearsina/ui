@@ -317,7 +317,7 @@ class Field {
 		}
 
 		foreach($a['validation'] as $rule => $val){
-			if(is_array($val)){
+			if(str::isAssociativeArray($val)){
 				$a['data']["rule-{$rule}"] = $val['rule'];
 				$a['data']["msg-{$rule}"] = $val['msg'];
 			}

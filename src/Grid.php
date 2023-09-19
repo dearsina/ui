@@ -214,7 +214,7 @@ class Grid {
 				$tag = "a";
 				if($buttons){
 					//If both hash and a button are found in the same cell
-					$html .= "<div{$class_tag}{$id_tag}{$style_tag}{$data_value}{$data}{$title}><a{$href}>{$icon}{$col_html}{$copy}</a>{$buttons}</div>";
+					$html .= "<div{$class_tag}{$id_tag}{$style_tag}{$data_value}{$data}{$title}>{$buttons}<a{$href}>{$icon}{$col_html}{$copy}</a></div>";
 					//Breaks down the tag into two different tags, one remains a div with all the attributes, the other a child a tag with only the href attr
 					continue;
 				}
