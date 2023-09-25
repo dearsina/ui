@@ -40,6 +40,15 @@
 }
 
 /**
+ * Hide the shadow when printing.
+ */
+@media print {
+    .card {
+        box-shadow: none;
+    }
+}
+
+/**
  * Exceptions to the card box shadow
  */
 .grid-stack .card

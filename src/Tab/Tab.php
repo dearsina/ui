@@ -128,7 +128,7 @@ class Tab {
 					"src" => $img,
 					"style" => [
 						"max-width" => "30px",
-						"max-height" => "20px",
+						"max-height" => "25px",
 					],
 				];
 			}
@@ -139,8 +139,10 @@ class Tab {
 			# The image tag wrapper is positioned absolutely
 			$img = "<div style=\"max-height:20px;max-width:30px;position:absolute;\">{$img}</div>";
 
+			$img_width = $img_width ?: 37.5;
+
 			# So we need to add a spacer to the right of the image
-			$img .= "<div style=\"width:37.5px;height:18px;\"></div>";
+			$img .= "<div style=\"width:{$img_width}px;height:18px;\"></div>";
 		}
 
 		$class = str::getAttrTag("class", $class);
