@@ -43,15 +43,13 @@ class Horizontal {
 	private function getLevel1HTML(): ?string
 	{
 		$brand = $this->getBrandHtml($this->levels[1]['title'], "navbar-level1-logo");
-		if(!$items = Dropdown::generateRootUl($this->levels[1]['items'])){
-			return <<<EOF
-<div class="nav-scroller" id="navbar-level1">
-  <nav class="nav">
-	{$brand}
-  </nav>
-</div>
+		if($items = Dropdown::generateRootUl($this->levels[1]['items'])){
+			$items = <<<EOF
+		<button id="navbar-level2-toggle-button" class="navbar-toggler p-0 border-0" type="button">
+			<i class="fa-light fa-bars fa-fw" aria-hidden="true"></i>
+		</button>
+		{$items}
 EOF;
-
 		}
 
 		return <<<EOF
@@ -59,9 +57,6 @@ EOF;
   <nav class="nav">
   	{$brand}
 	<div id="navbar-level1-items">
-		<button id="navbar-level2-toggle-button" class="navbar-toggler p-0 border-0" type="button">
-			<i class="fa-light fa-bars fa-fw" aria-hidden="true"></i>
-		</button>
 		{$items}
 	</div>
   </nav>
