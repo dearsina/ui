@@ -40,10 +40,12 @@ class Horizontal {
 	 *
 	 * @return string
 	 */
-	private function getLevel1HTML()
+	private function getLevel1HTML(): ?string
 	{
 		$brand = $this->getBrandHtml($this->levels[1]['title'], "navbar-level1-logo");
-		$items = Dropdown::generateRootUl($this->levels[1]['items']);
+		if(!$items = Dropdown::generateRootUl($this->levels[1]['items'])){
+			return NULL;
+		}
 
 		return <<<EOF
 <div class="nav-scroller" id="navbar-level1">
