@@ -273,11 +273,11 @@ EOF;
 		# Badges
 		$badge = Badge::generate($item['badge']);
 
-		# Alt
-		$alt = str::getAttrTag("title", $item['alt']);
-
 		# Add a tooltip to the button
 		Tooltip::generate($item);
+
+		# Alt
+		$alt = str::getAttrTag("title", $item['alt']);
 
 		# Disabled element
 		if($item['disabled']){
