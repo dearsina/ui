@@ -245,7 +245,9 @@ ul.dropdown-menu > li > * {
 }
 
 // Give space for each icon
-ul.dropdown-menu > li > * > i:first-child {
+ul.dropdown-menu > li > * > i:first-child,
+ul.dropdown-menu > li > * > * > i:first-child
+{
   margin-right: 0.75rem;
 }
 
