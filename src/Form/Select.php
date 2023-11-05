@@ -194,6 +194,7 @@ EOF;
 			if(is_string($tokenize)){
 				switch($tokenize) {
 				case 'filename':
+				case 'folder':
 					$settings['createTag'] = "createTagFileName";
 					break;
 				}
