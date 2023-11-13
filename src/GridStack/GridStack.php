@@ -79,8 +79,8 @@ class GridStack {
 			$col_x = $field['x'];
 
 			# X is the max width of this column
-			if($field['x'] + $field['width'] > $x){
-				$x = $field['x'] + $field['width'];
+			if($field['x'] + $field['w'] > $x){
+				$x = $field['x'] + $field['w'];
 			}
 
 			# Feed the first field into the col_fields array
@@ -134,8 +134,8 @@ class GridStack {
 			}
 
 			# If this next field is wider than the previous, expand the right-most point
-			if($field['x'] + $field['width'] > $x){
-				$x = $field['x'] + $field['width'];
+			if($field['x'] + $field['w'] > $x){
+				$x = $field['x'] + $field['w'];
 			}
 
 			# Feed this field into the col_fields array
@@ -158,7 +158,7 @@ class GridStack {
 		foreach($col_fields as $f){
 
 			# Adjust the width to take into account the parent width
-			$f['width'] = round($f['width'] * (12 / $max_width));
+			$f['w'] = round($f['w'] * (12 / $max_width));
 
 			# If there is a gap, insert an empty cell to pad the space
 			if($gap = $f['x'] - $col_x){
@@ -166,7 +166,7 @@ class GridStack {
 				$gap = round($gap * (12 / $max_width));
 
 				# Account for the gap in the width
-				$f['width'] += $gap;
+				$f['w'] += $gap;
 
 				$cells[] = [[
 					"sm" => $gap,

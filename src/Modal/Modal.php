@@ -86,7 +86,7 @@ class Modal extends \App\Common\Prototype {
 		}
 
 		# Set the attributes
-		$this->setAttr($a);
+		$this->setAttributes($a);
 
 		return true;
 	}

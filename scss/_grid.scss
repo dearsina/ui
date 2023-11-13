@@ -113,6 +113,10 @@ $container-max-widths : (
   color: red;
 }
 
+.grid-stack-placeholder > *{
+  border-radius: var(--bs-card-border-radius);
+}
+
 /**
  * So that CSS table columns align with large text.
  * Might have unintended consequences for longer pieces of text.

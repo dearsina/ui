@@ -77,8 +77,7 @@ $(document).ready(function () {
 	var multiple = "$multiple";
 	var prefix = "$prefix";
 	var suffix = "$suffix";
-		
-	$('#{$id}').rangeslider({
+    var settings = {
 	
 		// Feature detection the default is `true`.
 		// Set this to `false` if you want to use
@@ -122,12 +121,24 @@ $(document).ready(function () {
 	
 		// Callback function
 		onSlideEnd: function(position, value) {}
-	});
-	
-	window.setTimeout(function(){
-	    //Slider needs recalculation to fit into a modal
-	    $('#{$id}').rangeslider('update', true);
-	}, 500);
+	}
+    
+	/**
+     * Rangeslider.js
+     * UI for range slider form elements.
+     * @link https://rangeslider.js.org/
+     */
+	loadResources([
+		"https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/2.3.3/rangeslider.min.js",
+		"https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/2.3.3/rangeslider.min.css",
+    ], function() {
+		$('#{$id}').rangeslider();
+		
+		window.setTimeout(function(){
+			//Slider needs recalculation to fit into a modal
+			$('#{$id}').rangeslider('update', true);
+		}, 500);
+    });
 });
 {$script}
 EOF;

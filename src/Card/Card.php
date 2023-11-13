@@ -100,7 +100,7 @@ class Card extends \App\Common\Prototype {
 		}
 
 		Tooltip::generate($a);
-		$this->setAttr($a);
+		$this->setAttributes($a);
 	}
 
 	/**
@@ -656,6 +656,19 @@ EOF;
 		return str::getAttrTag("style", $this->style);
 	}
 
+	private function getAttrTags(): ?string
+	{
+		if(!$this->attr){
+			return NULL;
+		}
+
+		foreach($this->attr as $key => $val){
+			$attr[] = str::getAttrTag($key, $val);
+		}
+
+		return implode(" ", $attr);
+	}
+
 	/**
 	 * Get any data keys.
 	 * This is where draggable/resizable settings are also set.
@@ -752,6 +765,7 @@ EOF;
 	{$this->getDataTag()}
 	{$this->getClassTag()}
 	{$this->getStyleTag()}
+	{$this->getAttrTags()}
 >
 	{$this->getHeaderHTML()}
 	{$this->getImgHTML()}

@@ -612,7 +612,7 @@ EOF;
 	public function getHTML(?array $a = NULL): string
 	{
 		if($a){
-			$this->setAttr($a);
+			$this->setAttributes($a);
 		}
 
 		$html[] = $this->getTop();
