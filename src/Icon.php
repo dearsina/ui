@@ -293,12 +293,17 @@ EOF;
 	 * Get an icon name from the database table icon.
 	 * Will only call the icon table ONCE per request.
 	 *
-	 * @param $rel_table
+	 * @param string $rel_table
 	 *
 	 * @return string
+	 * @throws \Exception
 	 */
-	static function get($rel_table)
+	static function get(?string $rel_table): ?string
 	{
+		if(!$rel_table){
+			return NULL;
+		}
+
 		global $icon;
 		if(!is_array($icon)){
 			$sql = Factory::getInstance();
