@@ -678,6 +678,11 @@ EOF;
 			$modal['backdrop'] = "static";
 		}
 
+		# If an ID hasn't been set, force set one now
+		if(!$this->id){
+			$this->setId();
+		}
+
 		# If there are logged dimensions for this modal for this user, use them
 		Resizable::setDimensions($this->data, $this->id);
 
