@@ -132,7 +132,7 @@ $(document).ready(function () {
 		"https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/2.3.3/rangeslider.min.js",
 		"https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/2.3.3/rangeslider.min.css",
     ], function() {
-		$('#{$id}').rangeslider();
+		$('#{$id}').rangeslider(settings);
 		
 		window.setTimeout(function(){
 			//Slider needs recalculation to fit into a modal
