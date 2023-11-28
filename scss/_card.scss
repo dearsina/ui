@@ -259,7 +259,7 @@ box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 
   padding : 0;
 }
 
-.card-body > *
+.card-body > *:not(.badge)
 {
   width : -webkit-fill-available;
   width : -moz-fill-available;
