@@ -8,6 +8,7 @@ use API\Microsoft\Azure\Azure;
 use App\Common\EmailWrapper\EmailWrapper;
 use App\Common\href;
 use App\Common\Img;
+use App\Common\Log;
 use App\Common\Prototype;
 use App\Common\str;
 
@@ -480,7 +481,7 @@ EOF;
 		# If it's not supplied, get it from the file itself (slow)
 		else {
 			if(!$size = Img::getimagesize($a['src'], true)){
-				$this->log->warning([
+				Log::getInstance()->warning([
 					"message" => "Information about the logo file [<code>{$a['src']}</code>] could no be extracted."
 				]);
 				return NULL;
