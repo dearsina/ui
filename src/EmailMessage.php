@@ -480,7 +480,10 @@ EOF;
 		# If it's not supplied, get it from the file itself (slow)
 		else {
 			if(!$size = Img::getimagesize($a['src'], true)){
-				throw new \Exception("Information about the logo file [<code>{$a['src']}</code>] could no be extracted.");
+				$this->log->warning([
+					"message" => "Information about the logo file [<code>{$a['src']}</code>] could no be extracted."
+				]);
+				return NULL;
 			}
 		}
 
