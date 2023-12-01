@@ -379,6 +379,7 @@ class Form {
 		if(count($this->fields ?: []) == 1 && reset($this->fields)['tabs'] && $this->modal){
 			$this->fields = [[
 				"tabs" => [
+					"id" => reset($this->fields)['id'],
 					"tabs" => reset($this->fields)['tabs'],
 					"class" => "modal-header-draggable",
 				],
