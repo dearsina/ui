@@ -257,6 +257,7 @@ box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 
 .card-items
 {
   padding : 0;
+  max-width: unset;
 }
 
 .card-body > *:not(.badge)
