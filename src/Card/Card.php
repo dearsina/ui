@@ -37,7 +37,7 @@ class Card extends \App\Common\Prototype {
 	public $buttons;
 	public $style;
 	public $data;
-	private ?array $attr = NULL;
+	public ?array $attr = NULL;
 
 	/**
 	 * Create a card
