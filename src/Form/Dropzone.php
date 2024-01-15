@@ -41,19 +41,24 @@ class Dropzone extends Field implements FieldInterface {
         	$parent_style = str::getAttrTag("style", $parent_style_array);
 		}
 
-		# Data (settings)
-		$data = self::getSettings($a);
+		# Set dependency data
+		self::setDependencyData($a);
+
+		# Set the dropzone settings
+		self::setSettings($a);
+
+		$data = str::getDataAttr($a['data']);
 
 		return "<div{$parent_id}{$parent_style}><div{$id}{$data}{$class}{$style}></div>{$desc}</div>";
 	}
 
-	private static function getSettings(array &$a): ?string
+	private static function setSettings(array &$a): void
 	{
         # Icon
         if($a['icon'] !== false){
             //If an icon hasn't been explicitly refused
 
-            $a['settings']['dictDefaultMessage'] .= "<div>".Icon::generate([
+			$a['data']['settings']['dictDefaultMessage'] .= "<div>".Icon::generate([
                     "type" => "light",
                     "name" => $a['icon'] ?: "cloud-arrow-up",
                     "size" => "3x",
@@ -66,11 +71,11 @@ class Dropzone extends Field implements FieldInterface {
         }
 
 		if($a['placeholder']){
-			$a['settings']['dictDefaultMessage'] .= $a['placeholder'];
+			$a['data']['settings']['dictDefaultMessage'] .= $a['placeholder'];
 		}
 
 		# Add a faux-browse button
-		$a['settings']['dictDefaultMessage'] .= "<div>".Button::generate([
+		$a['data']['settings']['dictDefaultMessage'] .= "<div>".Button::generate([
 			"disabled" => true,
 			"title" => "Browse...",
 			"basic" => true,
@@ -84,7 +89,5 @@ class Dropzone extends Field implements FieldInterface {
 				"opacity" => "1",
 			]
 		])."</div>";
-
-		return str::getDataAttr(["settings" => $a['settings']]);
 	}
 }
