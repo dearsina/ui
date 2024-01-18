@@ -226,25 +226,25 @@ EOF;
 			return NULL;
 		}
 
-		# Add a blank option if needed
-		if(!$multiple && !array_filter($options_array ?: [], function($option){
-				return $option['selected'];
-			})){
-			/**
-			 * If no options match on the value,
-			 * and it's _not_ a multiple situation,
-			 * add a blank option that's set as
-			 * selected.
-			 *
-			 * This way, the dropdown defaults to
-			 * the placeholder.
-			 */
-			$options_array[] = [
-				"value" => "",
-				"title" => "",
-				"selected" => true,
-			];
-		}
+//		# Add a blank option if needed
+//		if(!$multiple && !array_filter($options_array ?: [], function($option){
+//				return $option['selected'];
+//			})){
+//			/**
+//			 * If no options match on the value,
+//			 * and it's _not_ a multiple situation,
+//			 * add a blank option that's set as
+//			 * selected.
+//			 *
+//			 * This way, the dropdown defaults to
+//			 * the placeholder.
+//			 */
+//			$options_array[] = [
+//				"value" => "",
+//				"title" => "",
+//				"selected" => true,
+//			];
+//		}
 
 		foreach($options_array as $option){
 			$data = str::getDataAttr(array_merge([
