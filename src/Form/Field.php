@@ -581,11 +581,16 @@ class Field {
 		$id = str::id("function");
 
 		# Append the function to the script key
-		$a['script'] .= <<<EOF
+		$a['script'] .= /** @lang JavaScript */<<<EOF
 function {$id}(e){
+	if($(this).val() === null){
+		return;
+	}
 	{$script}
 }
 EOF;
+		// The onChange function doesn't trigger if the value is null
+
 		# Return the arbitrary function name so that it's added the change listener
 		return $id;
 	}
