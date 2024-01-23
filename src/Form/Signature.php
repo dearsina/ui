@@ -31,7 +31,7 @@ class Signature extends Field implements FieldInterface {
 					],
 					"title" => $title,
 				],
-				"body" => str::newline($desc),
+				"body" => $desc,
 				"row_style" => [
 					"padding-bottom" => "1rem",
 				],
