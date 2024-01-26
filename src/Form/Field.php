@@ -9,6 +9,7 @@ use App\Common\str;
 use App\UI\Badge;
 use App\UI\Button;
 use App\UI\Icon;
+use App\UI\Tooltip;
 
 
 /**
@@ -152,6 +153,8 @@ class Field {
 			$l = [];
 		}
 
+		Tooltip::generate($l);
+
 		# If no icon, title, badge or HTML has been supplied, use the name
 		if(!count(array_intersect(["title", "icon", "html", "badge"], array_keys($l)))){
 			$l['title'] = str::title($name);
@@ -197,7 +200,9 @@ class Field {
 			$toggle_all = "<input type=checkbox class=\"form-check-input checkbox-all\" title=\"Toggle all\">";
 		}
 
-		return "<{$tag}{$href}{$id}{$class}{$style}>{$toggle_all}{$icon}{$title}{$html}{$badge}{$desc}</{$tag}>";
+		$data = str::getDataAttr($l['data']);
+
+		return "<{$tag}{$href}{$id}{$class}{$style}{$data}>{$toggle_all}{$icon}{$title}{$html}{$badge}{$desc}</{$tag}>";
 	}
 
 	/**
@@ -388,6 +393,13 @@ class Field {
 			if(!is_array($condition)){
 				continue;
 			}
+
+			# Make an exception for the settings selector
+			if($selector == "settings"){
+				$a['data']['dependency']['settings'] = $condition;
+				continue;
+			}
+
 			$condition['selector'] = $selector;
 			$a['data']['dependency']['and'][] = $condition;
 		}

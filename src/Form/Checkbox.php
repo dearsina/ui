@@ -249,6 +249,9 @@ EOF;
 		$parent_label = self::getLabel($label, $parent_title, $name, $id, NULL, $all);
 
 		$parent_class = str::getAttrArray($parent_class, "mb-3", $only_parent_class);
+		$parent_style = str::getAttrArray($parent_style, NULL, $only_parent_style);
+		unset($a['parent_class'], $a['parent_style']);
+		// As we're merging the parent class/style with the child class/style, we need to unset them from the child
 
 		if(array_filter($options, function($option){
 			return is_array($option) && $option['type'];
@@ -317,9 +320,10 @@ EOF;
 
 		$parent_script = str::getScriptTag($parent_script);
 		$parent_class = str::getAttrTag("class", $parent_class);
+		$parent_style = str::getAttrTag("style", $parent_style);
 
 		return /** @lang HTML */ <<<EOF
-<div{$parent_class}>
+<div{$parent_class}{$parent_style}>
 	{$parent_label}{$parent_desc}
 	<div>{$options_html}</div>
 </div>

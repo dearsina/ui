@@ -54,6 +54,11 @@ class Dropzone extends Field implements FieldInterface {
 
 	private static function setSettings(array &$a): void
 	{
+		# Copy any settings to the data array
+		if($a['settings']){
+			$a['data']['settings'] = $a['settings'];
+		}
+
         # Icon
         if($a['icon'] !== false){
             //If an icon hasn't been explicitly refused
