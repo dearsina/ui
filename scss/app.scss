@@ -3,8 +3,8 @@
  * so that we can override them, before loading
  * the main Bootstrap styles.
  */
-@import "../../../bootstrap-5.2.0-beta1/scss/_functions.scss";
-@import "../../../bootstrap-5.2.0-beta1/scss/_variables.scss";
+@import "../../../bootstrap-5.3.2/scss/_functions.scss";
+@import "../../../bootstrap-5.3.2/scss/_variables.scss";
 
 /**
  * Our overrides and own settings that will influence
@@ -30,15 +30,15 @@
  * Needs to be loaded before the bootstrap SCSS,
  * because it will influence variables there.
  */
-@import "grid";
+//@import "grid";
 
 /**
- * Bootstrap 5.2.0-beta1
+ * Bootstrap 5.3.2
  * Finally we load the Bootstrap CSS factory
  * with a combination of their variables,
  * and our own.
  */
-@import "../../../bootstrap-5.2.0-beta1/scss/bootstrap";
+@import "../../../bootstrap-5.3.2/scss/bootstrap";
 
 /**
  * Custom CSS.

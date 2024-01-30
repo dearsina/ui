@@ -34,7 +34,10 @@ $navbar-level2-bg : $white;
 $footer-bg        : map-get($grays, "700");
 $footer-level1-bg : rgba(0, 0, 0, 0.2);
 $footer-level2-bg : map-get($grays, "700");
-$body-bg          : map-get($grays, "100");
+
+//$body-bg          : map-get($grays, "100");
+$page-bg          : map-get($grays, "100");
+
 $border-color     : map-get($grays, "400");
 $header-footer-bg : map-get($grays, "50");
 

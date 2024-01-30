@@ -3,6 +3,16 @@
  * Bootstrap's list group elements.
  */
 
+.list-group
+{
+  --bs-list-group-border-color: rgba(0, 0, 0, 0.125);
+  /**
+   * We had to put in this fix, beacuse the default Bootstrap 5.3 colour
+   * is based on the background colour, which is white, and becomes
+   * too bright.
+   */
+}
+
 /**
  * Give icons breathing room.
  */

@@ -161,6 +161,11 @@
   margin : 0.25rem 0;
 }
 
+.modal-footer > .container > .row
+{
+  align-items: center;
+}
+
 /**
  * The content sits behind the tabs.
  * This will give it the same background color.

@@ -204,11 +204,11 @@ form .btn i
  * By making their border colour almost invisible,
  * they are made quieter.
  */
-.card .btn-float-right *[class*="btn-outline-"]:not(:hover),
-.modal .btn-float-right *[class*="btn-outline-"]:not(:hover)
-{
-  border-color: $border-color;
-}
+//.card .btn-float-right *[class*="btn-outline-"]:not(:hover),
+//.modal .btn-float-right *[class*="btn-outline-"]:not(:hover)
+//{
+//  border-color: $border-color;
+//}
 
 /**
  * Success (green) coloured button overrides

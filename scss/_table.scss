@@ -174,8 +174,8 @@
  * Give the table icon in a cell
  * a little breathing room.
  */
-.table-body > .col > i:first-of-type,
-.table-body > .col > .text-title > i:first-of-type
+.table-body > div[class|='col'] > i.fa-fw:first-of-type,
+.table-body > div[class|='col'] > .text-title > i.fa-fw:first-of-type
 {
   margin-right : .5rem;
 }
