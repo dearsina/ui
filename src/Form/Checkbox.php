@@ -309,7 +309,16 @@ EOF;
 			}
 
 			# The key holds the value
-			$val_array['value'] = $key;
+			if(is_array($val)){
+				// But only if the val is an array
+				$val_array['value'] = $val['value'] !== NULL ? $val['value'] : $key;
+				// Unless an actual value has been set
+			}
+			else {
+				// Otherwise, if val is a string, then the key holds the value
+				$val_array['value'] = $key;
+			}
+
 
 			# Not sure if this will work
 			$option_array = array_merge($a, $val_array);

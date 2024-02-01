@@ -52,7 +52,7 @@ class Accordion {
 		}
 
 		# This is the accordion wrapper ID
-		$id = str::id("accordion");
+		$id = $id ?: str::id("accordion");
 
 		foreach($a as $collapsable){
 			$html .= self::generateCollapsable($collapsable, $id);
@@ -80,7 +80,18 @@ class Accordion {
 		extract($a);
 
 		# This ID ties the two pieces together
-		$id = $id ?: str::id("collapse");
+		if(is_array($body) && $body['id']){
+			$id = $body['id'];
+		}
+		else if(!$id){
+			$id = str::id("collapse");
+		}
+
+		# If the first character of the ID is a number, prefix it with "id-"
+		if(is_numeric(substr($id, 0, 1))){
+			$id = "id-{$id}";
+		}
+		// This is to prevent querySelector from throwing an error
 		
 		$html .= self::generateHeaderHTML($header, $id);
 		$html .= self::generateBodyHTML($body, $id, $parent_id);

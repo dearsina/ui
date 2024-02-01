@@ -226,9 +226,7 @@ class ListGroup {
 		}
 
 		# Button(s)
-		if($button = Button::generate($item["button"])){
-			$button = "<div class=\"btn-float-right\">{$button}</div>";
-		}
+		$button = Button::get($item);
 
 		# Tooltips
 		Tooltip::generate($item);
