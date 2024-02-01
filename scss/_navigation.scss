@@ -136,11 +136,13 @@ div.dropdown-item
 
 /**
  * Align badges with the text
+ * I don't think we need these any more
+ * with Bootstrap 5.3
  */
 .dropdown-item .badge
 {
-  float      : right;
-  margin-top : 7px;
+  //float      : right;
+  //margin-top : 7px;
 }
 
 /**

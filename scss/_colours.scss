@@ -77,6 +77,16 @@ $theme-colors     : (
         "silent": map-get($grays, "100")
 );
 
+//$success-bg-subtle:       #dff0d8;
+$info-bg-subtle:          #d9edf7;
+$warning-bg-subtle:       #fcf8e3;
+$danger-bg-subtle:        #f2dede;
+
+//$success-border-subtle:   #d6e9c6;
+$info-border-subtle:      #bce8f1;
+$warning-border-subtle:   #faebcc;
+$danger-border-subtle:    #ebccd1;
+
 /**
  * These two don't get the message, and need to be overwritten.
  */
