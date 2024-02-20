@@ -5,6 +5,7 @@
 
 // Brand colour
 $french-blue      : hsl(203, 100%, 36%);
+$french-blue-dark      : hsl(203, 100%, 29%);
 
 $grays            : (
         "50": hsl(203, 20%, 99%), //basically white
@@ -20,6 +21,7 @@ $grays            : (
 );
 
 // Buttons
+$primary-colour   : $french-blue;
 $info-colour      : hsl(203, 70%, 60%);
 $success-colour   : hsl(142, 78%, 36%);
 $danger-colour    : hsl(358, 71%, 46%);
@@ -46,35 +48,35 @@ $header-footer-bg : map-get($grays, "50");
  * To add additional colours, add them to the list here.
  * Ideally, give semantic names, then (colour) descriptive names.
  */
-$theme-colors     : (
-        "primary": $french-blue, //#3377cc,
-        "secondary": #ff4c4c, //$secondary,
-        "success": $success-colour,
-        "info": $info-colour, //#0080b3,
-        "warning": $warning-colour,
-        "danger": $danger-colour,
-        "error": $danger-colour,
-        "navy": #001f3f,
-        "blue": $info-colour, //#0074d9,
-        "aqua": #7fdbff,
-        "teal": #39cccc,
-        "olive": #3d9970,
-        "green": $success-colour, //#2ecc40,
-        "lime": #01ff70,
-        "yellow": $warning-colour, //#ffdc00,
-        "orange": $orange-colour, //#ff851b,
-        "red": $danger-colour, //#ff4136,
-        "maroon": #85144b,
-        "fuchsia": #f012be,
-        "purple": #b10dc9,
-        "black": map-get($grays, "900"), //#111111,
-        "dark": map-get($grays, "800"), //$dark,
-        "gray": map-get($grays, "600"), //#999999,
-        "grey": map-get($grays, "500"), //#999999,
-        "silver": map-get($grays, "400"), //#999999,
-        "light": map-get($grays, "300"),
-        "muted": map-get($grays, "200"),
-        "silent": map-get($grays, "100")
+$theme-colors: (
+  "primary": $primary-colour, //#3377cc,
+  "secondary": #ff4c4c, //$secondary,
+  "success": $success-colour,
+  "info": $info-colour, //#0080b3,
+  "warning": $warning-colour,
+  "danger": $danger-colour,
+  "error": $danger-colour,
+  "navy": #001f3f,
+  "blue": $info-colour, //#0074d9,
+  "aqua": #7fdbff,
+  "teal": #39cccc,
+  "olive": #3d9970,
+  "green": $success-colour, //#2ecc40,
+  "lime": #01ff70,
+  "yellow": $warning-colour, //#ffdc00,
+  "orange": $orange-colour, //#ff851b,
+  "red": $danger-colour, //#ff4136,
+  "maroon": #85144b,
+  "fuchsia": #f012be,
+  "purple": #b10dc9,
+  "black": map-get($grays, "900"), //#111111,
+  "dark": map-get($grays, "800"), //$dark,
+  "gray": map-get($grays, "600"), //#999999,
+  "grey": map-get($grays, "500"), //#999999,
+  "silver": map-get($grays, "400"), //#999999,
+  "light": map-get($grays, "300"),
+  "muted": map-get($grays, "200"),
+  "silent": map-get($grays, "100")
 );
 
 //$success-bg-subtle:       #dff0d8;

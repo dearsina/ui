@@ -319,7 +319,6 @@ EOF;
 				$val_array['value'] = $key;
 			}
 
-
 			# Not sure if this will work
 			$option_array = array_merge($a, $val_array);
 
