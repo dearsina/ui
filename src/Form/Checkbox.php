@@ -311,8 +311,11 @@ EOF;
 			# The key holds the value
 			if(is_array($val)){
 				// But only if the val is an array
-				$val_array['value'] = $val['value'] !== NULL ? $val['value'] : $key;
-				// Unless an actual value has been set
+				if(!$val['type']){
+					//and the value doesn't belong to a label field
+					$val_array['value'] = $val['value'] !== NULL ? $val['value'] : $key;
+					// Unless an actual value has been set
+				}
 			}
 			else {
 				// Otherwise, if val is a string, then the key holds the value
@@ -325,6 +328,8 @@ EOF;
 			# Get the HTML for the checkbox
 			$options_html .= self::getCheckboxHTML($option_array);
 		}
+
+//		echo json_encode($option_array).PHP_EOL;
 
 		$parent_script = str::getScriptTag($parent_script);
 		$parent_class = str::getAttrTag("class", $parent_class);
