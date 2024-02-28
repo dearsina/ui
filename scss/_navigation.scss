@@ -323,7 +323,8 @@ a.navbar-level1-logo > object
 
 .navbar-nav
 {
-  z-index  : 1000;
+  //z-index  : 1000;
+  z-index  : 9;
   /** Any higher and they start interfering with dropdowns and other menu items */
   position : relative;
 }
@@ -384,4 +385,14 @@ a.navbar-level1-logo > object
 .nav-tabs > .nav-item > .nav-link
 {
   padding : 7px 11px 7px 11px;
+}
+
+/**
+ * Prevent navigation elements from being selectable.
+ */
+.nav, .navbar, .tab-list, .controller-button {
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently supported by Chrome, Opera, and Edge */
 }
