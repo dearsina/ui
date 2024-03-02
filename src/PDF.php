@@ -198,7 +198,7 @@ class PDF {
 			 */
 
 			// "trace-startup" => "*,disabled-by-default-memory-infra"
-			// Will produce massive startup log file, is NOT needed
+			// Will produce a massive startup log file, and is NOT needed
 
 
 			// "disable-gpu" => true, // Only useful on Windows, will fail in Linux
