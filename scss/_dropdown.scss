@@ -313,6 +313,7 @@ ul:not(.navbar-nav) > li > .dropdown-item > span
  * To ensure that the first and last items are always rounded.
  */
 ul.dropdown-menu > li:first-child > a,
+ul.dropdown-menu > li:first-child > button,
 ul.dropdown-menu > li:first-child > div > button
 {
   border-top-right-radius : var(--bs-border-radius);
@@ -320,7 +321,8 @@ ul.dropdown-menu > li:first-child > div > button
 }
 
 ul.dropdown-menu > li:last-child > a,
-ul.dropdown-menu > li:last-child > div > button
+ul.dropdown-menu > li:last-child > button,
+ul.dropdown-menu > li:last-child > div > button,
 {
   border-bottom-right-radius : var(--bs-border-radius);
   border-bottom-left-radius  : var(--bs-border-radius);

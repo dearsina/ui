@@ -438,7 +438,7 @@ class Button {
 		$a = self::getArray($a, $rel_table, $rel_id, $callback);
 
 		if(!$a['id']){
-			$a['id'] = "button_" . rand();
+			$a['id'] = str::id("button");
 		}
 
 		# Add a tooltip to the button

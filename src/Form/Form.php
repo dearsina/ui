@@ -68,7 +68,7 @@ class Form {
 
 	/**
 	 * Form constructor.
-	 * <code>
+	 * ```
 	 * $form = new Form([
 	 *    "action" => "insert",
 	 *    "rel_table" => NULL,
@@ -76,7 +76,7 @@ class Form {
 	 *    "fields" => $fields,
 	 *    "buttons" => $buttons
 	 * ]);
-	 * </code>
+	 * ```
 	 *
 	 * @param null $a
 	 */
@@ -397,9 +397,9 @@ class Form {
 	 * Needs to be here instead in the Button() class, because it uses
 	 * many form attributes.
 	 *
-	 * @param $a
+	 * @param array|string|null $a
 	 */
-	private function prepareButtonsForModals(&$a)
+	private function prepareButtonsForModals(&$a): void
 	{
 		if(str::isNumericArray($a)){
 			foreach($a as $id => $button){
@@ -410,6 +410,9 @@ class Form {
 		if(str::isAssociativeArray($a)){
 			if($a['type'] == "submit"){
 				$a['form'] = $this->getId();
+			}
+			if(str::isNumericArray($a['split'])){
+				$this->prepareButtonsForModals($a['split']);
 			}
 		}
 

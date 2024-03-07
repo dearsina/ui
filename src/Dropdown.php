@@ -261,11 +261,32 @@ EOF;
 	 */
 	private static function generateChildTag(array $item): string
 	{
-		# Href (can be onClick)
-		$href = href::generate($item);
+		$id = str::getAttrTag("id", $item['id'] ?: str::id("button"));
 
-		# Tag, based on whether there is a href or not
-		$tag = $href ? "a" : "div";
+		if($item['name'] && $item['value']){
+			//if the button has a value that needs to be collected
+			$type = str::getAttrTag("type", "submit");
+			$name = str::getAttrTag("name", $item['name']);
+			$value = str::getAttrTag("value", $item['value']);
+
+			# Form submit buttons
+			$form = str::getAttrTag("form", $item['form']);
+
+			$tag = "button";
+		}
+
+		else if($item['type'] == 'submit'){
+			//for most buttons, this is the type
+			$tag = "button";
+		}
+
+		else {
+			# Href (can be onClick)
+			$href = href::generate($item);
+
+			# Tag, based on whether there is a href or not
+			$tag = $href ? "a" : "div";
+		}
 
 		# Icon
 		$icon = Icon::generate($item['icon']);
@@ -309,7 +330,7 @@ EOF;
 		# Title
 		$title = $item['title'];
 
-		return "{$wrapper_pre}<{$tag}{$class}{$style}{$href}{$alt}{$approve}{$data}>{$icon}{$title}{$badge}</{$tag}>{$wrapper_post}";
+		return "{$wrapper_pre}<{$tag}{$id}{$form}{$class}{$style}{$href}{$alt}{$approve}{$type}{$name}{$value}{$data}>{$icon}{$title}{$badge}</{$tag}>{$wrapper_post}";
 	}
 
 	/**
