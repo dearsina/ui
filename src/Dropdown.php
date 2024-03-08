@@ -297,6 +297,9 @@ EOF;
 		# Add a tooltip to the button
 		Tooltip::generate($item);
 
+		# Add copy feature
+		Copy::generateButton($item);
+
 		# Alt
 		$alt = str::getAttrTag("title", $item['alt']);
 
@@ -330,7 +333,9 @@ EOF;
 		# Title
 		$title = $item['title'];
 
-		return "{$wrapper_pre}<{$tag}{$id}{$form}{$class}{$style}{$href}{$alt}{$approve}{$type}{$name}{$value}{$data}>{$icon}{$title}{$badge}</{$tag}>{$wrapper_post}";
+		$script = str::getScriptTag($item['script']);
+
+		return "{$wrapper_pre}<{$tag}{$id}{$form}{$class}{$style}{$href}{$alt}{$approve}{$type}{$name}{$value}{$data}>{$icon}{$title}{$badge}</{$tag}>{$wrapper_post}{$script}";
 	}
 
 	/**

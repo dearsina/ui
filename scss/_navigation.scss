@@ -323,9 +323,11 @@ a.navbar-level1-logo > object
 
 .navbar-nav
 {
-  //z-index  : 1000;
   z-index  : 9;
-  /** Any higher and they start interfering with dropdowns and other menu items */
+  /**
+  * Any lower than 9 and the menu disappears.
+  * Any higher and they start interfering with dropdowns and other menu items
+  */
   position : relative;
 }
 

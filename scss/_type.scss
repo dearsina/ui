@@ -157,7 +157,7 @@ tiny, .tiny
   font-size   : smaller;
 }
 
-.clipboard:not(.btn)::after
+.clipboard:not(.btn, .dropdown-item)::after
 {
   content     : "\f0c5";
   font-family : "Font Awesome 6 Pro";

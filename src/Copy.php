@@ -110,11 +110,43 @@ class Copy {
 		return mb_strlen($text) > 50 ? mb_substr($text, 0, 50). "..." : $text;
 	}
 
+	/**
+	 * Generate clipboard button.
+	 * Is trigged by the "copy" key.
+	 *
+	 * They key value can be:
+	 * - Boolean
+	 * - A string
+	 * - An array with the following keys:
+	 * 	- source
+	 * 	- pre
+	 * 	- post
+	 *
+	 * @param array $a
+	 *
+	 * @return void
+	 */
 	public static function generateButton(array &$a): void
 	{
+		if(!key_exists("copy", $a)){
+			return;
+		}
+
 		extract($a);
 
+		# Add the clipboard class
+		$a['class'] = is_array($a['class']) ? $a['class'] : [$a['class']];
+		$a['class'][] = "clipboard";
+
+		# Disable ladda
+		$a['ladda'] = false;
+
 		switch(true){
+		case is_array($copy):
+			$a['data']['clipboard-source'] = $copy['source'];
+			$a['data']['clipboard-pre'] = $copy['pre'];
+			$a['data']['clipboard-post'] = $copy['post'];
+			return;
 		case is_scalar($copy):
 			$copy = ["text" => $copy];
 			break;
@@ -133,13 +165,6 @@ class Copy {
 		self::cleanUpText($copy);
 		$a['data']['clipboard-text'] = $copy['text'];
 		$a['data']['clipboard-text-truncated'] = self::getTruncatedText($copy);
-
-		# Add the clipboard class
-		$a['class'] = is_array($a['class']) ? $a['class'] : [$a['class']];
-		$a['class'][] = "clipboard";
-
-		# Disable ladda
-		$a['ladda'] = false;
 
 	}
 }

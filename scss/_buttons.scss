@@ -297,3 +297,12 @@ ul.dropdown-menu > li a:hover {
     display: inline-block;
   }
 }
+
+
+.input-group > .dropdown > .dropdown-item > .btn,
+.input-group > .dropdown > .dropdown-float > .dropdown-item > .btn
+{
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  padding-left: 7px;
+}
