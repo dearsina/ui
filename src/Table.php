@@ -404,6 +404,9 @@ EOF;
 		# UrlDEcode the variables
 		$vars = str::urldecode($vars);
 
+		# Include the ID in the response
+		$output_vars['id'] = $vars['id'];
+
 		# The (default) assumption is that all vars are where clauses, except:
 		foreach(["start", "length", "order_by_col", "order_by_dir"] as $key){
 			if(!$vars[$key]){
@@ -414,14 +417,14 @@ EOF;
 			//for reference
 
 			# Report the metadata back for reference
-			$output->setVar($key, $vars[$key]);
+			$output_vars[$key] = $vars[$key];
 
 			unset($vars[$key]);
 			// We remove them because all other vars are being fed as where cols
 		}
 
 		# The start value grows for every request
-		$output->setVar('start', $start + $length);
+		$output_vars["start"] = $start + $length;
 
 		foreach($vars as $key => $val){
 			# If the value is a numerical array, assume an IN is required
@@ -450,13 +453,14 @@ EOF;
 			# Run the count query
 			$total_results = $sql->select($count_query);
 
-			$output->setVar('query', $_SESSION['query']);
-			$output->setVar('total_results', $total_results ?: 0);
+			$output_vars['query'] = $_SESSION['query'];
+			$output_vars['total_results'] = $total_results ?: 0;
 
 			if(!$total_results){
 				//If no rows can be found
-				$output->setVar('start', 1);
-				$output->setVar("rows", "<i>No rows found</i>");
+				$output_vars['start'] = 1;
+				$output_vars['rows'] = "<i>No rows found</i>";
+				$output->function("onDemandResponse", $output_vars);
 				return true;
 			}
 
@@ -492,15 +496,15 @@ EOF;
 
 		$rows = $sql->select($rows_query);
 
-		$output->setVar('query_parameters', $rows_query);
-		$output->setVar('query', $_SESSION['query']);
+		$output_vars['query_parameters'] = $rows_query;
+		$output_vars['query'] = $_SESSION['query'];
 
 		if(!$rows){
 			//if no results are found
 			return false;
 		}
 
-		$output->setVar("row_count", count($rows));
+		$output_vars['row_count'] = count($rows);
 
 		if(is_object($row_handler)){
 			//if a custom row handler has been included
@@ -510,7 +514,10 @@ EOF;
 			}
 		}
 
-		$output->setVar("rows", self::generate($rows, $a, $ignore_header, true));
+		$output_vars['rows'] = self::generate($rows, $a, $ignore_header, true);
+
+		# Load the response
+		$output->function("onDemandResponse", $output_vars);
 
 		return true;
 	}
