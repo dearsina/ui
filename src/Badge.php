@@ -52,7 +52,7 @@ class Badge {
 	 */
 	static function generate($array_or_string = NULL, ?array $overrides = NULL): ?string
 	{
-		if(!is_array($array_or_string) && !strlen($array_or_string)){
+		if(is_null($array_or_string) || (!is_array($array_or_string) && !strlen($array_or_string))){
 			return NULL;
 		}
 

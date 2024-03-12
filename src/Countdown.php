@@ -48,7 +48,7 @@ class Countdown {
 		extract($a);
 
 		# Set the time (if blank, will be NOW())
-		$dt = new \DateTime($datetime);
+		$dt = new \DateTime($datetime ?: "now");
 
 		# As the server time is GMT/BST, adjust the time to UTC
 		$dt->setTimezone(new \DateTimeZone('UTC'));
