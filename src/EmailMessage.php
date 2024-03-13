@@ -258,7 +258,7 @@ class EmailMessage extends Prototype {
 	private function getHeaderHTML(): ?string
 	{
 		# Get the header background colour
-		$bgcolor = $this->getColourHexValue($this->format['header_background_colour']);
+		$bgcolor = $this->getColourHexValue($this->format['colour']['header_background']);
 
 		# If there is a logo
 		if($this->format['logo_src']){
@@ -346,7 +346,8 @@ EOF;
 	private function generateTitleTd(string $align, int $width): string
 	{
 		return <<<EOF
-<td bgcolor="{$this->getColourHexValue($this->format['header_background_colour'])}" width="{$width}" align="{$align}" class="mobile-hide">
+<td bgcolor="{$this->getColourHexValue($this->format['colour']['header_background'])}" width="{$width}" 
+align="{$align}" class="mobile-hide">
 	<table role="presentation" border="0" cellpadding="0" cellspacing="0">
 		<tr>
 			{$this->getHeaderTitleHTML($align)}
@@ -377,7 +378,7 @@ EOF;
 				"padding" => "0 0 5px 0",
 				"font-size" => "14px",
 				"font-family" => $this->format['font_family'],
-				"color" => $this->getColourHexValue($this->format['header_text_colour']),
+				"color" => $this->getColourHexValue($this->format['colour']['header_text']),
 				"text-decoration" => "none",
 			],
 			"html" => $this->getHeaderTextHTML($this->format['header_text']),
@@ -428,7 +429,7 @@ EOF;
 			$img['default_style'] = [
 				"display" => "block",
 				"padding" => "0",
-				"color" => $this->getColourHexValue($this->format['text_colour']),
+				"color" => $this->getColourHexValue($this->format['colour']['body_text']),
 				"text-decoration" => "none",
 				"font-family" => $this->format["font"],
 				"font-size" => "16px",
@@ -579,7 +580,7 @@ EOF;
 		}
 
 		# Otherwise, return the hex value
-		return $colour;
+		return strtolower($colour);
 	}
 
 	private function generateTag(string $tag, $a): string
@@ -654,7 +655,7 @@ EOF;
 		$a['default_style'] = [
 			"display" => "block",
 			"font-family" => $this->format['font_family'],
-			"color" => $this->getColourHexValue($this->format["text_colour"]),
+			"color" => $this->getColourHexValue($this->format['colour']['body_text']),
 			"font-size" => "16px",
 		];
 
@@ -687,7 +688,7 @@ EOF;
 
 		$a['html'] .= $a['title'];
 		$a['default_style'] = [
-			"color" => $this->getColourHexValue($a['colour'] ?: $this->format["header_text_colour"]),
+			"color" => $this->getColourHexValue($a['colour'] ?: $this->format['colour']['header_text']),
 			"text-decoration" => "none",
 		];
 
@@ -704,27 +705,27 @@ EOF;
 		extract($this->footer);
 
 		# Set the background colour for the footer
-		$bgcolor = $this->getColourHexValue($bg_colour ?: "#FFFFFF");
-
+		$bgcolor = $this->getColourHexValue($bg_colour ?: $this->format['colour']['footer_background']);
+if($colour){str::backtrace();}
 		$default_style = [
 			"font-size" => "10px",
 			"line-height" => "13px",
 			"font-family" => $this->format['font_family'],
-			"color" => $this->getColourHexValue($colour ?: $this->format["text_colour"]),
+			"color" => $this->getColourHexValue($colour ?: $this->format['colour']['footer_text']),
 		];
 
 		if(is_array($footer)){
 			$footer = $this->embeddedImplode("p", $footer);
 		}
 
+		$style_array = str::getAttrArray($style, $default_style, $only_style);
+
 		$td = $this->generateTag("td", [
 			"align" => "center",
 			"valign" => "middle",
-			"default_style" => $default_style,
 			"html" => $html . $footer,
-			"style" => $style,
+			"style" => $style_array,
 		]);
-		//<td align="center" valign="middle" style=""><span class="appleFooter" style="color:#666666;">1234 Main Street, Anywhere, MA 01234, USA</span><br><a class="original-only" style="color: #666666; text-decoration: none;">Unsubscribe</a><span class="original-only" style="font-family: Arial, sans-serif; font-size: 12px; color: #444444;">&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</span><a style="color: #666666; text-decoration: none;">View this email in your browser</a></td>
 
 		return <<<EOF
 <!-- FOOTER -->
@@ -748,104 +749,6 @@ EOF;
 </table>
 EOF;
 
-	}
-
-	private function getTitleTextHTML($a): ?string
-	{
-		if(!$a){
-			return NULL;
-		}
-
-		if(!is_array($a)){
-			$a = [
-				"title" => $a,
-			];
-		}
-
-		extract($a);
-
-		# Set the title text colour
-		if($title_colour){
-			$color = $title_colour;
-		}
-
-		else if($colour){
-			$color = $colour;
-		}
-
-		else {
-			$color = $this->format['title_colour'];
-		}
-
-		$color = $this->getColourHexValue($color);
-
-		$default_style = [
-			"font-size" => "25px",
-			"font-family" => $this->format['font_family'],
-			"color" => $color,
-			"padding-top" => "20px",
-			"font-weight" => "bold",
-		];
-
-		return $this->generateTag("td", [
-			"style" => $style,
-			"class" => $class,
-			"bgcolor" => $bgcolor,
-			"align" => $align ?: "center",
-			"valign" => $valign ?: NULL,
-			"default_style" => $default_style,
-			"default_class" => "padding-copy",
-			"html" => $title . $html . $text,
-		]);
-	}
-
-	private function getBodyTextHTML($a): ?string
-	{
-		if(!$a){
-			return NULL;
-		}
-
-		if(!is_array($a)){
-			$a = [
-				"body" => $a,
-			];
-		}
-
-		extract($a);
-
-		# Set the body text colour
-		if($body_colour){
-			$color = $body_colour;
-		}
-		else if($colour){
-			$color = $colour;
-		}
-		else {
-			$color = $this->format["text_colour"];
-		}
-		$color = $this->getColourHexValue($color);
-
-		$default_style = [
-			"padding" => "10px 0 0 0",
-			"font-size" => "16px",
-			"line-height" => "25px",
-			"font-family" => $this->format['font_family'],
-			"color" => $color,
-		];
-
-		if(is_array($body)){
-			$body = $this->embeddedImplode("p", $body);
-		}
-
-		return $this->generateTag("td", [
-			"style" => $style,
-			"class" => $class,
-			"bgcolor" => $bgcolor,
-			"align" => $align ?: "center",
-			"default_style" => $default_style,
-			"default_class" => "padding-copy",
-			"html" => $body . $html . $text,
-		]);
 	}
 
 	private function embeddedImplode($tag, $array): ?string
@@ -873,6 +776,111 @@ EOF;
 EOF;
 	}
 
+
+
+	private function getTitleTextHTML($a): ?string
+	{
+		if(!$a){
+			return NULL;
+		}
+
+		if(!is_array($a)){
+			$a = [
+				"title" => $a,
+			];
+		}
+
+		extract($a);
+
+		# Set the title text colour
+		if($title_colour){
+			$color = $title_colour;
+		}
+
+		else if($colour){
+			$color = $colour;
+		}
+
+		else {
+			$color = $this->format['colour']['body_title'];
+		}
+
+		$color = $this->getColourHexValue($color);
+
+		$default_style = [
+			"font-size" => "25px",
+			"font-family" => $this->format['font_family'],
+			"color" => $color,
+			"padding-top" => "20px",
+			"font-weight" => "bold",
+		];
+
+		return $this->generateTag("td", [
+			"style" => $style,
+			"class" => $class,
+			"bgcolor" => $bgcolor,
+			"align" => $align ?: "center",
+			"valign" => $valign ?: NULL,
+			"default_style" => $default_style,
+			"default_class" => "padding-copy",
+			"html" => $title . $html . $text,
+		]);
+	}
+
+	/**
+	 * @param $a
+	 *
+	 * @return string|null
+	 */
+	private function getBodyTextHTML($a): ?string
+	{
+		if(!$a){
+			return NULL;
+		}
+
+		if(!is_array($a)){
+			$a = [
+				"body" => $a,
+			];
+		}
+
+		extract($a);
+
+		# Set the body text colour
+		if($body_colour){
+			$color = $body_colour;
+		}
+		else if($colour){
+			$color = $colour;
+		}
+		else {
+			$color = $this->format['colour']['body_text'];
+		}
+		$color = $this->getColourHexValue($color);
+
+		$default_style = [
+			"padding" => "10px 0 0 0",
+			"font-size" => "16px",
+			"line-height" => "25px",
+			"font-family" => $this->format['font_family'],
+			"color" => $color,
+		];
+
+		if(is_array($body)){
+			$body = $this->embeddedImplode("p", $body);
+		}
+
+		return $this->generateTag("td", [
+			"style" => $style,
+			"class" => $class,
+			"bgcolor" => $bgcolor,
+			"align" => $align ?: "center",
+			"default_style" => $default_style,
+			"default_class" => "padding-copy",
+			"html" => $body . $html . $text,
+		]);
+	}
+
 	private function getArticlesHTML($a): string
 	{
 		if(!str::isNumericArray($a)){
@@ -886,7 +894,7 @@ EOF;
 		return "<tr>" . implode("</tr><tr>", $articles) . "</tr>";
 	}
 
-	private function getArticleHTML($a): string
+	private function getArticleHTML(array $a): string
 	{
 		extract($a);
 
@@ -895,7 +903,7 @@ EOF;
 			$image['default_style'] = [
 				"display" => "block",
 				"padding" => "0",
-				"color" => $this->getColourHexValue($this->format['text_colour']),
+				"color" => $this->getColourHexValue($this->format['colour']['body_text']),
 				"text-decoration" => "none",
 				"font-family" => $this->format['font_family'],
 				"font-size" => "16px",
@@ -955,7 +963,7 @@ EOF;
 				"font-size" => "22px",
 				"font-family" => $this->format['font_family'],
 				"font-weight" => "normal",
-				"color" => $this->getColourHexValue($this->format['title_colour']),
+				"color" => $this->getColourHexValue($this->format['colour']['body_title']),
 			];
 			$title['default_class'] = "padding-copy";
 			$title['html'] = $title['html'] . $title['title'];
@@ -975,7 +983,7 @@ EOF;
 				"font-size" => "16px",
 				"line-height" => "24px",
 				"font-family" => $this->format['font_family'],
-				"color" => $this->getColourHexValue($this->format['text_colour']),
+				"color" => $this->getColourHexValue($this->format['colour']['body_text']),
 			];
 			$body['default_class'] = "padding-copy";
 			$body['html'] = $body['html'] . $body['body'];
@@ -1010,7 +1018,7 @@ EOF;
 	}
 
 
-	private function getColumnsHTML($a): array
+	private function getColumnsHTML(array $a): array
 	{
 		if(!str::isNumericArray($a[0])){
 			$a = [$a];
@@ -1033,6 +1041,12 @@ EOF;
 		return $pairs;
 	}
 
+	/**
+	 * @param string $side
+	 * @param string|array $a
+	 *
+	 * @return string
+	 */
 	private function getColumnHTML(string $side, $a): string
 	{
 		if(!is_array($a)){
@@ -1052,7 +1066,7 @@ EOF;
 			$image['default_style'] = [
 				"display" => "block",
 				"padding" => "0",
-				"color" => $this->format["text_colour"],
+				"color" => $this->format['colour']['body_text'],
 				"text-decoration" => "none",
 				"font-family" => $this->format['font_family'],
 				"font-size" => "16px",
@@ -1060,7 +1074,7 @@ EOF;
 			$image = $this->generateImageTag($image);
 			$rows[] = $this->generateTag("td", [
 				"align" => "center",
-				"bgcolor" => $this->getColourHexValue($this->format['background_colour']),
+				"bgcolor" => $this->getColourHexValue($this->format['colour']['body_background']),
 				"valign" => "middle",
 				"html" => $image,
 			]);
@@ -1143,7 +1157,7 @@ EOF;;
 	private function getSectionHTML(array $section): string
 	{
 		# Set the background colour for the section
-		$bgcolor = $this->getColourHexValue($section['background_colour'] ?: $this->format['background_colour']);
+		$bgcolor = $this->getColourHexValue($section['colour']['body_background'] ?: $this->format['colour']['body_background']);
 
 		$rows = [];
 
@@ -1162,12 +1176,22 @@ EOF;;
 				continue;
 			}
 
-			if(!in_array($item, ["image", "copy", "columns", "button"])){
-				continue;
+			switch($item){
+			case "image":
+				$row = $this->getImageHTML($data);
+				break;
+			case "copy":
+				$row = $this->getCopyHTML($data);
+				break;
+			case "columns":
+				$row = $this->getColumnsHTML($data);
+				break;
+			case "button":
+				$row = $this->getButtonHTML($data);
+				break;
+			default:
+				continue 2;
 			}
-
-			$method = str::getMethodCase("get_{$item}_HTML");
-			$row = $this->{$method}($data);
 
 			if(is_array($row)){
 				foreach($row as $r){
@@ -1226,14 +1250,15 @@ EOF;
 		$a['html'] = $a['title'];
 
 		# Button colour
-		$bgcolor = $this->getColourHexValue($a['colour'] ?: $this->format['button_colour']);
+		$bgcolor = $this->getColourHexValue($a['colour'] ?: $this->format['colour']['button_background']);
+		$color = $this->getColourHexValue($a['text_colour'] ?: $this->format['colour']['button_text']);
 
 		# Button default styles
 		$a['default_style'] = [
 			"font-size" => "16px",
 			"font-family" => $this->format['font_family'],
 			"font-weight" => "normal",
-			"color" => "#ffffff",
+			"color" => $color,
 			"text-decoration" => "none",
 			"background-color" => $bgcolor,
 			"border-top" => "15px solid {$bgcolor}",
