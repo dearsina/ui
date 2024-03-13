@@ -108,6 +108,18 @@ li > .dropend > .dropdown-toggle::after
   display     : inline;
 }
 
+/**
+ * Without the margin, the caret
+ * can break into a new line.
+ */
+li > .dropdown > .dropdown-toggle,
+li > .dropup > .dropdown-toggle,
+li > .dropend > .dropdown-toggle
+{
+  margin-right: 2rem;
+}
+
+
 li > .dropdown > .dropdown-toggle::before,
 li > .dropup > .dropdown-toggle::before,
 li > .dropend > .dropdown-toggle::before

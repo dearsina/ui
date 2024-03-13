@@ -233,24 +233,11 @@ class Tab {
 			return;
 		}
 
-		# If the full format is expressed
-		if($a['dependency']['and'] || $a['dependency']['or']){
-			$a['data']['dependency'] = $a['dependency'];
-			return;
-		}
-
-		# If the quick format is expressed
-		foreach($a['dependency'] as $selector => $condition){
-			# Failsafe, shouldn't happen
-			if(!is_array($condition)){
-				continue;
-			}
-			$condition['selector'] = $selector;
-			$a['data']['dependency']['and'][] = $condition;
-		}
-
 		# Set a custom wrapper so that only the header is hidden
-		$a['data']['dependency']['settings']['wrapper'] = "li";
+		$a['dependency']['settings']['wrapper'] = $a['dependency']['settings']['wrapper'] ?: "li";
+
+		# Set the data attribute
+		self::setDependencyData($a);
 	}
 
 	private function getTabPaneClass(array $tab): array

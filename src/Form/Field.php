@@ -334,78 +334,6 @@ class Field {
 	}
 
 	/**
-	 * Qualifier    Type     Description
-	 * enabled      Boolean  If true, then dependency must not have the "disabled" attribute.
-	 * checked      Boolean  If true, then dependency must not have the "checked" attribute.
-	 *                       Used for checkboxes and radio buttons.
-	 * values       Array    Dependency value must equal one of the provided values.
-	 * not          Array    Dependency value must not equal any of the provided values.
-	 * match        RegEx    Dependency value must match the regular expression.
-	 * contains     Array    One of the provided values must be contained in an array of dependency values.
-	 *                       Used for select fields with the "multiple" attribute.
-	 * email        Boolean  If true, dependency value must match an email address.
-	 * url          Boolean  If true, Dependency value must match a URL.
-	 * function     String   Name of a custom function which returns true or false.
-	 *
-	 * value        Boolean     True matches on any value, false matches on any empty
-	 * < <= > >=    Float    Mathematical equations
-	 *
-	 * Full format
-	 * <code>
-	 * "dependency" => [
-	 * 	"and" => [[
-	 * 		"selector" => "service",
-	 * 		"checked" => $service['service_id']
-	 * 	]],
-	 * 	"settings" => [
-	 * 		"wrapper" => false,
-	 * 	]
-	 * ]
-	 * </code>
-	 *
-	 * Quick format
-	 * <code>
-	 * "dependency" => [
-	 *    "col_name" => [
-	 *        "checked" => true
-	 *    ]
-	 * ]
-	 * </code>
-	 * @link https://dstreet.github.io/dependsOn
-	 *
-	 * @param array|null $a
-	 */
-	static function setDependencyData(?array &$a): void
-	{
-		if(!is_array($a['dependency'])){
-			return;
-		}
-
-		# If the full format is expressed
-		if($a['dependency']['and'] || $a['dependency']['or']){
-			$a['data']['dependency'] = $a['dependency'];
-			return;
-		}
-
-		# If the quick format is expressed
-		foreach($a['dependency'] as $selector => $condition){
-			# Failsafe, shouldn't happen
-			if(!is_array($condition)){
-				continue;
-			}
-
-			# Make an exception for the settings selector
-			if($selector == "settings"){
-				$a['data']['dependency']['settings'] = $condition;
-				continue;
-			}
-
-			$condition['selector'] = $selector;
-			$a['data']['dependency']['and'][] = $condition;
-		}
-	}
-
-	/**
 	 * Translates the required attribute
 	 * to a more complex validation array tree.
 	 *
@@ -629,5 +557,80 @@ EOF;
 		extract($a);
 		$data['onChange'] = self::getOnChange($a);
 		return str::getDataAttr($data, true);
+	}
+
+	/**
+	 * Qualifier    Type     Description
+	 * enabled      Boolean  If true, then dependency must not have the "disabled" attribute.
+	 * checked      Boolean  If true, then dependency must not have the "checked" attribute.
+	 *                       Used for checkboxes and radio buttons.
+	 * values       Array    Dependency value must equal one of the provided values.
+	 * not          Array    Dependency value must not equal any of the provided values.
+	 * match        RegEx    Dependency value must match the regular expression.
+	 * contains     Array    One of the provided values must be contained in an array of dependency values.
+	 *                       Used for select fields with the "multiple" attribute.
+	 * email        Boolean  If true, dependency value must match an email address.
+	 * url          Boolean  If true, Dependency value must match a URL.
+	 * function     String   Name of a custom function which returns true or false.
+	 *
+	 * value        Boolean     True matches on any value, false matches on any empty
+	 * < <= > >=    Float    Mathematical equations
+	 *
+	 * Full format
+	 * <code>
+	 * "dependency" => [
+	 * 	"and" => [[
+	 * 		"selector" => "service",
+	 * 		"checked" => $service['service_id']
+	 * 	]],
+	 * 	"settings" => [
+	 * 		"wrapper" => false,
+	 * 	]
+	 * ]
+	 * </code>
+	 *
+	 * Quick format
+	 * <code>
+	 * "dependency" => [
+	 *    "col_name" => [
+	 *        "checked" => true
+	 *    ]
+	 * ]
+	 * </code>
+	 *
+	 * This method has to be here because other UI elements
+	 * depend on it, and it can't be placed in /app
+	 *
+	 * @link https://dstreet.github.io/dependsOn
+	 *
+	 * @param array|null $a
+	 */
+	public static function setDependencyData(?array &$a): void
+	{
+		# This only applies to fields with dependencies
+		if(!is_array($a['dependency'])){
+			return;
+		}
+
+		# Load any settings
+		if($a['data']['dependency']['settings'] = $a['dependency']['settings']){
+			unset($a['dependency']['settings']);
+		}
+
+		# If the full format is expressed
+		if($a['dependency']['and'] || $a['dependency']['or']){
+			$a['data']['dependency'] = $a['dependency'];
+			return;
+		}
+
+		# If the quick format is expressed
+		foreach($a['dependency'] as $selector => $condition){
+			# Failsafe, shouldn't happen
+			if(!is_array($condition)){
+				continue;
+			}
+			$condition['selector'] = $selector;
+			$a['data']['dependency']['and'][] = $condition;
+		}
 	}
 }
