@@ -7,6 +7,7 @@ use App\Common\Img;
 use App\Common\str;
 use App\UI\Badge;
 use App\UI\Card\Card;
+use App\UI\Form\Field;
 use App\UI\Grid;
 use App\UI\Icon;
 
@@ -237,7 +238,7 @@ class Tab {
 		$a['dependency']['settings']['wrapper'] = $a['dependency']['settings']['wrapper'] ?: "li";
 
 		# Set the data attribute
-		self::setDependencyData($a);
+		Field::setDependencyData($a);
 	}
 
 	private function getTabPaneClass(array $tab): array
