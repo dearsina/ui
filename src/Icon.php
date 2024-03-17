@@ -199,7 +199,7 @@ class Icon {
 	/**
 	 * Returns the actual i-tag HTMl that is the icon..
 	 * Requires either an array of icon information,
-	 * or a string with the array name.
+	 * or a string with the icon name.
 	 *
 	 * <code>
 	 * $icon_html = Icon::generate([
