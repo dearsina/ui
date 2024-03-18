@@ -124,9 +124,16 @@
  */
 .modal-tab .tab-pane.active
 {
-  height : calc(100% - 40px);
+  //height : calc(100% - 40px);
   overflow: auto;
   // Part of Tabs 2.0
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  height: calc(100% - 40px);
+  // Make space for a row of footer buttons
 }
 
 .modal-tab .modal-body > form
@@ -164,7 +171,7 @@
  * to fix it as we do need it for the form modal tabs.
  */
 .modal form .tab-content > .active > .body {
-  height: calc(100% - 57px);
+  //height: calc(100% - 57px);
   // Makes space for a row of footer buttons
 }
 
