@@ -97,6 +97,9 @@ class Grid {
 			# ID
 			$id_tag = str::getAttrTag("id", $row['row_id']);
 
+			# Tooltip
+			$this->addTooltipToRow($row);
+
 			# Class
 			$class_array = str::getAttrArray($row['row_class'], "row", $row['only_row_class']);
 
@@ -111,13 +114,68 @@ class Grid {
 			# Style
 			$style_tag = str::getAttrTag("style", $row['row_style']);
 
+			# Row title
+			$title = str::getAttrTag("title", $row['row_alt']);
+
 			# Data
 			$data = str::getDataAttr($row['row_data']);
 
-			$html .= "<div{$id_tag}{$class_tag}{$style_tag}{$data}>{$row_html}</div>";
+			$html .= "<div{$id_tag}{$class_tag}{$style_tag}{$data}{$title}>{$row_html}</div>";
 		}
 
 		return $html;
+	}
+
+	/**
+	 * Adds a tooltip to a row.
+	 *
+	 * Will need the tooltip to be in the row_tooltip key.
+	 *
+	 * Requires a workaround to avoid duplication,
+	 * and to ensure the tooltip is added to the
+	 * right (row_ prefixed) keys.
+	 *
+	 * @param array $row
+	 *
+	 * @return void
+	 */
+	private function addTooltipToRow(array &$row): void
+	{
+		if(!$row['row_tooltip']){
+			return;
+		}
+
+		# Define the row tooltip
+		$a = $row;
+		// We copy the row array to a new variable
+
+		# Convert the row tooltip to a tooltip
+		$a['tooltip'] = $a['row_tooltip'];
+
+		$a['class'] = [];
+		$a['data'] = [];
+		// We remove class and data from the array to avoid duplication
+
+		# Then we feed that variable to the tooltip generator
+		Tooltip::generate($a);
+
+		# Then we merge any classes with the class array before generating the class tag
+		if($a['class']){
+			if(is_array($row['row_class'])){
+				$row['row_class'] = array_merge($row['row_class'], $a['class']);
+			}
+			else if($row['row_class']){
+				$row['row_class'] = array_merge([$row['row_class']], $a['class']);
+			}
+			else {
+				$row['row_class'] = $a['class'];
+			}
+		}
+
+		# And we do the same with the data array
+		if($a['data']){
+			$row['row_data'] = array_merge($row['row_data'] ?:[], $a['data']);
+		}
 	}
 
 	/**
