@@ -134,7 +134,7 @@ EOF;
 		// Except minlength and maxlength, because they mean different things for different form field types
 
 		# Parent validation can be overwritten by child verification
-		$val['validation'] = array_merge( $validation ?: [], $val['validation'] ?: []);
+		$val['validation'] = array_merge($validation ?: [], $val['validation'] ?: []);
 
 		# Adjust the label to fit the field
 		$val['parent_style'] = str::getAttrArray($val['parent_style'], $val['default_parent_style'], $val['only_parent_style']); //["margin" => "-1rem 0 0 0"]
@@ -309,13 +309,11 @@ EOF;
 			}
 
 			# The key holds the value
-			if(is_array($val)){
+			if(is_array($val) && !$val['type']){
 				// But only if the val is an array
-				if(!$val['type']){
-					//and the value doesn't belong to a label field
-					$val_array['value'] = $val['value'] !== NULL ? $val['value'] : $key;
-					// Unless an actual value has been set
-				}
+				// and the value doesn't belong to a label field
+				$val_array['value'] = $val['value'] !== NULL ? $val['value'] : $key;
+				// Unless an actual value has been set
 			}
 			else {
 				// Otherwise, if val is a string, then the key holds the value
@@ -329,7 +327,7 @@ EOF;
 			$options_html .= self::getCheckboxHTML($option_array);
 		}
 
-//		echo json_encode($option_array).PHP_EOL;
+		//		echo json_encode($option_array).PHP_EOL;
 
 		$parent_script = str::getScriptTag($parent_script);
 		$parent_class = str::getAttrTag("class", $parent_class);
