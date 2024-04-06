@@ -20,8 +20,8 @@ class Grid {
 	 * Format and return content in a HTML grid.
 	 * <code>
 	 * $grid = new Grid([
-	 *    "unstackable" => FALSE, //If set to TRUE will make the grid unstackable on small screens
-	 *    "formatter" => FALSE //If set to an anonymous function, will use that function to format the HTML per cell.
+	 *    "unstackable" => NULL, //If set to TRUE will make the grid unstackable on small screens
+	 *    "formatter" => NULL //If set to an anonymous function, will use that function to format the HTML per cell.
 	 * ]);
 	 * </code>
 	 *
@@ -331,9 +331,11 @@ class Grid {
 	 *
 	 * @return string Returns HTML
 	 */
-	public static function generate(array $cells)
+	public static function generate(array $cells, ?object $formatter = NULL): string
 	{
-		$grid = new Grid();
+		$grid = new Grid([
+			"formatter" => $formatter
+		]);
 		return $grid->getRowHTML($cells);
 	}
 

@@ -104,7 +104,7 @@ class ListGroup {
 				}
 				$cols[] = $col;
 			}
-			$html .= Grid::generate([$cols]);
+			$html .= Grid::generate([$cols], $a['formatter']);
 		}
 
 		# If there is no cap (most common)
@@ -117,7 +117,7 @@ class ListGroup {
 					// If the item itself is a numeric array (wrapped with [[ instead of [)
 
 					# Assume it's not HTML and needs to be generated
-					$item = Grid::generate($item);
+					$item = Grid::generate($item, $a['formatter']);
 				}
 
 				# Then feed it to the list group item.

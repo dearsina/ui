@@ -423,6 +423,20 @@ class Form {
 		}
 	}
 
+	public function getModalButtonsHTML(): string
+	{
+		$buttons_html = Button::generate($this->buttons);
+
+		return <<<EOF
+		<div class="container">
+			<div class="footer-content"></div>
+			<div class="btn-float-right">
+				{$buttons_html}
+			</div>
+		</div>
+EOF;
+	}
+
 	/**
 	 * A bit hacky, but works for now.
 	 *
@@ -450,13 +464,8 @@ class Form {
 	</div>
 </div>
 <div class="modal-footer"{$id}>
-	<div class="container">
-		<div class="footer-content"></div>
-		<div class="btn-float-right" style="width: 100%;">
-			{$buttons_html}
-		</div>
-	</div>
-<div style="display: none;">
+	{$this->getModalButtonsHTML()}	
+	<div style="display: none;">
 EOF;
 		}
 
@@ -488,6 +497,25 @@ EOF;
 	public function getScriptHTML()
 	{
 		return str::getScriptTag($this->script);
+	}
+
+	public function getModalBodyHTML(): string
+	{
+		$id = str::getAttrTag("id", $this->id);
+		$class = str::getAttrTag("class", $this->class);
+		$style = str::getAttrTag("style", $this->style);
+		$data = str::getDataAttr($this->data);
+
+		return /** @lang HTML */ <<<EOF
+<form method="POST"{$id}{$data}{$class}{$style}>
+	<input type="hidden" name="meta_action" value="{$this->action}"/>
+	<input type="hidden" name="meta_rel_table" value="{$this->rel_table}"/>
+	<input type="hidden" name="meta_rel_id" value="{$this->rel_id}"/>
+	<input type="hidden" name="callback" value="{$this->callback}"/>
+	{$this->getFieldsHTML()}
+</form>
+{$this->getScriptHTML()}
+EOF;
 	}
 
 	/**
