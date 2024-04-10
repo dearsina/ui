@@ -706,7 +706,7 @@ EOF;
 
 		# Set the background colour for the footer
 		$bgcolor = $this->getColourHexValue($bg_colour ?: $this->format['colour']['footer_background']);
-if($colour){str::backtrace();}
+
 		$default_style = [
 			"font-size" => "10px",
 			"line-height" => "13px",
