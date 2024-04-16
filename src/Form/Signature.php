@@ -43,9 +43,6 @@ class Signature extends Field implements FieldInterface {
 				"row_style" => [
 					"margin-bottom" => ".5rem",
 				],
-			], [
-				# Enable any dependencies
-//				"data" => $a['data'],
 			], [[
 				"id" => ClientSignature::getId($a),
 				"html" => [
