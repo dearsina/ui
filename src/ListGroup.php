@@ -132,6 +132,7 @@ class ListGroup {
 
 		# ID
 		$id = str::getAttrTag("id", $id ?: str::id("list-group"));
+		// Somehow this works even if $id is not set
 
 		# Class
 		$class_array = str::getAttrArray($a['class'], $default_class, $a['only_class']);
@@ -151,7 +152,7 @@ class ListGroup {
 	 * @return string
 	 * @throws \Exception
 	 */
-	private static function generateListGroupItem($item, ?array $orderable = []): string
+	public static function generateListGroupItem($item, ?array $orderable = []): string
 	{
 		if(!is_array($item)){
 			$item = ["html" => $item];
