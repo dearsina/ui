@@ -521,7 +521,8 @@ class Field {
 		$id = str::id("function");
 
 		# Append the function to the script key
-		$a['script'] .= /** @lang JavaScript */<<<EOF
+		$a['script'] .= /** @lang JavaScript */
+			<<<EOF
 function {$id}(e){
 	if($(this).val() === null){
 		return;
@@ -579,14 +580,18 @@ EOF;
 	 * Full format
 	 * <code>
 	 * "dependency" => [
-	 * 	"and" => [[
-	 * 		"selector" => "service",
-	 * 		"checked" => $service['service_id']
-	 * 	]],
-	 * 	"settings" => [
-	 * 		"wrapper" => false,
-	 * 	]
-	 * ]
+	 *    "settings" => [
+	 *        "wrapper" => ".el",
+	 *    ],
+	 *    "or" => [
+	 *        "settings[max_date]" => [
+	 *            "value" => true,
+	 *        ],
+	 *        "settings[max_date_modify]" => [
+	 *            "value" => true,
+	 *        ],
+	 *    ]
+	 * ],
 	 * </code>
 	 *
 	 * Quick format
@@ -617,20 +622,43 @@ EOF;
 			unset($a['dependency']['settings']);
 		}
 
-		# If the full format is expressed
-		if($a['dependency']['and'] || $a['dependency']['or']){
-			$a['data']['dependency'] = $a['dependency'];
-			return;
+		# Convert the quick format to full format
+		if(!$a['dependency']['and'] && !$a['dependency']['or']){
+			// If the and/or hasn't been set, assume it's and
+			$a['dependency']['and'] = $a['dependency'];
 		}
 
-		# If the quick format is expressed
-		foreach($a['dependency'] as $selector => $condition){
-			# Failsafe, shouldn't happen
-			if(!is_array($condition)){
+		# Go thru each operator
+		foreach(["and", "or"] as $operator){
+			# If the operator is empty, skip it
+			if(!$a['dependency'][$operator]){
 				continue;
 			}
-			$condition['selector'] = $selector;
-			$a['data']['dependency']['and'][] = $condition;
+
+			# If the operator conditions are wrapped in a numerical array
+			if(str::isNumericArray($a['dependency'][$operator])){
+				# Go thru each numerical group of dependencies
+				foreach($a['dependency'][$operator] as $condition){
+					# If a selector has already been assigned, keep it, otherwise, use the dependency key
+					$condition['selector'] = $condition['selector'] ?: $selector;
+					// A selector is the DOM element name
+
+					# Add them to the data dependency array, under the relevant operator
+					$a['data']['dependency'][$operator][] = $condition;
+				}
+			}
+
+			# If the operator conditions are NOT wrapped in an associative array
+			else {
+				foreach($a['dependency'][$operator] as $selector => $condition){
+					# If a selector has already been assigned, keep it, otherwise, use the dependency key
+					$condition['selector'] = $condition['selector'] ?: $selector;
+					// A selector is the DOM element name
+
+					# Add them to the data dependency array, under the relevant operator
+					$a['data']['dependency'][$operator][] = $condition;
+				}
+			}
 		}
 	}
 }
