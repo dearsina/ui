@@ -14,11 +14,12 @@ class PDF {
 	 * Saves the PDF as a temporary file and returns either the file contents
 	 * or temporary file name.
 	 *
-	 * @param            $url
-	 * @param int|null   $seconds
-	 * @param array|null $older_output
-	 * @param bool|null  $return_tmp_filename_only
-	 * @param int|null   $rerun
+	 * @param             $url
+	 * @param int|null    $seconds
+	 * @param string|null $filename The filename is used for the print run window
+	 * @param bool|null   $return_tmp_filename_only
+	 * @param int|null    $rerun
+	 * @param bool|null   $silent
 	 *
 	 * @return ?string Returns the actual PDF string or filename (if requested) or NULL on error
 	 * @throws \Exception
@@ -491,7 +492,13 @@ EOF;
 		}
 
 		# Delete the (tmp) file
-		return unlink($tmp_filename);
+		if(!unlink($tmp_filename)){
+			//If the file cannot be deleted
+			file_put_contents($_ENV['tmp_dir'] . "process.log", "Failed to delete {$tmp_filename} ({$a})" . PHP_EOL, FILE_APPEND);
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
