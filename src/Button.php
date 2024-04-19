@@ -305,6 +305,39 @@ class Button {
 	}
 
 	/**
+	 * Flattens buttons that are in complex numerical arrays.
+	 * Prevents having to be careful when adding to the $buttons[] array.
+	 *
+	 * @param array $buttons
+	 *
+	 * @return array
+	 */
+	private static function flattenButtonArray(array $buttons): array
+	{
+		$flat_buttons = [];
+
+		foreach($buttons as $button){
+			# Ignore empty buttons
+			if(!$button){
+				continue;
+			}
+
+			# If the button is itself an array of buttons
+			if(str::isNumericArray($button)){
+				# Recursively flatten the array
+				$flat_buttons = array_merge($flat_buttons, self::flattenButtonArray($button));
+				# And continue
+				continue;
+			}
+
+			# Add the button
+			$flat_buttons[] = $button;
+		}
+
+		return $flat_buttons;
+	}
+
+	/**
 	 * Given an array of either a "button" or "buttons",
 	 * returns HTMl with both, or returns NULL if neither are present.
 	 *
@@ -322,7 +355,7 @@ class Button {
 
 		# Dropdown buttons
 		if($a['buttons']){
-			return self::generateDropdown(["buttons" => $a['buttons']]);
+			return self::generateDropdown(["buttons" => self::flattenButtonArray($a['buttons'])]);
 			//Done this way to not drag in the other keys like icon
 		}
 
