@@ -233,12 +233,25 @@ class Icon {
 			$icon_array = $a;
 		}
 
+		# SVG icons need to be treated like images
 		if($icon_array['svg']){
-			$icon_array['style'] = is_array($icon_array['style']) ? $icon_array['style'] : [];
-			$icon_array['style']['width'] = $icon_array['style']['width'] ?: "1.25em";
-			$icon_array['style']['height'] = $icon_array['style']['height'] ?: "1.25em";
-			$icon_array['style']['margin-right'] = $icon_array['style']['margin-right'] ?: "0.75rem";
-			$icon_array['style']['margin-bottom'] = $icon_array['style']['margin-bottom'] ?: "-4px";
+			# A custom default style must be applied
+			$default_style_array = [
+				"width" => "1.25em",
+				"height" => "1.25em",
+				"margin-right" => "0.75rem",
+				"margin-bottom" => "-4px",
+			];
+
+			# The style can be overridden
+			$icon_array['style'] = array_merge($default_style_array, $icon_array['style'] ?: []);
+
+			# Add a few more keys
+			foreach(["tooltip", "alt"] as $key){
+				$icon_array[$key] = $a[$key];
+			}
+
+			# Then generate the image
 			return Img::generate($icon_array);
 		}
 
