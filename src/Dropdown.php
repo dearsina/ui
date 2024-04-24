@@ -102,7 +102,8 @@ class Dropdown {
 
 		return <<<EOF
 <div{$class}{$style}>
-  <button{$button_class}{$alt} type="button" data-bs-toggle="dropdown" aria-expanded="false">
+  <button{$button_class}{$alt} type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" 
+  aria-expanded="false">
     {$icon}{$title}
   </button>
   {$menu}
@@ -249,7 +250,7 @@ EOF;
 			$title = "<span>{$title}</span>";
 		}
 
-		return "<div data-bs-toggle=\"dropdown\"{$data}{$auto_close}{$class}{$alt}>{$icon}{$title}</div>";
+		return "<div data-bs-toggle=\"dropdown\" data-bs-auto-close=\"outside\"{$data}{$auto_close}{$class}{$alt}>{$icon}{$title}</div>";
 	}
 
 	/**

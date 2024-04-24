@@ -872,7 +872,7 @@ EOF;
 		return <<<EOF
 <div class="btn-group">
   {$button}
-  <button type="button" {$class} data-bs-toggle="dropdown" aria-expanded="false">
+  <button type="button" {$class} data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
     <span class="visually-hidden">Toggle Dropdown</span>
   </button>
   {$menu}
