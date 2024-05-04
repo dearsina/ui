@@ -561,9 +561,9 @@ EOF;
 		$html = ListGroup::generate($this->elements['items']);
 
 		$id = str::getAttrTag("id", $this->elements['items']['id']);
-		$class_array = str::getAttrArray($this->elements['items']['class'], "container card-items", $this->elements['items']['only_class']);
+		$class_array = str::getAttrArray($this->elements['items']['parent_class'], "container card-items", $this->elements['items']['only_parent_class']);
 		$class = str::getAttrTag("class", $class_array);
-		$style = str::getAttrTag("style", $this->elements['items']['style']);
+		$style = str::getAttrTag("style", $this->elements['items']['parent_style']);
 		$script = str::getScriptTag($this->elements['items']['script']);
 
 		return "<div{$class}{$id}{$style}>{$html}</div>{$script}";
