@@ -6,6 +6,7 @@ namespace App\UI\Form;
 
 use App\ClientSignature\ClientSignature;
 use App\Common\Img;
+use App\Common\SQL\Info\Info;
 use App\Common\str;
 use App\UI\Button;
 use App\UI\Grid;
@@ -69,6 +70,13 @@ class Signature extends Field implements FieldInterface {
 
 		if(!$value){
 			return NULL;
+		}
+
+		if(str::isUuid($value)){
+			$client_signature = Info::getInstance()->getInfo("client_signature", $value);
+			if(!$client_signature['signature']){
+				return NULL;
+			}
 		}
 
 		$fields[] = [
