@@ -143,8 +143,37 @@ class Badge {
 		# Set the title, but only if there is no tooltip
 		$title_attr = $tooltip ? NULL : str::getAttrTag("title", strip_tags($alt ?: $title));
 
+		$count = self::getCount($a);
+
 		return /** @lang HTML */ <<<EOF
-<{$tag_type}{$href}{$id}{$class}{$style}{$title_attr}{$approve_attr}{$data}>{$icon}{$title}</{$tag_type}>{$script}
+<{$tag_type}{$href}{$id}{$class}{$style}{$title_attr}{$approve_attr}{$data}>{$icon}{$title}{$count}</{$tag_type}>{$script}
 EOF;
+	}
+
+	/**
+	 * Adds a count to the badge.
+	 *
+	 * @param array $a
+	 *
+	 * @return string|null
+	 */
+	private static function getCount(array $a): ?string
+	{
+		extract($a);
+
+		if(!is_numeric($count)){
+			return NULL;
+		}
+
+		$style = str::getAttrTag("style", [
+			"float" => "right",
+			"color" => "black",
+			"background" => "white",
+			"margin" => "-3px -4px -4.5px 4px",
+			"padding" => "4px",
+			"min-width" => "20px",
+		]);
+
+		return "<div{$style}>{$count}</div>";
 	}
 }

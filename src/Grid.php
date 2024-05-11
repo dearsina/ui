@@ -394,6 +394,7 @@ class Grid {
 			$left['html'] = $key;
 			$grid[] = [
 				"row_class" => $row_class,
+				"row_style" => $rows['style'],
 				"html" => [$left, $value]
 			];
 		}

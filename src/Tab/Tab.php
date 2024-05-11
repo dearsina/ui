@@ -65,6 +65,11 @@ class Tab {
 		 * the button will also be disabled.
 		 */
 
+		# Colour
+		if($colour){
+			$class_array[] = "text-{$colour}";
+		}
+
 		return $class_array;
 	}
 
@@ -141,9 +146,10 @@ class Tab {
 			$img = "<div style=\"max-height:20px;max-width:30px;position:absolute;\">{$img}</div>";
 
 			$img_width = $img_width ?: 37.5;
+			$img_height = $img_height ?: 18;
 
 			# So we need to add a spacer to the right of the image
-			$img .= "<div style=\"width:{$img_width}px;height:18px;\"></div>";
+			$img .= "<div style=\"width:{$img_width}px;height:{$img_height}px;\"></div>";
 		}
 
 		$class = str::getAttrTag("class", $class);

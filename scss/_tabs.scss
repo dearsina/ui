@@ -621,6 +621,7 @@ $sideways-tabs-height   : 1rem;
 {
   display  : inline-flex;
   overflow : hidden;
+  align-items: center;
 }
 
 .nav-tabs .nav-link .nav-title-dismissible
