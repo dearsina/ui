@@ -243,8 +243,10 @@ class Icon {
 				"margin-bottom" => "-4px",
 			];
 
+			$icon_array['style'] = is_array($icon_array['style']) ? $icon_array['style'] : [$icon_array['style']];
+
 			# The style can be overridden
-			$icon_array['style'] = array_merge($default_style_array, $icon_array['style'] ?: []);
+			$icon_array['style'] = array_merge($default_style_array, $icon_array['style']);
 
 			# Add a few more keys
 			foreach(["tooltip", "alt"] as $key){
