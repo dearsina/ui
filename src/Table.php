@@ -161,14 +161,34 @@ EOF;
 		Output::getInstance()->append("#{$table_id}", Table::generate([$row], Table::getAsyncOptions($row), true, true), $audience);
 	}
 
+	/**
+	 * Appends a row to a table, at the very bottom.
+	 *
+	 * @param string     $table_id
+	 * @param array      $row
+	 * @param array|null $audience
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
 	public static function appendRow(string $table_id, array $row, ?array $audience = NULL): void
 	{
-		Output::getInstance()->append("#{$table_id}", Table::generate([$row], Table::getAsyncOptions($row), true, true), $audience);
+		Output::getInstance()->append("#{$table_id} > .table-container", Table::generate([$row], Table::getAsyncOptions($row), true, true), $audience);
 	}
 
+	/**
+	 * Prepends a row to a table, below the header.
+	 *
+	 * @param string     $table_id
+	 * @param array      $row
+	 * @param array|null $audience
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
 	public static function prependRow(string $table_id, array $row, ?array $audience = NULL): void
 	{
-		Output::getInstance()->prepend("#{$table_id}", Table::generate([$row], Table::getAsyncOptions($row), true, true), $audience);
+		Output::getInstance()->after("#{$table_id} > .table-container > .table-header", Table::generate([$row], Table::getAsyncOptions($row), true, true), $audience);
 	}
 
 	/**
