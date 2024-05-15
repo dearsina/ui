@@ -146,6 +146,8 @@ EOF;
 	}
 
 	/**
+	 * DEPRECIATED, use appendRow and prependRow instead.
+	 *
 	 * Add a row to a table.
 	 *
 	 * @param string     $table_id
@@ -157,6 +159,16 @@ EOF;
 	public static function addRow(string $table_id, array $row, ?array $audience = NULL): void
 	{
 		Output::getInstance()->append("#{$table_id}", Table::generate([$row], Table::getAsyncOptions($row), true, true), $audience);
+	}
+
+	public static function appendRow(string $table_id, array $row, ?array $audience = NULL): void
+	{
+		Output::getInstance()->append("#{$table_id}", Table::generate([$row], Table::getAsyncOptions($row), true, true), $audience);
+	}
+
+	public static function prependRow(string $table_id, array $row, ?array $audience = NULL): void
+	{
+		Output::getInstance()->prepend("#{$table_id}", Table::generate([$row], Table::getAsyncOptions($row), true, true), $audience);
 	}
 
 	/**
