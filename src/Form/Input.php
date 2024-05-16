@@ -47,18 +47,16 @@ class Input extends Field {
 			$disabled_class = "disabled";
 		}
 
-		# Parent class
+		# Parent
+		$parent_id = str::getAttrTag("id", $parent_id);
 		$parent_class_array = str::getAttrArray($parent_class, "input-group", $only_parent_class);
 		$parent_class = str::getAttrTag("class", $parent_class_array);
-		
-		# Parent style
 		$parent_style = str::getAttrTag("style", $parent_style);
 
-		# Grand parent class
+		# Grand parent
+		$grand_parent_id = str::getAttrTag("id", $grand_parent_id);
 		$grand_parent_class_array = str::getAttrArray($grand_parent_class, "mb-3", $only_grand_parent_class);
 		$grand_parent_class = str::getAttrTag("class", $grand_parent_class_array);
-		
-		# Grand_parent style
 		$grand_parent_style = str::getAttrTag("style", $grand_parent_style);
 
 		# Class array
@@ -123,9 +121,9 @@ class Input extends Field {
 
 		return /** @lang HTML */
 			<<<EOF
-<div{$grand_parent_class}{$grand_parent_style}>
+<div{$grand_parent_id}{$grand_parent_class}{$grand_parent_style}>
 	{$label}
-	<div{$parent_class}{$parent_style}>
+	<div{$parent_id}{$parent_class}{$parent_style}>
 		{$icon}
 		{$pre_button}
 		{$pre}
