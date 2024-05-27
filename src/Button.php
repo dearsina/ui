@@ -338,6 +338,32 @@ class Button {
 	}
 
 	/**
+	 * Get the dropdown buttons.
+	 * Allows for buttons arrays to have buttons keys,
+	 * and other keys like icon, style, etc.
+	 *
+	 *
+	 * @param array $buttons
+	 *
+	 * @return string
+	 */
+	private static function getDropdown(array $buttons): string
+	{
+		# If the buttons array itself has a buttons-key (and perhaps other keys like icon, style, etc)
+		if($buttons['buttons']){
+			# Flatten the buttons key value (only)
+			$buttons['buttons'] = self::flattenButtonArray($buttons['buttons']);
+		}
+
+		# Otherwise, convert the entire buttons array to a flat array and put it in the buttons key
+		else {
+			$buttons['buttons'] = self::flattenButtonArray($buttons);
+		}
+
+		return self::generateDropdown($buttons);
+	}
+
+	/**
 	 * Given an array of either a "button" or "buttons",
 	 * returns HTMl with both, or returns NULL if neither are present.
 	 *
@@ -355,8 +381,7 @@ class Button {
 
 		# Dropdown buttons
 		if($a['buttons']){
-			return self::generateDropdown(["buttons" => self::flattenButtonArray($a['buttons'])]);
-			//Done this way to not drag in the other keys like icon
+			return self::getDropdown($a['buttons']);
 		}
 
 		# Button(s) in a row
@@ -406,9 +431,10 @@ class Button {
 				"direction" => $dierction ?: "left",
 				"children" => [
 					"direction" => $dierction ?: "left",
-					"items" => $buttons
+					"items" => $buttons,
 				],
-				"class" => "drop-float-right"
+				"class" => "drop-float-right",
+				"style" => $style,
 			]],
 		]);
 	}
@@ -740,11 +766,11 @@ EOF;
 
 		# Add a chevron-down suffix
 		$a['title'] .= "&nbsp;" . Icon::generate([
-			"style" => [
-				"font-weight" => "500 !important",
-			],
-			"name" => "chevron-down",
-		]);
+				"style" => [
+					"font-weight" => "500 !important",
+				],
+				"name" => "chevron-down",
+			]);
 
 		$class = is_array($a['class']) ? $a['class'] : [$a['class']];
 		array_unshift($class, ["navbar-nav nav-button"]);
@@ -761,7 +787,7 @@ EOF;
 				"direction" => $a['direction'],
 			]],
 			"class" => $class,
-			"style" => $parent_style
+			"style" => $parent_style,
 		]);
 	}
 
@@ -776,11 +802,11 @@ EOF;
 
 		# Add a chevron-down suffix
 		$a['title'] .= "&nbsp;" . Icon::generate([
-			"style" => [
-				"font-weight" => "500 !important",
-			],
-			"name" => "chevron-down",
-		]);
+				"style" => [
+					"font-weight" => "500 !important",
+				],
+				"name" => "chevron-down",
+			]);
 
 		$class = is_array($a['class']) ? $a['class'] : [$a['class']];
 		$class[] = "dropdown-checkbox";
@@ -811,7 +837,7 @@ EOF;
 			# Label style
 			if($checkbox['label'] && !is_array($checkbox['label'])){
 				$checkbox['label'] = [
-					"html" => $checkbox['label']
+					"html" => $checkbox['label'],
 				];
 			}
 			$checkbox['label']['style'] = [
@@ -837,7 +863,7 @@ EOF;
 			]],
 			"class" => $class,
 			"style" => $parent_style,
-			"script" => $a['script']
+			"script" => $a['script'],
 		]);
 	}
 
