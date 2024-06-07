@@ -146,7 +146,8 @@ class Tab {
 			$img = "<div style=\"max-height:20px;max-width:30px;position:absolute;\">{$img}</div>";
 
 			$img_width = $img_width ?: 37.5;
-			$img_height = $img_height ?: 18;
+			$img_height = $img_height ?: 15;
+			// If it's bigger than 15px, it will create a gap for other tabs
 
 			# So we need to add a spacer to the right of the image
 			$img .= "<div style=\"width:{$img_width}px;height:{$img_height}px;\"></div>";
