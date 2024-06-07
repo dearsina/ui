@@ -177,3 +177,15 @@ $container-max-widths : (
 .row.no-gutters > .col-sm {
   flex: inherit;
 }
+
+.grid-row {
+  border-bottom: 1px solid #dee2e6;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.grid-row:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}

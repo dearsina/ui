@@ -355,6 +355,10 @@ class Grid {
 			return NULL;
 		}
 
+		$row_class = is_array($rows['class']) ? $rows['class'] : [$rows['class']];
+
+		$row_class[] = "grid-row";
+
 		# Allow for the row barrier to be moved by the user
 		if($rows['split'] !== false){
 			$row_class[] = "col-split";
