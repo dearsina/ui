@@ -1,36 +1,184 @@
-.collapse-toggle {
-  cursor: pointer;
+.collapse-toggle
+{
+  cursor : pointer;
 }
 
-.collapse-toggle::after{
-  float: right;
-  font-family: "Font Awesome 6 Pro";
-  opacity:.25;
+.collapse-toggle::after
+{
+  float       : right;
+  font-family : "Font Awesome 6 Pro";
+  opacity     : .25;
 
-  content: "\f077"; // Chevron up (indicating that you can close this)
+  content     : "\f077"; // Chevron up (indicating that you can close this)
 }
 
-.collapse-toggle:hover::after {
-  opacity: 1;
+.collapse-toggle:hover::after
+{
+  opacity : 1;
 }
 
-.collapse-toggle.collapsed::after{
-  content: "\f078"; // Chevron down (indicating that there is something "below")
+.collapse-toggle.collapsed::after
+{
+  content : "\f078"; // Chevron down (indicating that there is something "below")
 }
 
 /**
  * When there are more than one collapsable item in the set,
  * differentiate them by a little padding and a line.
  */
-.accordion > .collapse-toggle:not(:first-child){
-  margin-top: .25rem;
-  padding-top: .25rem;
-  border-top: .5px solid #dee2e6;
+.accordion > .collapse-toggle:not(:first-child)
+{
+  margin-top  : .25rem;
+  padding-top : .25rem;
+  border-top  : .5px solid #dee2e6;
 }
 
 /**
  * So that when you hover over the header and it's truncated, you can see all of it.
  */
-.collapse-toggle.text-flat:hover {
-  overflow: unset;
+.collapse-toggle.text-flat:hover
+{
+  overflow : unset;
+}
+
+.relation-accordion-button
+{
+  position         : relative;
+  display          : flex;
+  align-items      : center;
+  width            : 100%;
+  padding          : var(--#{$prefix}accordion-btn-padding-y) var(--#{$prefix}accordion-btn-padding-x);
+  @include font-size($font-size-base);
+  color            : var(--#{$prefix}accordion-btn-color);
+  text-align       : left; // Reset button style
+  background-color : var(--#{$prefix}accordion-btn-bg);
+  border           : 0;
+  @include border-radius(0);
+  overflow-anchor  : none;
+  @include transition(var(--#{$prefix}accordion-transition));
+
+  &:not(.collapsed)
+  {
+    color : var(--#{$prefix}accordion-active-color);
+
+    &::after
+    {
+      background-image : var(--#{$prefix}accordion-btn-active-icon);
+      transform        : var(--#{$prefix}accordion-btn-icon-transform);
+    }
+  }
+
+  // Accordion icon
+  &::after
+  {
+    flex-shrink       : 0;
+    width             : var(--#{$prefix}accordion-btn-icon-width);
+    height            : var(--#{$prefix}accordion-btn-icon-width);
+    margin-left       : auto;
+    content           : "";
+    background-image  : var(--#{$prefix}accordion-btn-icon);
+    background-repeat : no-repeat;
+    background-size   : var(--#{$prefix}accordion-btn-icon-width);
+    @include transition(var(--#{$prefix}accordion-btn-icon-transition));
+
+    zoom              : 50%;
+  }
+
+  &:hover
+  {
+    z-index : 2;
+  }
+
+  &:focus
+  {
+    z-index : 3;
+    outline : 0;
+  }
+}
+
+.empty-relation-accordion-button
+{
+  position         : relative;
+  display          : flex;
+  align-items      : center;
+  width            : 100%;
+  padding          : var(--#{$prefix}accordion-btn-padding-y) var(--#{$prefix}accordion-btn-padding-x);
+  @include font-size($font-size-base);
+  color            : var(--#{$prefix}accordion-btn-color);
+  text-align       : left; // Reset button style
+  background-color : var(--#{$prefix}accordion-btn-bg);
+  border           : 0;
+  @include border-radius(0);
+  overflow-anchor  : none;
+  @include transition(var(--#{$prefix}accordion-transition));
+}
+
+.relation-accordion-header
+{
+  padding        : 8px;
+  border-radius  : var(--bs-list-group-border-radius);
+
+  text-transform : uppercase;
+  font-size      : 75%;
+  font-weight    : 400;
+  letter-spacing : 0.5px;
+}
+
+#client-review-menu .accordion-wrapper
+{
+  //margin-top                : 5px;
+  //margin-right              : -5px;
+  //margin-bottom             : 5px;
+  //
+  //border-top-left-radius    : var(--bs-list-group-border-radius);
+  //border-left               : var(--bs-list-group-border-width) solid var(--bs-list-group-border-color);
+  //
+  //border-bottom-left-radius : var(--bs-list-group-border-radius);
+  //border-bottom             : var(--bs-list-group-border-width) solid var(--bs-list-group-border-color);
+  //background                : white;
+
+  margin        : 5px 5px 5px 0;
+  border-radius : var(--bs-list-group-border-radius);
+  border        : var(--bs-list-group-border-width) solid var(--bs-list-group-border-color);
+  background    : white;
+}
+
+#client-review-menu .accordion-wrapper > .accordion
+{
+  //border-top-left-radius : var(--bs-list-group-border-radius);
+  //border-top             : var(--bs-list-group-border-width) solid var(--bs-list-group-border-color);
+}
+
+#client-review-menu .accordion-wrapper > .accordion > .accordion-header-wrapper
+{
+  display       : flex;
+  margin-bottom : 1px;
+  align-items   : center;
+  border-radius : var(--bs-list-group-border-radius);
+}
+
+#client-review-menu .list-group-flush > .list-group-item:last-child
+{
+  //margin-bottom: 1px;
+  border-bottom-left-radius  : var(--bs-list-group-border-radius);
+  border-bottom-right-radius : var(--bs-list-group-border-radius);
+}
+
+#client-review-menu .relation-accordion-header-title
+{
+  display     : block;
+  width       : 100%;
+  font-weight : 400;
+}
+
+#client-review-menu .relation-title
+{
+  white-space   : nowrap;
+  overflow      : hidden;
+  text-overflow : ellipsis;
+}
+
+#client-review-menu li.active > .row > .col-sm > .relation-accordion-header-title
+{
+  color : #ffffff;
 }

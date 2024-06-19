@@ -131,8 +131,7 @@ class ListGroup {
 		}
 
 		# ID
-		$id = str::getAttrTag("id", $id ?: str::id("list-group"));
-		// Somehow this works even if $id is not set
+		$id = str::getAttrTag("id", $a['id'] ?: str::id("list-group"));
 
 		# Class
 		$class_array = str::getAttrArray($a['class'], $default_class, $a['only_class']);
@@ -141,7 +140,10 @@ class ListGroup {
 		# Style
 		$style = str::getAttrTag("style", $a['style']);
 
-		return "{$pre}<ul{$id}{$class}{$style}{$data}>{$html}</ul>{$post}";
+		# Script
+		$script = str::getScriptTag($a['script']);
+
+		return "{$pre}<ul{$id}{$class}{$style}{$data}>{$html}</ul>{$post}{$script}";
 	}
 
 	/**

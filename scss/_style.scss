@@ -598,10 +598,10 @@ b, strong
   font-size        : 85%;
   color            : #000000;
 
-  max-width: 35vw;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  max-width        : 35vw;
+  white-space      : nowrap;
+  overflow         : hidden;
+  text-overflow    : ellipsis;
 }
 
 /**
@@ -685,28 +685,29 @@ li.mapping:hover
 {
   margin        : 5px 0 0 0;
   padding       : 10px 5px;
-  min-width         : 45px;
+  min-width     : 45px;
   border        : 0.9px solid white;
   border-radius : 0.375rem 0.375rem 0 0;
-  display: flex;
-  align-items: center;
+  display       : flex;
+  align-items   : center;
 }
 
 .controller-button > .dropdown > .dropdown-item.show
 {
-  border     : 0.9px solid #d8e2e9;
-  background : #fcfdfd;
+  border        : 0.9px solid #d8e2e9;
+  background    : #fcfdfd;
 
-  z-index: 1001;
-  position: inherit;
-  border-bottom: unset;
-  clip-path: polygon(0 0, 100% 0, 100% 90%, 0% 100%);
+  z-index       : 1001;
+  position      : inherit;
+  border-bottom : unset;
+  clip-path     : polygon(0 0, 100% 0, 100% 90%, 0% 100%);
 }
 
-.controller-button-title {
-  display: inline;
-  font-size: 85%;
-  margin-left: 5px;
+.controller-button-title
+{
+  display     : inline;
+  font-size   : 85%;
+  margin-left : 5px;
 }
 
 .controller-button > .dropdown > .dropdown-menu.resizable-el.ui-resizable.show
@@ -717,23 +718,24 @@ li.mapping:hover
 /**
  * Hide the controller text if the screen width is too small
  */
-@media (max-width: 1400px)
+@media (max-width : 1400px)
 {
   .controller-button-title
   {
-    font-size: 75%;
-    margin-left: 3px;
+    font-size   : 75%;
+    margin-left : 3px;
   }
 }
-@media (max-width: 1200px)
+
+@media (max-width : 1200px)
 {
   .controller-button > .dropdown > .dropdown-item
   {
-    padding: 10px;
+    padding : 10px;
   }
   .controller-button-title
   {
-    display: none;
+    display : none;
   }
 }
 
@@ -768,37 +770,57 @@ li.mapping:hover
  * Styles for the form group node.
  * Beta.
  */
-.masonry-grid-container{
-  position: relative;
-  width: 100%;
-  height: 100%;
-  container-type: inline-size;
+.masonry-grid-container
+{
+  position       : relative;
+  width          : 100%;
+  height         : 100%;
+  container-type : inline-size;
 }
 
-.masonry-grid-tile {
-  position: absolute;
-  padding: 1%;
+.masonry-grid-tile
+{
+  position : absolute;
+  padding  : 1%;
 }
 
-a.masonry-grid-tile-inner {
-  color: black;
-  cursor: pointer;
+a.masonry-grid-tile-inner
+{
+  color  : black;
+  cursor : pointer;
 }
 
-a.masonry-grid-tile-inner:hover {
-  text-decoration: none;
-  color: black;
+a.masonry-grid-tile-inner:hover
+{
+  text-decoration : none;
+  color           : black;
 }
 
-.masonry-grid-tile-inner {
-  height: 100%;
-  width: 100%;
-  border: 1px solid hsl(0deg 0% 0% / 20%);
-  border-radius: 0.35rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  white-space: nowrap;
-  overflow: hidden;
-  font-size: 5cqw !important;
+.masonry-grid-tile-inner
+{
+  height          : 100%;
+  width           : 100%;
+  border          : 1px solid hsl(0deg 0% 0% / 20%);
+  border-radius   : 0.35rem;
+  display         : flex;
+  justify-content : center;
+  align-items     : center;
+  white-space     : nowrap;
+  overflow        : hidden;
+  font-size       : 5cqw !important;
+}
+
+/**
+ * Minor changes to the jConfirm modal.
+ * Allowing for more breathing room for
+ * icons and titles.
+ */
+.jconfirm .jconfirm-box div.jconfirm-title-c
+{
+  padding-bottom: unset;
+}
+.jconfirm-icon-c,
+.jconfirm-title {
+  line-height: 1.75rem;
+  margin-bottom: 0.75rem;
 }
