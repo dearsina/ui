@@ -345,9 +345,9 @@ class Button {
 	 *
 	 * @param array $buttons
 	 *
-	 * @return string
+	 * @return string|null
 	 */
-	private static function getDropdown(array $buttons): string
+	private static function getDropdown(array $buttons): ?string
 	{
 		# If the buttons array itself has a buttons-key (and perhaps other keys like icon, style, etc)
 		if($buttons['buttons']){
