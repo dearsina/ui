@@ -126,27 +126,10 @@
 
 #client-review-menu .accordion-wrapper
 {
-  //margin-top                : 5px;
-  //margin-right              : -5px;
-  //margin-bottom             : 5px;
-  //
-  //border-top-left-radius    : var(--bs-list-group-border-radius);
-  //border-left               : var(--bs-list-group-border-width) solid var(--bs-list-group-border-color);
-  //
-  //border-bottom-left-radius : var(--bs-list-group-border-radius);
-  //border-bottom             : var(--bs-list-group-border-width) solid var(--bs-list-group-border-color);
-  //background                : white;
-
-  margin        : 5px 5px 5px 0;
+  margin        : 10px 5px 5px 0;
   border-radius : var(--bs-list-group-border-radius);
   border        : var(--bs-list-group-border-width) solid var(--bs-list-group-border-color);
   background    : white;
-}
-
-#client-review-menu .accordion-wrapper > .accordion
-{
-  //border-top-left-radius : var(--bs-list-group-border-radius);
-  //border-top             : var(--bs-list-group-border-width) solid var(--bs-list-group-border-color);
 }
 
 #client-review-menu .accordion-wrapper > .accordion > .accordion-header-wrapper
@@ -159,9 +142,25 @@
 
 #client-review-menu .list-group-flush > .list-group-item:last-child
 {
-  //margin-bottom: 1px;
   border-bottom-left-radius  : var(--bs-list-group-border-radius);
   border-bottom-right-radius : var(--bs-list-group-border-radius);
+}
+
+#client-review-menu .list-group-item.client-item
+{
+  padding: 7px 5px 5px 10px;
+}
+#client-review-menu .list-group-item.client-item > .row
+{
+  align-items: center;
+  margin-bottom: 5px;
+}
+#client-review-menu .list-group-item.client-item > .row > .client-review-risk-score-badge
+{
+  width: 65px;
+  padding: 0;
+  margin-right: -10px;
+  margin-left: -15px;
 }
 
 #client-review-menu .relation-accordion-header-title
