@@ -107,6 +107,10 @@ class Input extends Field {
 		# Description
 		$desc = self::getDesc($desc);
 
+		# Accept and Capture
+		$accept = str::getAttrTag("accept", $accept);
+		$capture = str::getAttrTag("capture", $capture);
+
 		# $data
 		$data = self::getInputData($a);
 
@@ -142,6 +146,8 @@ class Input extends Field {
 			{$autocomplete}
 			{$disabled}
 			{$checked}
+			{$accept}
+			{$capture}
 			{$data}
 		/>
 		{$icon_suffix}

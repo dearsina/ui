@@ -338,7 +338,8 @@ EOF;
 
 		# Only include left side if it has values (or a custom ID)
 		if(($left = $icon . $this->elements['footer']['html'] . $badge) || $id){
-			$left = "<div class=\"col-auto\">{$left}</div>";
+			$sm = $this->elements['footer']['sm'] ?: "auto";
+			$left = "<div class=\"col-{$sm}\">{$left}</div>";
 		}
 
 		# Only include right side if it has values (buttons)

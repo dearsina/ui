@@ -44,6 +44,17 @@
   width       : 100%;
 }
 
+.modal-video-footer {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  display: flex;
+  justify-content: flex-end;
+  z-index: 1;
+}
+
 .modal-video-narrative
 {
   text-align    : center;
