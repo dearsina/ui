@@ -659,3 +659,81 @@ textarea.monospace
 {
   border-radius : .35rem;
 }
+
+/**
+ * Formatting tokenized elements
+ */
+.tokenized-element {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.tokenized-workflow > span,
+.tokenized-form-group > span,
+.tokenized-form-field > span,
+.tokenised-custom-id > span
+{
+  white-space: nowrap;
+}
+
+.tokenized-icon
+{
+  display: flex;
+  align-items: center;
+}
+
+.tokenized-workflow
+{
+  margin-right: 5px;
+  min-width: 5vw;
+  max-width: 10vw;
+}
+
+.tokenized-form-group {
+  min-width: 5vw;
+  max-width: 15vw;
+  margin-right: 5px;
+  border: 0.1px solid #CCCCCC;
+  padding: 0 2px;
+  border-radius: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 10px;
+  text-align: center;
+}
+
+.tokenized-workflow {
+  min-width: 5vw;
+  max-width: 15vw;
+  margin-right: 5px;
+  background: hsl(203deg 100% 36% / 10%);
+  padding: 0 2px;
+  border-radius: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 10px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.tokenized-custom-id {
+  font-family: "Roboto Mono", monospace;
+  font-size: 80%;
+  margin-left: 5px;
+  background: hsl(203deg 100% 36% / 10%);
+  border-radius: 4px;
+  padding: 1px;
+}
+.tokenized-custom-id::before{
+  content: "{"
+}
+.tokenized-custom-id::after{
+  content: "}"
+}
+
+.tokenized-form-field {
+  //min-width: 10vw;
+}

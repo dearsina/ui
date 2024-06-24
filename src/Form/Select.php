@@ -266,22 +266,24 @@ EOF;
 	{
 		extract($a);
 
-		/**
-		 * Because of the potentially non-distinct
-		 * nature of tokenized options, we can trust
-		 * that the tokenization methods will have already
-		 * prepared the options array in the required
-		 * value/title/selected format.
-		 */
-		if($tokenize){
-			if(str::isNumericArray($options)){
-				return $options;
-			}
-		}
-
 		# If there are no options, pencils down
 		if(!is_array($options)){
 			return NULL;
+		}
+
+		/**
+		 * Tokenized options are not deduplicated by design, thus we cannot use
+		 * the value array to determine whether they are selected or not. Instead,
+		 * we have to rely on the selected key being set.
+		 */
+		if($tokenize){
+			if(str::isNumericArray($options)){
+				// This is also why the options don't have their value as a key, because there could be duplicates
+				foreach($options as $option){
+					$options_array[] = SelectOption::getFormattedOption($option);
+				}
+				return $options_array;
+			}
 		}
 
 		# Set the value(s) as an array
@@ -302,8 +304,9 @@ EOF;
 
 			# If the option is an array
 			if(is_array($option)){
-				$select_option = new SelectOption($option_value, $option, $selected);
-				$options_array[] = $select_option->getOption();
+				$option['value'] = $option_value;
+				$option['selected'] = $selected;
+				$options_array[] = SelectOption::getFormattedOption($option);
 				continue;
 			}
 

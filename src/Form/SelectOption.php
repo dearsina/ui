@@ -7,67 +7,48 @@ use App\UI\Icon;
 use App\UI\Tooltip;
 
 class SelectOption {
-	private array $option;
-	private string $option_value;
-	private bool $selected;
-
-	public function __construct(string $option_value, array $option, bool $selected)
+	public static function getFormattedOption(array $option): array
 	{
-		$this->option_value = $option_value;
-		$this->option = $option;
-		$this->selected = $selected;
-
-		$this->format();
-	}
-
-	public function getOption(): array
-	{
-		return $this->option;
-	}
-
-	private function format(): void
-	{
-		$this->option['value'] = $this->option_value;
-		$this->option['selected'] = $this->selected;
-
 		# Format icon
-		$icon = $this->formatIcon();
-
-		# HTML, failing that, title
-		if($this->option['html']){
-			$html = $this->option['html'];
-		}
-
-		else {
-			$html = $this->option['title'];
-		}
+		$icon = SelectOption::formatIcon($option);
 
 		# Searchable, which will add text to the title
-		$this->formatSearchable();
+		SelectOption::formatSearchable($option);
 		// Append values to the global option-title, but not the local title value
 
 		# Alt, class and style
-		$alt = str::getAttrTag("title", $this->option['alt']);
-		$class = str::getAttrTag("class", $this->option['class']);
-		$style = str::getAttrTag("style", $this->option['style']);
+		$alt = str::getAttrTag("title", $option['alt']);
+		$class = str::getAttrTag("class", $option['class']);
+		$style = str::getAttrTag("style", $option['style']);
 
 		# Data
-		$data = str::getDataAttr($this->option['data']);
+		$data = str::getDataAttr($option['data']);
 
 		# Fatten with a tooltip if required
-		Tooltip::generate($this->option);
+		Tooltip::generate($option);
 
-		$this->option['data']['html'] = "<div{$alt}{$class}{$style}{$data}>{$icon}{$html}</div>";
+		# HTML, failing that, title
+		if($html = $option['html']){
+			$option['data']['html'] = $html;
+			return $option;
+		}
+
+		$html = $option['title'];
+		$option['html'] = "<div{$alt}{$class}{$style}{$data}>{$icon}{$html}</div>";
+		$option['data']['html'] = $option['html'];
+
+		return $option;
 	}
 
-	private function formatSearchable(): void
+
+	private static function formatSearchable(array &$option): void
 	{
-		if(!$this->option['searchable']){
+		if(!$option['searchable']){
 			return;
 		}
 
 		# Get the searchable values
-		$searchable = is_array($this->option['searchable']) ? $this->option['searchable'] : [$this->option['searchable']];
+		$searchable = is_array($option['searchable']) ? $option['searchable'] : [$option['searchable']];
 
 		# Clean up the searchable array
 		$searchable_array = array_filter(array_unique(array_values(str::flatten($searchable))));
@@ -77,29 +58,29 @@ class SelectOption {
 		}
 
 		# Since we have searchable values, we can't rely on the system to create the alt
-		if(!$this->option['alt']){
-			if(!$this->option['tooltip']){
+		if(!$option['alt']){
+			if(!$option['tooltip']){
 				// if there is no given alt or tooltip, set the untouched title as alt
-				$this->option['alt'] = $this->option['title'];
+				$option['alt'] = $option['title'];
 			}
 		}
 
 		# Add searchable strings to the title (that will be hidden anyway)
-		$this->option['title'] .= " | " . implode(" | ", $searchable_array);
+		$option['title'] .= " | " . implode(" | ", $searchable_array);
 	}
 
-	private function formatIcon(): ?string
+	private static function formatIcon(array $option): ?string
 	{
-		if(!is_array($this->option['icon'])){
-			$this->option['icon'] = [
-				"name" => $this->option['icon']
+		if(!is_array($option['icon'])){
+			$option['icon'] = [
+				"name" => $option['icon']
 			];
 		}
 
-		if(!$this->option['icon']['style']){
-			$this->option['icon']['style'] = "margin-right: 5px;";
+		if(!$option['icon']['style']){
+			$option['icon']['style'] = "margin-right: 5px;";
 		}
 
-		return Icon::generate($this->option['icon']);
+		return Icon::generate($option['icon']);
 	}
 }
