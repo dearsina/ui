@@ -353,7 +353,7 @@ textarea.monospace
   //margin-bottom: -0.7rem; //For some reason there is (superfluous) buffer underneath the element
 }
 
-.iti__country-list
+.modal .iti__country-list
 {
   z-index  : 4; //Or button narratives will override the dropdown
   position : fixed; // Or else it will drown in modals
@@ -367,7 +367,7 @@ textarea.monospace
 {
   bottom : unset;
   top    : 0.7rem;
-  z-index: 4; // Or else the flag disappears for some reason
+  //z-index: 4; // Or else the flag disappears for some reason
 }
 
 /**
