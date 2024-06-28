@@ -198,11 +198,26 @@ a.navbar-level1-logo > object
     margin-top: 0 !important;
     padding-top: 0 !important;
   }
+
+  #ui-navigation
+  {
+    margin-bottom: 1rem;
+    box-shadow: 0 3px 6px hsla(202deg, 18%, 72%, 0.16), 0 -1px 4px rgba(25, 32, 36, 0.04);
+  }
 }
 
 #navbar-level2 > ul
 {
   padding : var(--bs-navbar-padding-y) var(--bs-navbar-padding-x);
+}
+
+.navbar-toggler
+{
+  border: none;
+}
+.navbar-toggler:focus
+{
+  box-shadow: 0 0 2px 1px #d8e2e9;
 }
 
 
