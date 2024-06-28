@@ -69,7 +69,7 @@ EOF;
 		return <<<EOF
 		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-level2"
 				aria-controls="navbar-level2" aria-expanded="false" aria-label="Toggle navigation">
-			<i class="fa-light fa-bars fa-fw" aria-hidden="true" style="color: white;"></i>
+			<i class="fa-light fa-bars fa-fw" aria-hidden="true"></i>
 		</button>
 EOF;
 
