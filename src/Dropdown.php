@@ -27,7 +27,7 @@ class Dropdown {
 	 *
 	 * @return string|null
 	 */
-	static function generateRootUl(?array $items, ?int $level = 0): ?string
+	static function generateRootUl(?array $items, ?int $level = 0, ?string $tag = "div", ?string $default_class = NULL): ?string
 	{
 		if(!$items){
 			return NULL;
@@ -42,10 +42,11 @@ class Dropdown {
 		foreach($items as $item){
 			# If the line item has html instead of children
 			if($item['html']){
-				$class = str::getAttrTag("class", self::getDirectionClass($item, $level));
+				$class_array = str::getAttrArray(self::getDirectionClass($item, $level), $default_class);
+				$class = str::getAttrTag("class", $class_array);
 				$parent_div = self::generateParentDiv($item);
 				$content = self::generateMenuContent($item);
-				$html .= "<div{$class}>{$parent_div}{$content}</div>";
+				$html .= "<{$tag}{$class}>{$parent_div}{$content}</{$tag}>";
 				continue;
 			}
 
@@ -104,7 +105,7 @@ class Dropdown {
 <div{$class}{$style}>
   <button{$button_class}{$alt} type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" 
   aria-expanded="false">
-    {$icon}{$title}
+    {$icon}<div class="dropdown-item-title">{$title}</div>
   </button>
   {$menu}
 </div>
@@ -336,7 +337,7 @@ EOF;
 
 		$script = str::getScriptTag($item['script']);
 
-		return "{$wrapper_pre}<{$tag}{$id}{$form}{$class}{$style}{$href}{$alt}{$approve}{$type}{$name}{$value}{$data}>{$icon}{$title}{$badge}</{$tag}>{$wrapper_post}{$script}";
+		return "{$wrapper_pre}<{$tag}{$id}{$form}{$class}{$style}{$href}{$alt}{$approve}{$type}{$name}{$value}{$data}>{$icon}<div class=\"dropdown-item-title\">{$title}</div>{$badge}</{$tag}>{$wrapper_post}{$script}";
 	}
 
 	/**

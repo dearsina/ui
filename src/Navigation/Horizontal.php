@@ -42,26 +42,37 @@ class Horizontal {
 	 */
 	private function getLevel1HTML(): ?string
 	{
+		# Get the brand
 		$brand = $this->getBrandHtml($this->levels[1]['title'], "navbar-level1-logo");
+
+		# Switch the order around
+		if($this->levels[1]['items']){
+			$this->levels[1]['items'] = array_reverse($this->levels[1]['items']);
+		}
+
+		# Only include the toggle button if there are level 2 items
 		if($items = Dropdown::generateRootUl($this->levels[1]['items'])){
-			$items = <<<EOF
-		<button id="navbar-level2-toggle-button" class="navbar-toggler p-0 border-0" type="button">
-			<i class="fa-light fa-bars fa-fw" aria-hidden="true"></i>
-		</button>
-		{$items}
-EOF;
+			$toggle = $this->toggleButtonHtml();
 		}
 
 		return <<<EOF
-<div class="nav-scroller" id="navbar-level1">
-  <nav class="nav">
-  	{$brand}
-	<div id="navbar-level1-items">
-		{$items}
-	</div>
-  </nav>
+<div id="navbar-level1" style="justify-content: flex-end;">
+	{$brand}
+	{$items}
+	{$toggle}
 </div>
 EOF;
+	}
+
+	private function toggleButtonHtml(): string
+	{
+		return <<<EOF
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-level2"
+				aria-controls="navbar-level2" aria-expanded="false" aria-label="Toggle navigation">
+			<i class="fa-light fa-bars fa-fw" aria-hidden="true" style="color: white;"></i>
+		</button>
+EOF;
+
 	}
 
 	/**
@@ -73,19 +84,23 @@ EOF;
 	private function getLevel2HTML(): ?string
 	{
 		# If there are no items, omit the entire level 2 navbar
-		if(!$items = Dropdown::generateRootUl($this->levels[2]['items'])){
+		if(!$items = Dropdown::generateRootUl($this->levels[2]['items'], NULL, "li", "nav-item")){
 			return NULL;
 		}
 
+		if($level1_items = Dropdown::generateRootUl($this->levels[1]['items'])){
+			$items = <<<EOF
+				{$items}
+				<div class="level1-items-in-level2">{$level1_items}</div>
+EOF;
+		}
+
 		return <<<EOF
-<nav class="navbar navbar-expand-lg nav-scroller" id="navbar-level2">
-	<div class="container-fluid">
-		<span></span>
-		<div class="navbar-collapse offcanvas-collapse" id="navbar-level2-items">
-			{$items}
-		</div>
-	</div>
-</nav>
+<div class="collapse navbar-collapse" id="navbar-level2">
+	<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+		{$items}
+	</ul>
+</div>
 EOF;
 	}
 

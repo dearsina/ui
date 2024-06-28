@@ -1,91 +1,45 @@
+#ui-navigation
+{
+  display   : flex;
+  flex-wrap : wrap;
+  padding   : 0;
+}
+
 /**
  * Level 1 formatting
  */
 #navbar-level1
 {
-  //height     : 3rem;
-  background : #1f2c32;
-  //top        : 0;
-  //left       : 0;
-  width      : 100%;
-  padding    : 7px;
-  color      : white;
-  z-index    : 1031;
-  min-height : 3rem;
-  display    : flex;
+  background  : #1f2c32;
+  width       : 100%;
+  padding     : 7px;
+  color       : white;
+  z-index     : 1031;
+  min-height  : 3rem;
+  display     : flex;
+  align-items : center;
 }
 
-/**
- * Pushes the level 1 brand and
- * menu items to the page edges.
- */
-#navbar-level1 > .nav
+#navbar-level1 .dropdown
 {
-  justify-content : space-between;
-  flex-wrap       : nowrap;
 
-  // Ensures items are vertically centered
-  //height: 100%;
-  align-items     : center;
-  width           : 100%;
 }
 
-/**
- * Places the level 1 items horizontally
- */
-//#navbar-level1-items > .navbar-nav
-//{
-//  flex-direction : row-reverse;
-//  /**
-//   * It's by design in reverse because we want
-//   * the role level items to come before the
-//   * app level items, the opposite of level 2.
-//   */
-//}
-
-#navbar-level1-items
-{
-  display        : flex;
-  flex-direction : row-reverse;
-  /**
- * It's by design in reverse because we want
- * the role level items to come before the
- * app level items, the opposite of level 2.
- */
-  align-items    : center;
-}
-
-/**
- * Ensure icons have the same line height
- * as the text.
- */
 #navbar-level1 .dropdown-item > i
 {
   line-height : var(--bs-body-line-height);
 }
 
-/**
- * Level 2 formatting
- */
 #navbar-level2
 {
-  //top           : 3rem;
-  //height        : 3rem;
   background    : #ffffff;
   border-bottom : 0.9px solid #d8e2e9;
 }
 
+
 /**
  * Drop-start caret
  */
-//.dropstart .dropdown-toggle::before
-//{
-//  content     : "‹";
-//  float       : right;
-//  margin-left : 1rem;
-//  border      : none;
-//}
-
 li > .dropstart > .dropdown-toggle::before
 {
   content     : "‹";
@@ -108,25 +62,48 @@ li > .dropend > .dropdown-toggle::after
   display     : inline;
 }
 
-/**
- * Without the margin, the caret
- * can break into a new line.
- */
 li > .dropdown > .dropdown-toggle,
 li > .dropup > .dropdown-toggle,
 li > .dropend > .dropdown-toggle
 {
-  margin-right: 2rem;
+  margin-right : 2rem;
 }
 
-
-li > .dropdown > .dropdown-toggle::before,
-li > .dropup > .dropdown-toggle::before,
-li > .dropend > .dropdown-toggle::before
+#navbar-level2 > .navbar-nav > .dropdown > button > i:not(.fa-bars)
 {
-  margin: -2px;
-  // Not 100% sure why we need to reduce the margin, but it works
+  margin-right : 0.5rem;
 }
+
+#navbar-level2 > .navbar-nav > .dropdown li
+{
+
+}
+
+#navbar-level2 > .navbar-nav > .dropdown li .badge
+{
+  margin-left : 1rem;
+  float       : right;
+  /* width: 20px; */
+}
+
+#navbar-level2 > .navbar-nav > .dropdown li .dropdown-item
+{
+  display        : flex;
+  flex-direction : row;
+  align-items    : center;
+}
+
+#navbar-level2 > .navbar-nav > .dropdown li dropdown-item-title
+{
+  width : 100%;
+}
+
+.dropdown-item-title
+{
+  width   : 100%;
+  display : inline;
+}
+
 
 /**
  * Drop-down caret should be removed,
@@ -137,61 +114,7 @@ li > .dropend > .dropdown-toggle::before
   border : none;
 }
 
-/**
- * Ensure even the non-button parents
- * are treated visually like buttons.
- */
-div.dropdown-item
-{
-  cursor : pointer;
-}
 
-/**
- * Align badges with the text
- * I don't think we need these any more
- * with Bootstrap 5.3
- */
-.dropdown-item .badge
-{
-  //float      : right;
-  //margin-top : 7px;
-}
-
-/**
- * Ensure level 2 top level buttons also
- * have icon spacing.
- */
-#navbar-level2-items i:not(.fa-bars)
-{
-  margin-right : 0.5rem;
-}
-
-nav li .badge i
-{
-  margin-right : 0;
-}
-
-/**
- * Remove the top-bottom mappings for menu
- * branches.
- */
-.dropdown-menu ul
-{
-  padding : 0 !important;
-}
-
-/**
- * Format an individual leaf.
- */
-.dropdown > ul > li,
-.dropstart > ul > li,
-.dropend > ul > li
-{
-  line-height : 30px;
-  width       : 100%;
-  min-width   : max-content;
-  white-space : nowrap;
-}
 
 /**
  * The logo that sits inside the navbar meta to the top right
@@ -199,6 +122,8 @@ nav li .badge i
 .navbar-level1-logo,
 .navbar-level1-logo:hover,
 {
+  width           : 100%;
+  // To sit left in the flex container
   margin-left     : 0.25rem;
   color           : white !important;
   text-decoration : none !important;
@@ -228,185 +153,392 @@ a.navbar-level1-logo > object
   height : 25px;
 }
 
-
-/**
- * Animation for when a menu or sub menu item appears.
- */
-@media (min-width : 768px)
+@media (min-width : 992px)
 {
-  .animate
+  .level1-items-in-level2
   {
-    animation-duration          : 0.3s;
-    -webkit-animation-duration  : 0.3s;
-    animation-fill-mode         : both;
-    -webkit-animation-fill-mode : both;
+    display: none;
   }
-}
-
-@keyframes slideIn
-{
-  0%
-  {
-    margin-top : 5px;
-    opacity    : 0;
-  }
-
-  100%
-  {
-    margin-top : 0;
-    opacity    : 1;
-  }
-
-  0%
-  {
-    margin-top : 5px;
-    opacity    : 0;
-  }
-}
-
-@-webkit-keyframes slideIn
-{
-  0%
-  {
-    margin-top      : 5px;
-    -webkit-opacity : 0;
-  }
-
-  100%
-  {
-    margin-top      : 0;
-    -webkit-opacity : 1;
-  }
-
-  0%
-  {
-    margin-top      : 5px;
-    -webkit-opacity : 0;
-  }
-}
-
-.slideIn
-{
-  -webkit-animation-name : slideIn;
-  animation-name         : slideIn;
-}
-
-#navbar-level2-toggle-button
-{
-  display : none;
-}
-
-@media (max-width : map-get($grid-breakpoints, "lg"))
-{
-  .offcanvas-collapse
-  {
-    position         : fixed;
-    //top: 3rem; /* Height of navbar */
-    left             : 100%;
-    width            : 100%;
-    padding          : 1rem;
-    color            : white;
-    overflow-y       : auto;
-    visibility       : hidden;
-    font-size        : 125%;
-    background-color : #394146;
-    transition       : transform .3s ease-in-out, visibility .3s ease-in-out;
-  }
-  .offcanvas-collapse.open
-  {
-    visibility : visible;
-    transform  : translateX(-100%);
-  }
-
-  #navbar-level2
-  {
-    height  : 0;
-    padding : 0;
-  }
-
-  #navbar-level2-toggle-button
-  {
-    float     : right;
-    margin    : 8px;
-    font-size : 125%;
-    display   : unset;
-  }
-}
-
-.navbar-nav
-{
-  z-index  : 9;
-  /**
-  * Any lower than 9 and the menu disappears.
-  * Any higher and they start interfering with dropdowns and other menu items
-  */
-  position : relative;
 }
 
 /**
- * Making an exception for tables so that the dropdown of one row isn't covered
- * by the dropdown butoton of the row below it.
+ * Changes required for the mobile view
  */
-.table-container .nav-button
+@media (max-width : 992px)
 {
-  z-index : unset;
+  ul.dropdown-menu.show
+  {
+    margin : 0.5rem 1rem !important;
+  }
+
+  #navbar-level1 .dropdown,
+  #navbar-level1 .dropup,
+  #navbar-level1 .dropstart,
+  #navbar-level1 .dropend
+  {
+    display : none;
+  }
+
+  .level1-items-in-level2
+  {
+    display : unset;
+  }
+
+  #navbar-level2 > ul > .dropdown,
+  #navbar-level2 > ul > .dropdown > ul .dropdown-item {
+    border-bottom: 1px solid #dfdfdf;
+    padding: 0.5rem 0
+  }
+
+  .fixed-top {
+    position: unset !important;
+  }
+
+  main {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
 }
 
-/**
- * Otherwise the buttons will bunch up vertically.
- */
-.card-footer .btn-float-right .navbar-nav,
-.modal-footer .btn-float-right .navbar-nav
+#navbar-level2 > ul
 {
-  float : right;
+  padding : var(--bs-navbar-padding-y) var(--bs-navbar-padding-x);
 }
 
-.navbar-nav .dropdown-menu
-{
-  z-index : 1031;
-}
 
-/**
- * For navigation on the *right* side of the screen
- */
-.navbar-nav.nav-right
-{
-  margin  : 0;
-  padding : 0;
-  float   : right;
-}
 
-.navbar-nav.nav-right > .dropdown > .dropdown-item
-{
-  padding : 0 0 0 1rem;
-}
 
-/**
- * For nav buttons that are placed in a row with
- * other buttons. Ensures the dropdown appears away
- * from the button itself.
- */
-.navbar-nav.nav-button
+/* .dropstart .dropdown-toggle::before
 {
-  //display: inline-block;
-}
+  content     : "‹";
+  float       : right;
+  margin-left : 1rem;
+  border      : none;
+} */
+///**
+// * Pushes the level 1 brand and
+// * menu items to the page edges.
+// */
+//#navbar-level1 > .nav
+//{
+//  justify-content : space-between;
+//  flex-wrap       : nowrap;
+//
+//  // Ensures items are vertically centered
+//  //height: 100%;
+//  align-items     : center;
+//  width           : 100%;
+//}
+//
+///**
+// * Places the level 1 items horizontally
+// */
+////#navbar-level1-items > .navbar-nav
+////{
+////  flex-direction : row-reverse;
+////  /**
+////   * It's by design in reverse because we want
+////   * the role level items to come before the
+////   * app level items, the opposite of level 2.
+////   */
+////}
+//
+//#navbar-level1-items
+//{
+//  display        : flex;
+//  flex-direction : row-reverse;
+//  /**
+// * It's by design in reverse because we want
+// * the role level items to come before the
+// * app level items, the opposite of level 2.
+// */
+//  align-items    : center;
+//}
+//
+///**
+// * Ensure icons have the same line height
+// * as the text.
+// */
+//#navbar-level1 .dropdown-item > i
+//{
+//  line-height : var(--bs-body-line-height);
+//}
+//
+///**
+// * Level 2 formatting
+// */
+//#navbar-level2
+//{
+//  //top           : 3rem;
+//  //height        : 3rem;
+//  background    : #ffffff;
+//  border-bottom : 0.9px solid #d8e2e9;
+//}
+//
 
-.navbar-nav.nav-button > .dropdown > .dropdown-item
-{
-  padding : 0;
-}
+//.dropstart .dropdown-toggle::before
+//{
+//  content     : "‹";
+//  float       : right;
+//  margin-left : 1rem;
+//  border      : none;
+//}
+///**
+// * Without the margin, the caret
+// * can break into a new line.
+// */
+//li > .dropdown > .dropdown-toggle,
+//li > .dropup > .dropdown-toggle,
+//li > .dropend > .dropdown-toggle
+//{
+//  margin-right: 2rem;
+//}
+//
+//
+//li > .dropdown > .dropdown-toggle::before,
+//li > .dropup > .dropdown-toggle::before,
+//li > .dropend > .dropdown-toggle::before
+//{
+//  margin: -2px;
+//  // Not 100% sure why we need to reduce the margin, but it works
+//}
+//
+//
+///**
+// * Ensure even the non-button parents
+// * are treated visually like buttons.
+// */
+//div.dropdown-item
+//{
+//  cursor : pointer;
+//}
+//
+///**
+// * Align badges with the text
+// * I don't think we need these any more
+// * with Bootstrap 5.3
+// */
+//.dropdown-item .badge
+//{
+//  //float      : right;
+//  //margin-top : 7px;
+//}
+//
+///**
+// * Ensure level 2 top level buttons also
+// * have icon spacing.
+// */
+//#navbar-level2-items i:not(.fa-bars)
+//{
+//  margin-right : 0.5rem;
+//}
+//
+//nav li .badge i
+//{
+//  margin-right : 0;
+//}
+//
+///**
+// * Remove the top-bottom mappings for menu
+// * branches.
+// */
+//.dropdown-menu ul
+//{
+//  padding : 0 !important;
+//}
+//
+///**
+// * Format an individual leaf.
+// */
+//.dropdown > ul > li,
+//.dropstart > ul > li,
+//.dropend > ul > li
+//{
+//  line-height : 30px;
+//  width       : 100%;
+//  min-width   : max-content;
+//  white-space : nowrap;
+//}
 
-.nav-tabs > .nav-item > .nav-link
-{
-  padding : 7px 11px 7px 11px;
-}
 
-/**
- * Prevent navigation elements from being selectable.
- */
-.nav, .navbar, .tab-list, .controller-button {
-  -webkit-user-select: none; /* Safari */
-  -moz-user-select: none; /* Firefox */
-  -ms-user-select: none; /* Internet Explorer/Edge */
-  user-select: none; /* Non-prefixed version, currently supported by Chrome, Opera, and Edge */
-}
+///**
+// * Animation for when a menu or sub menu item appears.
+// */
+//@media (min-width : 768px)
+//{
+//  .animate
+//  {
+//    animation-duration          : 0.3s;
+//    -webkit-animation-duration  : 0.3s;
+//    animation-fill-mode         : both;
+//    -webkit-animation-fill-mode : both;
+//  }
+//}
+//
+//@keyframes slideIn
+//{
+//  0%
+//  {
+//    margin-top : 5px;
+//    opacity    : 0;
+//  }
+//
+//  100%
+//  {
+//    margin-top : 0;
+//    opacity    : 1;
+//  }
+//
+//  0%
+//  {
+//    margin-top : 5px;
+//    opacity    : 0;
+//  }
+//}
+//
+//@-webkit-keyframes slideIn
+//{
+//  0%
+//  {
+//    margin-top      : 5px;
+//    -webkit-opacity : 0;
+//  }
+//
+//  100%
+//  {
+//    margin-top      : 0;
+//    -webkit-opacity : 1;
+//  }
+//
+//  0%
+//  {
+//    margin-top      : 5px;
+//    -webkit-opacity : 0;
+//  }
+//}
+//
+//.slideIn
+//{
+//  -webkit-animation-name : slideIn;
+//  animation-name         : slideIn;
+//}
+
+//#navbar-level2-toggle-button
+//{
+//  display : none;
+//}
+//
+//@media (max-width : map-get($grid-breakpoints, "lg"))
+//{
+//  .offcanvas-collapse
+//  {
+//    position         : fixed;
+//    //top: 3rem; /* Height of navbar */
+//    left             : 100%;
+//    width            : 100%;
+//    padding          : 1rem;
+//    color            : white;
+//    overflow-y       : auto;
+//    visibility       : hidden;
+//    font-size        : 125%;
+//    background-color : #394146;
+//    transition       : transform .3s ease-in-out, visibility .3s ease-in-out;
+//  }
+//  .offcanvas-collapse.open
+//  {
+//    visibility : visible;
+//    transform  : translateX(-100%);
+//  }
+//
+//  #navbar-level2
+//  {
+//    height  : 0;
+//    padding : 0;
+//  }
+//
+//  #navbar-level2-toggle-button
+//  {
+//    float     : right;
+//    margin    : 8px;
+//    font-size : 125%;
+//    display   : unset;
+//  }
+//}
+//
+//.navbar-nav
+//{
+//  z-index  : 9;
+//  /**
+//  * Any lower than 9 and the menu disappears.
+//  * Any higher and they start interfering with dropdowns and other menu items
+//  */
+//  position : relative;
+//}
+//
+///**
+// * Making an exception for tables so that the dropdown of one row isn't covered
+// * by the dropdown butoton of the row below it.
+// */
+//.table-container .nav-button
+//{
+//  z-index : unset;
+//}
+//
+///**
+// * Otherwise the buttons will bunch up vertically.
+// */
+//.card-footer .btn-float-right .navbar-nav,
+//.modal-footer .btn-float-right .navbar-nav
+//{
+//  float : right;
+//}
+//
+//.navbar-nav .dropdown-menu
+//{
+//  z-index : 1031;
+//}
+//
+///**
+// * For navigation on the *right* side of the screen
+// */
+//.navbar-nav.nav-right
+//{
+//  margin  : 0;
+//  padding : 0;
+//  float   : right;
+//}
+//
+//.navbar-nav.nav-right > .dropdown > .dropdown-item
+//{
+//  padding : 0 0 0 1rem;
+//}
+//
+///**
+// * For nav buttons that are placed in a row with
+// * other buttons. Ensures the dropdown appears away
+// * from the button itself.
+// */
+//.navbar-nav.nav-button
+//{
+//  //display: inline-block;
+//}
+//
+//.navbar-nav.nav-button > .dropdown > .dropdown-item
+//{
+//  padding : 0;
+//}
+//
+//.nav-tabs > .nav-item > .nav-link
+//{
+//  padding : 7px 11px 7px 11px;
+//}
+//
+///**
+// * Prevent navigation elements from being selectable.
+// */
+//.nav, .navbar, .tab-list, .controller-button {
+//  -webkit-user-select: none; /* Safari */
+//  -moz-user-select: none; /* Firefox */
+//  -ms-user-select: none; /* Internet Explorer/Edge */
+//  user-select: none; /* Non-prefixed version, currently supported by Chrome, Opera, and Edge */
+//}
