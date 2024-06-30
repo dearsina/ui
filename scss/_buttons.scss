@@ -306,3 +306,17 @@ ul.dropdown-menu > li a:hover {
   border-bottom-left-radius: 0;
   padding-left: 7px;
 }
+
+/**
+ * Ensure even the non-button parents
+ * are treated visually like buttons.
+ * And prevent the text from being selected.
+ */
+.dropdown-item
+{
+  cursor : pointer;
+  user-select: none; /* Standard */
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+}
