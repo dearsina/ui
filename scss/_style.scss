@@ -817,16 +817,19 @@ a.masonry-grid-tile-inner:hover
  */
 .jconfirm .jconfirm-box div.jconfirm-title-c
 {
-  padding-bottom: unset;
+  padding-bottom : unset;
 }
+
 .jconfirm-icon-c,
-.jconfirm-title {
-  line-height: 1.75rem;
-  margin-bottom: 0.75rem;
+.jconfirm-title
+{
+  line-height   : 1.75rem;
+  margin-bottom : 0.75rem;
 }
 
 .search-filter-dropdowns > div
 {
-  width: auto;
-  padding: 0 0.5rem;
+  width   : auto;
+  padding : 0 0.5rem;
+  flex    : unset;
 }
