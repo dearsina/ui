@@ -307,7 +307,7 @@ class Grid {
 	}
 
 	/**
-	 * Returns formatted HTMl of the requested grid.
+	 * Returns formatted HTML of the requested grid.
 	 *
 	 * @param null $a
 	 *
