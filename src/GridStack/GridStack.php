@@ -33,23 +33,37 @@ class GridStack {
 	{
 		$cells = [];
 
+		# The starting point for the y axis (is zero, the top)
+		$y = 0;
+
 		while($elements) {
 			# The first field in this row
 			$element = array_shift($elements);
 
+			# Keep a running total of the y
 			if($element['y'] + $element['height'] > $y){
+				// If the element + its height is higher than y, update y
 				$y = $element['y'] + $element['height'];
 			}
+
 			$row_fields[] = $element;
 
-			while(reset($elements)['y'] < $y) {
+			# Go through all fields for this row
+			while(reset($elements)['y'] <= $y) {
+				# If there are no elements (remaining) on this row, skip
 				if(empty($elements)){
 					break;
 				}
+
+				# Get the first element
 				$element = array_shift($elements);
+
+				# Keep a running total of the y
 				if($element['y'] + $element['height'] > $y){
 					$y = $element['y'] + $element['height'];
 				}
+
+				# Add the element to the row
 				$row_fields[] = $element;
 			}
 
