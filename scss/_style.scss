@@ -833,3 +833,16 @@ a.masonry-grid-tile-inner:hover
   padding : 0 0.5rem;
   flex    : unset;
 }
+
+/**
+ * Custom formatting for CodeMirror
+ */
+.CodeMirror {
+  height: 100%;
+  width: 100%;
+  font-family: "Roboto Mono", monospace;
+  font-weight: 600;
+  font-size: 12px;
+  border: 0.9px solid hsl(205deg, 28%, 88%);
+  border-radius: 0.35rem;
+}

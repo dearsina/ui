@@ -242,7 +242,7 @@ class Icon {
 			$default_style_array = [
 				"width" => "1.25em",
 				"height" => "1.25em",
-				"margin-right" => "0.75rem",
+				"margin-right" => "0.5rem",
 				"margin-bottom" => "-4px",
 			];
 
