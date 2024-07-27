@@ -24,8 +24,16 @@ class Modal extends \App\Common\Prototype {
 
 	protected $icon;
 	protected $draggable;
+
+	/**
+	 * If set to false, will prevent the modal from being auto-resized on start.
+	 * @var bool|null
+	 */
+	protected ?bool $resize;
+
 	protected $resizable;
 	protected $resizeable;
+	
 	protected $approve;
 	protected $dismissible;
 	protected ?array $data = NULL;
@@ -692,6 +700,7 @@ EOF;
 			"draggable" => $this->getDraggableSettings(),
 			"resizable" => $this->getResizableSettings(),
 			"approve" => $this->getApproveSettings(),
+			"resize" => $this->getResizeSettings(),
 		]);
 	}
 
@@ -807,5 +816,19 @@ EOF;
 
 		# Even if there are no custom settings, we still need to return an array
 		return is_array($this->resizable) ? $this->resizable : [];
+	}
+
+	/**
+	 * If resize is set to false, will return the string "false" to conform to
+	 * the data attribute handling of boolean values.
+	 *
+	 * @return string|null
+	 */
+	private function getResizeSettings(): ?string
+	{
+		if($this->resize === false){
+			return "false";
+		}
+		return NULL;
 	}
 }

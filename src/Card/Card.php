@@ -26,6 +26,7 @@ class Card extends \App\Common\Prototype {
 	public $cardFooter;
 	public $cardPost;
 	public $resizable;
+	public $resize;
 	public $draggable;
 	public $script;
 	public $img;
@@ -685,6 +686,9 @@ EOF;
 		}
 		if($resizable !== NULL){
 			$this->data['resizable'] = $resizable;
+		}
+		if($this->resize === false){
+			$this->data['resize'] = "false";
 		}
 		return str::getDataAttr($this->data, true);
 	}
