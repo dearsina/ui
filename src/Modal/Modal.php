@@ -29,11 +29,11 @@ class Modal extends \App\Common\Prototype {
 	 * If set to false, will prevent the modal from being auto-resized on start.
 	 * @var bool|null
 	 */
-	protected ?bool $resize;
+	protected ?bool $resize = null;
 
 	protected $resizable;
 	protected $resizeable;
-	
+
 	protected $approve;
 	protected $dismissible;
 	protected ?array $data = NULL;

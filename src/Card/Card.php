@@ -26,7 +26,7 @@ class Card extends \App\Common\Prototype {
 	public $cardFooter;
 	public $cardPost;
 	public $resizable;
-	public $resize;
+	public ?bool $resize = NULL;
 	public $draggable;
 	public $script;
 	public $img;
