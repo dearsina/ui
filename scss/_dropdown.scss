@@ -12,6 +12,12 @@ li .dropdown-item
   padding: 5px 9px !important;
 }
 
+// Make an exception for dropdown items directly attached to a list-group-item
+li.list-group-item > div > .dropdown-item
+{
+  padding: 0 !important;
+}
+
 .card-header button.dropdown-item.dropdown-toggle:hover,
 .card-header button.dropdown-item.dropdown-toggle:focus
 {

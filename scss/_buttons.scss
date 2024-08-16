@@ -102,10 +102,12 @@ a.disabled-waiting{
 .modal-header .btn-float-right{
   margin: -0.5rem 0 0.5rem 0;
 }
+
 .modal-dialog:not(.modal-tab) .modal-footer div.btn-float-right
 {
-  margin: -0.5rem 0 0 0;
+  //margin: -0.5rem 0 0 0;
 }
+
 .modal-dialog.modal-tab .modal-footer .btn-float-right
 {
   margin: -0.5rem 1rem 0 0;
@@ -245,8 +247,8 @@ ul.dropdown-menu > li > * {
 }
 
 // Give space for each icon
-ul.dropdown-menu > li > * > i:first-child,
-ul.dropdown-menu > li > * > * > i:first-child
+ul.dropdown-menu > li > * > i.fa-fw:first-child,
+ul.dropdown-menu > li > * > * > i.fa-fw:first-child
 {
   margin-right: 0.75rem;
 }

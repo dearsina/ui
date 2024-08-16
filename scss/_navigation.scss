@@ -42,7 +42,7 @@
 /**
  * Drop-start caret
  */
-li > .dropstart > .dropdown-toggle::before
+li:not(.list-group-item) > .dropstart > .dropdown-toggle::before
 {
   content     : "‹";
   float       : right;

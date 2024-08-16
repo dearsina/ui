@@ -102,8 +102,8 @@ form
 /**
  * Ensure label icons have space
  */
-label i.fa-light:first-of-type,
-label i.fa-fw:first-of-type
+label > i.fa-light:first-of-type,
+label > i.fa-fw:first-of-type
 {
   margin-right : 0.25rem
 }
@@ -207,6 +207,11 @@ label i.fa-fw:first-of-type
  */
 .select2-selection__rendered > div > div {
     white-space: normal;
+}
+
+.select2-container--default.select2-container--disabled .select2-selection--single
+{
+  background: var(--bs-secondary-bg);
 }
 
 
@@ -664,11 +669,21 @@ textarea.monospace
  * Formatting tokenized elements
  */
 .tokenized-element {
-  display: flex;
+  display: inline-flex;
   flex-wrap: nowrap;
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
+}
+
+/**
+ * So that the element sits right
+ * inside a badge (and a potential icon
+ * to the left).
+ */
+.badge > .tokenized-element
+{
+  float: right;
 }
 
 .tokenized-workflow > span,
@@ -693,7 +708,7 @@ textarea.monospace
 }
 
 .tokenized-form-group {
-  min-width: auto;
+  min-width: 5vw;
   max-width: 15vw;
   margin-right: 5px;
   border: 0.1px solid #CCCCCC;
@@ -736,4 +751,34 @@ textarea.monospace
 
 .tokenized-form-field {
   //min-width: 10vw;
+}
+
+/**
+ * Custom formatting for code inside select2
+ * dropdowns.
+ */
+.select2-results__option code,
+.select2-selection__rendered code
+{
+  background: #ededed;
+  padding: 2px 7px;
+  border-radius: 5px;
+  font-size: 70%;
+}
+.select2-results__option--highlighted code
+{
+  color: black;
+}
+
+/**
+ * Fix issue of dropdown buttons not having
+ * square corners if they're attached to a
+ * form field.
+ */
+.input-group > .dropdown:last-child .btn
+{
+  margin-left: calc(var(--bs-border-width)* -1);
+  border: var(--bs-border-width) solid var(--bs-border-color);
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
 }

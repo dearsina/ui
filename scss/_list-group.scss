@@ -128,3 +128,9 @@ a.list-group-item:hover
 {
   z-index: unset;
 }
+
+.list-group-item > div > .dropdown-item:hover,
+.list-group-item > div > .dropdown-item:focus,
+{
+  background-color: unset !important;
+}
