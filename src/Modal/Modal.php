@@ -349,6 +349,9 @@ EOF;
 			$sm = $this->elements['footer']['sm'] ?: "auto";
 			$left = "<div class=\"col-{$sm}\">{$left}</div>";
 		}
+		else {
+			$left = "<div class=\"col\"></div>";
+		}
 
 		# Only include right side if it has values (buttons)
 		if($right = $buttons . $button){

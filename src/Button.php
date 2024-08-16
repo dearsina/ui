@@ -895,8 +895,10 @@ EOF;
 			"children" => $children,
 		]);
 
+		$direction_class = Dropdown::getDirectionClass($children);
+
 		return <<<EOF
-<div class="btn-group">
+<div class="btn-group {$direction_class}">
   {$button}
   <button type="button" {$class} data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
     <span class="visually-hidden">Toggle Dropdown</span>

@@ -214,7 +214,7 @@ EOF;
 	 *
 	 * @return string
 	 */
-	private static function getDirectionClass(array $item, int $level): string
+	public static function getDirectionClass(array $item, ?int $level = NULL): string
 	{
 		switch($item['direction']) {
 		case 'left':

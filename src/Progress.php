@@ -82,24 +82,22 @@ EOF;
 EOF;
 	}
 
-	static function updatePre(string $id, string $html): void
+	static function updatePre(string $id, string $html, ?array $recipients = NULL): void
 	{
-		Output::getInstance()->update("#{$id} > .progress-bar-pre", $html);
+		Output::getInstance()->update("#{$id} > .progress-bar-pre", $html, $recipients);
 	}
 
-	static function updatePost(string $id, string $html): void
+	static function updatePost(string $id, string $html, ?array $recipients = NULL): void
 	{
-		Output::getInstance()->update("#{$id} > .progress-bar-post", $html);
+		Output::getInstance()->update("#{$id} > .progress-bar-post", $html, $recipients);
 	}
 
-	static function updateProgressBar(string $id, int $completed_count, ?string $session_id = NULL): void
+	static function updateProgressBar(string $id, int $completed_count, ?array $recipients = NULL): void
 	{
 		Output::getInstance()->function("updateProgressBar", [
 			"id" => $id,
 			"completed_count" => $completed_count,
-		], [
-			"session_id" => $session_id,
-		]);
+		], $recipients);
 	}
 
 	static function updateTotalCount(string $id, int $total_count, ?array $recipients = NULL): void
@@ -156,12 +154,15 @@ EOF;
 	 * A more complete way of building out a progress bar.
 	 *
 	 * @param string            $id
-	 * @param array|null        $a
 	 * @param int|null          $total_count
+	 * @param array|null        $kill The hash to call to kill the process.
 	 * @param string|array|null $pre
 	 * @param string|array|null $post
 	 *
+	 * @param array|null        $a
+	 *
 	 * @return string
+	 * @throws \Exception
 	 */
 	static function build(string $id, ?int $total_count = NULL, ?array $kill = NULL, $pre = NULL, $post = NULL, ?array $a = NULL): string
 	{
