@@ -186,18 +186,21 @@ EOF;
 		$settings['placeholder'] = self::getPlaceholder($placeholder);
 		$settings['ajax'] = $ajax;
 		$settings['value'] = $value;
-		$settings['tags'] = $tags; // Allows a user to enter their own value
 
-		# Tokenize
-		if($tokenize){
-			$settings['tags'] = true;
-			if(is_string($tokenize)){
-				switch($tokenize) {
-				case 'filename':
-				case 'folder':
-					$settings['createTag'] = "createTagFileName";
-					break;
-				}
+		# Settings "tags" to true (or a string),
+		# enables the user to enter their own value
+		$settings['tags'] = (bool) $tags;
+
+		# Multiple means that the output of the select will be an array
+		$settings['multiple'] = $multiple;
+
+		# If the tags key is a string, it will be used to determine the tag type
+		if(is_string($tags)){
+			switch($tags) {
+			case 'filename':
+			case 'folder':
+				$settings['createTag'] = "createTagFileName";
+				break;
 			}
 		}
 
@@ -206,6 +209,7 @@ EOF;
 			"settings" => $settings,
 			"parent" => $parent,
 			"onChange" => self::getOnChange($a),
+			"onDemand" => $onDemand ?: $ondemand,
 		]));
 	}
 
@@ -226,31 +230,50 @@ EOF;
 			return NULL;
 		}
 
-		foreach($options_array as $option){
-			$data = str::getDataAttr(array_merge([
-				"onChange" => self::getOnChange($option),
-			], $option['data'] ?: []));
+		foreach($options_array as $opt_group_name => $option){
+			# Handle opt groups
+			if(str::isNumericArray($option)){
+				// If an option is a numerical array, assume it's an opt group
 
-			if($option['script']){
-				$a['script'] .= $option['script'];
+				# Wrap the options in an optgroup
+				$options_html .= "<optgroup label=\"{$opt_group_name}\">";
+				foreach($option as $o){
+					$options_html .= self::getOptionHtml($a, $o);
+				}
+				$options_html .= "</optgroup>";
+
+				continue;
 			}
-			/**
-			 * This is a bit of a hack as the getOnChange method
-			 * adds a script to the array sent to it, because
-			 * it is usually the $a array. As in this case, we're
-			 * adding onChange to each *option* of an $a form field,
-			 * we have to add the created script back to the $a,
-			 * for it then to be displayed (and callable) if the
-			 * related option is selected.
-			 */
 
-			$value = str::getAttrTag("value", $option['value']);
-			$selected = $option['selected'] ? " selected" : NULL;
-			$disabled = $option['disabled'] ? " disabled" : NULL;
-			$options_html .= "<option{$value}{$selected}{$disabled}{$data}>{$option['title']}</option>";
+			$options_html .= self::getOptionHtml($a, $option);
 		}
 
 		return $options_html;
+	}
+
+	private static function getOptionHtml(array &$a, array $option): string
+	{
+		$data = str::getDataAttr(array_merge([
+			"onChange" => self::getOnChange($option),
+		], $option['data'] ?: []));
+
+		if($option['script']){
+			$a['script'] .= $option['script'];
+		}
+		/**
+		 * This is a bit of a hack as the getOnChange method
+		 * adds a script to the array sent to it, because
+		 * it is usually the $a array. As in this case, we're
+		 * adding onChange to each *option* of an $a form field,
+		 * we have to add the created script back to the $a,
+		 * for it then to be displayed (and callable) if the
+		 * related option is selected.
+		 */
+
+		$value = str::getAttrTag("value", $option['value']);
+		$selected = $option['selected'] ? " selected" : NULL;
+		$disabled = $option['disabled'] ? " disabled" : NULL;
+		return "<option{$value}{$selected}{$disabled}{$data}>{$option['title']}</option>";
 	}
 
 	/**
@@ -272,11 +295,14 @@ EOF;
 		}
 
 		/**
+		 * Options where multiple values are allowed, and those values can be entered
+		 * by the user, are tokenized.
+		 *
 		 * Tokenized options are not deduplicated by design, thus we cannot use
 		 * the value array to determine whether they are selected or not. Instead,
 		 * we have to rely on the selected key being set.
 		 */
-		if($tokenize){
+		if($tags && $multiple){
 			if(str::isNumericArray($options)){
 				// This is also why the options don't have their value as a key, because there could be duplicates
 				foreach($options as $option){
@@ -304,6 +330,14 @@ EOF;
 
 			# If the option is an array
 			if(is_array($option)){
+				# Handle opt-groups
+				if($option['options']){
+					$option['value'] = $value_array;
+					$options_array[$option['title']] = self::getOptionsArray($option);
+					// The value is assumed to be the opt group name
+					continue;
+				}
+
 				$option['value'] = $option_value;
 				$option['selected'] = $selected;
 				$options_array[] = SelectOption::getFormattedOption($option);
@@ -319,5 +353,10 @@ EOF;
 		}
 
 		return $options_array;
+		/**
+		 * The options_array is a numerical array of options, each one of each
+		 * is an associative array, unless they're part of an opt-group,
+		 * in which case they're a numerical array of associative arrays.
+		 */
 	}
 }

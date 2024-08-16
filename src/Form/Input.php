@@ -175,7 +175,11 @@ EOF;
 	private static function getInputData(array &$a): ?string
 	{
 		extract($a);
-		$data['onChange'] = self::getOnChange($a);
-		return str::getDataAttr($data);
+
+		return str::getDataAttr(array_merge($a['data'] ?: [], [
+			"parent" => $parent,
+			"onChange" => self::getOnChange($a),
+			"onDemand" => $onDemand ?: $ondemand,
+		]));
 	}
 }

@@ -355,6 +355,20 @@ class Form {
 		return $this->id ?: $this->setId();
 	}
 
+	private function tabsAreInUse(): bool
+	{
+		if(!$this->fields){
+			return false;
+		}
+
+		foreach($this->fields as $field){
+			if($field['tabs']){
+				return true;
+			}
+		}
+		return false;
+	}
+
 	/**
 	 * Fields are generated using the Field() class,
 	 * and placed in a grid using the Grid() class.
@@ -376,7 +390,7 @@ class Form {
 		]);
 
 		# Slightly hacky way to add a class to the modal tab header to allow for draggable (if enabled)
-		if(count($this->fields ?: []) == 1 && reset($this->fields)['tabs'] && $this->modal){
+		if($this->tabsAreInUse() && $this->modal){
 			$this->fields = [[
 				"tabs" => [
 					"id" => reset($this->fields)['id'],
@@ -460,10 +474,11 @@ EOF;
 			if(is_string($this->modal)){
 				$id = str::getAttrTag("id", $this->modal);
 			}
+			$class = $this->tabsAreInUse() ? "modal-footer-tabs" : "modal-footer";
 			$buttons_html = <<<EOF
 	</div>
 </div>
-<div class="modal-footer"{$id}>
+<div class="{$class}"{$id}>
 	{$this->getModalButtonsHTML()}	
 	<div style="display: none;">
 EOF;

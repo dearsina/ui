@@ -26,6 +26,7 @@ class Html extends Field implements FieldInterface {
 
 		return Grid::generate([[
 			"row_id" => $row_id,
+			"row_class" => $a['row_class'],
 			"html" => $a
 		]]);
 	}

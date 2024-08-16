@@ -353,7 +353,9 @@ EOF;
 	private static function getSingleCheckboxHTML($a)
 	{
 		# Value
-		$a['value'] = $a['value'] ?: true;
+		if($a['value'] !== false){
+			$a['value'] = $a['value'] ?: true;
+		}
 		/**
 		 * Value attribute is optional for single checkboxes.
 		 * Instead, a binary "1" or "" will be used if none
@@ -455,7 +457,10 @@ EOF;
 	{
 		extract($a);
 		$data['onChange'] = self::getOnChange($a);
-		return str::getDataAttr($data);
+		return str::getDataAttr(array_merge(
+			$data ?: [], [
+			"parent" => $parent,
+		]));
 	}
 
 	/**
