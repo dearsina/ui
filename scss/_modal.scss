@@ -48,6 +48,18 @@
   padding: 0.5rem 0.25rem
 }
 
+.modal-footer-tabs > .container
+{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-footer-tabs > .container > .footer-content
+{
+  padding-left: 0.5rem;
+}
+
 /**
  * So that it is apparent that you can drag draggable modals.
  */
