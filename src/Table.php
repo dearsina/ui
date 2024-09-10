@@ -474,7 +474,13 @@ EOF;
 		}
 
 		$count_query = $base_query;
-		unset($count_query['offset']);
+
+		# If there is an offset (header row for example), remove it for the count, but keep the number
+		if($count_query['offset']){
+			$count_query_offset = $count_query['offset'];
+			unset($count_query['offset']);
+		}
+
 		$count_query['distinct'] = true;
 		$count_query['count'] = "{$rel_table}_id";
 
@@ -486,7 +492,14 @@ EOF;
 			$total_results = $sql->select($count_query);
 
 			$output_vars['query'] = $_SESSION['query'];
-			$output_vars['total_results'] = $total_results ?: 0;
+
+			# If rows are returned, ensure the total results take into account any offset
+			if($total_results){
+				$output_vars['total_results'] = $total_results - $count_query_offset;
+			}
+			else {
+				$output_vars['total_results'] = 0;
+			}
 
 			if(!$total_results){
 				//If no rows can be found
