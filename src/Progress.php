@@ -129,6 +129,11 @@ EOF;
 		Output::getInstance()->function("updateCountByOne", $a, $recipients);
 	}
 
+	static function removeCancelButton(string $id, ?array $recipients = NULL): void
+	{
+		Output::getInstance()->remove("#{$id} .progress-bar-cancel", $recipients);
+	}
+
 	/**
 	 * @param mixed      $id_or_array Can be just the progress ID, or an array of options.
 	 * @param array|null $recipients
