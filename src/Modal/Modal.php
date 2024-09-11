@@ -350,7 +350,7 @@ EOF;
 			$left = "<div class=\"col-{$sm}\">{$left}</div>";
 		}
 		else {
-			$left = "<div class=\"col\"></div>";
+			$left = "<div class=\"col-auto\"></div>";
 		}
 
 		# Only include right side if it has values (buttons)
