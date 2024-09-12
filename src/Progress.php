@@ -160,16 +160,18 @@ EOF;
 	 *
 	 * @param string            $id
 	 * @param int|null          $total_count
+	 * @param int|null          $completed_count
+	 * @param int|null          $start_unix_time
 	 * @param array|null        $kill The hash to call to kill the process.
 	 * @param string|array|null $pre
-	 * @param string|array|null $post
 	 *
+	 * @param string|array|null $post
 	 * @param array|null        $a
 	 *
 	 * @return string
 	 * @throws \Exception
 	 */
-	static function build(string $id, ?int $total_count = NULL, ?array $kill = NULL, $pre = NULL, $post = NULL, ?array $a = NULL): string
+	static function build(string $id, ?int $total_count = NULL, ?int $completed_count = 0, ?int $start_unix_time = NULL, ?array $kill = NULL, $pre = NULL, $post = NULL, ?array $a = NULL): string
 	{
 		if(is_array($a)){
 			extract($a);
@@ -182,8 +184,8 @@ EOF;
 		$class = str::getAttrTag("class", $class_array);
 
 		$data['total-count'] = $total_count;
-		$data['current-count'] = 0;
-		$data['start-time'] = time();
+		$data['completed-count'] = $completed_count;
+		$data['start-time'] = $start_unix_time ?: time();
 
 		$script = str::getScriptTag($script);
 		$data = str::getDataAttr($data);

@@ -846,3 +846,12 @@ a.masonry-grid-tile-inner:hover
   border: 0.9px solid hsl(205deg, 28%, 88%);
   border-radius: 0.35rem;
 }
+
+/**
+ * Countering @media (prefers-reduced-motion: reduce)
+ */
+.fa-beat, .fa-bounce, .fa-fade, .fa-beat-fade, .fa-flip, .fa-pulse, .fa-shake, .fa-spin, .fa-spin-pulse
+{
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+}

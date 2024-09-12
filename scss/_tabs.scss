@@ -294,8 +294,16 @@ $sideways-tabs-height   : 1rem;
 
 .ellipsis
 {
-  @include limit-text-length;
-  padding-right : 0.5rem;
+  //@include limit-text-length;
+  //padding-right : 0.5rem;
+
+  // A better way to avoid issues when the text is right aligned
+  display: inline-block;
+  width: 20px;
+  text-align: left;
+  overflow: hidden;
+  white-space: nowrap;
+  vertical-align: bottom;
 }
 
 .vertical-tabs
