@@ -34,7 +34,7 @@
 {
   background    : #ffffff;
   border-bottom : 0.9px solid #d8e2e9;
-  padding-left: 0.5rem;
+  padding-left  : 0.5rem;
   // To give it a little space from wall
 }
 
@@ -106,6 +106,36 @@ li > .dropend > .dropdown-toggle
   display : inline;
 }
 
+.dropdown-item-title > .workflow-title
+{
+  display     : flex;
+  align-items : center;
+}
+
+.dropdown-item-title > .workflow-title > .fa-light
+{
+  margin-right : 0.75rem;
+}
+
+.dropdown-item-title > .workflow-title > img
+{
+  width        : 1.25em;
+  margin-right : 0.75rem;
+  max-height   : 25px;
+}
+
+.dropdown-item-title > .workflow-title > div
+{
+  width : 100%;
+}
+
+.dropdown-item-title > .workflow-title > .flag-icon
+{
+  float           : right;
+  margin-left     : 1rem;
+  justify-content : space-between;
+}
+
 
 /**
  * Drop-down caret should be removed,
@@ -115,7 +145,6 @@ li > .dropend > .dropdown-toggle
 {
   border : none;
 }
-
 
 
 /**
@@ -159,7 +188,7 @@ a.navbar-level1-logo > object
 {
   .level1-items-in-level2
   {
-    display: none;
+    display : none;
   }
 }
 
@@ -187,24 +216,27 @@ a.navbar-level1-logo > object
   }
 
   #navbar-level2 > ul > .dropdown,
-  #navbar-level2 > ul > .dropdown > ul .dropdown-item {
-    border-bottom: 1px solid #dfdfdf;
-    padding: 0.5rem 0
+  #navbar-level2 > ul > .dropdown > ul .dropdown-item
+  {
+    border-bottom : 1px solid #dfdfdf;
+    padding       : 0.5rem 0
   }
 
-  .fixed-top {
-    position: unset !important;
+  .fixed-top
+  {
+    position : unset !important;
   }
 
-  main {
-    margin-top: 0 !important;
-    padding-top: 0 !important;
+  main
+  {
+    margin-top  : 0 !important;
+    padding-top : 0 !important;
   }
 
   #ui-navigation
   {
-    margin-bottom: 1rem;
-    box-shadow: 0 3px 6px hsla(202deg, 18%, 72%, 0.16), 0 -1px 4px rgba(25, 32, 36, 0.04);
+    margin-bottom : 1rem;
+    box-shadow    : 0 3px 6px hsla(202deg, 18%, 72%, 0.16), 0 -1px 4px rgba(25, 32, 36, 0.04);
   }
 }
 
@@ -215,14 +247,13 @@ a.navbar-level1-logo > object
 
 .navbar-toggler
 {
-  border: none;
+  border : none;
 }
+
 .navbar-toggler:focus
 {
-  box-shadow: 0 0 2px 1px #d8e2e9;
+  box-shadow : 0 0 2px 1px #d8e2e9;
 }
-
-
 
 
 /* .dropstart .dropdown-toggle::before
