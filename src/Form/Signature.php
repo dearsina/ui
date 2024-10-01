@@ -74,7 +74,7 @@ class Signature extends Field implements FieldInterface {
 
 		if(str::isUuid($value)){
 			$client_signature = Info::getInstance()->getInfo("client_signature", $value);
-			if(!$client_signature['signature']){
+			if(!$value = $client_signature['signature']){
 				return NULL;
 			}
 		}

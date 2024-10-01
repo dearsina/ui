@@ -28,6 +28,13 @@ class Dropzone extends Field implements FieldInterface {
 		$id = str::getAttrTag("id", $id ?: str::id("dropzone"));
 		$parent_id = str::getAttrTag("id", $parent_id);
 
+		# Label
+		$label = self::getLabel($label, $title, $name, $id, $for);
+
+		# Parent class
+		$parent_class_array = str::getAttrArray($parent_class, "mb-3", $only_parent_class);
+		$parent_class = str::getAttrTag("class", $parent_class_array);
+
 		# Class
 		$class_array = str::getAttrArray($class, ["dropzone"], $only_class);
 		$class = str::getAttrTag("class", $class_array);
@@ -49,7 +56,7 @@ class Dropzone extends Field implements FieldInterface {
 
 		$data = str::getDataAttr($a['data']);
 
-		return "<div{$parent_id}{$parent_style}><div{$id}{$data}{$class}{$style}></div>{$desc}</div>";
+		return "<div{$parent_id}{$parent_class}{$parent_style}>{$label}<div{$id}{$data}{$class}{$style}></div>{$desc}</div>";
 	}
 
 	private static function setSettings(array &$a): void
