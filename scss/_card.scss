@@ -24,7 +24,7 @@
   // box-shadow: rgba(60, 66, 87, 0.12) 0px 7px 14px 0px, rgba(0, 0, 0, 0.12) 0px 3px 6px 0px;
 
   /** Box=shadow inspired by Kayak */
-   box-shadow: 0 3px 6px hsl(202deg 18% 72% / 16%), 0 -1px 4px rgb(25 32 36 / 4%);
+  box-shadow    : 0 3px 6px hsl(202deg 18% 72% / 16%), 0 -1px 4px rgb(25 32 36 / 4%);
 
   /** The box-shadow used by mybrandnewlogo.com, flattering, blurry */
   /* -webkit-box-shadow: 0 0.1rem 0.15rem rgba(40,36,89,0.15), 0 0.25rem 0.5rem rgba(40,36,89,0.15), 0 0.75rem 1.75rem rgba(40,36,89,0.2); */
@@ -42,10 +42,12 @@
 /**
  * Hide the shadow when printing.
  */
-@media print {
-    .card {
-        box-shadow: none;
-    }
+@media print
+{
+  .card
+  {
+    box-shadow : none;
+  }
 }
 
 /**
@@ -53,7 +55,7 @@
  */
 .grid-stack .card
 {
-  box-shadow: unset;
+  box-shadow : unset;
 }
 
 /**
@@ -96,20 +98,27 @@ box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 
  * Accent cards have a given colour as the header
  * background and the card border.
  */
-@each $color, $value in $theme-colors {
-  .card-bg-#{$color} {
-    border: 0.1px solid $value;
-    .card-header {
-      background-color: $value;
+@each $color, $value in $theme-colors
+{
+  .card-bg-#{$color}
+  {
+    border : 0.1px solid $value;
+
+    .card-header
+    {
+      background-color : $value;
     }
+
     /**
      * Cards with backgrounds need to have white text,
      * otherwise the text disappears in the colour, but
      * only those colours that are too dark for black text.
      */
-    @if (contrast-ratio($value, black) < $min-contrast-ratio) {
-      .card-header .card-title {
-        color: white;
+    @if (contrast-ratio($value, black) < $min-contrast-ratio)
+    {
+      .card-header .card-title
+      {
+        color : white;
       }
     }
   }
@@ -119,26 +128,28 @@ box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 
 /**
  * Fixes the header to handle both buttons and buttons, even together
  */
-.card-header .col-buttons {
-  height: 0;
+.card-header .col-buttons
+{
+  height          : 0;
 
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  margin-top: 10px;
+  display         : flex;
+  justify-content : flex-end;
+  align-items     : center;
+  margin-top      : 10px;
 
   // Experimental, fixes an issue where the header text is so long the buttons fall below
-  padding: 0;
-  margin-right: 10px;
+  padding         : 0;
+  margin-right    : 10px;
 }
 
 /**
  * Small fix so that the navigation sits right in the card footer
  */
-.card-footer .nav-right {
-  height: 100%;
-  display: flex;
-  align-items: center;
+.card-footer .nav-right
+{
+  height      : 100%;
+  display     : flex;
+  align-items : center;
 }
 
 .card-title > .far
@@ -158,10 +169,18 @@ box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 
   margin-right : .5rem;
 }
 
+/**
+ * Except in nodes, where the icon is smaller.
+ */
+.drawflow-node .card-header .card-title i.fa-fw:first-of-type
+{
+  margin-right : 0.15rem;
+}
+
 .card-header .card-title i.flag-icon:first-of-type,
 .card-footer .card-title i.flag-icon:first-of-type
 {
-  border-radius: .15rem;
+  border-radius : .15rem;
 }
 
 .card-title
@@ -183,8 +202,8 @@ box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 
 .card-header > .container,
 .card-footer > .container
 {
-  padding : 0;
-  max-width: unset;
+  padding   : 0;
+  max-width : unset;
 
   /**
    * We're adding the below so that dropdown buttons
@@ -197,12 +216,12 @@ box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 
 
 .card-footer
 {
-  padding    : $card-spacer-y;
+  padding       : $card-spacer-y;
   //padding-bottom: .5rem;
-  border-top : unset;
-  background : $header-footer-bg;
-  border-top : .9px solid $border-color;
-  border-radius: 0 0 var(--bs-card-inner-border-radius) var(--bs-card-inner-border-radius);
+  border-top    : unset;
+  background    : $header-footer-bg;
+  border-top    : .9px solid $border-color;
+  border-radius : 0 0 var(--bs-card-inner-border-radius) var(--bs-card-inner-border-radius);
 }
 
 .card-body
@@ -256,8 +275,8 @@ box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 
  */
 .card-items
 {
-  padding : 0;
-  max-width: unset;
+  padding   : 0;
+  max-width : unset;
 }
 
 .card-body > *:not(.badge, i)
@@ -305,16 +324,19 @@ box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 
  * Will give room for the buttons burger to be quasi-
  * fixed in the top right corner of the card.
  */
-.drawflow-node > .drawflow_content_node > .card > .card-header > .container-fluid > .row {
-  flex-wrap: nowrap;
-  margin: 0;
+.drawflow-node > .drawflow_content_node > .card > .card-header > .container-fluid > .row
+{
+  flex-wrap : nowrap;
+  margin    : 0;
 }
 
-.drawflow-node > .drawflow_content_node > .card > .card-header > .container-fluid > .row > .card-title {
-  padding: 0;
-  flex-shrink: unset;
+.drawflow-node > .drawflow_content_node > .card > .card-header > .container-fluid > .row > .card-title
+{
+  padding     : 0;
+  flex-shrink : unset;
 }
 
-.drawflow-node > .drawflow_content_node > .card > .card-header > .container-fluid > .row > .col-buttons {
-  margin: 10px -5px 0 0;
+.drawflow-node > .drawflow_content_node > .card > .card-header > .container-fluid > .row > .col-buttons
+{
+  margin : 10px -5px 0 0;
 }
