@@ -142,6 +142,12 @@ box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 
   margin-right    : 10px;
 }
 
+.drawflow-node.request-doc-group .card-header .col-buttons,
+.drawflow-node.form-group .card-header .col-buttons
+{
+  margin-left: -30px;
+}
+
 /**
  * Small fix so that the navigation sits right in the card footer
  */
