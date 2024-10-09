@@ -673,7 +673,7 @@ EOF;
 				"type" => "checkbox",
 				"label" => $label,
 				"options" => $options,
-				"name" => $column,
+				"name" => "{$column}[]",
 				"checked" => in_array($id, $vars[$column] ?: []),
 			];
 		}
