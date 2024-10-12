@@ -94,6 +94,11 @@ box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 
   font-size      : smaller;
 }
 
+.drawflow-node .card-header .card-title
+{
+  padding-right: 15px !important;
+}
+
 /**
  * Accent cards have a given colour as the header
  * background and the card border.
