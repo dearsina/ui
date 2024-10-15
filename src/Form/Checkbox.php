@@ -394,6 +394,8 @@ EOF;
 		# Is the option to be placed inline (horizontally)?
 		$form_check_inline = $inline ? " form-check-inline" : NULL;
 
+		$parent_id = str::getAttrTag("id", $parent_id);
+
 		# Parent class
 		$parent_class_array = str::getAttrArray($parent_class, "form-check{$form_check_inline}", $only_parent_class);
 		$parent_class_tag = str::getAttrTag("class", $parent_class_array);
@@ -435,7 +437,7 @@ EOF;
 		$script = str::getScriptTag($a['script']);
 
 		return /** @lang HTML */ <<<EOF
-<div{$parent_class_tag}{$parent_style_tag}>
+<div{$parent_id}{$parent_class_tag}{$parent_style_tag}>
 	<input
 		type="{$type}"
 		id="{$id}"
