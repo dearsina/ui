@@ -47,8 +47,7 @@ class Signature extends Field implements FieldInterface {
 			], [[
 				"id" => ClientSignature::getId($a),
 				"html" => [
-					ClientSignature::getSignatureFields($a),
-					(new Form())->getFieldsHTML(self::generateSignatureFields($a)),
+					Form::getFieldsAsHtml(self::generateSignatureFields($a)),
 				],
 			]],
 			]],

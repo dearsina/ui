@@ -308,7 +308,7 @@ class Form {
 			try {
 				$vars[$key] = sodium_crypto_box_seal_open(sodium_hex2bin($vars[$key]), $_SESSION['pgp'][$vars['meta_public_key']]);
 			}
-			catch(\SodiumException $e){
+			catch(\SodiumException $e) {
 				// If the key is not valid (it's because the page needs refreshing)
 
 				# Request a page reload
@@ -367,6 +367,27 @@ class Form {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Returns an array of form fields as HTML.
+	 * Will not return any form wrapping.
+	 *
+	 * @param array|null $fields
+	 *
+	 * @return string|null
+	 */
+	public static function getFieldsAsHtml(?array $fields): ?string
+	{
+		if(!$fields){
+			return NULL;
+		}
+
+		$form = new Form([
+			"fields" => $fields,
+		]);
+
+		return $form->getFieldsHTML();
 	}
 
 	/**
