@@ -20,7 +20,7 @@
  */
 .modal
 {
-  overflow-y: hidden;
+  overflow-y : hidden;
 }
 
 /**
@@ -43,21 +43,22 @@
   padding : 1rem 0;
   // We need the padding for modals with tabs
 }
+
 .modal-footer
 {
-  padding: 0.5rem 0.25rem
+  padding : 0.5rem 0.25rem
 }
 
 .modal-footer-tabs > .container
 {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  display         : flex;
+  justify-content : space-between;
+  align-items     : center;
 }
 
 .modal-footer-tabs > .container > .footer-content
 {
-  padding-left: 0.5rem;
+  padding-left : 0.5rem;
 }
 
 /**
@@ -81,8 +82,9 @@
  * Not 100% sure about any repercussions, but
  * without it, button dropdowns drown.
  */
-.modal-dialog-scrollable .modal-content{
-  overflow: unset;
+.modal-dialog-scrollable .modal-content
+{
+  overflow : unset;
 }
 
 /**
@@ -90,17 +92,17 @@
  */
 .modal-tabs
 {
-  padding    : 0.7rem;
-  background : $header-footer-bg;
-  border-radius: var(--bs-modal-border-radius);
-    height: 100%;
+  padding       : 0.7rem;
+  background    : $header-footer-bg;
+  border-radius : var(--bs-modal-border-radius);
+  height        : 100%;
   // Part of Tabs 2.0
 }
 
 .modal-tabs > .row
 {
   //height: calc(100% - 45px);
-  height: calc(100% - 60px);
+  height : calc(100% - 60px);
   // Part of Tabs 2.0
 }
 
@@ -201,17 +203,21 @@
  * The content sits behind the tabs.
  * This will give it the same background color.
  */
-.modal-tab > .modal-content {
-  background: $header-footer-bg;
+.modal-tab > .modal-content
+{
+  background : $header-footer-bg;
 }
 
-.modal-tab .modal-footer {
-  margin: -14px 16px 11px 0;
+.modal-tab .modal-footer
+{
+  margin : -14px 16px 11px 0;
 }
-.modal-tab .modal-footer > .container {
-  margin-top: 12px;
-  margin-bottom: -12px;
-  margin-right: -27px;
+
+.modal-tab .modal-footer > .container
+{
+  margin-top    : 12px;
+  margin-bottom : -12px;
+  margin-right  : -27px;
 }
 
 /**
@@ -220,5 +226,17 @@
  */
 .modal-footer > .container > .footer-content
 {
-  width: 50%;
+  width : 50%;
+}
+
+/**
+ * Opening the QR code on small screens,
+ * ensure the whole code is shown
+ */
+@media (max-width : 576px)
+{
+  #qr-code .modal-content
+  {
+    min-height : 90vh;
+  }
 }
