@@ -682,6 +682,8 @@ class Button {
 		$type_tag = str::getAttrTag("type", $type);
 		$data_style_tag = str::getAttrTag("data-style", "slide-left");
 
+		$title = strlen($title) ? "<span class=\"btn-text\">{$title}</span>" : $title;
+
 		$button_html = /** @lang HTML */
 			<<<EOF
 {$wrapper_pre}
