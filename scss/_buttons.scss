@@ -289,14 +289,22 @@ ul.dropdown-menu > li a:hover {
 }
 
 /**
- * For buttons that are to be hidden on mobile devices
+ * For buttons and button text
+ * that is to be hidden on mobile devices
  */
-.btn-desktop-only {
-  display: none;
-}
-@include media-breakpoint-up(sm) {
+@include media-breakpoint-down(sm) {
   .btn-desktop-only {
-    display: inline-block;
+    display: none;
+  }
+
+  .btn-text-desktop-only {
+    min-height: 37.33px;
+    display: flex;
+    align-items: center;
+  }
+
+  .btn-text-desktop-only .btn-text {
+    display: none;
   }
 }
 
