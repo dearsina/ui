@@ -140,8 +140,8 @@
   border-radius : var(--bs-list-group-border-radius);
 }
 
-#client-review-menu .accordion-wrapper > .accordion > .accordion-header-wrapper > .button,
-#client-review-menu .accordion-wrapper > .accordion > .accordion-header-wrapper > .button > btn-text
+#client-review-menu .accordion-wrapper > .accordion > .accordion-header-wrapper > button,
+#client-review-menu .accordion-wrapper > .accordion > .accordion-header-wrapper > button > .btn-text
 {
   overflow: hidden;
 }
