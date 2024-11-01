@@ -1,0 +1,50 @@
+/**
+ * Override the default ag-grid styles
+ */
+.ag-theme-quartz
+{
+  // Set the font family to match the rest of the application
+  font-family                  : "Barlow", sans-serif;
+
+  // Set the background colour to match the rest of the application
+  --ag-header-background-color : hsl(203deg, 20%, 99%);
+
+  // Remove the border radius from the wrapper and the cells to match the rest of the application
+  --ag-wrapper-border-radius   : 0;
+  --ag-border-radius           : 0;
+
+  // Remove the background colour from the menu to match the rest of the application
+  --ag-menu-background-color   : #ffffff;
+
+  // Removes the border from the wrapper as it slots into a card or modal body that already has a border
+  .ag-root-wrapper
+  {
+    border : unset;
+  }
+
+  // Softens the context menus
+  .ag-menu
+  {
+    border-radius : var(--bs-border-radius);
+  }
+
+  // Formats cells containgin numbers
+  .number-cell
+  {
+    text-align  : right;
+    font-family : "Roboto Mono", monospace;
+    font-size   : 90%;
+  }
+
+  //  Hide the watermark (only useful when testing without a license)
+  .ag-watermark
+  {
+    display : none !important;
+  }
+
+  .btn-float-right {
+    display: flex;
+    align-items: center;
+    flex-direction: row-reverse;
+  }
+}

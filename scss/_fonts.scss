@@ -9,11 +9,12 @@
 //The KYCDD official font
 
 //@import url('https://fonts.googleapis.com/css2?family=Inconsolata&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400&display=swap');
 //Monospace font
 /**
  * While inconsolata is prettier, Roboto Mono includes Greek characters.
- * 300 is a little thin, but 400 is too thick.
+ * 300 is a little thin, and 400 is a little thick.
+ * The compromise is to reduce the font-size to 90%.
  */
 
 /**
