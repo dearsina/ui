@@ -581,25 +581,26 @@ EOF;
 
 		# Include the ID in the response
 		$output_vars['id'] = $vars['id'];
+		// This is the grid ID
 
-		# The (default) assumption is that all vars are where clauses, except:
-		foreach(["start", "length", "order_by_col", "order_by_dir"] as $key){
-			if(!$vars[$key]){
-				continue;
-			}
-
-			$$key = $vars[$key];
-			//for reference
-
-			# Report the metadata back for reference
-			$output_vars[$key] = $vars[$key];
-
-			unset($vars[$key]);
-			// We remove them because all other vars are being fed as where cols
-		}
-
-		# The start value grows for every request
-		$output_vars["start"] = $start + $length;
+//		# The (default) assumption is that all vars are where clauses, except:
+//		foreach(["start", "length", "order_by_col", "order_by_dir"] as $key){
+//			if(!$vars[$key]){
+//				continue;
+//			}
+//
+//			$$key = $vars[$key];
+//			//for reference
+//
+//			# Report the metadata back for reference
+//			$output_vars[$key] = $vars[$key];
+//
+//			unset($vars[$key]);
+//			// We remove them because all other vars are being fed as where cols
+//		}
+//
+//		# The start value grows for every request
+//		$output_vars["start"] = $start + $length;
 
 		foreach($vars ?:[] as $key => $val){
 			# If the value is a numerical array, assume an IN is required
@@ -618,18 +619,20 @@ EOF;
 
 		if(!$rows = $sql->select($base_query)){
 			//if no results are found
+			$output->function("loadAgGrid", $output_vars);
 			return true;
 		}
 
 		if(is_object($row_handler)){
 			//if a custom row handler has been included
 			foreach($rows as $id => $row){
-				$rows[$id] = ($row_handler)($row);
+				$output_vars['rows'][$id] = ($row_handler)($row);
 				//run the row handler through each row
 			}
 		}
 
-		$output->setVar("rows", $rows);
+		# Load the response
+		$output->function("loadAgGrid", $output_vars);
 
 		return true;
 	}
