@@ -631,8 +631,15 @@ EOF;
 			}
 		}
 
+		str::stopTimer(NULL, "row_handler");
+
+		# Compress the output vars
+		$output_vars_json = json_encode($output_vars);
+		$output_vars_compressed = gzencode($output_vars_json);
+		$output_vars_base64 = base64_encode($output_vars_compressed);
+
 		# Load the response
-		$output->function("loadAgGrid", $output_vars);
+		$output->function("loadAgGrid", $output_vars_base64);
 
 		return true;
 	}
