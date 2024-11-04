@@ -4,28 +4,29 @@
 .ag-theme-quartz
 {
   // Set the font family to match the rest of the application
-  font-family                  : "Barlow", sans-serif;
+  font-family                  : "Barlow", sans-serif !important;
+  --ag-font-family             : "Barlow", sans-serif !important;
 
   // Set the background colour to match the rest of the application
-  --ag-header-background-color : hsl(203deg, 20%, 99%);
+  --ag-header-background-color : hsl(203deg, 20%, 99%) !important;
 
   // Remove the border radius from the wrapper and the cells to match the rest of the application
-  --ag-wrapper-border-radius   : 0;
-  --ag-border-radius           : 0;
+  --ag-wrapper-border-radius   : 0 !important;
+  --ag-border-radius           : 0 !important;
 
   // Remove the background colour from the menu to match the rest of the application
-  --ag-menu-background-color   : #ffffff;
+  --ag-menu-background-color   : #ffffff !important;
 
   // Removes the border from the wrapper as it slots into a card or modal body that already has a border
   .ag-root-wrapper
   {
-    border : unset;
+    border : unset !important;
   }
 
   // Softens the context menus
   .ag-menu
   {
-    border-radius : var(--bs-border-radius);
+    border-radius : var(--bs-border-radius) !important;
   }
 
   // Formats cells containgin numbers
@@ -36,15 +37,15 @@
     font-size   : 90%;
   }
 
+  .btn-float-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
   //  Hide the watermark (only useful when testing without a license)
   .ag-watermark
   {
     display : none !important;
-  }
-
-  .btn-float-right {
-    display: flex;
-    align-items: center;
-    flex-direction: row-reverse;
   }
 }
