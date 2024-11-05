@@ -571,7 +571,6 @@ EOF;
 	{
 		extract($a);
 
-		$output = Output::getInstance();
 		$sql = Factory::getInstance();
 
 		# Default base query is just querying the rel_table
@@ -619,7 +618,7 @@ EOF;
 
 		if(!$rows = $sql->select($base_query)){
 			//if no results are found
-			$output->function("loadAgGrid", $output_vars);
+			self::compressAndSetOutputVars($output_vars);
 			return true;
 		}
 
@@ -633,15 +632,20 @@ EOF;
 
 		str::stopTimer(NULL, "row_handler");
 
+		self::compressAndSetOutputVars($output_vars);
+
+		return true;
+	}
+
+	private static function compressAndSetOutputVars(array $output_vars): void
+	{
 		# Compress the output vars
 		$output_vars_json = json_encode($output_vars);
 		$output_vars_compressed = gzencode($output_vars_json);
 		$output_vars_base64 = base64_encode($output_vars_compressed);
 
 		# Load the response
-		$output->function("loadAgGrid", $output_vars_base64);
-
-		return true;
+		Output::getInstance()->function("loadAgGrid", $output_vars_base64);
 	}
 
 
