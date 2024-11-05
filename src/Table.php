@@ -630,8 +630,6 @@ EOF;
 			}
 		}
 
-		str::stopTimer(NULL, "row_handler");
-
 		self::compressAndSetOutputVars($output_vars);
 
 		return true;
@@ -639,6 +637,8 @@ EOF;
 
 	private static function compressAndSetOutputVars(array $output_vars): void
 	{
+		$output_vars['seconds'] = round(str::stopTimer(), 2);
+
 		# Compress the output vars
 		$output_vars_json = json_encode($output_vars);
 		$output_vars_compressed = gzencode($output_vars_json);
