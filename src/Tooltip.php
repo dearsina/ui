@@ -134,13 +134,13 @@ class Tooltip {
 			$tooltip = ["title" => $tooltip];
 		}
 
-		# Ensure the class value is an array
+		# Add the tooltip trigger class
 		if(!is_array($a['class'])){
-			$a['class'] = [$a['class']];
+			$a['class'] .= " tooltip-trigger";
 		}
-
-		# We need to add a class to the parent
-		$a['class'][] = "tooltip-trigger";
+		else {
+			$a['class'][] = "tooltip-trigger";
+		}
 
 		# Set the tooltip as a data attribute
 		$a['data']['bs-original-title'] = htmlentities($tooltip['title']);
