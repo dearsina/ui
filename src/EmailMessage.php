@@ -4,12 +4,12 @@
 namespace App\UI;
 
 
-use API\Microsoft\Azure\Azure;
 use App\Common\EmailWrapper\EmailWrapper;
 use App\Common\href;
 use App\Common\Img;
 use App\Common\Log;
 use App\Common\Prototype;
+use App\Common\RemoteStorage\RemoteStorage;
 use App\Common\str;
 
 /**
@@ -88,8 +88,8 @@ class EmailMessage extends Prototype {
 		}
 
 		if($format['subscription_id'] && $format['logo_id']){
-			$azure = new Azure();
-			$format['logo_src'] = $azure->getURL($format['subscription_id'], $format['logo_id'], "Logo.png");
+			$storage = RemoteStorage::create();
+			$format['logo_src'] = $storage->getURL($format['subscription_id'], $format['logo_id'], "Logo.png");
 			// We're giving the logo file a generic name in case it gets referenced in the email somehow
 		}
 
