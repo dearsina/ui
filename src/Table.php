@@ -635,7 +635,7 @@ EOF;
 		return true;
 	}
 
-	private static function compressAndSetOutputVars(array $output_vars): void
+	public static function compressAndSetOutputVars(array $output_vars): void
 	{
 		$output_vars['seconds'] = round(str::stopTimer(), 2);
 
