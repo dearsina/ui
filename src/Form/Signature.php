@@ -20,6 +20,16 @@ class Signature extends Field implements FieldInterface {
 		# Set dependency data
 		self::setDependencyData($a);
 
+		# If there is a value, show the signature
+		if($value){
+			$html = Form::getFieldsAsHtml(self::generateSignatureFields($a));
+		}
+
+		# Otherwise, show nothing unless it's a required field and the client is trying to skip it
+		else {
+			$html = self::generateHiddenField($a);
+		}
+
 		return Grid::generate([[
 			# Enable any dependencies
 			"row_data" => $a['data'],
@@ -46,9 +56,7 @@ class Signature extends Field implements FieldInterface {
 				],
 			], [[
 				"id" => ClientSignature::getId($a),
-				"html" => [
-					Form::getFieldsAsHtml(self::generateSignatureFields($a)),
-				],
+				"html" => $html,
 			]],
 			]],
 		]]);
