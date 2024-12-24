@@ -103,8 +103,7 @@ class Dropdown {
 
 		return <<<EOF
 <div{$class}{$style}>
-  <button{$button_class}{$alt} type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" 
-  aria-expanded="false">
+  <button{$button_class}{$alt} type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
     {$icon}<div class="dropdown-item-title">{$title}</div>
   </button>
   {$menu}
@@ -144,9 +143,22 @@ EOF;
 			}
 		}
 
+		$div_class = str::getAttrTag("class", ["dropdown-menu-list", $item['div_class']]);
 		$ul_class = str::getAttrTag("class", ["dropdown-menu", $item['ul_class']]);
 
-		return "<ul{$ul_class}>{$lis}</ul>";
+		$icon_up = Icon::generate("chevron-up");
+		$icon_down = Icon::generate("chevron-down");
+
+		return <<<EOF
+<div{$ul_class}>
+	<div class="dropdown-menu-up">{$icon_up}</div>
+	<div class="dropdown-menu-container">
+		<ul{$div_class}>{$lis}</ul>
+	</div>
+	<div class="dropdown-menu-down">{$icon_down}</div>
+</div>
+EOF;
+
 	}
 
 	/**
@@ -387,58 +399,5 @@ EOF;
 		$style_tag = str::getAttrTag("style", $style_array);
 
 		return "<li{$class_tag}{$style_tag}><span>{$html}</span></li>";
-	}
-
-	/**
-	 * If a menu has more than the limit of items,
-	 * will break it up and add a sub-child. Will
-	 * keep doing it as long as the child has more
-	 * than the limit.
-	 *
-	 * @param array|null $children
-	 * @param int|null   $limit
-	 *
-	 * @return array|null
-	 */
-	public static function breakUpBigChildren(?array $children, ?int $limit = 10): ?array
-	{
-		if(!$children){
-			return $children;
-		}
-
-		if(count($children) <= $limit){
-			return $children;
-		}
-
-		$chunks = array_chunk($children, $limit);
-
-		return self::joinChildren($chunks);
-	}
-
-	/**
-	 * Recursive function that joins chunks of children
-	 * together.
-	 *
-	 * @param array       $chunks
-	 * @param string|null $title
-	 *
-	 * @return array
-	 */
-	private static function joinChildren(array $chunks, ?string $title = "More..."): array
-	{
-		$chunk = array_shift($chunks);
-
-		if($chunks){
-			$chunk[] = [
-				"icon" => "chevrons-right",
-				"title" => $title,
-				"children" => self::joinChildren($chunks)
-			];
-			return $chunk;
-		}
-
-		else {
-			return $chunk;
-		}
 	}
 }

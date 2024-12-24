@@ -338,3 +338,74 @@ ul.dropdown-menu > li:last-child > div > button,
 {
   width: min-content;
 }
+
+
+/**
+ * Handle long dropdowns
+ */
+
+.dropdown-menu > .dropdown-menu-container
+{
+  /**
+   * The container styles are applied during the
+   * dropdown menu creation, as they are dependent
+   * on the dropdown menu's position and size.
+   */
+}
+
+.dropdown-menu > .dropdown-menu-container > .dropdown-menu-list
+{
+  list-style: unset;
+  padding-left: 0;
+  margin-bottom: 0;
+  border: none;
+}
+
+.dropdown-menu > .dropdown-menu-up,
+.dropdown-menu > .dropdown-menu-down
+{
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 30px;
+  z-index: 1;
+
+  background: white;
+  height: 30px;
+  width: 100%;
+  justify-self: center;
+  text-align: center;
+  padding-top: 0.5rem;
+
+  box-shadow: 0 3px 6px rgba(171, 187, 196, 0.16), 0 -1px 4px rgba(25, 32, 36, 0.04);
+  background: white;
+
+  display: none;
+}
+
+.dropdown-menu > .dropdown-menu-up
+{
+  top: 0;
+  border-bottom: 0.9px solid #d8e2e9;
+    border-top-right-radius: var(--bs-border-radius);
+    border-top-left-radius: var(--bs-border-radius);
+}
+
+.dropdown-menu > .dropdown-menu-down
+{
+  bottom: 0;
+  border-top: 0.9px solid #d8e2e9;
+  border-bottom-right-radius : var(--bs-border-radius);
+  border-bottom-left-radius  : var(--bs-border-radius);
+}
+
+.dropdown-menu > .dropdown-menu-container > .dropdown-menu
+{
+  position:initial !important;
+  border: none;
+}
+
+.dropdown-menu[data-bs-popper]
+{
+  margin-top: 0 !important;
+}

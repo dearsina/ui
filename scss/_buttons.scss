@@ -240,26 +240,26 @@ form .btn i
 
 
 // Give padding to each item in the menu
-ul.dropdown-menu > li > * {
+ul.dropdown-menu-list > li > * {
   //padding: 0.3rem 1rem;
   //font-weight: 400;
 
 }
 
 // Give space for each icon
-ul.dropdown-menu > li > * > i.fa-fw:first-child,
-ul.dropdown-menu > li > * > * > i.fa-fw:first-child
+ul.dropdown-menu-list > li > * > i.fa-fw:first-child,
+ul.dropdown-menu-list > li > * > * > i.fa-fw:first-child
 {
   margin-right: 0.75rem;
 }
 
 // Make sure text stays black, even as link
-ul.dropdown-menu > li a {
+ul.dropdown-menu-list > li a {
   color: #000000;
 }
 
 // Hover only changed background, not text colour or decoration
-ul.dropdown-menu > li a:hover {
+ul.dropdown-menu-list > li a:hover {
   color: #000000;
   background-color: #f0f0f0;
   text-decoration: none !important;
