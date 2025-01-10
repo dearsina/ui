@@ -5,7 +5,11 @@
 {
   box-shadow : #34324e26 0px 0px 4px, #34324e26 0px 4px 12px, #34324e26 6px 6px 14px;
   position   : fixed;
-  overflow   : hidden;
+  // overflow   : hidden;
+  /**
+   * This seems to cause an issue if a select that's a part of a dependency
+   * has not been selected yet and gets focus once the user submits the form.
+   */
   min-height : 10vw;
   //min-width  : 30vh;
 }
