@@ -19,10 +19,13 @@ class Progress {
 	const WIDTH = "10%";
 
 	/**
+	 * DEPRECATED, use BUILD instead.
+	 * 
 	 * Generate a progress bar.
 	 *
 	 * <code>
-	 * progress::generate([
+	 * Progress::generate([
+	 *    "id" => = NULL,
 	 *    "height" => "px",
 	 *    "width" => "%",
 	 *    "colour" => "primary",
@@ -84,17 +87,17 @@ EOF;
 
 	static function updatePre(string $id, string $html, ?array $recipients = NULL): void
 	{
-		Output::getInstance()->update("#{$id} > .progress-bar-pre", $html, $recipients);
+		Output::getInstance()->update("{$id} > .progress-bar-pre", $html, $recipients);
 	}
 
 	static function updatePost(string $id, string $html, ?array $recipients = NULL): void
 	{
-		Output::getInstance()->update("#{$id} > .progress-bar-post", $html, $recipients);
+		Output::getInstance()->update("{$id} > .progress-bar-post", $html, $recipients);
 	}
 
 	static function updateProgressBar(string $id, int $completed_count, ?array $recipients = NULL): void
 	{
-		Output::getInstance()->function("updateProgressBar", [
+		Output::getInstance()->function("Progress.updateProgressBar", [
 			"id" => $id,
 			"completed_count" => $completed_count,
 		], $recipients);
@@ -102,7 +105,7 @@ EOF;
 
 	static function updateTotalCount(string $id, int $total_count, ?array $recipients = NULL): void
 	{
-		Output::getInstance()->function("updateTotalCount", [
+		Output::getInstance()->function("Progress.updateTotalCount", [
 			"id" => $id,
 			"total_count" => $total_count,
 		], $recipients);
@@ -126,7 +129,31 @@ EOF;
 			$a = $id_or_array;
 		}
 
-		Output::getInstance()->function("updateCountByOne", $a, $recipients);
+		Output::getInstance()->function("Progress.updateCountByOne", $a, $recipients);
+	}
+
+	/**
+	 * @param            $id_or_array
+	 * @param int        $count
+	 * @param array|null $recipients
+	 *
+	 * @return void
+	 */
+	static function updateCount($id_or_array, int $count, ?array $recipients = NULL): void
+	{
+		if(!is_array($id_or_array)){
+			$a = [
+				"id" => $id_or_array,
+			];
+		}
+
+		else {
+			$a = $id_or_array;
+		}
+
+		$a['completed_count'] = $count;
+
+		Output::getInstance()->function("Progress.updateCount", $a, $recipients);
 	}
 
 	static function removeCancelButton(string $id, ?array $recipients = NULL): void
@@ -152,7 +179,7 @@ EOF;
 			$a = $id_or_array;
 		}
 
-		Output::getInstance()->function("stopProgressBar", $a, $recipients);
+		Output::getInstance()->function("Progress.stopProgressBar", $a, $recipients);
 	}
 
 	/**
@@ -183,8 +210,8 @@ EOF;
 		$style = str::getAttrTag("style", $style_array);
 		$class = str::getAttrTag("class", $class_array);
 
-		$data['total-count'] = $total_count;
-		$data['completed-count'] = $completed_count;
+		$data['total_count'] = $total_count;
+		$data['completed_count'] = $completed_count;
 		$data['start-time'] = $start_unix_time ?: time();
 
 		$script = str::getScriptTag($script);

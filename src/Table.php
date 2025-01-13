@@ -59,6 +59,13 @@ class Table {
 				throw new \Exception("If a table is orderable, it must also have a corresponding <code>rel_table</code> table.");
 			}
 			foreach($rows as $key => $row){
+				# Non-sortable rows
+				if($row['sortable'] === false){
+					$rows[$key] = $row;
+					continue;
+				}
+
+				# Sortable rows
 				$rows[$key] = self::getSortableRow($row);
 			}
 
@@ -198,7 +205,7 @@ EOF;
 	 *
 	 * @return bool[]|null
 	 */
-	private static function getAsyncOptions(array $row): ?array
+	public static function getAsyncOptions(array $row): ?array
 	{
 		# Handle order-able table updates
 		if($row['id'] || $row['html']['id']){
@@ -271,7 +278,7 @@ EOF;
 	 * @return array
 	 * @throws \Exception
 	 */
-	private static function getSortableRow($row)
+	private static function getSortableRow($row): array
 	{
 		# Rows with meta rows
 		if($row['html']){

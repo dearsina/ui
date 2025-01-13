@@ -35,4 +35,9 @@ class Wait {
 			],
 		]]);
 	}
+
+	public static function ellipsis(string $narrative = "Processing file"): string
+	{
+		return "{$narrative}<span class=\"ellipsis\"></span>";
+	}
 }
