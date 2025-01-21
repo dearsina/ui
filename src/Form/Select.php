@@ -317,6 +317,11 @@ EOF;
 
 		# Go through each option, format the data and add it to the array
 		foreach($options as $option_value => $option){
+			# We don't care about the key if the values are in a numerical array
+			if(str::isNumericArray($options)){
+				$option_value = $option;
+			}
+
 			# Check to see if the option is selected or not
 			$selected = in_array($option_value, $value_array ?: []);
 
