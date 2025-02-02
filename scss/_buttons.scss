@@ -162,6 +162,9 @@ form .btn i
   // Will position the buttons in the vertical middle of the footer
 }
 
+
+
+
 .card .btn-float-right .btn,
 .modal .btn-float-right .btn,
 .tab-pane .btn-float-right .btn
@@ -170,6 +173,16 @@ form .btn i
   float: right;
   // We've removed the important flag, not sure if it's necessary
   margin: .25rem 0 .25rem .5rem;
+}
+
+/**
+ * Additional margin to dropdowns
+ */
+.card .btn-float-right .navbar-nav,
+.modal .btn-float-right .navbar-nav,
+.tab-pane .btn-float-right .navbar-nav
+{
+  margin: 0 0 0 .5rem;
 }
 
 // Bootstrap override for split buttons
@@ -182,6 +195,83 @@ form .btn i
 {
   float: right !important;
 }
+
+
+
+.card-footer .btn-float-right .btn:first-child,
+.modal .btn-float-right .btn:first-child,
+.tab-pane .btn-float-right .btn:first-child
+{
+  // Remove the margin on the left side
+  margin-right: 0;
+}
+
+.card-footer .btn-float-right .btn:last-child,
+.modal .btn-float-right .btn:last-child,
+.tab-pane .btn-float-right .btn:last-child
+{
+  // Remove the right side margin on the last element
+  margin-left: 0;
+}
+
+.card-footer .btn-float-left .btn:first-child,
+.modal .btn-float-left .btn:first-child,
+.tab-pane .btn-float-left .btn:first-child
+{
+  // Remove the margin on the left side
+  margin-left: 0;
+}
+
+.card-footer .btn-float-left .btn:last-child,
+.modal .btn-float-left .btn:last-child,
+.tab-pane .btn-float-left .btn:last-child
+{
+  // Remove the right side margin on the last element
+  margin-right: 0;
+}
+
+
+
+.card-footer button.float-left,
+.modal button.float-left,
+.tab-pane button.float-left
+{
+  margin: .25rem .5rem;
+}
+.card-footer button:first-child.float-right,
+.modal button:first-child.float-right,
+.tab-pane button:first-child.float-right
+{
+  // Remove the margin on the left side
+  margin-right: 0;
+}
+
+.card-footer button:last-child.float-right,
+.modal button:last-child.float-right,
+.tab-pane button:last-child.float-right
+{
+  // Remove the right side margin on the last element
+  margin-right: 0;
+}
+
+.card-footer button:last-child,
+.modal button:last-child.float-right,
+.tab-pane button:last-child.float-right
+{
+  // Remove the right side margin on the last element
+  margin-left: 0;
+}
+
+.card-footer button:first-child.float-left,
+.modal button:first-child.float-left,
+.tab-pane button:first-child.float-left
+{
+  // Remove the margin on the left side
+  margin-left: 0;
+}
+
+
+
 
 /**
  * But only actual buttons (and
@@ -263,6 +353,18 @@ ul.dropdown-menu-list > li a:hover {
   color: #000000;
   background-color: #f0f0f0;
   text-decoration: none !important;
+}
+
+ul.dropdown-menu-list > li:first-child a:hover,
+ul.dropdown-menu-list > li:first-child a:focus{
+  border-top-left-radius: 0.375rem;
+  border-top-right-radius: 0.375rem;
+}
+
+ul.dropdown-menu-list > li:last-child a:hover,
+ul.dropdown-menu-list > li:last-child a:focus{
+  border-bottom-left-radius: 0.375rem;
+  border-bottom-right-radius: 0.375rem;
 }
 
 /**

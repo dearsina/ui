@@ -50,6 +50,8 @@ class Horizontal {
 			$this->levels[1]['items'] = array_reverse($this->levels[1]['items']);
 		}
 
+		$language_toggle = Dropdown::generateRootUl($this->levels[1]['language_toggle']);
+
 		# Only include the toggle button if there are level 2 items
 		if($items = Dropdown::generateRootUl($this->levels[1]['items'])){
 			$toggle = $this->toggleButtonHtml();
@@ -58,6 +60,7 @@ class Horizontal {
 		return <<<EOF
 <div id="navbar-level1" style="justify-content: flex-end;">
 	{$brand}
+	{$language_toggle}
 	{$items}
 	{$toggle}
 </div>
@@ -66,10 +69,13 @@ EOF;
 
 	private function toggleButtonHtml(): string
 	{
+		if($this->levels[1]['title']['svg'] == "/img/kycdd_logo_v4_white.svg"){
+			$style = " style=\"color: white;\"";
+		}
 		return <<<EOF
 		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-level2"
 				aria-controls="navbar-level2" aria-expanded="false" aria-label="Toggle navigation">
-			<i class="fa-light fa-bars fa-fw" aria-hidden="true"></i>
+			<i class="fa-light fa-bars fa-fw" aria-hidden="true"{$style}></i>
 		</button>
 EOF;
 

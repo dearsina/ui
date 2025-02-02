@@ -5,6 +5,8 @@ namespace App\UI;
 
 use App\Common\href;
 use App\Common\str;
+use App\Language\Language;
+use App\Translation\Translator;
 use App\UI\Form\Form;
 
 /**
@@ -240,19 +242,11 @@ class Button {
 	 * name, rel_table, rel_id in an array, instead of writing out the whole button each time.
 	 *
 	 * @param string|array $a
-	 * @param bool         $rel_table
-	 * @param bool         $rel_id
-	 *
-	 * @param bool         $callback
 	 *
 	 * @return bool|array
 	 */
-	static function getArray($a, $rel_table = false, $rel_id = false, $callback = false)
+	static function getArray($a)
 	{
-		if(str::isNumericArray($a)){
-			return self::getArray($a[0], $a[1], $a[2], $a[3]);
-		}
-
 		if(!is_array($a)){
 			//if the only thing passed is the name of a generic button
 			if(!$a = Button::COMMON[$a]){
@@ -260,6 +254,13 @@ class Button {
 				return false;
 			}
 		}
+
+		# If the common name is passed as an array key
+		if(key_exists("common", $a)){
+			$a = array_merge($a, Button::COMMON[$a['common']]);
+			unset($a['common']);
+		}
+		// This happens if the language ID needs to be passed to the common key
 
 		return $a;
 	}
@@ -456,6 +457,30 @@ class Button {
 		return str::getAttrArray($class, ["btn", "btn{$outline}-{$colour}"], $only_class);
 	}
 
+	private static function translate(array &$a): void
+	{
+		if(!class_exists("\\App\\Language\\Language")){
+			return;
+		}
+
+		if(key_exists("approve", $a)){
+			if(!is_array($a['approve'])){
+				$a['approve'] = [];
+			}
+			$a['approve']['rtl'] = Language::getDirection($a['language_id']) == "rtl";
+			$a['approve']['yes'] = "Yes";
+			$a['approve']['no'] = "Cancel";
+			$a['approve']['class'] = Language::getDirectionClass($a['language_id']);
+		}
+
+		if(!Translator::set($a, $a['subscription_id'], "button", $a, $a['language_id'], NULL, $a['parent_rel_id'])){
+			return;
+		}
+
+		# Set the direction class
+		Language::setDirectionClass($a['class'], $a['language_id']);
+	}
+
 	/**
 	 * Generates a button based on an array of settings
 	 * <code>
@@ -499,6 +524,9 @@ class Button {
 		if(!$a['id']){
 			$a['id'] = str::id("button");
 		}
+
+		# Translate the button
+		self::translate($a);
 
 		# Add a tooltip to the button
 		Tooltip::generate($a);
@@ -676,13 +704,26 @@ class Button {
 			$span_post = "</span>";
 		}
 
+		# If the desktop-only flag is set
+		if($desktop_only){
+			$class_array[] = "btn-text-desktop-only";
+			// With this set, the button will only be visible on desktop
+		}
+
 		$class_tag = str::getAttrTag("class", $class_array);
 		$style_tag = str::getAttrTag("style", $style_array);
 		$id_tag = str::getAttrTag("id", $id);
 		$type_tag = str::getAttrTag("type", $type);
 		$data_style_tag = str::getAttrTag("data-style", "slide-left");
 
-		$title = strlen($title) ? "<span class=\"btn-text\">{$title}</span>" : $title;
+		# A desktop title means that the *title* will only be visible on desktop
+		if($desktop_title){
+			$title = "<span class=\"btn-desktop-only\">$desktop_title</span>";
+		}
+		else {
+			$title = strlen($title) ? "<span class=\"btn-text\">{$title}</span>" : $title;
+		}
+
 
 		$button_html = /** @lang HTML */
 			<<<EOF

@@ -40,6 +40,11 @@ class Dropdown {
 		}
 
 		foreach($items as $item){
+			# Failsafe
+			if(!is_array($item)){
+				continue;
+			}
+
 			# If the line item has html instead of children
 			if($item['html']){
 				$class_array = str::getAttrArray(self::getDirectionClass($item, $level), $default_class);

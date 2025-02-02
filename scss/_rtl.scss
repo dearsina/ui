@@ -1,0 +1,144 @@
+/**
+ * For text written in right-to-left languages
+ */
+.text-rtl {
+  direction: rtl;
+}
+
+.text-ltr {
+  direction: ltr;
+}
+
+/**
+ * Undo RLT errors in Bootstrap
+ */
+.text-rtl .list-group {
+  padding-inline-start: 0;
+}
+.text-rtl .list-group > * > i.fa-fw:first-of-type,
+.text-rtl .list-group > * > i.flag-icon:first-of-type
+{
+  margin-left: 0.75rem;
+  margin-right: 0;
+}
+.text-rtl .btn-group
+{
+  flex-direction: row-reverse;
+}
+
+.text-rtl .form-check
+{
+  display: flex;
+}
+
+.text-rtl .form-check .form-check-input
+{
+  float: unset;
+  margin-left: 1rem;
+}
+
+/**
+ * Flag icon spacing
+ */
+.text-rtl i.flag-icon
+{
+  margin-right: unset;
+  margin-left: 0.5rem;
+}
+
+/**
+ * Mirroring icons
+ */
+.text-rtl i.fa-light
+{
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+}
+/**
+ * MIrroroing icon exceptions
+ */
+i.fa-check
+{
+    -webkit-transform: unset !important;;
+    transform: unset !important;
+}
+
+/**
+ * Ladda struggles with RTL
+ */
+.ladda-spinner
+{
+  direction: ltr !important;
+}
+
+/**
+ * Modal and card header letter spacing
+ */
+.text-rtl.script-arabic .modal-title,
+.text-rtl.script-arabic .card-title
+{
+  letter-spacing: 0.5px;
+}
+
+/**
+ * Filenames
+ */
+.text-rtl code
+{
+  direction: ltr;
+  display: inline-flex;
+}
+
+/**
+ * Switch the margins around
+ */
+.text-rtl.modal-header .modal-title i:first-of-type
+{
+  margin-right: 0;
+  margin-left: 0.5rem;
+}
+
+/**
+ * Modal close button
+ */
+.text-rtl.modal-header .btn-close
+{
+  float: left;
+}
+
+
+/**
+ * Fonts
+ */
+
+
+/**
+ * The default font for right-to-left languages
+ */
+.text-rtl
+{
+  direction: rtl;
+  font-family: "Rubik", sans-serif;
+}
+.text-rtl .list-group-item-title
+{
+  font-weight: 500;
+}
+.script-arabic .card-header .card-title
+{
+  letter-spacing: unset;
+}
+
+.script-arabic
+{
+  font-family: "Rubik", sans-serif;
+}
+
+/**
+ * Cyrillic script
+ */
+.script-cyrillic
+{
+  font-family: "Rubik", sans-serif;
+  font-weight: 300;
+}

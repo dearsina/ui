@@ -185,27 +185,39 @@ EOF;
 	/**
 	 * A more complete way of building out a progress bar.
 	 *
-	 * @param string            $id
+	 * @param string|null       $id
 	 * @param int|null          $total_count
 	 * @param int|null          $completed_count
 	 * @param int|null          $start_unix_time
 	 * @param array|null        $kill The hash to call to kill the process.
 	 * @param string|array|null $pre
-	 *
 	 * @param string|array|null $post
+	 * @param float|null        $seconds
 	 * @param array|null        $a
 	 *
 	 * @return string
 	 * @throws \Exception
 	 */
-	static function build(string $id, ?int $total_count = NULL, ?int $completed_count = 0, ?int $start_unix_time = NULL, ?array $kill = NULL, $pre = NULL, $post = NULL, ?array $a = NULL): string
+	static function build(?string $id, ?int $total_count = NULL, ?int $completed_count = 0, ?int $start_unix_time = NULL, ?array $kill = NULL, $pre = NULL, $post = NULL, ?float $seconds = NULL, ?array $a = NULL): string
 	{
 		if(is_array($a)){
 			extract($a);
 		}
 
+		$id = $id ?: str::id("progress_bar");
+
 		$style_array = str::getAttrArray($style, NULL, $only_style);
 		$class_array = str::getAttrArray($class, ["progress-bar bg-primary progress-bar-striped progress-bar-animated"], $only_class);
+
+		if($seconds){
+			$script .= /** @lang JavaScript */<<<EOF
+setTimeout(function(){
+	$("#{$id} .progress-bar").css({"width":"100%"});
+}, 500);
+EOF;
+			$style_array["width"] = "0%";
+			$style_array["transition-duration"] = "{$seconds}s";
+		}
 
 		$style = str::getAttrTag("style", $style_array);
 		$class = str::getAttrTag("class", $class_array);

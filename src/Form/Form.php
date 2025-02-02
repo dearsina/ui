@@ -7,6 +7,8 @@ namespace App\UI\Form;
 use App\Common\Hash;
 use App\Common\Log;
 use App\Common\str;
+use App\Language\Language;
+use App\Translation\Translator;
 use App\UI\Button;
 use App\UI\Grid;
 
@@ -65,6 +67,13 @@ class Form {
 	private $modal;
 	private $data;
 
+	/**
+	 * If set, will translate every form and button to that language.
+	 *
+	 * @var mixed
+	 */
+	private ?string $language_id = NULL;
+
 
 	/**
 	 * Form constructor.
@@ -96,6 +105,7 @@ class Form {
 		// Every form must have an ID
 
 		# Meta fields
+		$this->language_id = $language_id;
 		$this->action = $action;
 		$this->rel_table = $rel_table;
 		$this->rel_id = $rel_id;
@@ -421,6 +431,11 @@ class Form {
 			]];
 		}
 
+		# Translate each field (if a language ID is provided)
+		foreach($this->fields as &$field){
+			Translator::set($field, NULL, "form_field", $field, $this->language_id);
+		}
+
 		return $grid->getHTML($this->fields);
 	}
 
@@ -473,6 +488,40 @@ EOF;
 	}
 
 	/**
+	 * Given buttons and a language ID, will set the language
+	 * ID for each button.
+	 *
+	 * @param array|null  $buttons
+	 * @param string|null $language_id
+	 *
+	 * @return void
+	 */
+	public static function setButtonLanguageId(?array &$buttons, ?string $language_id): void
+	{
+		if(!$language_id){
+			return;
+		}
+
+		if(!$buttons){
+			return;
+		}
+
+		foreach($buttons as &$button){
+			if(!$button){
+				continue;
+			}
+
+			if(is_string($button)){
+				$button = [
+					"common" => $button,
+				];
+			}
+
+			$button['language_id'] = $language_id;
+		}
+	}
+
+	/**
 	 * A bit hacky, but works for now.
 	 *
 	 * @return bool|string
@@ -484,6 +533,9 @@ EOF;
 		if(!$this->buttons){
 			return false;
 		}
+
+		# Add the language ID to each button
+		self::setButtonLanguageId($this->buttons, $this->language_id);
 
 		if($this->modal || $this->card){
 			$this->prepareButtonsForModals($this->buttons);
@@ -538,7 +590,9 @@ EOF;
 	public function getModalBodyHTML(): string
 	{
 		$id = str::getAttrTag("id", $this->id);
-		$class = str::getAttrTag("class", $this->class);
+		$class_array = str::getAttrArray($this->class, ["modal-body"]);
+		$class_array[] = Language::getDirectionClass($this->language_id);
+		$class = str::getAttrTag("class", $class_array);
 		$style = str::getAttrTag("style", $this->style);
 		$data = str::getDataAttr($this->data);
 
@@ -562,7 +616,9 @@ EOF;
 	public function getHTML()
 	{
 		$id = str::getAttrTag("id", $this->id);
-		$class = str::getAttrTag("class", $this->class);
+		$class_array = str::getAttrArray($this->class);
+		$class_array[] = Language::getDirectionClass($this->language_id);
+		$class = str::getAttrTag("class", $class_array);
 		$style = str::getAttrTag("style", $this->style);
 		$data = str::getDataAttr($this->data);
 

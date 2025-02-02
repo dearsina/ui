@@ -21,7 +21,7 @@ class Country extends Field implements FieldInterface {
 	{
 		$a = array_merge($a, [
 			"type" => "select",
-			"options" => \App\Common\Country\Country::getAllCountries(),
+			"options" => \App\Common\Country\Country::getAllCountries(true, $a['language_id']),
 			"autocomplete" => "country",
 		]);
 

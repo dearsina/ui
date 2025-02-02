@@ -214,6 +214,14 @@ label > i.fa-fw:first-of-type
   background: var(--bs-secondary-bg);
 }
 
+/**
+ * Ensure flags have breathing room
+ */
+.select2-results__option i.flag-icon,
+select2-selection__rendered i.flag-icon
+{
+  margin-right: 0.5rem;
+}
 
 /**
  * For when form fields are to have
@@ -434,12 +442,12 @@ textarea.monospace
 
 .dropzone button.dz-button:after
 {
-  content       : "Alternatively, click browse to select a file.";
-  font-weight   : 200;
-  display       : block;
-  font-size     : smaller;
-  margin-top    : 0.5rem;
-  margin-bottom : 0.5rem;
+  //content       : "Alternatively, click browse to select a file.";
+  //font-weight   : 200;
+  //display       : block;
+  //font-size     : smaller;
+  //margin-top    : 0.5rem;
+  //margin-bottom : 0.5rem;
 }
 
 // HOVER

@@ -5,9 +5,10 @@ namespace App\UI\Modal;
 
 use App\Common\Resizable\Resizable;
 use App\Common\str;
+use App\Language\Language;
+use App\Translation\Translator;
 use App\UI\Badge;
 use App\UI\Button;
-use App\UI\Dropdown;
 use App\UI\Grid;
 use App\UI\Icon;
 use App\UI\ListGroup;
@@ -29,7 +30,7 @@ class Modal extends \App\Common\Prototype {
 	 * If set to false, will prevent the modal from being auto-resized on start.
 	 * @var bool|null
 	 */
-	protected ?bool $resize = null;
+	protected ?bool $resize = NULL;
 
 	protected $resizable;
 	protected $resizeable;
@@ -50,6 +51,7 @@ class Modal extends \App\Common\Prototype {
 	protected $accent;
 	protected $buttons;
 	protected ?string $script = NULL;
+	protected ?string $language_id = NULL;
 
 	/**
 	 * Create a modal
@@ -205,6 +207,14 @@ class Modal extends \App\Common\Prototype {
 			return false;
 		}
 
+		if($this->language_id){
+			Translator::set($this->elements['header'], NULL, "text", $this->elements['header'], $this->language_id);
+			if(!is_array($this->elements['header']['class'])){
+				$this->elements['header']['class'] = [$this->elements['header']['class']];
+			}
+			$this->elements['header']['class'][] = Language::getDirectionClass($this->language_id);
+		}
+
 		# Header buttons can also be defined outside of the header key when defining modal vales.
 		$this->elements['header']['buttons'] = array_merge($this->elements['header']['buttons'] ?: [], $this->buttons ?: []);
 
@@ -308,6 +318,12 @@ EOF;
 		# Styles
 		$this->elements['footer']['style'] = str::getAttrArray($this->elements['footer']['style'], NULL, $this->elements['footer']['only_style']);
 
+		# Row class and styles
+		$this->elements['footer']['row_class'] = str::getAttrArray($this->elements['footer']['row_class'], "row", $this->elements['footer']['only_row_class']);
+		$this->elements['footer']['row_style'] = str::getAttrArray($this->elements['footer']['row_style'], NULL, $this->elements['footer']['only_row_style']);
+		$row_class = str::getAttrTag("class", $this->elements['footer']['row_class']);
+		$row_style = str::getAttrTag("style", $this->elements['footer']['row_style']);
+
 		# Dropdown buttons
 		if($this->elements['footer']['buttons']){
 			$buttons = Button::get($this->elements['footer']);
@@ -361,7 +377,7 @@ EOF;
 		return <<<EOF
 <div{$id}{$class}{$style}>
 	<div class="container">
-  		<div class="row">
+  		<div{$row_class}{$row_style}>
     		{$left}
     		{$right}    		
     	</div>
@@ -487,8 +503,14 @@ EOF;
 			$this->elements['body']['html'] = Grid::generate($this->elements['body']['html']);
 		}
 
+		$class_array = str::getAttrArray($this->elements['body']['class'], "modal-body", $this->elements['body']['only_class']);
+
+		if($this->language_id){
+			$class_array[] = Language::getDirectionClass($this->language_id);
+		}
+
 		$id = str::getAttrTag("id", $this->elements['body']['id']);
-		$class = str::getAttrTag("class", ["modal-body", $this->elements['body']['class']]);
+		$class = str::getAttrTag("class", $class_array);
 		$style = str::getAttrTag("style", $this->elements['body']['style']);
 		$progress = Progress::generate($this->elements['body']['progress']);
 		$script = str::getScriptTag($this->elements['body']['script']);
@@ -546,8 +568,8 @@ EOF;
 		$html = Grid::generate([[
 			"tabs" => [
 				"tabs" => $this->elements['tabs'],
-				"class" => $this->draggable ? "modal-header-draggable" : NULL
-			]
+				"class" => $this->draggable ? "modal-header-draggable" : NULL,
+			],
 		]]);
 
 		$class = str::getAttrTag("class", ["modal-tabs"]);
@@ -698,7 +720,7 @@ EOF;
 		# If there are logged dimensions for this modal for this user, use them
 		Resizable::setDimensions($this->data, $this->id);
 
-		return array_merge($this->data ?:[], [
+		return array_merge($this->data ?: [], [
 			"settings" => $modal,
 			"draggable" => $this->getDraggableSettings(),
 			"resizable" => $this->getResizableSettings(),

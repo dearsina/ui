@@ -16,11 +16,12 @@ class Page {
 	private $subtitle;
 	private $script;
 	private $button;
+	private $row_class;
 
 	/**
 	 * @return mixed
 	 */
-	public function getButtonHTML ()
+	public function getButtonHTML()
 	{
 		return Button::generate($this->button);
 	}
@@ -28,13 +29,14 @@ class Page {
 	/**
 	 * @param mixed $button
 	 */
-	public function setButton ($button): void
+	public function setButton($button): void
 	{
 		if(str::isNumericArray($button)){
 			foreach($button as $b){
 				$this->button[] = $b;
 			}
-		} else {
+		}
+		else {
 			$this->button[] = $button;
 		}
 	}
@@ -49,49 +51,58 @@ class Page {
 	 *
 	 * <code>
 	 * $page = new Page([
-	 * 	"title" => "Stripe",
-	 * 	"subtitle" => "Subtitle",
-	 * 	"icon" => "icon",
+	 *    "title" => "Stripe",
+	 *    "subtitle" => "Subtitle",
+	 *    "icon" => "icon",
 	 * ]);
 	 * </code>
 	 *
 	 * @param null $a
 	 */
-	public function __construct ($a = NULL) {
+	public function __construct($a = NULL)
+	{
 		if(is_array($a)){
 			foreach($a as $key => $val){
-				$method = "set".ucwords($key);
-				if (method_exists($this, $method)) {
+				$method = "set" . ucwords($key);
+				if(method_exists($this, $method)){
 					//if a custom setter method exists, use it
 					$this->$method($val);
-				} else {
+				}
+				else {
 					$this->$key = $val;
 				}
 			}
 		}
 
-
 		$this->grid = new Grid();
 	}
 
 	/**
-	 * @param $title
+	 * @param mixed $title
 	 *
-	 * @return bool
+	 * @return void
 	 */
-	function setTitle($title){
+	function setTitle($title): void
+	{
+		# If the title is by design set to false, strip out any existing title key values
 		if($title === false){
 			$this->title = [];
-			return true;
+			return;
 		}
-		if(!$title){
-			return false;
+
+		# If no title is set, we're done
+		if($title === NULL){
+			return;
 		}
+
+		# If title is an array, add it wholesale
 		if(is_array($title)){
-			$this->title = array_merge($this->title?:[],$title);
+			$this->title = $title;
+			return;
 		}
+
+		# Otherwise, assume the passed title is the html string itself
 		$this->title["html"] = $title;
-		return true;
 	}
 
 	function setSm($sm): void
@@ -113,7 +124,8 @@ class Page {
 	 *
 	 * @return bool
 	 */
-	function setSubtitle($subtitle){
+	function setSubtitle($subtitle)
+	{
 		if($subtitle === false){
 			$this->subtitle = [];
 			return true;
@@ -122,7 +134,7 @@ class Page {
 			return false;
 		}
 		if(is_array($subtitle)){
-			$this->subtitle = array_merge($this->subtitle?:[],$subtitle);
+			$this->subtitle = array_merge($this->subtitle ?: [], $subtitle);
 		}
 		$this->subtitle["html"] = $subtitle;
 		return true;
@@ -133,7 +145,8 @@ class Page {
 	 *
 	 * @return bool
 	 */
-	function setIcon($icon){
+	function setIcon($icon)
+	{
 		if($icon === false){
 			$this->title['icon'] = [];
 			return true;
@@ -143,7 +156,7 @@ class Page {
 		}
 		if(is_string($icon)){
 			$icon = [
-				"name" => $icon
+				"name" => $icon,
 			];
 		}
 		$this->title['icon'] = $icon;
@@ -158,7 +171,8 @@ class Page {
 	 *
 	 * @return bool
 	 */
-	function setSvg($svg){
+	function setSvg($svg)
+	{
 		if($svg === false){
 			$this->title['svg'] = [];
 			return true;
@@ -177,7 +191,8 @@ class Page {
 	 * @throws \Exception
 	 * @throws \Exception
 	 */
-	private function getTitleHTML(){
+	private function getTitleHTML()
+	{
 		if(!$this->title){
 			//Titles are optional
 			return false;
@@ -185,13 +200,13 @@ class Page {
 
 		# ID
 		$id = str::getAttrTag("id", $this->title['id']);
-		
+
 		# Icon
 		$icon = Icon::generate($this->title['icon']);
 
 		# SVG
 		$svg = SVG::generate($this->title['svg'], [
-			"height" => "23px"
+			"height" => "23px",
 		]);
 
 		# Colour
@@ -217,7 +232,8 @@ class Page {
 	 * @throws \Exception
 	 * @throws \Exception
 	 */
-	private function getSubtitleHTML(){
+	private function getSubtitleHTML()
+	{
 		if(!$this->subtitle){
 			//subtitles are optional
 			return false;
@@ -231,7 +247,7 @@ class Page {
 
 		# SVG
 		$svg = SVG::generate($this->subtitle['svg'], [
-			"height" => "23px"
+			"height" => "23px",
 		]);
 
 		# Colour
@@ -266,7 +282,8 @@ class Page {
 	 *
 	 * @return mixed
 	 */
-	private function getScriptHTML () {
+	private function getScriptHTML()
+	{
 		return str::getScriptTag($this->script);
 	}
 
@@ -278,9 +295,9 @@ class Page {
 	 *
 	 * <code>
 	 * $page->setGrid([
-	 * 	"sm" => "",
-	 * 	"id" => "",
-	 * 	"html" => ""
+	 *    "sm" => "",
+	 *    "id" => "",
+	 *    "html" => ""
 	 * ]);
 	 * </code>
 	 *
@@ -288,31 +305,53 @@ class Page {
 	 *
 	 * @return bool
 	 */
-	public function setGrid($a){
+	public function setGrid($a)
+	{
+		# Add a row class to the grid
+		if($this->row_class && is_array($a)){
+			// But only if a row class is supplied, and $a is an array
+
+			if(str::isNumericArray($a)){
+				$a = [
+					"row_class" => $this->row_class,
+					"html" => $a,
+				];
+			}
+
+			else {
+				$a['row_class'] = is_array($a['row_class'])? $a['row_class'] : [$a['row_class']];
+				$a['row_class'][] = $this->row_class;
+			}
+		}
+
 		return $this->grid->set($a);
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getHTML(){
+	public function getHTML()
+	{
 
 		$html .= $this->getScriptHTML();
 
 		if($this->sm){
-			$html .= Grid::generate([[[
-				"sm" => $this->sm,
-				"html" => "&nbsp;"
-			],[
-				"html" => $this->getTitleHTML().$this->getSubtitleHTML()
-			]]]);
+			$html .= Grid::generate([[
+				"row_class" => $this->row_class,
+				"html" => [[
+					"sm" => $this->sm,
+					"html" => "&nbsp;",
+				], [
+					"html" => $this->getTitleHTML() . $this->getSubtitleHTML(),
+				]]
+			]]);
 		}
 
 		else {
-			$html .= $this->getTitleHTML().$this->getSubtitleHTML();
+			$html .= $this->getTitleHTML() . $this->getSubtitleHTML();
 		}
 
-		$html .= $this->getButtonHTML().$this->getHeadsUpHTML().$this->grid->getHTML();
+		$html .= $this->getButtonHTML() . $this->getHeadsUpHTML() . $this->grid->getHTML();
 
 		return $html;
 	}

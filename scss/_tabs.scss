@@ -299,7 +299,7 @@ $sideways-tabs-height   : 1rem;
   //padding-right : 0.5rem;
 
   // A better way to avoid issues when the text is right aligned
-  display: inline-block;
+  display: inline-flex;
   width: 20px;
   text-align: left;
   overflow: hidden;

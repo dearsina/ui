@@ -1,0 +1,9 @@
+/**
+ * Flag icon spacing
+ */
+
+*:not(.text-rtl) i.flag-icon
+{
+  margin-right: 0.5rem;
+  margin-left: unset;
+}

@@ -77,10 +77,6 @@ class SelectOption {
 			];
 		}
 
-		if(!$option['icon']['style']){
-			$option['icon']['style'] = "margin-right: 5px;";
-		}
-
 		return Icon::generate($option['icon']);
 	}
 }

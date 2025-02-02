@@ -5,6 +5,7 @@ namespace App\UI\Card;
 
 use App\Common\Img;
 use App\Common\str;
+use App\Common\Language\Language;
 use App\UI\Badge;
 use App\UI\Button;
 use App\UI\Grid;
@@ -39,6 +40,7 @@ class Card extends \App\Common\Prototype {
 	public $style;
 	public $data;
 	public ?array $attr = NULL;
+	public ?string $language_id = NULL;
 
 	/**
 	 * Create a card
@@ -351,6 +353,11 @@ class Card extends \App\Common\Prototype {
 		# Draggable
 		$this->cardHeader['class'][] = $this->draggable ? "card-header-draggable" : false;
 
+		# Language direction
+		if($this->language_id){
+			$this->cardHeader['class'][] = Language::getDirectionClass($this->language_id);
+		}
+
 		# Styles
 		$this->cardHeader['style'] = str::getAttrArray($this->cardHeader['style'], NULL, $this->cardHeader['only_style']);
 
@@ -428,6 +435,11 @@ EOF;
 
 		# Add the required Bootstrap footer class very first
 		$this->cardFooter['class'] = str::getAttrArray($this->cardFooter['class'], "card-footer", $this->cardFooter['only_class']);
+
+		# Language direction
+		if($this->language_id){
+			$this->cardFooter['class'][] = Language::getDirectionClass($this->language_id);
+		}
 
 		# Styles
 		$this->cardFooter['style'] = str::getAttrArray($this->cardFooter['style'], NULL, $this->cardFooter['only_style']);
@@ -600,6 +612,12 @@ EOF;
 
 		$id = str::getAttrTag("id", $this->cardBody['id']);
 		$class_array = str::getAttrArray($this->cardBody['class'], "card-body", $this->cardBody['only_class']);
+
+		# Language direction
+		if($this->language_id){
+			$class_array[] = Language::getDirectionClass($this->language_id);
+		}
+
 		$class = str::getAttrTag("class", $class_array);
 		$style = str::getAttrTag("style", $this->cardBody['style']);
 		$progress = Progress::generate($this->cardBody['progress']);

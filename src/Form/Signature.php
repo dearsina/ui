@@ -30,11 +30,13 @@ class Signature extends Field implements FieldInterface {
 			$html = self::generateHiddenField($a);
 		}
 
+		$row_class = str::getAttrArray($row_class, "col-signature", $only_row_class);
+
 		return Grid::generate([[
 			# Enable any dependencies
 			"row_data" => $a['data'],
 
-			"row_class" => "col-signature",
+			"row_class" => $row_class,
 			// The class is a way of identifying the _entire_ signature block, ex. for dependencies
 			"html" => [[[
 				"title" => [
@@ -128,7 +130,7 @@ class Signature extends Field implements FieldInterface {
 		$a['label'] = false;
 		$a['desc'] = false;
 
-		if($a['validation']['required'] || $a['form_group_form_field']['required']){
+		if($a['validation']['required'] || $a['form_group_form_field']['settings']['required']){
 			/**
 			 * As this method is primarily called from outside the class,
 			 * we need to check for the required flag from the form group
@@ -189,6 +191,8 @@ class Signature extends Field implements FieldInterface {
 		}
 
 		return Button::generate([
+			"language_id" => $language_id,
+			"parent_rel_id" => $parent_rel_id,
 			"icon" => ClientSignature::getIcon($aes),
 			"alt" => $alt,
 			"title" => "Click here to sign",

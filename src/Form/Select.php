@@ -29,8 +29,7 @@ class Select extends Field implements FieldInterface {
 		$multiple = str::getAttrTag("multiple", $multiple ? "multiple" : false);
 
 		# Parent class
-		$parent_class_array = str::getAttrArray($parent_class, ["input-group mb-3", $disabled_parent_class],
-			$only_parent_class);
+		$parent_class_array = str::getAttrArray($parent_class, ["input-group mb-3", $disabled_parent_class], $only_parent_class);
 		$parent_class = str::getAttrTag("class", $parent_class_array);
 
 		# Parent style
@@ -186,6 +185,14 @@ EOF;
 		$settings['placeholder'] = self::getPlaceholder($placeholder);
 		$settings['ajax'] = $ajax;
 		$settings['value'] = $value;
+
+		if(array_filter($parent_class ?:[], function($class){
+			return strpos($class, "text-rtl") !== false;
+		})){
+			$settings['containerCssClass'] .= " text-rtl";
+			$settings['dropdownCssClass'] = "text-rtl";
+			$settings['dir'] = "rtl";
+		}
 
 		# Settings "tags" to true (or a string),
 		# enables the user to enter their own value

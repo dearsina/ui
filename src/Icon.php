@@ -221,7 +221,6 @@ class Icon {
 		if(!$a){
 			return NULL;
 		}
-
 		if(!is_array($a)){
 			//if the only thing passed is the name of the icon
 			$icon_array['name'] = $a;
