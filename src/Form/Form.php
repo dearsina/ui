@@ -431,6 +431,11 @@ class Form {
 			]];
 		}
 
+		# Remove blanks
+		if(!$this->fields = array_filter($this->fields)){
+			return NULL;
+		}
+
 		# Translate each field (if a language ID is provided)
 		foreach($this->fields as &$field){
 			Translator::set($field, NULL, "form_field", $field, $this->language_id);
