@@ -432,7 +432,7 @@ class Form {
 		}
 
 		# Remove blanks
-		if(!$this->fields = array_filter($this->fields)){
+		if(!$this->fields = array_filter($this->fields ?:[])){
 			return NULL;
 		}
 
