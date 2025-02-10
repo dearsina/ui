@@ -59,7 +59,7 @@ class Tel extends Field implements FieldInterface {
 		$a['data'] = [
 			"value_field_id" => $value_field_id,
 			"settings" => [
-				"initialCountry" => $geolocation['country_code'],
+				"initialCountry" => $a['data']['initial_country_code'] ?: $geolocation['country_code'],
 				"preferredCountries" => [
 					$geolocation['country_code']
 				]
