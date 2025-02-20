@@ -7,3 +7,9 @@
   margin-right: 0.5rem;
   margin-left: unset;
 }
+
+// Badges don't have margins for flags by default
+.badge > i.flag-icon
+{
+  margin: unset;
+}
