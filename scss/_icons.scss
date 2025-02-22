@@ -8,6 +8,11 @@
   margin-left: unset;
 }
 
+.select2-container:not(.text-rtl) i.fa-light
+{
+  margin-right: 0.5rem;
+}
+
 // Badges don't have margins for flags by default
 .badge > i.flag-icon
 {
