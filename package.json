@@ -4,7 +4,9 @@
   "version": "0.1.0",
   "type": "module",
   "dependencies": {
-    "@googleworkspace/drive-picker-element": "^0.4.1"
+    "@googleworkspace/drive-picker-element": "^0.4.1",
+    "@rollup/plugin-commonjs": "^28.0.2",
+    "@rollup/plugin-node-resolve": "^16.0.0"
   },
   "main": "js/dist/kycdd-ui.js",
   "devDependencies": {

@@ -130,7 +130,7 @@
 /**
  * The (optional) modal close button must
  * be placed all the way to the right.
- * Paddding and margins must be reset.
+ * Padding and margins must be reset.
  */
 .modal-header .btn-close
 {
@@ -239,4 +239,14 @@
   {
     min-height : 90vh;
   }
+}
+
+iframe.picker.shr-bb-shr-cb-shr-cc.picker-dialog-bg, div.picker.shr-bb-shr-cb.picker-dialog, div.picker.shr-bb-shr-cb-shr-cc.picker-dialog-bg
+{
+  position: inherit !important;
+  z-index: 1050 !important;
+}
+
+iframe.picker.shr-bb-shr-cb-shr-cc.picker-dialog-bg, div.picker.shr-bb-shr-cb-shr-cc.picker-dialog-bg {
+  display: none !important;
 }
