@@ -112,6 +112,18 @@ EOF;
 			return false;
 		}
 
+		# Cater for values that are arrays
+		if(is_array($value)){
+			if(count($value) == 1){
+				// If there's only one array value, treat it as a string
+				$value = reset($value);
+			}
+			else {
+				// Ensure all values are in the options array, otherwise, it's an "other" value
+				return !array_diff($value, array_column($options_array, "value"));
+			}
+		}
+
 		# Get the selected value if it's an "other" value
 		if(strlen($value) && !in_array($value, array_column($options_array, "value"))){
 			//if the selected value is not from one of the dropdown options, it must be the "other" value
