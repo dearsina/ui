@@ -205,11 +205,18 @@ class ListGroup {
 		$icon = Icon::generate($item['icon']);
 
 		# Badge
-		$badge = Badge::generate($item['badge'], [
+		if($badge = Badge::generate($item['badge'], [
 			"style" => [
 				"margin-left" => ".5rem",
 			],
-		]);
+		])){
+			if(is_array($item['style'])){
+				if($item['style']['display'] == "flex"){
+					$badge = "<div>{$badge}</div>";
+					// A bit of a hack for counter display-flex
+				}
+			}
+		}
 
 		# Left badge (badge on the LEFT side of the item)
 		if(is_array($item['left_badge'])){
