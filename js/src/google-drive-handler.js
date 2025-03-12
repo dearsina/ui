@@ -12,34 +12,23 @@ customElements.define(
 const rootElement = document.getElementById('kycdd-google-picker-ui');
 const KEY_DATA = JSON.parse(atob(rootElement.getAttribute('data-object')));
 
-function setFolderDetails(event) {
-    console.log(event)
-    window.ajaxCall(KEY_DATA.action,
-        KEY_DATA.rel_table,
-        KEY_DATA.rel_id,
-        {
-            session_id: KEY_DATA.session_id,
-            action:     KEY_DATA.action,
-            subscription_id:     KEY_DATA.subscription_id,
-            workflow_id:     KEY_DATA.workflow_id,
-            folder_id:  event.detail.docs[0].id,
-        }
-    );
-    window.close();
+const staticVars = {
+    session_id:     KEY_DATA.session_id,
+    action:         KEY_DATA.action,
+    subscription_id:KEY_DATA.subscription_id,
+    workflow_id:    KEY_DATA.workflow_id,
+    type:           'cloud',
 }
 
-function setTokenValue(event) {
-    console.log(event)
+function setFolderDetails(event) {
     window.ajaxCall(KEY_DATA.action,
         KEY_DATA.rel_table,
         KEY_DATA.rel_id,
         {
-            session_id: KEY_DATA.session_id,
-            action:     KEY_DATA.action,
-            subscription_id:     KEY_DATA.subscription_id,
-            workflow_id:     KEY_DATA.workflow_id,
-            token:      event.detail.token,
-        }
+            ...staticVars,
+            folder_id: event.detail.docs[0].id,
+        },
+        window.close
     );
 }
 
@@ -66,11 +55,7 @@ function initiateGoogleDriveModal() {
         </custom-drive-picker>`;
 
         const pickerElement = document.querySelector("custom-drive-picker");
-        pickerElement.addEventListener("picker:authenticated", setTokenValue);
         pickerElement.addEventListener("picker:picked", setFolderDetails);
-        pickerElement.addEventListener("picker:canceled", console.log);
-        pickerElement.addEventListener("picker:oauth:response", console.log);
-        pickerElement.addEventListener("picker:oauth:error", console.log);
     }
 }
 
