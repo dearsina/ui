@@ -1,5 +1,4 @@
 // noinspection CssInvalidHtmlTagReference
-
 import {
     DrivePickerElement,
     DrivePickerDocsViewElement,
@@ -10,30 +9,37 @@ customElements.define(
     DrivePickerDocsViewElement,
 );
 
+const rootElement = document.getElementById('kycdd-google-picker-ui');
+const KEY_DATA = JSON.parse(atob(rootElement.getAttribute('data-object')));
+
+const staticVars = {
+    session_id:     KEY_DATA.session_id,
+    action:         KEY_DATA.action,
+    subscription_id:KEY_DATA.subscription_id,
+    workflow_id:    KEY_DATA.workflow_id,
+    type:           'cloud',
+}
+
 function setFolderDetails(event) {
-    const folderIdElement = document.querySelector("input[name='folder_id']");
-    const folderNameElement = document.querySelector("input[name='folder_name']");
-    folderIdElement.value = event.detail.docs[0].id;
-    folderNameElement.value = event.detail.docs[0].name;
+    window.ajaxCall(KEY_DATA.action,
+        KEY_DATA.rel_table,
+        KEY_DATA.rel_id,
+        {
+            ...staticVars,
+            folder_id: event.detail.docs[0].id,
+        },
+        window.close
+    );
 }
 
-function setTokenValue(event) {
-    const tokenElement = document.querySelector("input[name='token']");
-    tokenElement.value = event.detail.token;
-}
-
-window.initiateGoogleDriveModal = function(workflow_id) {
+function initiateGoogleDriveModal() {
     if(document.querySelector("custom-drive-picker")) {
         const pickerElement = document.querySelector("custom-drive-picker");
         pickerElement.visible = true;
     } else {
-        const rootElement = document.getElementById('kycdd-google-picker-ui');
-        const clientId = rootElement.getAttribute('data-client-id');
-        const appId = rootElement.getAttribute('data-app-id');
-
         rootElement.innerHTML = `<custom-drive-picker 
-            client-id="${clientId}"
-            app-id="${appId}"
+            client-id="${KEY_DATA.client_id}"
+            app-id="${KEY_DATA.app_id}"
             mine-only="true"
             multiselect="false"
             nav-hidden="true"
@@ -49,8 +55,8 @@ window.initiateGoogleDriveModal = function(workflow_id) {
         </custom-drive-picker>`;
 
         const pickerElement = document.querySelector("custom-drive-picker");
-        pickerElement.addEventListener("picker:authenticated", setTokenValue);
         pickerElement.addEventListener("picker:picked", setFolderDetails);
-        pickerElement.addEventListener("picker:canceled", console.log);
     }
 }
+
+initiateGoogleDriveModal();
