@@ -708,13 +708,6 @@ textarea.monospace
   align-items: center;
 }
 
-.tokenized-workflow
-{
-  margin-right: 5px;
-  min-width: 5vw;
-  max-width: 10vw;
-}
-
 .tokenized-form-group {
   //min-width: 5vw;
   max-width: 15vw;
@@ -728,13 +721,31 @@ textarea.monospace
   text-align: center;
 }
 
-.tokenized-workflow {
+.tokenized-workflow
+{
+  margin-right  : 5px;
+  min-width     : 5vw;
+  max-width     : 10vw;
+  margin-right  : 5px;
+  background    : hsl(203deg 100% 36% / 10%);
+  padding       : 0 2px;
+  border-radius : 4px;
+  overflow      : hidden;
+  text-overflow : ellipsis;
+  font-size     : 10px;
+  text-align    : center;
+  font-weight   : 500;
+}
+
+.workflow-prefix
+{
+  display: inline;
+  padding: 4px 10px 6px 10px;
+  border-radius: 4px;
   min-width: 5vw;
   max-width: 15vw;
   margin-right: 5px;
-  background: hsl(203deg 100% 36% / 10%);
-  padding: 0 2px;
-  border-radius: 4px;
+  background: hsla(203deg, 100%, 36%, 0.1);
   overflow: hidden;
   text-overflow: ellipsis;
   font-size: 10px;
