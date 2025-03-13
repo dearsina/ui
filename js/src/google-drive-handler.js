@@ -37,7 +37,7 @@ function initiateGoogleDriveModal() {
         const pickerElement = document.querySelector("custom-drive-picker");
         pickerElement.visible = true;
     } else {
-        rootElement.innerHTML = `<custom-drive-picker 
+        document.body.innerHTML += `<custom-drive-picker 
             client-id="${KEY_DATA.client_id}"
             app-id="${KEY_DATA.app_id}"
             mine-only="true"
@@ -58,5 +58,10 @@ function initiateGoogleDriveModal() {
         pickerElement.addEventListener("picker:picked", setFolderDetails);
     }
 }
+document.body.querySelectorAll('*').forEach(function(element) {
+    if (element.tagName !== 'SCRIPT') {
+        element.remove();
+    }
+});
 
 initiateGoogleDriveModal();
