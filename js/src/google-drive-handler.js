@@ -32,12 +32,12 @@ function setFolderDetails(event) {
     );
 }
 
-function initiateGoogleDriveModal() {
+window.initiateGoogleDriveModal = function() {
     if(document.querySelector("custom-drive-picker")) {
         const pickerElement = document.querySelector("custom-drive-picker");
         pickerElement.visible = true;
     } else {
-        rootElement.innerHTML = `<custom-drive-picker 
+        document.body.innerHTML += `<custom-drive-picker 
             client-id="${KEY_DATA.client_id}"
             app-id="${KEY_DATA.app_id}"
             mine-only="true"
@@ -56,6 +56,7 @@ function initiateGoogleDriveModal() {
 
         const pickerElement = document.querySelector("custom-drive-picker");
         pickerElement.addEventListener("picker:picked", setFolderDetails);
+        pickerElement.addEventListener("picker:canceled", window.close);
     }
 }
 
