@@ -32,6 +32,10 @@ function setFolderDetails(event) {
     );
 }
 
+function closeOnCancel(event) {
+    window.close();
+}
+
 window.initiateGoogleDriveModal = function() {
     if(document.querySelector("custom-drive-picker")) {
         const pickerElement = document.querySelector("custom-drive-picker");
@@ -56,7 +60,7 @@ window.initiateGoogleDriveModal = function() {
 
         const pickerElement = document.querySelector("custom-drive-picker");
         pickerElement.addEventListener("picker:picked", setFolderDetails);
-        pickerElement.addEventListener("picker:canceled", window.close);
+        pickerElement.addEventListener("picker:canceled", closeOnCancel);
     }
 }
 
