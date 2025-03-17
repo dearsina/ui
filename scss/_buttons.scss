@@ -433,3 +433,20 @@ ul.dropdown-menu-list > li:last-child a:focus{
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* Internet Explorer/Edge */
 }
+
+
+.button-radio.btn-group .btn-outline-success:hover {
+  color: var(--bs-btn-color) !important;
+}
+.btn-group > .btn-check:checked + .btn-outline-success:hover {
+  color:white !important;
+}
+
+.button-radio.btn-group .btn {
+  padding: 10px 25px;
+}
+
+.button-radio.btn-group .btn:hover {
+  padding: 6px 21px;
+  border-width: 5px;
+}

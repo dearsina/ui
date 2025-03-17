@@ -661,4 +661,20 @@ EOF;
 			}
 		}
 	}
+
+	/**
+	 * Given an optional default, a type specific and an overrider class,
+	 * return a class string to feed into a DOM element.
+	 *
+	 * @param string|null       $default
+	 * @param array|string|null $class
+	 * @param array|string|null $only_class
+	 *
+	 * @return string
+	 */
+	public static function getClass(?string $default, $class = NULL, $only_class = NULL): string
+	{
+		$class_array = str::getAttrArray($class, $default, $only_class);
+		return str::getAttrTag("class", $class_array);
+	}
 }
