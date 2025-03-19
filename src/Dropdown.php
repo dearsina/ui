@@ -280,7 +280,10 @@ EOF;
 	 */
 	private static function generateChildTag(array $item): string
 	{
-		$id = str::getAttrTag("id", $item['id'] ?: str::id("button"));
+		$item['id'] = $item['id'] ?: str::id("button");
+		$id = str::getAttrTag("id", $item['id']);
+
+		Button::selectionDependency($item);
 
 		if($item['name'] && $item['value']){
 			//if the button has a value that needs to be collected

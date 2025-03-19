@@ -482,6 +482,56 @@ class Button {
 	}
 
 	/**
+	 * If the button is dependent on radio or checkbox selections,
+	 * this function will add the necessary script to show/hide the button.
+	 *
+	 * @param array $a
+	 *
+	 * @return void
+	 */
+	public static function selectionDependency(array &$a): void
+	{
+		if(!$a['selection_dependency']){
+			return;
+		}
+
+		if(!$a['id']){
+			throw new \Exception("The button must have an ID to be able to show/hide it based on a selection.");
+		}
+
+		# Ensure they're both arrays
+		$a['class'] = is_array($a['class']) ? $a['class'] : [$a['class']];
+		$a['data'] = is_array($a['data']) ? $a['data'] : [];
+
+		# Add the class and data attribute
+		$a['class'][] = "selection-dependency";
+		$a['data']['selection-dependency'] = $a['selection_dependency'];
+
+		# If the button is already relying on onClick, we're done
+		if($a['onClick']){
+			return;
+		}
+
+		# If the button is using hash, convert it to onClick, and remove hash
+		if($a['hash']){
+			$hash_json = json_encode($a['hash']);
+			$a['onClick'] = /** @lang JavaScript */<<<EOF
+			// Use the current hash
+			let hash = {$hash_json}
+			
+			// Add the selection action
+			hash['vars']["{$a['selection_dependency']}"] = $("input[name='{$a['selection_dependency']}[]']:checked").map(function(){
+				return $(this).val();
+			}).get();
+
+			// Run the ajax call
+			ajaxCall(hash);
+EOF;
+			unset($a['hash']);
+		}
+	}
+
+	/**
 	 * Generates a button based on an array of settings
 	 * <code>
 	 * $html .= Button::generate([
@@ -521,9 +571,26 @@ class Button {
 
 		$a = self::getArray($a, $rel_table, $rel_id, $callback);
 
-		if(!$a['id']){
-			$a['id'] = str::id("button");
+		# Ensure the button has an ID
+		$a['id'] = $a['id'] ?: str::id("button");
+
+		# Checkboxes are to be treated a little differently
+		if($a['checkbox']){
+			return self::generateCheckboxes($a);
+			// And must be placed before children, but they can *also* have children
 		}
+
+		# Buttons with children are to be treated a little differently
+		else if($a['children']){
+			return self::generateWithChildren($a);
+		}
+
+		# Buttons with splits are to be treated a little differently
+		else if($a['split']){
+			return self::generateWithSplit($a);
+		}
+
+		self::selectionDependency($a);
 
 		# Translate the button
 		self::translate($a);
@@ -535,22 +602,6 @@ class Button {
 		Copy::generateButton($a);
 
 		extract($a);
-
-		# Checkboxes are to be treated a little differently
-		if($checkbox){
-			return self::generateCheckboxes($a);
-			// And must be placed before children, but they can *also* have children
-		}
-
-		# Buttons with children are to be treated a little differently
-		else if($children){
-			return self::generateWithChildren($a);
-		}
-
-		# Buttons with splits are to be treated a little differently
-		else if($split){
-			return self::generateWithSplit($a);
-		}
 
 		$href = href::generate($a);
 
