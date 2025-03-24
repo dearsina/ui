@@ -51,7 +51,9 @@ class Dropdown {
 				$class = str::getAttrTag("class", $class_array);
 				$parent_div = self::generateParentDiv($item);
 				$content = self::generateMenuContent($item);
-				$html .= "<{$tag}{$class}>{$parent_div}{$content}</{$tag}>";
+				$script = str::getScriptTag($item['script']);
+				$data = str::getDataAttr($item['data']);
+				$html .= "<{$tag}{$class}{$data}>{$parent_div}{$content}</{$tag}>{$script}";
 				continue;
 			}
 
@@ -106,6 +108,9 @@ class Dropdown {
 		# Add a title attribute if one is set
 		$alt = str::getAttrTag("title", $item['alt']);
 
+		# Script
+		$script = str::getScriptTag($item['script']);
+
 		return <<<EOF
 <div{$class}{$style}>
   <button{$button_class}{$alt} type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
@@ -113,6 +118,7 @@ class Dropdown {
   </button>
   {$menu}
 </div>
+{$script}
 EOF;
 	}
 
