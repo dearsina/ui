@@ -5,7 +5,7 @@
 
 .list-group
 {
-  --bs-list-group-border-color: rgba(0, 0, 0, 0.125);
+  --bs-list-group-border-color : rgba(0, 0, 0, 0.125);
   /**
    * We had to put in this fix, beacuse the default Bootstrap 5.3 colour
    * is based on the background colour, which is white, and becomes
@@ -23,11 +23,11 @@
 }
 
 .controller-button .list-group > * > i.fa-fw:first-of-type,
-// Making an exception for the controller lists
+  // Making an exception for the controller lists
 .list-group-item-title > i.fa-fw:first-of-type,
 .list-group-item-title > i.flag-icon:first-of-type
 {
-  margin-right: 0.5rem
+  margin-right : 0.5rem
 }
 
 /**
@@ -99,9 +99,11 @@ a.list-group-item:hover
 
 .list-group-item-title
 {
-  font-weight    : 400;
+  font-weight : 600;
   //margin-bottom: 0.25rem !important;
-  font-size: 110%;
+  //font-size: 110%;
+  display     : flex;
+  align-items : center;
 }
 
 .list-group-item-subtitle
@@ -116,8 +118,9 @@ a.list-group-item:hover
 /**
  * Otherwise it wil stick out over the rounded corners.
  */
-.list-group-flush {
-  border-radius: var(--bs-card-inner-border-radius);
+.list-group-flush
+{
+  border-radius : var(--bs-card-inner-border-radius);
 }
 
 /**
@@ -126,11 +129,11 @@ a.list-group-item:hover
  */
 .list-group-item.active
 {
-  z-index: unset;
+  z-index : unset;
 }
 
 .list-group-item > div > .dropdown-item:hover,
 .list-group-item > div > .dropdown-item:focus,
 {
-  background-color: unset !important;
+  background-color : unset !important;
 }
