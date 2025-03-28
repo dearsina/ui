@@ -2,9 +2,11 @@
 
 namespace App\UI\Form;
 
+use App\ClientSignature\ClientSignature;
 use App\Common\str;
 use App\UI\Form\Field;
 use App\UI\Form\FieldInterface;
+use App\UI\Grid;
 use App\UI\Icon;
 
 class RadioButton extends Field implements FieldInterface {
@@ -26,7 +28,8 @@ class RadioButton extends Field implements FieldInterface {
 		# Set dependency data
 		self::setDependencyData($a);
 
-		$grand_parent_class = self::getClass("mb-3", $grand_parent_class, $only_grand_parent_class);
+		$grand_parent_class = self::getClass("mb-5", $grand_parent_class, $only_grand_parent_class);
+		// 5 instead of 3 to give the buttons a bit more breathing room
 
 		$buttons = self::getButtonGroup($a);
 
@@ -38,8 +41,8 @@ class RadioButton extends Field implements FieldInterface {
 
 		return "
 		<div{$grand_parent_class}{$data}>
-			<div>{$label['title']}</div>
-			<div>{$label['desc']}</div>
+			<div class=\"text-title\" style=\"width:max-content;line-height:unset;\">{$label['title']}</div>
+			<div class=\"text-body\" style=\"margin-top:0;margin-bottom:2rem;\">{$label['desc']}</div>
 			{$buttons}
 		</div>
 		{$script}
