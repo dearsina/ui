@@ -259,6 +259,27 @@ class Icon {
 			return Img::generate($icon_array);
 		}
 
+		if($icon_array['src']){
+			# A custom default style must be applied
+			$default_style_array = [
+				"width" => "1.25em",
+				"margin-right" => "0.25rem",
+			];
+
+			$icon_array['style'] = is_array($icon_array['style']) ? $icon_array['style'] : [$icon_array['style']];
+
+			# The style can be overridden
+			$icon_array['style'] = array_merge($default_style_array, $icon_array['style']);
+
+			# Add a few more keys
+			foreach(["tooltip", "alt"] as $key){
+				$icon_array[$key] = $a[$key];
+			}
+
+			# Then generate the image
+			return Img::generate($icon_array);
+		}
+
 		# Tooltips
 		Tooltip::generate($icon_array);
 
