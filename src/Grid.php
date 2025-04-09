@@ -75,24 +75,24 @@ class Grid {
 	{
 		foreach($rows as $row){
 			if(!is_array($row)){
-				$row_html = $this->getAllCellsForOneColumnHtml(["html" => $row]);
+				$row_html = $this->getAllColumnCellsForOneRowHtml(["html" => $row]);
 				$row = [];
 			}
 
 			else if(str::isNumericArray($row)){
-				$row_html = $this->getAllCellsForOneColumnHtml($row);
+				$row_html = $this->getAllColumnCellsForOneRowHtml($row);
 			}
 
 			else if(str::isNumericArray($row['html'])){
-				$row_html = $this->getAllCellsForOneColumnHtml($row['html']);
+				$row_html = $this->getAllColumnCellsForOneRowHtml($row['html']);
 			}
 
 			else if($row['html']){
-				$row_html = $this->getAllCellsForOneColumnHtml([$row['html']]);
+				$row_html = $this->getAllColumnCellsForOneRowHtml([$row['html']]);
 			}
 
 			else {
-				$row_html = $this->getAllCellsForOneColumnHtml([$row]);
+				$row_html = $this->getAllColumnCellsForOneRowHtml([$row]);
 			}
 
 			# ID
@@ -180,90 +180,99 @@ class Grid {
 	}
 
 	/**
-	 * Get the HTML for a single column.
+	 * Get the HTML for a single cell.
 	 * Does not include badges.
 	 *
-	 * @param array|string|null $col
+	 * @param array|string|null $cell
 	 *
 	 * @return string
 	 */
-	private function getColumnHtml(&$col): ?string
+	private function getColumnCellHtml(&$cell): ?string
 	{
-		# If the column is empty, return NULL
-		if(!$col){
-			$col = [];
+		//If the array cell is empty, return NULL
+		if(is_array($cell)){
+			if(empty($cell)){
+				$cell = [];
+				return NULL;
+			}
+		}
+
+		//If the NON-array cell is empty, return NULL
+		else if($cell === NULL){
+			// Here, empty is === NULL, not "" or 0
+			$cell = [];
 			return NULL;
 		}
 
-		# If the column is not an array, assume the whole thing is the column HTML
-		if(!is_array($col)){
-			$col_html = $col;
+		# If the cell is not an array, assume the whole thing is the cell HTML
+		if(!is_array($cell)){
+			$col_html = $cell;
 
-			# Set the original column as an (empty) array
-			$col = [];
+			# Set the original cell as an (empty) array
+			$cell = [];
 
 			return $col_html;
 		}
 
-		# If the entire column is a numerical array, assume it's a whole row
-		if(str::isNumericArray($col)){
+		# If the entire cell is a numerical array, assume it's a whole row
+		if(str::isNumericArray($cell)){
 			# Return the whole row as HTML
-			return $this->getAllRowsHtml($col);
+			return $this->getAllRowsHtml($cell);
 		}
 
 		# If the HTML key is a numerical array, assume it's a whole row
-		if(str::isNumericArray($col['html'])){
+		if(str::isNumericArray($cell['html'])){
 			# Return the HTML of the row
-			return $this->getAllRowsHtml($col['html']);
+			return $this->getAllRowsHtml($cell['html']);
 		}
 
 		# If we're dealing with tabs, generate them, with the optional formatter
-		if(is_array($col['tabs']) && array_filter($col['tabs'])){
-			return Tabs::generate($col['tabs'], $this->formatter);
+		if(is_array($cell['tabs']) && array_filter($cell['tabs'])){
+			return Tabs::generate($cell['tabs'], $this->formatter);
 		}
 
-		# If we have a formatter, use it to format the column
+		# If we have a formatter, use it to format the cell
 		if($this->formatter){
 			//If a custom formatter has been designated
-			return ($this->formatter)($col);
+			return ($this->formatter)($cell);
 		}
 
 		# If the cell is an accordion, generate and return it
-		if($col['accordion']){
-			return Accordion::generate($col['accordion']);
+		if($cell['accordion']){
+			return Accordion::generate($cell['accordion']);
 		}
 
 		# If the cell has a checkbox, generate and return it
-		if($col['checkbox']){
+		if($cell['checkbox']){
 			# Get the name, and ensure it ends with []
-			$name = $col['checkbox']['name'];
+			$name = $cell['checkbox']['name'];
 			if(substr($name, -2) != "[]"){
 				$name .= "[]";
 			}
 
 			# If the cell has a title and/or body, use them as the label
-			if($col['title'] || $col['body']){
+			if($cell['title'] || $cell['body']){
 				$label = [
-					"icon" => $col['icon'],
-					"title" => self::generateTitle($col['title']),
-					"desc" => self::generateBody($col['body']),
+					"icon" => $cell['icon'],
+					"title" => self::generateTitle($cell['title']),
+					"desc" => self::generateBody($cell['body']),
 				];
-				unset($col['icon']);
+				unset($cell['icon']);
 			}
 
 			# Otherwise, use the HTML as the label
 			else {
-				$label = $col['html'];
+				$label = $cell['html'];
 			}
 
 			# We have to unset any potential hashes, or else the UX will be confusing
-			unset($col['hash']);
+			unset($cell['hash']);
 
 			# Generate the field
 			$field = [
 				"type" => "checkbox",
 				"name" => $name,
-				"value" => $col['checkbox']['value'],
+				"value" => $cell['checkbox']['value'],
 				"placeholder" => false,
 				"label" => $label,
 				"only_grand_parent_class" => "mb",
@@ -274,9 +283,9 @@ class Grid {
 		}
 
 		# Finally, if none of the above, generate the title, body, and HTML
-		$col_html = self::generateTitle($col['title']);
-		$col_html .= self::generateBody($col['body']);
-		$col_html .= $col['html'];
+		$col_html = self::generateTitle($cell['title']);
+		$col_html .= self::generateBody($cell['body']);
+		$col_html .= $cell['html'];
 
 		# Return the HTML
 		return $col_html;
@@ -289,11 +298,11 @@ class Grid {
 	 *
 	 * @return string
 	 */
-	private function getAllCellsForOneColumnHtml(array $cols): string
+	private function getAllColumnCellsForOneRowHtml(array $cols): string
 	{
 		foreach($cols as $col){
-			# Get the column HTML
-			$col_html = $this->getColumnHtml($col);
+			# Get the column cell HTML
+			$col_html = $this->getColumnCellHtml($col);
 
 			# If they're not to be stacked, make it so (default is stackable)
 			$col_width = $this->unstackable ? "col" : "col-sm";
@@ -457,6 +466,9 @@ class Grid {
 				 * row with the same key.
 				 */
 				foreach($value as $k => $v){
+					if(!$v){
+//						$v = "'$v'";
+					}
 					$left['html'] = $k;
 					$grid[] = [
 						"row_class" => $row_class,
