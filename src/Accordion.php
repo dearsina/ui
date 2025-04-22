@@ -16,6 +16,12 @@ use Exception;
  */
 class Accordion {
 	/**
+	 * Set to true if you want the accordion to be open by default.
+	 * @var bool
+	 */
+	public static ?bool $show = false;
+
+	/**
 	 * Expects either an array with a `header` and a `body`,
 	 * or an array of arrays containing those elements.
 	 * Both the `header` and the `body` can be either strings
@@ -41,9 +47,10 @@ class Accordion {
 	 * @return bool|string
 	 * @throws Exception
 	 */
-	public static function generate(?array $a){
+	public static function generate(?array $a): ?string
+	{
 		if(!is_array($a)){
-			return false;
+			return NULL;
 		}
 
 		if(!str::isNumericArray($a)){
@@ -75,9 +82,12 @@ class Accordion {
 	 * @return string
 	 * @throws Exception
 	 */
-	private static function generateCollapsable(array $a, ?string $parent_id = NULL) : string
+	private static function generateCollapsable(array $a, ?string $parent_id = NULL): string
 	{
 		extract($a);
+
+		# If set to true, allows for the accordion to start open
+		self::$show = $show;
 
 		# This ID ties the two pieces together
 		if(is_array($body) && $body['id']){
@@ -103,12 +113,12 @@ class Accordion {
 	 * The header of the accordion element.
 	 *
 	 * @param array|string $a
-	 * @param string $data_target_id The ID of the element to toggle.
+	 * @param string       $data_target_id The ID of the element to toggle.
 	 *
 	 * @return string
 	 * @throws Exception
 	 */
-	private static function generateHeaderHTML($a, string $data_target_id) : string
+	private static function generateHeaderHTML($a, string $data_target_id): string
 	{
 		if(!$a){
 			throw new Exception("A accordion item must have a title of some sort.");
@@ -117,17 +127,26 @@ class Accordion {
 		extract($a);
 
 		# All three words are valid
-		$title = $title.$header.$html;
+		$title = $title . $header . $html;
 		//TODO Bring together so only one word (header?) is used
 
 		$id = str::getAttrTag("id", $id);
 		$icon = Icon::generate($icon);
 		$badge = Badge::generate($badge);
 		$button = Button::generate($button);
-		$class_array = str::getAttrArray($class, "collapse-toggle collapsed", $only_class);
+		$class_array = str::getAttrArray($class, "collapse-toggle", $only_class);
+
+		if(self::$show){
+			$class_array[] = "show";
+		}
+		else {
+			$class_array[] = "collapsed";
+		}
+
+		$aria_expanded = self::$show ? "true" : "false";
 		$class = str::getAttrTag("class", $class_array);
 		$style = str::getAttrTag("style", $style);
-		
+
 		return <<<EOF
 <div
 	{$id}
@@ -135,7 +154,7 @@ class Accordion {
 	{$style}
 	data-bs-toggle="collapse"
 	data-bs-target="#{$data_target_id}"
-	aria-expanded="false"
+	aria-expanded="{$aria_expanded}"
 	aria-controls="{$data_target_id}"
 >
 	{$icon}
@@ -157,7 +176,7 @@ EOF;
 	 * @throws Exception
 	 * @throws Exception
 	 */
-	private static function generateBodyHTML($a, string $data_target_id, ?string $data_parent_id) : string
+	private static function generateBodyHTML($a, string $data_target_id, ?string $data_parent_id): string
 	{
 		$a = is_array($a) ? $a : ["html" => $a];
 		extract($a);
@@ -167,6 +186,9 @@ EOF;
 		$badge = Badge::generate($badge);
 		$button = Button::generate($button);
 		$class_array = str::getAttrArray($class, "collapse", $only_class);
+		if(self::$show){
+			$class_array[] = "show";
+		}
 		$class = str::getAttrTag("class", $class_array);
 		$style = str::getAttrTag("style", $style);
 		$data = str::getDataAttr($data);

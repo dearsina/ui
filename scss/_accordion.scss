@@ -12,6 +12,15 @@
   content     : "\f077"; // Chevron up (indicating that you can close this)
 }
 
+/**
+ * Hide the toggle when printing.
+ */
+@media print {
+  .collapse-toggle::after {
+    content: none !important;
+  }
+}
+
 .collapse-toggle:hover::after
 {
   opacity : 1;
