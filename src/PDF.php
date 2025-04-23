@@ -455,8 +455,13 @@ EOF;
 	 *
 	 * @return bool
 	 */
-	public static function delete(string $a): bool
+	public static function delete(?string $a): bool
 	{
+		# Ensure a string is passed
+		if(!$a){
+			return true;
+		}
+
 		# Check to see what kind of string $a is
 		if(filter_var($a, FILTER_VALIDATE_URL)){
 			//if it's the URL to the page that generated the PDF
