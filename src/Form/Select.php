@@ -266,7 +266,6 @@ EOF;
 
 			$options_html .= self::getOptionHtml($a, $option);
 		}
-
 		return $options_html;
 	}
 
@@ -313,6 +312,9 @@ EOF;
 			return NULL;
 		}
 
+		# Set the value(s) as an array
+		$value_array = array_filter(is_array($value) ? $value : [$value]);
+
 		/**
 		 * Options where multiple values are allowed, and those values can be entered
 		 * by the user, are tokenized.
@@ -325,14 +327,18 @@ EOF;
 			if(str::isNumericArray($options)){
 				// This is also why the options don't have their value as a key, because there could be duplicates
 				foreach($options as $option){
+					if(!is_array($option)){
+						# Create the array
+						$option = [
+							"title" => $option,
+							"selected" => in_array($option, $value_array ?: [])
+						];
+					}
 					$options_array[] = SelectOption::getFormattedOption($option);
 				}
 				return $options_array;
 			}
 		}
-
-		# Set the value(s) as an array
-		$value_array = array_filter(is_array($value) ? $value : [$value]);
 
 		# Go through each option, format the data and add it to the array
 		foreach($options as $option_value => $option){
