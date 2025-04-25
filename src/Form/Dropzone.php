@@ -113,7 +113,15 @@ class Dropzone extends Field implements FieldInterface {
 
 		# Translate if enabled
 		if(class_exists("App\\Translation\\Translator")){
-			Translator::set($element, $a['subscription_id'], "text", $element, $a['language_id'], NULL, $a['parent_rel_id']);
+			if(!Translator::set($element, [
+				"subscription_id" => $a['subscription_id'],
+				"rel_table" => "text",
+				"to_language_id" => $a['language_id'],
+				"parent_rel_id" => $a['parent_rel_id']
+			])){
+				return;
+			}
+
 			Language::setLanguageKeys($faux_button, $a);
 		}
 

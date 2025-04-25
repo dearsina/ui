@@ -438,7 +438,12 @@ class Form {
 
 		# Translate each field (if a language ID is provided)
 		foreach($this->fields as &$field){
-			Translator::set($field, NULL, "form_field", $field, $this->language_id);
+			if(class_exists("App\\Translation\\Translator")){
+				Translator::set($field, [
+					"rel_table" => "form_field",
+					"to_language_id" => $this->language_id,
+				]);
+			}
 		}
 
 		return $grid->getHTML($this->fields);

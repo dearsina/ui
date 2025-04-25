@@ -208,7 +208,12 @@ class Modal extends \App\Common\Prototype {
 		}
 
 		if($this->language_id){
-			Translator::set($this->elements['header'], NULL, "text", $this->elements['header'], $this->language_id);
+			if(class_exists("App\\Translation\\Translator")){
+				Translator::set($this->elements['header'], [
+					"rel_table" => "text",
+					"to_language_id" => $this->language_id,
+				]);
+			}
 			if(!is_array($this->elements['header']['class'])){
 				$this->elements['header']['class'] = [$this->elements['header']['class']];
 			}

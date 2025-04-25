@@ -473,8 +473,15 @@ class Button {
 			$a['approve']['class'] = Language::getDirectionClass($a['language_id']);
 		}
 
-		if(!Translator::set($a, $a['subscription_id'], "button", $a, $a['language_id'], NULL, $a['parent_rel_id'])){
-			return;
+		if(class_exists("App\\Translation\\Translator")){
+			if(!Translator::set($a, [
+				"subscription_id" => $a['subscription_id'],
+				"rel_table" => "button",
+				"to_language_id" => $a['language_id'],
+				"parent_rel_id" => $a['parent_rel_id']
+			])){
+				return;
+			}
 		}
 
 		# Set the direction class
