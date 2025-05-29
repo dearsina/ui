@@ -574,55 +574,19 @@ EOF;
 		return true;
 	}
 
-	public static function manageJsonRequest(array $a, ?array $base_query, ?object $row_handler): bool
+	public static function manageJsonRequest(array $a, ?array $base_query, ?object $row_handler, ?array $laps = NULL): bool
 	{
 		extract($a);
 
 		$sql = Factory::getInstance();
 
-		# Default base query is just querying the rel_table
-		if(!is_array($base_query)){
-			$base_query['table'] = $rel_table;
-		}
-
 		# Include the ID in the response
 		$output_vars['id'] = $vars['id'];
 		// This is the grid ID
 
-//		# The (default) assumption is that all vars are where clauses, except:
-//		foreach(["start", "length", "order_by_col", "order_by_dir"] as $key){
-//			if(!$vars[$key]){
-//				continue;
-//			}
-//
-//			$$key = $vars[$key];
-//			//for reference
-//
-//			# Report the metadata back for reference
-//			$output_vars[$key] = $vars[$key];
-//
-//			unset($vars[$key]);
-//			// We remove them because all other vars are being fed as where cols
-//		}
-//
-//		# The start value grows for every request
-//		$output_vars["start"] = $start + $length;
+		Output::getInstance()->setVar("query",  $sql->select($base_query, true));
 
-		foreach($vars ?:[] as $key => $val){
-			# If the value is a numerical array, assume an IN is required
-			if(is_string($key) && str::isNumericArray($val)){
-				$base_query['where'][] = [$key, "IN", $val];
-			}
-			else {
-				if(is_int($key)){
-					$base_query['where'][] = $val;
-				}
-				else {
-					$base_query['where'][$key] = $val;
-				}
-			}
-		}
-
+		# Run the query
 		if(!$rows = $sql->select($base_query)){
 			//if no results are found
 			self::compressAndSetOutputVars($output_vars);
@@ -635,6 +599,10 @@ EOF;
 				$output_vars['rows'][$id] = ($row_handler)($row);
 				//run the row handler through each row
 			}
+		}
+
+		if(str::isDev() && $laps){
+			Output::getInstance()->setVar("laps", $laps);
 		}
 
 		self::compressAndSetOutputVars($output_vars);
