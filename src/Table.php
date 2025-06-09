@@ -104,7 +104,7 @@ class Table {
 		}
 
 		# Table rows
-		foreach($rows as $key => $row){
+		foreach(array_filter($rows) as $row){
 			if(!is_string($row['html'])){
 				$row['html'] = array_values($row['html'] ?: $row);
 			}
