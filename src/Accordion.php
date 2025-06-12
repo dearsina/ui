@@ -120,7 +120,7 @@ class Accordion {
 	 */
 	private static function generateHeaderHTML($a, string $data_target_id): string
 	{
-		if(!$a){
+		if($a === NULL){
 			throw new Exception("A accordion item must have a title of some sort.");
 		}
 		$a = is_array($a) ? $a : ["title" => $a];
