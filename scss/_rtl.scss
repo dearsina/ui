@@ -140,5 +140,16 @@ i.fa-check
 .script-cyrillic
 {
   font-family: "Rubik", sans-serif;
-  font-weight: 300;
+  font-weight: 400;
+  font-size: 95%;
+}
+
+/**
+ * text-title is usually 500, but Rubik
+ * is a bit too heavy so we set it down
+ * to 400.
+ */
+.text-title .script-cyrillic
+{
+    font-weight: 400;
 }

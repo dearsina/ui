@@ -13,7 +13,7 @@ class Wait {
 	 *
 	 * @return string
 	 */
-	public static function get(string $narrative = "Processing file"): string
+	public static function get(?string $narrative = "Processing file"): string
 	{
 
 		$icon = Icon::generate([

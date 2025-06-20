@@ -5,19 +5,22 @@
 
 .collapse-toggle::after
 {
-  float       : right;
-  font-family : "Font Awesome 6 Pro";
-  opacity     : .25;
+  float        : right;
+  font-family  : "Font Awesome 6 Pro";
+  opacity      : .25;
 
-  content     : "\f077"; // Chevron up (indicating that you can close this)
+  content      : "\f077"; // Chevron up (indicating that you can close this)
+  margin-right : 0.75rem; // Adds a little bit of margin to the right
 }
 
 /**
  * Hide the toggle when printing.
  */
-@media print {
-  .collapse-toggle::after {
-    content: none !important;
+@media print
+{
+  .collapse-toggle::after
+  {
+    content : none !important;
   }
 }
 
@@ -152,7 +155,7 @@
 #client-review-menu .accordion-wrapper > .accordion > .accordion-header-wrapper > button,
 #client-review-menu .accordion-wrapper > .accordion > .accordion-header-wrapper > button > .btn-text
 {
-  overflow: hidden;
+  overflow : hidden;
 }
 
 #client-review-menu .list-group-flush > .list-group-item:last-child
@@ -163,22 +166,24 @@
 
 #client-review-menu .list-group-item.client-item
 {
-  padding: 7px 5px 5px 10px;
+  padding : 7px 5px 5px 10px;
 }
+
 #client-review-menu .list-group-item.client-item > .row
 {
-  align-items: center;
-  margin-bottom: 5px;
+  align-items   : center;
+  margin-bottom : 5px;
 }
+
 #client-review-menu .list-group-item.client-item > .row > .client-review-risk-score-badge
 {
-  width: 65px;
-  padding: 0;
-  margin-right: -10px;
-  margin-left: -15px;
+  width           : 65px;
+  padding         : 0;
+  margin-right    : -10px;
+  margin-left     : -15px;
 
-  display: flex;
-  justify-content: flex-end;
+  display         : flex;
+  justify-content : flex-end;
 }
 
 #client-review-menu .relation-accordion-header-title
