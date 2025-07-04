@@ -95,7 +95,8 @@ class Table {
 
 		# Header row (if it's not to be ignored)
 		if(!$ignore_header){
-			$row = $rows[0]['html'] ?: $rows[0];
+			$row = \reset($rows);
+			$row = $row['html'] ?: $row;
 			$grid->set([
 				"row_class" => str::getAttrArray($row['header_class'], "table-header", $row['only_header_class']),
 				"row_style" => $row['header_style'],
