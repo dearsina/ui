@@ -365,6 +365,10 @@ EOF;
 		# The div class
 		$class = str::getAttrTag("class", $this->elements['footer']['class']);
 
+		if(is_array($this->elements['footer']['html'])){
+			$this->elements['footer']['html'] = Grid::generate($this->elements['footer']['html']);
+		}
+
 		# Only include left side if it has values (or a custom ID)
 		if(($left = $icon . $this->elements['footer']['html'] . $badge) || $id){
 			$sm = $this->elements['footer']['sm'] ?: "auto";
