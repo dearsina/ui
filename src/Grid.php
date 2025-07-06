@@ -275,6 +275,8 @@ class Grid {
 				"value" => $cell['checkbox']['value'],
 				"placeholder" => false,
 				"label" => $label,
+				"style" => $cell['checkbox']['style'],
+				"parent_style" => $cell['checkbox']['parent_style'],
 				"only_grand_parent_class" => "mb",
 			];
 
