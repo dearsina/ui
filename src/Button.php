@@ -514,28 +514,9 @@ class Button {
 		$a['class'][] = "selection-dependency";
 		$a['data']['selection-dependency'] = $a['selection_dependency'];
 
-		# If the button is already relying on onClick, we're done
-		if($a['onClick']){
-			return;
-		}
-
-		# If the button is using hash, convert it to onClick, and remove hash
-		if($a['hash']){
-			$hash_json = json_encode($a['hash']);
-			$a['onClick'] = /** @lang JavaScript */<<<EOF
-			// Use the current hash
-			let hash = {$hash_json}
-			
-			// Add the selection action
-			hash['vars']["{$a['selection_dependency']}"] = $("input[name='{$a['selection_dependency']}[]']:checked").map(function(){
-				return $(this).val();
-			}).get();
-
-			// Run the ajax call
-			ajaxCall(hash);
-EOF;
-			unset($a['hash']);
-		}
+		# Set the hash, and remove it so that it doesn't trigger twice
+		$a['data']['hash'] = $a['hash'];
+		unset($a['hash']);
 	}
 
 	/**
