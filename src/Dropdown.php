@@ -85,8 +85,11 @@ class Dropdown {
 		case 'up':
 			$direction = "dropup";
 			break;
+		case 'auto':
+			$direction = "dropauto";
+			break;
 		default:
-			$direction = $level ? "dropend" : "dropdown";
+			$direction = $level ? "dropend" : "dropauto";
 			break;
 		}
 
@@ -246,9 +249,11 @@ EOF;
 			return "dropend";
 		case 'up':
 			return "dropup";
+		case "auto":
+			return "dropauto";
 		}
 
-		return $level ? "dropend" : "dropdown";
+		return $level ? "dropend" : "dropauto";
 	}
 
 	/**

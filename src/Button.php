@@ -463,6 +463,12 @@ class Button {
 			return;
 		}
 
+		# Ensure there is a language to translate this button *to*
+		if(!$a['language_id']){
+			// If no to-language hs been set, there is nothing to translate
+			return;
+		}
+
 		if(key_exists("approve", $a)){
 			if(!is_array($a['approve'])){
 				$a['approve'] = [];
