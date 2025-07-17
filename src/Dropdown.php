@@ -253,7 +253,7 @@ EOF;
 			return "dropauto";
 		}
 
-		return $level ? "dropend" : "dropauto";
+		return $level ? "dropend" : "dropdown";
 	}
 
 	/**
