@@ -90,9 +90,15 @@ EOF;
 	private function getLevel2HTML(): ?string
 	{
 		# If there are no items, omit the entire level 2 navbar
-		if(!$items = Dropdown::generateRootUl($this->levels[2]['items'], NULL, "li", "nav-item")){
+		if(!$this->levels[2]['items']){
 			return NULL;
 		}
+
+		foreach($this->levels[2]['items'] as &$item){
+			$item['direction'] = "down";
+		}
+
+		$items = Dropdown::generateRootUl($this->levels[2]['items'], NULL, "li", "nav-item");
 
 		if($level1_items = Dropdown::generateRootUl($this->levels[1]['items'])){
 			$items = <<<EOF

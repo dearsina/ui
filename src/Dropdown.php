@@ -85,6 +85,9 @@ class Dropdown {
 		case 'up':
 			$direction = "dropup";
 			break;
+		case 'down':
+			$direction = "dropdown";
+			break;
 		case 'auto':
 			$direction = "dropauto";
 			break;
