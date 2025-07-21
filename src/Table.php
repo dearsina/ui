@@ -71,6 +71,8 @@ class Table {
 
 			# Identifies which table is being reordered
 			$data["rel_table"] = $rel_table;
+			$data["action"] = $action;
+			$data['vars'] = $vars ?: [];
 
 			# Use the limiting key/val pair to avoid reordering the entire table
 			$data["limiting_key"] = $limiting_key;
@@ -634,21 +636,24 @@ EOF;
 	 * the table to be bare.
 	 *
 	 * @param string     $rel_table
-	 * @param array|null $vars
+	 * @param array|null $overrides
 	 *
 	 * @return array[]
+	 * @throws \Exception
 	 */
-	public static function emptyTablePlaceholder(string $rel_table, ?array $vars = NULL): array
+	public static function emptyTablePlaceholder(string $rel_table, ?array $overrides = NULL): array
 	{
+		$hash = $overrides['hash'] ?: [
+			"rel_table" => $overrides['rel_table'] ?: $rel_table,
+			"action" => $overrides['action'] ?: "new",
+			"vars" => $overrides['vars']
+		];
+
 		return [
-			str::title($rel_table) => [
-				"icon" => Icon::get("new"),
-				"html" => str::title("New {$rel_table}..."),
-				"hash" => [
-					"rel_table" => $rel_table,
-					"action" => "new",
-					"vars" => $vars,
-				],
+			$overrides['title'] ?: str::title($rel_table) => [
+				"icon" => $overrides['icon'] ?: Icon::get("new"),
+				"html" => $overrides['title'] ? "New {$overrides['title']}..." : str::title("New {$rel_table}..."),
+				"hash" => $hash,
 			],
 		];
 	}
