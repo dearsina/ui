@@ -41,7 +41,7 @@ class PDF {
 
 		# If for some reason the temporary file already exists, remove it
 		if(file_exists($tmp_filename)){
-			unlink($tmp_filename);
+			exec("rm {$tmp_filename}");
 		}
 
 		# An easier way to structure the CLI settings
@@ -113,7 +113,7 @@ class PDF {
 		$tmp_contents = file_get_contents($tmp_filename);
 
 		if(file_exists($tmp_filename)){
-			unlink($tmp_filename);
+			exec("rm {$tmp_filename}");
 		}
 
 		return $tmp_contents;
