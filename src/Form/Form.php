@@ -203,31 +203,33 @@ class Form {
 	 * Can be a single field,
 	 * or a numeric array of many fields
 	 *
-	 * @param $fields
+	 * @param array|bool|NULL $fields
 	 *
-	 * @return bool
+	 * @return void
 	 */
-	public function setFields($fields)
+	public function setFields($fields): void
 	{
+		# If fields is set to false, remove all previous fields
 		if($fields === false){
 			$this->fields = [];
-			return true;
+			return;
 		}
 
+		# If fields is NULL or empty, do nothing
 		if(!$fields){
-			return true;
+			return;
 		}
 
+		# If many fields are passed, add them all
 		if(str::isNumericArray($fields)){
 			foreach($fields as $field){
 				$this->fields[] = $field;
 			}
-		}
-		else {
-			$this->fields[] = $fields;
+			return;
 		}
 
-		return true;
+		# If one field is passed, add that one field
+		$this->fields[] = $fields;
 	}
 
 	/**
@@ -401,6 +403,37 @@ class Form {
 	}
 
 	/**
+	 * Recursive function that breaks away hidden fields to
+	 * the $this->hidden_fields array and removes them
+	 * from the $this->fields array.
+	 *
+	 * @return void
+	 */
+	private function breakAwayHiddenFields(?array &$fields): void
+	{
+		if(!$fields){
+			return;
+		}
+
+		foreach($fields as $i => &$field){
+			if(str::isNumericArray($field)){
+				$this->breakAwayHiddenFields($field);
+				continue;
+			}
+
+			# Separate out hidden fields
+			if($field['type'] == "hidden"){
+				$this->hidden_fields[] = $field;
+				unset($fields[$i]);
+			}
+		}
+
+		# Reset the keys that may have been removed
+		$fields = array_values($fields);
+	}
+
+
+	/**
 	 * Fields are generated using the Field() class,
 	 * and placed in a grid using the Grid() class.
 	 *
@@ -412,7 +445,11 @@ class Form {
 	 */
 	function getFieldsHTML($fields = NULL)
 	{
+		# Set fields ad hoc if required
 		$this->setFields($fields);
+
+		# Break away hidden fields
+		$this->breakAwayHiddenFields($this->fields);
 
 		$grid = new Grid([
 			"formatter" => function(&$field){
@@ -432,7 +469,7 @@ class Form {
 		}
 
 		# Remove blanks
-		if(!$this->fields = array_filter($this->fields ?:[])){
+		if(!$this->fields = array_filter($this->fields ?: [])){
 			return NULL;
 		}
 
@@ -446,7 +483,17 @@ class Form {
 			}
 		}
 
-		return $grid->getHTML($this->fields);
+		$html = [];
+
+		if($this->hidden_fields){
+			foreach($this->hidden_fields as $hidden_field){
+				$html[] = Field::getHTML($hidden_field);
+			}
+		}
+
+		$html[] = $grid->getHTML($this->fields);
+
+		return implode("", $html);
 	}
 
 	/**

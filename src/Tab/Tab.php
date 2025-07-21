@@ -10,6 +10,7 @@ use App\UI\Card\Card;
 use App\UI\Form\Field;
 use App\UI\Grid;
 use App\UI\Icon;
+use App\UI\Wait;
 
 class Tab {
 	private ?object $formatter;
@@ -195,17 +196,22 @@ class Tab {
 		 * generated.
 		 */
 
+		$class_array = $this->getTabHeaderClass($header);
+
+		if($header['hash']){
+			# If this tab is lazy-loading, we need to add the hash
+			$header['data']['hash'] = $header['hash'];
+			$class_array[] = "lazy-load";
+		}
+
 		# Class
-		$class = str::getAttrTag("class", $this->getTabHeaderClass($header));
+		$class = str::getAttrTag("class", $class_array);
 
 		# Style
 		$style = ["width" => "100%"];
 		$style = str::getAttrTag("style", $style);
 
 		self::setDependencyData($header);
-
-		# Data
-		$data = $this->getTabHeaderData($tab, $header);
 
 		# Type and role
 		$button_type = str::getAttrTag("type", "button");
@@ -216,6 +222,9 @@ class Tab {
 
 		$li_class = str::getAttrTag("class", $li_class_array);
 		$li_role = str::getAttrTag("role", "presentation");
+
+		# Data
+		$data = $this->getTabHeaderData($tab, $header);
 
 		return "
 		<li{$li_class}{$li_role}{$header_id}>
@@ -326,6 +335,10 @@ class Tab {
 
 	public function getTabPaneHTML(array $tab): string
 	{
+		if($tab['hash']){
+			// if this tab is lazy-loading
+			$tab['body'] = $tab['body'] ?: Wait::get(false);
+		}
 
 		# ID
 		$id = str::getAttrTag("id", $tab['id']);
