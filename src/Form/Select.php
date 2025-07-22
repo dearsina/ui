@@ -313,8 +313,12 @@ EOF;
 		}
 
 		# Set the value(s) as an array
-		$value_array = array_filter(is_array($value) ? $value : [$value], "strlen");
-		// Will remove NULL, false and empty strings, but keep 0 (nil) float and values
+		$value_array = is_array($value) ? $value : [$value];
+		// Ensures value is an array
+
+		# Remove NULL, false and empty strings, but keep 0 (nil) float and values
+		$value_array = @array_filter($value_array, "strlen");
+		// Suppressing any issues, just in case
 
 		/**
 		 * Options where multiple values are allowed, and those values can be entered
