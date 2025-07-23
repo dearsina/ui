@@ -421,6 +421,11 @@ class Form {
 				continue;
 			}
 
+			# We only care about array fields, not HTML fields
+			if(!is_array($field)){
+				continue;
+			}
+
 			# Separate out hidden fields
 			if($field['type'] == "hidden"){
 				$this->hidden_fields[] = $field;
