@@ -421,16 +421,30 @@ EOF;
 		# Set dependency data
 		self::setDependencyData($a);
 
+
+        if ($a['is_bootstrap']) {
+
+            # Hide radio button
+            $style['display'] = 'none';
+
+            # Change how label is rendered if bootstrap is enabled
+            $label_array['html'] = $label;
+            $label_array['class'] = ['btn', 'btn-primary'];
+            $label = self::getCheckboxLabel($label_array, $desc, $name, $id);
+
+            $class_array[] = "btn-check"; # Class is always btn-check. Both Radio and Checkbox
+        } else {
+            $label = self::getCheckboxLabel($label, $desc, $name, $id); # default behaviour
+        }
+
+
 		# Class tag
 		$class_tag = str::getAttrTag("class", $class_array);
 
-		# Style
-		$style_tag = str::getAttrTag("style", $style);
+        # Style
+        $style_tag = str::getAttrTag("style", $style);
 
-		# Label
-		$label = self::getCheckboxLabel($label, $desc, $name, $id);
-
-		# $data
+        # $data
 		$data = self::getInputData($a);
 
 		# $script
