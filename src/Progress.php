@@ -211,7 +211,7 @@ EOF;
 
 		if($seconds){
 			$script .= /** @lang JavaScript */<<<EOF
-setTimeout(function(){
+			setTimeout(function () {
 	$("#{$id} .progress-bar").css({"width":"100%"});
 }, 500);
 EOF;
@@ -229,8 +229,13 @@ EOF;
 		$script = str::getScriptTag($script);
 		$data = str::getDataAttr($data);
 
-		$pre = self::buildPrePost("progress-bar-pre", $pre);
-		$post = self::buildPrePost("progress-bar-post", $post);
+		if($pre !== false){
+			$pre = self::buildPrePost("progress-bar-pre", $pre);
+		}
+
+		if($post !== false){
+			$post = self::buildPrePost("progress-bar-post", $post);
+		}
 
 		if($kill){
 			$button = Button::generate([

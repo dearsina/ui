@@ -28,6 +28,16 @@ $form-item-border-width: .9px;
 $enable-rounded: true;
 
 
+
+$enable-reduced-motion:       false;
+// Otherwise animations get disabled
+
+//$enable-shadows:              true !default;
+//$enable-gradients:            true !default;
+//$enable-cssgrid:              trie !default;
+//$enable-negative-margins:     true !default;
+
+
 /**
  * XXL modals
  */

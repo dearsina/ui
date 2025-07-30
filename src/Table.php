@@ -186,7 +186,7 @@ EOF;
 	 */
 	public static function appendRow(string $table_id, array $row, ?array $audience = NULL): void
 	{
-		Output::getInstance()->append("#{$table_id} > .table-container", Table::generate([$row], Table::getAsyncOptions($row), true, true), $audience);
+		Output::getInstance()->append("#{$table_id} > .table-sortable", Table::generate([$row], Table::getAsyncOptions($row), true, true), $audience);
 	}
 
 	/**
