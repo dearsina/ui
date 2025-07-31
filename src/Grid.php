@@ -87,7 +87,7 @@ class Grid {
 				$row_html = $this->getAllColumnCellsForOneRowHtml($row['html']);
 			}
 
-			else if($row['html']){
+			else if($row['html'] && $row['type'] != "html"){
 				$row_html = $this->getAllColumnCellsForOneRowHtml([$row['html']]);
 			}
 
