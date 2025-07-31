@@ -855,3 +855,37 @@ a.masonry-grid-tile-inner:hover
   animation-duration: 2s;
   animation-iteration-count: infinite;
 }
+
+.timeline-wrapper {
+  position: relative;
+  margin: 30px 10px 10px;
+}
+
+.timeline-bar {
+  display: flex;
+  height: 30px;
+  width: 100%;
+  border: 1px solid #ccc;
+  position: relative;
+  z-index: 1;
+}
+
+.segment {
+  height: 100%;
+}
+
+.timeline-tick {
+  position: absolute;
+  top: -10px;
+  height: 10px;
+  width: 1px;
+  background: black;
+}
+
+.timeline-year-label {
+  position: absolute;
+  top: -28px;
+  font-size: 12px;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
