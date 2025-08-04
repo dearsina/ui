@@ -42,7 +42,8 @@ form
 
 .form-control::placeholder
 {
-  color : map-get($theme-colors, "silver");
+  //color : map-get($theme-colors, "silver");
+  color : hsl(200 10% 75% / 1); // One shade darker than silver
 }
 
 /**
