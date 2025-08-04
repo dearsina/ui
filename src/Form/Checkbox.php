@@ -433,7 +433,7 @@ EOF;
             $label_array['class'] = ['btn'];
 
             $style_selector = 'label.field-label.btn.btn-primary[for="'.$id.'"]';
-            if ($a['colour']) {
+            if ($a['default_colour']) {
                 $colour = str::translate_approve_colour($a['default_colour']);
 
                 $label_array['class'][] = "btn-{$colour}";
