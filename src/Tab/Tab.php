@@ -144,7 +144,7 @@ class Tab {
 			$img = Img::generate($img);
 
 			# The image tag wrapper is positioned absolutely
-			$img = "<div style=\"max-height:20px;max-width:30px;position:absolute;\">{$img}</div>";
+			$img = "<div style=\"max-height:20px;max-width:30px;position:absolute;width:100%;\">{$img}</div>";
 
 			$img_width = $img_width ?: 37.5;
 			$img_height = $img_height ?: 13;
