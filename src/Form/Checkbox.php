@@ -309,7 +309,7 @@ EOF;
 			}
 
 			# The key holds the value
-			if(is_array($val) && !$val['type'] && !$a['is_bootstrap']){
+			if(is_array($val) && !$val['type'] && !$a['options_as_buttons']){
 				// But only if the val is an array
 				// and the value doesn't belong to a label field
                 // and options are not bootstrap options
@@ -321,8 +321,8 @@ EOF;
 				$val_array['value'] = $key;
 			}
 
-            if ($val['default_colour']) {
-                $val_array['default_colour'] = $val['default_colour'];
+            if (is_array($val) && $val['colour']) {
+                $val_array['colour'] = $val['colour'];
             }
 
 
@@ -426,15 +426,14 @@ EOF;
 		self::setDependencyData($a);
 
 
-        if ($a['is_bootstrap']) {
+        if ($a['options_as_buttons']) {
 
             # Hide radio button
             $style['display'] = 'none';
             $label_array['class'] = ['btn'];
 
-            $style_selector = 'label.field-label.btn.btn-primary[for="'.$id.'"]';
-            if ($a['default_colour']) {
-                $colour = str::translate_approve_colour($a['default_colour']);
+            if ($a['colour']) {
+                $colour = str::translate_approve_colour($a['colour']);
 
                 $label_array['class'][] = "btn-{$colour}";
             } else {
