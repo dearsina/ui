@@ -309,9 +309,10 @@ EOF;
 			}
 
 			# The key holds the value
-			if(is_array($val) && !$val['type']){
+			if(is_array($val) && !$val['type'] && !$a['options_as_buttons']){
 				// But only if the val is an array
 				// and the value doesn't belong to a label field
+                // and options are not bootstrap options
 				$val_array['value'] = $val['value'] !== NULL ? $val['value'] : $key;
 				// Unless an actual value has been set
 			}
@@ -320,14 +321,17 @@ EOF;
 				$val_array['value'] = $key;
 			}
 
+            if (is_array($val) && $val['colour']) {
+                $val_array['colour'] = $val['colour'];
+            }
+
+
 			# Not sure if this will work
 			$option_array = array_merge($a, $val_array);
 
 			# Get the HTML for the checkbox
 			$options_html .= self::getCheckboxHTML($option_array);
 		}
-
-		//		echo json_encode($option_array).PHP_EOL;
 
 		$parent_script = str::getScriptTag($parent_script);
 		$parent_class = str::getAttrTag("class", $parent_class);
@@ -422,14 +426,22 @@ EOF;
 		self::setDependencyData($a);
 
 
-        if ($a['is_bootstrap']) {
+        if ($a['options_as_buttons']) {
 
             # Hide radio button
             $style['display'] = 'none';
+            $label_array['class'] = ['btn'];
+
+            if ($a['colour']) {
+                $colour = str::translate_approve_colour($a['colour']);
+
+                $label_array['class'][] = "btn-{$colour}";
+            } else {
+                $label_array['class'][] = 'btn-primary';
+            }
 
             # Change how label is rendered if bootstrap is enabled
             $label_array['html'] = $label;
-            $label_array['class'] = ['btn', 'btn-primary'];
             $label = self::getCheckboxLabel($label_array, $desc, $name, $id);
 
             $class_array[] = "btn-check"; # Class is always btn-check. Both Radio and Checkbox
