@@ -337,10 +337,20 @@ EOF;
 		$parent_class = str::getAttrTag("class", $parent_class);
 		$parent_style = str::getAttrTag("style", $parent_style);
 
+		if($a['options_as_buttons']){
+			$div_style = str::getAttrArray($a['div_style'], [
+				"display" => "flex",
+				"justify-content" => "space-evenly",
+				"flex-direction" => "row",
+				"align-items" => "center",
+			], $a['only_div_style']);
+			$div_style = str::getAttrTag("style", $div_style);
+		}
+
 		return /** @lang HTML */ <<<EOF
 <div{$parent_class}{$parent_style}>
 	{$parent_label}{$parent_desc}
-	<div>{$options_html}</div>
+	<div{$div_style}>{$options_html}</div>
 </div>
 {$parent_script}
 EOF;
