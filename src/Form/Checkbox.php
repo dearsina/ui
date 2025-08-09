@@ -294,7 +294,7 @@ EOF;
 			$val_array = self::getLabelArray($val, $type, $validation);
 
 			# Each option must have a unique ID
-			$val_array['id'] = $val_array['id'] ?: str::id($type);
+			$val_array['id'] = $val_array['id'] ?: "option-{$key}";
 
 			# If this option has been selected, mark it as checked
 			if(!is_array($value) && strlen($value)){
@@ -321,10 +321,10 @@ EOF;
 				$val_array['value'] = $key;
 			}
 
-            if (is_array($val) && $val['colour']) {
-                $val_array['colour'] = $val['colour'];
-            }
-
+			if(is_array($val)){
+				$val_array['colour'] = $val['colour'];
+				$val_array['css'] = $val['css'];
+			}
 
 			# Not sure if this will work
 			$option_array = array_merge($a, $val_array);
@@ -437,17 +437,14 @@ EOF;
 
 
         if ($a['options_as_buttons']) {
-
             # Hide radio button
             $style['display'] = 'none';
             $label_array['class'] = ['btn'];
 
             if ($a['colour']) {
-                $colour = str::translate_approve_colour($a['colour']);
-
-                $label_array['class'][] = "btn-{$colour}";
+                $label_array['class'][] = "btn-outline-{$a['colour']}";
             } else {
-                $label_array['class'][] = 'btn-primary';
+                $label_array['class'][] = 'btn-outline-black';
             }
 
             # Change how label is rendered if bootstrap is enabled
@@ -459,6 +456,9 @@ EOF;
             $label = self::getCheckboxLabel($label, $desc, $name, $id); # default behaviour
         }
 
+		if($a['css']){
+			$custom_style_tag = "<style>{$a['css']}</style>";
+		}
 
 		# Class tag
 		$class_tag = str::getAttrTag("class", $class_array);
@@ -473,7 +473,7 @@ EOF;
 		$script = str::getScriptTag($a['script']);
 
 		return /** @lang HTML */ <<<EOF
-<div{$parent_id}{$parent_class_tag}{$parent_style_tag}>
+<div{$parent_id}{$parent_class_tag}{$parent_style_tag}>{$custom_style_tag}
 	<input
 		type="{$type}"
 		id="{$id}"
