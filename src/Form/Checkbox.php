@@ -337,6 +337,9 @@ EOF;
 		$parent_class = str::getAttrTag("class", $parent_class);
 		$parent_style = str::getAttrTag("style", $parent_style);
 
+		$parent_id = str::getAttrTag("id", $parent_id);
+		$id = str::getAttrTag("id", $id);
+
 		if($a['options_as_buttons']){
 			$div_style = str::getAttrArray($a['div_style'], [
 				"display" => "flex",
@@ -348,9 +351,9 @@ EOF;
 		}
 
 		return /** @lang HTML */ <<<EOF
-<div{$parent_class}{$parent_style}>
+<div{$parent_id}{$parent_class}{$parent_style}>
 	{$parent_label}{$parent_desc}
-	<div{$div_style}>{$options_html}</div>
+	<div{$id}{$div_style}>{$options_html}</div>
 </div>
 {$parent_script}
 EOF;

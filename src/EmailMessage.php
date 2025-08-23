@@ -1160,7 +1160,7 @@ EOF;;
 	 * Will return a formatted HTML string consisting
 	 * of tables that constitute the email framework.
 	 *
-	 * That is unless one fo the section keys is "email",
+	 * That is unless one of the section keys is "email",
 	 * in which case, the entire section value is sent back
 	 * unchanged.
 	 *
