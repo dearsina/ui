@@ -340,20 +340,20 @@ EOF;
 		$parent_id = str::getAttrTag("id", $parent_id);
 		$id = str::getAttrTag("id", $id);
 
+		$div_class_array = str::getAttrArray($a['div_class'], NULL, $a['only_div_class']);
+		$div_style_array = str::getAttrArray($a['div_style'], NULL, $a['only_div_style']);
+
 		if($a['options_as_buttons']){
-			$div_style = str::getAttrArray($a['div_style'], [
-				"display" => "flex",
-				"justify-content" => "space-evenly",
-				"flex-direction" => "row",
-				"align-items" => "center",
-			], $a['only_div_style']);
-			$div_style = str::getAttrTag("style", $div_style);
+			$div_class_array[] = "checkbox-options-as-buttons";
 		}
+
+		$div_class = str::getAttrTag("class", $div_class_array);
+		$div_style = str::getAttrTag("style", $div_style_array);
 
 		return /** @lang HTML */ <<<EOF
 <div{$parent_id}{$parent_class}{$parent_style}>
 	{$parent_label}{$parent_desc}
-	<div{$id}{$div_style}>{$options_html}</div>
+	<div{$id}{$div_class}{$div_style}>{$options_html}</div>
 </div>
 {$parent_script}
 EOF;

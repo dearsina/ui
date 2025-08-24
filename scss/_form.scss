@@ -814,3 +814,30 @@ textarea.monospace
   border-top-left-radius    : 0;
   border-bottom-left-radius : 0;
 }
+
+// On wide screens, not on mobile
+@media (min-width : 768px)
+{
+  .checkbox-options-as-buttons
+  {
+    display         : flex;
+    justify-content : space-evenly;
+    flex-direction  : row;
+    align-items     : center;
+  }
+  .checkbox-options-as-buttons > .form-check,
+  .checkbox-options-as-buttons > .form-check > .field-label
+  {
+    width: 100%;
+  }
+}
+
+// On mobile
+@media (max-width : 767px)
+{
+  .checkbox-options-as-buttons > .form-check-inline
+  {
+    width : 100%;
+    padding-left: 0;
+  }
+}
