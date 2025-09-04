@@ -409,3 +409,8 @@ ul.dropdown-menu > li:last-child > div > button,
 {
   margin-top: 0 !important;
 }
+
+.dropdown-item:hover, .dropdown-item:focus
+{
+  border-radius: var(--bs-border-radius);
+}
