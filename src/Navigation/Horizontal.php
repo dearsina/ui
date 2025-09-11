@@ -58,11 +58,13 @@ class Horizontal {
 		}
 
 		return <<<EOF
-<div id="navbar-level1" style="justify-content: flex-end;">
+<div id="navbar-level1" style="justify-content: space-between;">
 	{$brand}
-	{$language_toggle}
-	{$items}
-	{$toggle}
+	<div style="display: flex;">
+		{$language_toggle}
+		{$items}
+		{$toggle}
+	</div>
 </div>
 EOF;
 	}
