@@ -686,7 +686,8 @@ $node-border-thickness : 1px;
 /**
  * Set the list group icons slightly tighter.
  */
-.drawflow-node .list-group > * > i:first-of-type
+.drawflow-node .list-group > * > i:first-of-type,
+.drawflow-node .card-items > .list-group > * > i
 {
   margin-right : 0.3rem;
 }
