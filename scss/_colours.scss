@@ -4,10 +4,10 @@
  */
 
 // Brand colour
-$french-blue      : hsl(203, 100%, 36%);
-$french-blue-dark      : hsl(203, 100%, 29%);
+$french-blue                           : hsl(203, 100%, 36%);
+$french-blue-dark                      : hsl(203, 100%, 29%);
 
-$grays            : (
+$grays                                 : (
         "50": hsl(203, 20%, 99%), //basically white
         "100": hsl(210, 20%, 98%), //cultured
         "200": hsl(210, 30%, 98%), //skimmed
@@ -21,89 +21,117 @@ $grays            : (
 );
 
 // Buttons
-$primary-colour   : $french-blue;
-$info-colour      : hsl(203, 70%, 60%);
-$success-colour   : hsl(142, 78%, 36%);
-$danger-colour    : hsl(358, 71%, 46%);
-$orange-colour    : hsl(19, 88%, 54%);
-$warning-colour   : hsl(50, 97%, 57%);
+$primary-colour                        : $french-blue;
+$info-colour                           : hsl(203, 70%, 60%);
+$success-colour                        : hsl(142, 78%, 36%);
+$danger-colour                         : hsl(358, 71%, 46%);
+$orange-colour                         : hsl(19, 88%, 54%);
+$warning-colour                        : hsl(50, 97%, 57%);
 
 /**
  * UI element colours
  */
-$navbar-level1-bg : map-get($grays, "800");
-$navbar-level2-bg : $white;
-$footer-bg        : map-get($grays, "700");
-$footer-level1-bg : rgba(0, 0, 0, 0.2);
-$footer-level2-bg : map-get($grays, "700");
+$navbar-level1-bg                      : map-get($grays, "800");
+$navbar-level2-bg                      : $white;
+$footer-bg                             : map-get($grays, "700");
+$footer-level1-bg                      : rgba(0, 0, 0, 0.2);
+$footer-level2-bg                      : map-get($grays, "700");
 
 //$body-bg          : map-get($grays, "100");
-$page-bg          : map-get($grays, "100");
+$page-bg                               : map-get($grays, "100");
 
-$border-color     : map-get($grays, "400");
-$header-footer-bg : map-get($grays, "50");
+$border-color                          : map-get($grays, "400");
+$header-footer-bg                      : map-get($grays, "50");
 
 /**
  * All the button, etc. colours.
  * To add additional colours, add them to the list here.
  * Ideally, give semantic names, then (colour) descriptive names.
  */
-$theme-colors: (
-  "primary": $primary-colour, //#3377cc,
-  "secondary": #ff4c4c, //$secondary,
-  "success": $success-colour,
-  "info": $info-colour, //#0080b3,
-  "warning": $warning-colour,
-  "danger": $danger-colour,
-  "error": $danger-colour,
-  "navy": #001f3f,
-  "blue": $info-colour, //#0074d9,
-  "aqua": #7fdbff,
-  "teal": #39cccc,
-  "olive": #3d9970,
-  "green": $success-colour, //#2ecc40,
-  "lime": #01ff70,
-  "yellow": $warning-colour, //#ffdc00,
-  "orange": $orange-colour, //#ff851b,
-  "red": $danger-colour, //#ff4136,
-  "maroon": #85144b,
-  "fuchsia": #f012be,
-  "purple": #b10dc9,
-  "black": map-get($grays, "900"), //#111111,
-  "dark": map-get($grays, "800"), //$dark,
-  "gray": map-get($grays, "600"), //#999999,
-  "grey": map-get($grays, "500"), //#999999,
-  "silver": map-get($grays, "400"), //#999999,
-  "light": map-get($grays, "300"),
-  "muted": map-get($grays, "200"),
-  "silent": map-get($grays, "100")
+$theme-colors                          : (
+  "primary":	$primary-colour, //#3377cc,
+  "secondary":	#ff4c4c, //$secondary,
+  "success":	$success-colour, //#14A349
+  "info":		$info-colour, //#0080b3,
+  "warning":	$warning-colour, //#FCD827
+  "danger":		$danger-colour, // #C92228
+  "error":		$danger-colour, // #C92228
+  //"navy":		#001f3f,
+  "blue":		$info-colour, //#0074d9,
+  "aqua":		#7fdbff,
+  //"teal":		#39cccc,
+  "olive":		#3d9970,
+  "green":		$success-colour, //#2ecc40,
+  "lime":		#01ff70,
+  "yellow":		$warning-colour, //#ffdc00,
+  "orange":		$orange-colour, //#ff851b,
+  "red":		$danger-colour, //#ff4136,
+  //"maroon":	#85144b,
+  "fuchsia":	#f012be,
+  "purple":		#b10dc9,
+  "black":		map-get($grays, "900"), //#111111,
+  "dark":		map-get($grays, "800"), //$dark,
+  "gray":		map-get($grays, "600"), //#999999,
+  "grey":		map-get($grays, "500"), //#999999,
+  "silver":		map-get($grays, "400"), //#999999,
+  "light":		map-get($grays, "300"),
+  "muted":		map-get($grays, "200"),
+  "silent":		map-get($grays, "100"),
+
+  "navy":      #00408a, // deep navy blue
+  "sky":       #badaee, // pale sky blue
+
+  "rust":      #9f4819, // earthy orange-brown
+  "salmon":    #F98D6D, // soft salmon pink
+
+  "plum":      #7a1439, // dark plum purple
+  "rose":      #f17e80, // rosy pink
+
+  "pine":      #0b6046, // dark pine green
+  "meadow":    #68C16D, // fresh meadow green
+
+  "amber":     #FCAC26, // warm amber yellow
+  "lemon":     #FFEC73, // bright lemon yellow
+
+
+//"brick":		#97383b, // -brightness, cooler
+//"vermillion":	#e8474a, // +saturation, vivid red-orange
+//"coral":	    #f77c57, // +brightness, warmer
+//"jade":		#51b856, // brighter, saturated green
+//"ochre":		#a28838, // darker, earthy yellow
+//"goldenrod":  #E68F02,
+//"sunset":		#fdc05c, // warmer, golden orange
+//"azure":		#1a6dcb, // +brightness, warmer
+//"cobalt":		#477ac2, // +saturation, balanced mid-blue
+//"denim":      #608CCA, // medium denim blue
+//"mist":		#95aed0, // lighter, desaturated
 );
 
 //$success-bg-subtle:       #dff0d8;
-$info-bg-subtle:          #d9edf7;
-$warning-bg-subtle:       #fcf8e3;
-$danger-bg-subtle:        #f2dede;
+$info-bg-subtle                        : #d9edf7;
+$warning-bg-subtle                     : #fcf8e3;
+$danger-bg-subtle                      : #f2dede;
 
 //$success-border-subtle:   #d6e9c6;
-$info-border-subtle:      #bce8f1;
-$warning-border-subtle:   #faebcc;
-$danger-border-subtle:    #ebccd1;
+$info-border-subtle                    : #bce8f1;
+$warning-border-subtle                 : #faebcc;
+$danger-border-subtle                  : #ebccd1;
 
 /**
  * These two don't get the message, and need to be overwritten.
  */
-$form-check-input-checked-bg-color: map-get($theme-colors, "primary");
-$form-check-input-checked-border-color: map-get($theme-colors, "primary");
+$form-check-input-checked-bg-color     : map-get($theme-colors, "primary");
+$form-check-input-checked-border-color : map-get($theme-colors, "primary");
 
 /**
  * The colour of tabs when they're not selected
  */
-$nav-link-color: map-get($theme-colors, "primary");
+$nav-link-color                        : map-get($theme-colors, "primary");
 
 /**
  * Adds the "fill" property to th bg-[colour] CSS styles
  */
-$utilities        : (
+$utilities                             : (
         "background-color": (
                 property: fill background-color,
                 class: bg,
@@ -121,8 +149,10 @@ $utilities        : (
 /**
  * Create the .text-[COLOUR] classes.
  */
-@each $color, $value in $theme-colors {
-  .text-#{$color} {
-    color: $value;
+@each $color, $value in $theme-colors
+{
+  .text-#{$color}
+  {
+    color : $value;
   }
 }
