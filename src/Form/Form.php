@@ -475,7 +475,9 @@ class Form {
 
 		# Remove blanks
 		if(!$this->fields = array_filter($this->fields ?: [])){
-			return NULL;
+			if(!$this->hidden_fields){
+				return NULL;
+			}
 		}
 
 		# Translate each field (if a language ID is provided)
