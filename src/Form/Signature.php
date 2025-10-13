@@ -4,6 +4,7 @@
 namespace App\UI\Form;
 
 
+use App\Client\ClientHandler;
 use App\ClientSignature\ClientSignature;
 use App\Common\Img;
 use App\Common\SQL\Info\Info;
@@ -30,6 +31,19 @@ class Signature extends Field implements FieldInterface {
 			$html = self::generateHiddenField($a);
 		}
 
+        # Section is only relevant when displaying content in a form
+        $workflow_settings = [];
+        if ($client_id) {
+            $client = new ClientHandler($client_id);
+            $workflow_settings = $client->getWorkflow("settings");
+        }
+
+        if ($workflow_settings['signature_type'] && in_array('wacom', $workflow_settings['signature_type'])) {
+            $button_html = Form::getFieldsAsHtml(self::generateWacomButtonHtml($a));
+        } else {
+            $button_html = self::generateButtonHtml($a);
+        }
+
 		$row_class = str::getAttrArray($row_class, "col-signature", $only_row_class);
 
 		return Grid::generate([[
@@ -52,7 +66,7 @@ class Signature extends Field implements FieldInterface {
 					"padding-bottom" => "1rem",
 				],
 			], [
-				"html" => self::generateButtonHtml($a),
+				"html" => $button_html,
 				"row_style" => [
 					"margin-bottom" => ".5rem",
 				],
@@ -144,6 +158,48 @@ class Signature extends Field implements FieldInterface {
 
 		return Input::generateHTML($a);
 	}
+
+    /**
+     * @param array $a
+     * @return array
+     * @throws \Exception
+     */
+    private static function generateWacomButtonHtml(array $a): array
+    {
+        extract($a);
+
+//        $signature_html = <<<EOF
+//<div id="wacom-signature-canvas" style="top: -1000; position: absolute;"></div>
+//EOF;
+
+        $signature_html = <<<EOF
+<div id="wacom-signature-canvas"></div>
+EOF;
+
+        $fields[] = [
+            "type" => "html",
+            "html" => $signature_html,
+        ];
+
+        $fields[] = [
+            "type" => "hidden",
+            "name" => "client_id",
+            "value" => $client_id,
+        ];
+
+        $fields[] = [
+            "type" => "hidden",
+            "name" => "signature_form_group_form_field_id", // Custom name to avoid duplication
+            "value" => $form_group_form_field_id,
+        ];
+
+        $fields[] = [
+            "type" => "html",
+            "html" => Button::generate(\App\ClientSignature\Buttons::startCaptureSTU($a)),
+        ];
+
+        return $fields;
+    }
 
 	/**
 	 * Generates the button that opens the modal that controls
