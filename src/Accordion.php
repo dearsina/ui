@@ -192,7 +192,7 @@ EOF;
 		$class = str::getAttrTag("class", $class_array);
 		$style = str::getAttrTag("style", $style);
 		$data = str::getDataAttr($data);
-		$data_parent = str::getAttrTag("data-parent", $data_parent_id ? "#{$data_parent_id}" : false);
+		$data_parent = str::getAttrTag("data-bs-parent", $data_parent_id ? "#{$data_parent_id}" : false);
 
 		return "<div{$id}{$class}{$style}{$data_parent}{$data}>{$icon}{$html}{$badge}{$button}</div>";
 	}

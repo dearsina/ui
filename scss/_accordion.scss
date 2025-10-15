@@ -173,6 +173,8 @@
 {
   align-items   : center;
   margin-bottom : 5px;
+  flex-wrap     : nowrap;
+  width: 100%;
 }
 
 #client-review-menu .list-group-item.client-item > .row > .client-review-risk-score-badge
