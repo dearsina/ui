@@ -765,6 +765,9 @@ class Button {
 		if($desktop_title){
 			$title = "<span class=\"btn-desktop-only\">$desktop_title</span>";
 		}
+		else if(strip_tags($title) != $title){
+			//if the title has HTML in it, don't wrap it in a span
+		}
 		else {
 			$title = strlen($title) ? "<span class=\"btn-text\">{$title}</span>" : $title;
 		}
