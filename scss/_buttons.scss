@@ -451,3 +451,11 @@ ul.dropdown-menu-list > li:last-child a:focus{
   padding: 6px 21px;
   border-width: 5px;
 }
+
+#wacom-signature-canvas button {
+  font-size: $font-size-base !important;
+  font-family: $font-family-sans-serif !important;
+  color: white !important;
+  background-color: $primary-colour !important;
+  border-radius : $border-radius;
+}
