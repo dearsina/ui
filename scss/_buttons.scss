@@ -411,6 +411,26 @@ ul.dropdown-menu-list > li:last-child a:focus{
   }
 }
 
+/**
+ * For buttons and button text
+ * that is to be hidden on desktop devices
+ */
+@include media-breakpoint-up(md) {
+  .btn-mobile-only {
+    display: none;
+  }
+
+  .btn-text-mobile-only {
+    min-height: 37.33px;
+    display: flex;
+    align-items: center;
+  }
+
+  .btn-text-mobile-only .btn-text {
+    display: none;
+  }
+}
+
 
 .input-group > .dropdown > .dropdown-item > .btn,
 .input-group > .dropdown > .dropdown-item > .dropdown-title-item > .btn,
