@@ -349,23 +349,14 @@ textarea.monospace
  * International Telephone Input
  * Overriding the path to flags.png as per the setup instructions
  */
-.iti__flag
-{
-  background-image : url("https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.2.1/img/flags.png");
-}
 
-@media (-webkit-min-device-pixel-ratio : 2), (min-resolution : 192dpi)
-{
-  .iti__flag
-  {
-    background-image : url("https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.2.1/img/flags@2x.png");
-  }
-}
+.iti {
+  --iti-path-flags-1x: url('https://cdn.jsdelivr.net/npm/intl-tel-input@25.12.5/build/img/flags.webp');
+  --iti-path-flags-2x: url('https://cdn.jsdelivr.net/npm/intl-tel-input@25.12.5/build/img/flags@2x.webp');
+  --iti-path-globe-1x: url('https://cdn.jsdelivr.net/npm/intl-tel-input@25.12.5/build/img/globe.webp');
+  --iti-path-globe-2x: url('https://cdn.jsdelivr.net/npm/intl-tel-input@25.12.5/build/img/globe@2x.webp');
 
-.iti
-{
   width : 100%; //Or else it will not stretch all the way out
-  //margin-bottom: -0.7rem; //For some reason there is (superfluous) buffer underneath the element
 }
 
 .modal .iti__country-list
@@ -384,6 +375,10 @@ textarea.monospace
   top    : 0.7rem;
   //z-index: 4; // Or else the flag disappears for some reason
 }
+
+
+
+
 
 /**
 /**
