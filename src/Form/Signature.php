@@ -14,7 +14,10 @@ use App\UI\Grid;
 
 class Signature extends Field implements FieldInterface {
 
-	public static function generateHTML(array $a): string
+    /**
+     * @throws \Exception
+     */
+    public static function generateHTML(array $a): string
 	{
 		extract($a);
 
@@ -38,7 +41,10 @@ class Signature extends Field implements FieldInterface {
             $workflow_settings = $client->getWorkflow("settings");
         }
 
-        if ($workflow_settings['signature_type'] && in_array('wacom', $workflow_settings['signature_type'])) {
+        if ($workflow_settings['signature_type']
+            && in_array('wacom', $workflow_settings['signature_type'])
+            && count($workflow_settings['signature_type']) == 1
+        ) {
             $button_html = Form::getFieldsAsHtml(self::generateWacomButtonHtml($a));
         } else {
             $button_html = self::generateButtonHtml($a);
