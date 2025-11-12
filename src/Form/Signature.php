@@ -11,11 +11,14 @@ use App\Common\SQL\Info\Info;
 use App\Common\str;
 use App\UI\Button;
 use App\UI\Grid;
+use Exception;
 
 class Signature extends Field implements FieldInterface {
 
     /**
-     * @throws \Exception
+     * @param array $a
+     * @return string
+     * @throws Exception
      */
     public static function generateHTML(array $a): string
 	{
@@ -86,13 +89,14 @@ class Signature extends Field implements FieldInterface {
 
 	}
 
-	/**
-	 * Displays the signature for internal signatures captured only.
-	 *
-	 * @param $a
-	 *
-	 * @return array|null
-	 */
+    /**
+     * Displays the signature for internal signatures captured only.
+     *
+     * @param $a
+     *
+     * @return array|null
+     * @throws Exception
+     */
 	public static function generateSignatureFields($a): ?array
 	{
 		extract($a);
@@ -136,7 +140,7 @@ class Signature extends Field implements FieldInterface {
 	 * @param array $a
 	 *
 	 * @return string
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public static function generateHiddenField(array $a): string
 	{
@@ -168,7 +172,7 @@ class Signature extends Field implements FieldInterface {
     /**
      * @param array $a
      * @return array
-     * @throws \Exception
+     * @throws Exception
      */
     private static function generateWacomButtonHtml(array $a): array
     {
@@ -214,7 +218,7 @@ EOF;
 	 * @param array $a
 	 *
 	 * @return string
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	private static function generateButtonHtml(array $a): string
 	{
