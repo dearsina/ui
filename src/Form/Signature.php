@@ -11,10 +11,16 @@ use App\Common\SQL\Info\Info;
 use App\Common\str;
 use App\UI\Button;
 use App\UI\Grid;
+use Exception;
 
 class Signature extends Field implements FieldInterface {
 
-	public static function generateHTML(array $a): string
+    /**
+     * @param array $a
+     * @return string
+     * @throws Exception
+     */
+    public static function generateHTML(array $a): string
 	{
 		extract($a);
 
@@ -38,7 +44,10 @@ class Signature extends Field implements FieldInterface {
             $workflow_settings = $client->getWorkflow("settings");
         }
 
-        if ($workflow_settings['signature_type'] && in_array('wacom', $workflow_settings['signature_type'])) {
+        if ($workflow_settings['signature_type']
+            && in_array('wacom', $workflow_settings['signature_type'])
+            && count($workflow_settings['signature_type']) == 1
+        ) {
             $button_html = Form::getFieldsAsHtml(self::generateWacomButtonHtml($a));
         } else {
             $button_html = self::generateButtonHtml($a);
@@ -80,13 +89,14 @@ class Signature extends Field implements FieldInterface {
 
 	}
 
-	/**
-	 * Displays the signature for internal signatures captured only.
-	 *
-	 * @param $a
-	 *
-	 * @return array|null
-	 */
+    /**
+     * Displays the signature for internal signatures captured only.
+     *
+     * @param $a
+     *
+     * @return array|null
+     * @throws Exception
+     */
 	public static function generateSignatureFields($a): ?array
 	{
 		extract($a);
@@ -130,7 +140,7 @@ class Signature extends Field implements FieldInterface {
 	 * @param array $a
 	 *
 	 * @return string
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public static function generateHiddenField(array $a): string
 	{
@@ -162,7 +172,7 @@ class Signature extends Field implements FieldInterface {
     /**
      * @param array $a
      * @return array
-     * @throws \Exception
+     * @throws Exception
      */
     private static function generateWacomButtonHtml(array $a): array
     {
@@ -208,7 +218,7 @@ EOF;
 	 * @param array $a
 	 *
 	 * @return string
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	private static function generateButtonHtml(array $a): string
 	{
