@@ -120,11 +120,13 @@ $container-max-widths : (
 /**
  * So that CSS table columns align with large text.
  * Might have unintended consequences for longer pieces of text.
+ *
+ * Disabled for now to test the consequences.
  */
 .table-body .col {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  //overflow: hidden;
+  //white-space: nowrap;
+  //text-overflow: ellipsis;
 }
 
 /**
