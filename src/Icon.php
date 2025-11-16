@@ -264,6 +264,7 @@ class Icon {
 			$default_style_array = [
 				"width" => "1.25em",
 				"margin-right" => "0.25rem",
+				"height" => "auto"
 			];
 
 			$icon_array['style'] = is_array($icon_array['style']) ? $icon_array['style'] : [$icon_array['style']];
