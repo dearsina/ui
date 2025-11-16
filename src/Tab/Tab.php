@@ -144,14 +144,46 @@ class Tab {
 			$img = Img::generate($img);
 
 			# The image tag wrapper is positioned absolutely
-			$img = "<div style=\"max-height:20px;max-width:30px;position:absolute;width:100%;\">{$img}</div>";
+			$default_style = [
+				"max-height" => "20px",
+				"max-width" => "30px",
+				"position" => "absolute",
+				"width" => "100%",
+			];
+			if($style){
+				$style = array_merge($default_style, $style);
+			}
+			else {
+				$style = $default_style;
+			}
 
-			$img_width = $img_width ?: 37.5;
-			$img_height = $img_height ?: 13;
-			// If it's bigger than 13px, it will create a line in other tabs
+			$style = str::getAttrTag("style", $style);
+
+			$img = "<div{$style}>{$img}</div>";
+
+			$spacer_style = [
+				"width" => "37.5px",
+				"height" => "13px",
+				// If it's bigger than 13px, it will create a line in other tabs
+			];
+
+			if($spacer){
+				# New way of styling the spacer
+				if($spacer['style']){
+					$spacer_style = array_merge($spacer_style, $spacer['style']);
+				}
+
+				# Legacy way of styling the spacer
+				else if($img_height || $img_width){
+					$spacer_style['width'] = $img_width ? "{$img_width}px" : "{$spacer_style['width']}";
+					$spacer_style['height'] = $img_height ? "{$img_height}px" : "{$spacer_style['height']}";
+				}
+			}
+
+			$spacer_style = str::getAttrTag("style", $spacer_style);
 
 			# So we need to add a spacer to the right of the image
-			$img .= "<div style=\"width:{$img_width}px;height:{$img_height}px;\"></div>";
+			$img .= "<div{$spacer_style}></div>";
 		}
 
 		$class = str::getAttrTag("class", $class);
