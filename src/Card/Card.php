@@ -331,6 +331,29 @@ class Card extends \App\Common\Prototype {
 	}
 
 	/**
+	 * A way of handling the title being an array.
+	 *
+	 * @return string|null
+	 */
+	private function getTitleTitle(): ?string
+	{
+		if(!is_array($this->cardHeader['title'])){
+			return $this->cardHeader['title'];
+		}
+
+		extract($this->cardHeader['title']);
+
+		$tag = $tag ?: "span";
+		$id = str::getAttrTag("id", $id);
+		$class = str::getAttrTag("class", $class);
+		$style = str::getAttrTag("style", $style);
+		$data = str::getDataAttr($data, true);
+		$script = str::getScriptTag($script);
+
+		return "<{$tag}{$id}{$class}{$style}{$data}>{$title}</{$tag}>{$script}";
+	}
+
+	/**
 	 * Returns the header as HTML.
 	 *
 	 * @return bool|string
@@ -378,6 +401,9 @@ class Card extends \App\Common\Prototype {
 
 		# Style
 		$style = str::getAttrTag("style", $this->cardHeader['style']);
+
+		$this->cardHeader['title'] = $this->getTitleTitle();
+		// Handles the title being an array
 
 		# Title colour
 		$class[] = str::getColour($this->cardHeader['colour']);
