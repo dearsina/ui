@@ -6,7 +6,7 @@ namespace App\UI;
 
 class Wait {
 
-	public static function getIcon(): string
+	public static function getIcon(): ?string
 	{
 		return Icon::generate([
 			"type" => "light",
