@@ -350,13 +350,14 @@ textarea.monospace
  * Overriding the path to flags.png as per the setup instructions
  */
 
-.iti {
-  --iti-path-flags-1x: url('https://cdn.jsdelivr.net/npm/intl-tel-input@25.12.5/build/img/flags.webp');
-  --iti-path-flags-2x: url('https://cdn.jsdelivr.net/npm/intl-tel-input@25.12.5/build/img/flags@2x.webp');
-  --iti-path-globe-1x: url('https://cdn.jsdelivr.net/npm/intl-tel-input@25.12.5/build/img/globe.webp');
-  --iti-path-globe-2x: url('https://cdn.jsdelivr.net/npm/intl-tel-input@25.12.5/build/img/globe@2x.webp');
+.iti
+{
+  --iti-path-flags-1x : url("https://cdn.jsdelivr.net/npm/intl-tel-input@25.12.5/build/img/flags.webp");
+  --iti-path-flags-2x : url("https://cdn.jsdelivr.net/npm/intl-tel-input@25.12.5/build/img/flags@2x.webp");
+  --iti-path-globe-1x : url("https://cdn.jsdelivr.net/npm/intl-tel-input@25.12.5/build/img/globe.webp");
+  --iti-path-globe-2x : url("https://cdn.jsdelivr.net/npm/intl-tel-input@25.12.5/build/img/globe@2x.webp");
 
-  width : 100%; //Or else it will not stretch all the way out
+  width               : 100%; //Or else it will not stretch all the way out
 }
 
 .modal .iti__country-list
@@ -375,9 +376,6 @@ textarea.monospace
   top    : 0.7rem;
   //z-index: 4; // Or else the flag disappears for some reason
 }
-
-
-
 
 
 /**
@@ -724,7 +722,6 @@ textarea.monospace
 .tokenized-workflow
 {
   margin-right  : 5px;
-  //min-width     : 5vw;
   max-width     : 10vw;
   margin-right  : 5px;
   background    : hsl(203deg 100% 36% / 10%);
@@ -740,8 +737,6 @@ textarea.monospace
 .workflow-prefix
 {
   display       : inline;
-  //padding: 4px 10px 6px 10px;
-  //min-width: 5vw;
   padding       : 4px 6px;
   border-radius : 4px;
   max-width     : 15vw;
@@ -752,6 +747,7 @@ textarea.monospace
   font-size     : 10px;
   text-align    : center;
   font-weight   : 500;
+  white-space   : nowrap;
 }
 
 .tokenized-custom-id
@@ -827,12 +823,13 @@ textarea.monospace
 {
   .checkbox-options-as-buttons > .form-check-inline
   {
-    width : 100%;
-    padding-left: 0;
+    width        : 100%;
+    padding-left : 0;
   }
 }
+
 .checkbox-options-as-buttons > .form-check,
 .checkbox-options-as-buttons > .form-check > .field-label
 {
-  width: 100%;
+  width : 100%;
 }
