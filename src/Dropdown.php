@@ -127,7 +127,7 @@ class Dropdown {
 EOF;
 	}
 
-	public static function getChildrenList(array $children): string
+	public static function getChildrenList(array $children): ?string
 	{
 		foreach($children as $child){
 			# If the child itself has children
