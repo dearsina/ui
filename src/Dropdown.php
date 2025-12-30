@@ -107,7 +107,6 @@ class Dropdown {
 			$style = str::getAttrTag("style", $item['style']);
 		}
 
-
 		$button_class = str::getAttrTag("class", ["dropdown-item dropdown-toggle", $item['button_class']]);
 		$menu = self::generateUl($item);
 
@@ -128,6 +127,34 @@ class Dropdown {
 EOF;
 	}
 
+	public static function getChildrenList(array $children): string
+	{
+		foreach($children as $child){
+			# If the child itself has children
+			if($child['children'] || $child['ajax']){
+				$lis .= "<li>" . self::generateChildren($child, $level + 1) . "</li>";
+				continue;
+			}
+
+			# If the child is just a divider
+			if($child === true){
+				$lis .= "<li class=\"dropdown-divider\"></li>";
+				continue;
+			}
+
+			# If the child is a header
+			if($child['header']){
+				$lis .= self::getHeaderHTML($child);
+				continue;
+			}
+
+			# Generate the child
+			$lis .= "<li>" . self::generateChildTag($child) . "</li>";
+		}
+
+		return $lis;
+	}
+
 	public static function generateUl(array $item): string
 	{
 		if($item['children']){
@@ -136,28 +163,21 @@ EOF;
 			$children = array_filter($item['children']);
 			//Removes empty (false, null) children
 
-			foreach($children as $child){
-				# If the child itself has children
-				if($child['children']){
-					$lis .= "<li>" . self::generateChildren($child, $level + 1) . "</li>";
-					continue;
-				}
+			# Generate the list items
+			$lis = self::getChildrenList($children);
+		}
 
-				# If the child is just a divider
-				if($child === true){
-					$lis .= "<li class=\"dropdown-divider\"></li>";
-					continue;
-				}
-
-				# If the child is a header
-				if($child['header']){
-					$lis .= self::getHeaderHTML($child);
-					continue;
-				}
-
-				# Generate the child
-				$lis .= "<li>" . self::generateChildTag($child) . "</li>";
-			}
+		# If the menu is to be loaded async via AJAX
+		if($item['ajax']){
+			$ul_data = str::getDataAttr($item['ajax']);
+			$ul_id = str::id();
+			$lis = Grid::generate([[
+				"html" => Wait::getIcon(),
+				"row_style" => [
+					"text-align" => "center",
+					"padding" => "1rem 1rem 0 1rem",
+				],
+			]]);
 		}
 
 		$div_class = str::getAttrTag("class", ["dropdown-menu-list", $item['div_class']]);
@@ -167,12 +187,12 @@ EOF;
 		$icon_down = Icon::generate("chevron-down");
 
 		return <<<EOF
-<div{$ul_class}>
+<div{$ul_class}{$ul_id}{$ul_data}>
 	<div class="dropdown-menu-up">{$icon_up}</div>
 	<div class="dropdown-menu-container">
-		<ul{$div_class}>{$lis}</ul>
+		<ul{$div_class}{$div_style}>{$lis}</ul>
 	</div>
-	<div class="dropdown-menu-down">{$icon_down}</div>
+	<div class="dropdown-menu-down" key="val">{$icon_down}</div>
 </div>
 EOF;
 
