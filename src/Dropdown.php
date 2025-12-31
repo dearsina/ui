@@ -130,7 +130,7 @@ EOF;
 	public static function getChildrenList(array $children): ?string
 	{
 		foreach($children as $child){
-			# If the child itself has children
+			# If the child itself has children or is to be loaded via AJAX
 			if($child['children'] || $child['ajax']){
 				$lis .= "<li>" . self::generateChildren($child, $level + 1) . "</li>";
 				continue;
