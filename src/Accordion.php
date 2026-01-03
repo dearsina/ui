@@ -4,6 +4,7 @@
 namespace App\UI;
 
 
+use App\Common\href;
 use App\Common\str;
 use Exception;
 
@@ -147,11 +148,46 @@ class Accordion {
 		$class = str::getAttrTag("class", $class_array);
 		$style = str::getAttrTag("style", $style);
 
+		$alt = str::getAttrTag("title", $alt);
+
+		# Handle headers that are also links
+		if($hash){
+			$href = href::generate($a);
+			$title = "<a{$href}>{$title}</a>";
+
+			return <<<EOF
+<div style="
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+">
+	<div>
+		{$icon}
+		{$title}
+		{$badge}
+	</div>
+	<div
+		{$id}
+		{$class}
+		{$style}
+		{$alt}
+		data-bs-toggle="collapse"
+		data-bs-target="#{$data_target_id}"
+		aria-expanded="{$aria_expanded}"
+		aria-controls="{$data_target_id}"
+	>
+		{$button}
+	</div>
+</div>
+EOF;
+		}
+
 		return <<<EOF
 <div
 	{$id}
 	{$class}
 	{$style}
+	{$alt}
 	data-bs-toggle="collapse"
 	data-bs-target="#{$data_target_id}"
 	aria-expanded="{$aria_expanded}"
