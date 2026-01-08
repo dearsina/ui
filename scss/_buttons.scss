@@ -199,7 +199,7 @@ form .btn i
 
 
 
-.card-footer .btn-float-right .btn:first-child,
+.card:not(.card-window) .card-footer .btn-float-right .btn:first-child,
 .modal .btn-float-right .btn:first-child,
 .tab-pane .btn-float-right .btn:first-child
 {
@@ -207,7 +207,7 @@ form .btn i
   margin-right: 0;
 }
 
-.card-footer .btn-float-right .btn:last-child,
+.card:not(.card-window) .card-footer .btn-float-right .btn:last-child,
 .modal .btn-float-right .btn:last-child,
 .tab-pane .btn-float-right .btn:last-child
 {
@@ -215,7 +215,7 @@ form .btn i
   margin-left: 0;
 }
 
-.card-footer .btn-float-left .btn:first-child,
+.card:not(.card-window) .card-footer .btn-float-left .btn:first-child,
 .modal .btn-float-left .btn:first-child,
 .tab-pane .btn-float-left .btn:first-child
 {
@@ -223,7 +223,7 @@ form .btn i
   margin-left: 0;
 }
 
-.card-footer .btn-float-left .btn:last-child,
+.card:not(.card-window) .card-footer .btn-float-left .btn:last-child,
 .modal .btn-float-left .btn:last-child,
 .tab-pane .btn-float-left .btn:last-child
 {
