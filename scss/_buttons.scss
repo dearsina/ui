@@ -175,6 +175,14 @@ form .btn i
   margin: .25rem 0 .25rem .5rem;
 }
 
+.card .btn-float-right .disabled-wrapper:has(.btn),
+.modal .btn-float-right .disabled-wrapper:has(.btn),
+.tab-pane .btn-float-right .disabled-wrapper:has(.btn)
+{
+    float: right;
+    margin: 0 0 0 .5rem;
+}
+
 /**
  * Additional margin to dropdowns
  */
