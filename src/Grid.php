@@ -458,8 +458,7 @@ class Grid {
 				"sm" => $rows['sm'],
 			];
 
-			if(is_int($key)
-				&& is_array($value)){
+			if(is_int($key) && is_array($value)){
 				/**
 				 * If the value is itself an array,
 				 * and the key is just a number,
