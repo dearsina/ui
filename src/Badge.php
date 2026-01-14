@@ -124,10 +124,23 @@ class Badge {
 		}
 
 		$style_array = str::getAttrArray($style, NULL, $only_style);
-		$class_array = str::getAttrArray($class, ["badge", "text-white"], $only_class);
+		$class_array = str::getAttrArray($class, ["badge"], $only_class);
 
+		# Colour style
+		switch(true){
+		case $basic:
+			$class_array[] = "badge-outline-{$colour}";
+			break;
+		case $bold:
+			$class_array[] = "badge-bold-{$colour}";
+			break;
+		default:
+			$class_array[] = "badge-{$colour}";
+			break;
+		}
+
+		# "Settings"
 		$class_array[] = $pill ? "rounded-pill" : ""; //pill shape
-		$class_array[] = $basic ? "badge-outline-{$colour}" : "bg-{$colour}";
 		$class_array[] = $right ? "float-right" : ""; // Legacy shortcut
 		$class_array[] = $approve_attr ? "approve-decision" : ""; // Legacy shortcut
 		$class_array[] = $tooltip ? "tooltip-trigger" : ""; // Legacy shortcut

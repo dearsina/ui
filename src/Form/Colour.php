@@ -2,7 +2,52 @@
 
 namespace App\UI\Form;
 
+use App\Common\str;
+
 class Colour extends Field implements FieldInterface {
+
+	/**
+	 * The step colours available.
+	 */
+	public const COLOURS = [
+		"plum",
+		"red",
+
+		"rust",
+		"orange",
+		"salmon",
+
+		"amber",
+		"yellow",
+		"lemon",
+
+		"meadow",
+		"green",
+		"pine",
+
+		"navy",
+		"blue",
+		"sky",
+
+		"grey",
+		"black",
+	];
+
+	public static function getColourOptions(): array
+	{
+		$colour_options = [];
+		foreach(Colour::COLOURS as $c){
+			$colour_options[$c] = [
+				"icon" => [
+					"colour" => $c,
+					"name" => "square",
+					"type" => "thick",
+				],
+				"title" => str::title($c),
+			];
+		}
+		return $colour_options;
+	}
 
 	/**
 	 *
