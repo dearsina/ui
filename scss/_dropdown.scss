@@ -337,6 +337,15 @@ ul.dropdown-menu > li:last-child > div > button,
 .btn-float-right > div > button.dropdown-item
 {
   width: min-content;
+  padding: 0; // Otherwise it will inherit the dropdown-item padding
+}
+
+/**
+ * Remove margin from buttons inside dropdown items
+ */
+.btn-float-right > div > button.dropdown-item > div > .btn
+{
+  margin: 0;
 }
 
 
