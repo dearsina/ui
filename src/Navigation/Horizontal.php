@@ -8,6 +8,7 @@ use App\Common\href;
 use App\Common\Img;
 use App\Common\str;
 use App\UI\Badge;
+use App\UI\Button;
 use App\UI\Dropdown;
 use App\UI\Grid;
 use App\UI\Icon;
@@ -52,6 +53,12 @@ class Horizontal {
 
 		$language_toggle = Dropdown::generateRootUl($this->levels[1]['language_toggle']);
 
+		if($this->levels[1]['button']){
+			foreach($this->levels[1]['button'] as $button){
+				$buttons .= Button::generate($button);
+			}
+		}
+
 		# Only include the toggle button if there are level 2 items
 		if($items = Dropdown::generateRootUl($this->levels[1]['items'])){
 			$toggle = $this->toggleButtonHtml();
@@ -63,6 +70,7 @@ class Horizontal {
 	<div style="display: flex;">
 		{$language_toggle}
 		{$items}
+		{$buttons}
 		{$toggle}
 	</div>
 </div>
