@@ -614,9 +614,10 @@ $sideways-tabs-height   : 1rem;
   margin : -1px;
 }
 
+// UI fix to ensure that tabs containing code do not go over buttons
 .tab-pane > .body-code code
 {
-  max-height : 50vh;
+  max-height : 100%;
   overflow   : auto;
   display    : block;
 }
