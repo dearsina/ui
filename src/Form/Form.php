@@ -374,6 +374,10 @@ class Form {
 		}
 
 		foreach($this->fields as $field){
+			if(!is_array($field)){
+				continue;
+			}
+
 			if($field['tabs']){
 				return true;
 			}
@@ -482,6 +486,9 @@ class Form {
 
 		# Translate each field (if a language ID is provided)
 		foreach($this->fields as &$field){
+			if(!is_array($field)){
+				continue;
+			}
 			if(class_exists("App\\Translation\\Translator")){
 				Translator::set($field, [
 					"rel_table" => "form_field",
