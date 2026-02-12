@@ -319,6 +319,17 @@ EOF;
 			else {
 				// Otherwise, if val is a string, then the key holds the value
 				$val_array['value'] = $key;
+
+				# The key in this context is the key from the option itself
+				if($keys){
+					# Ensure any quotes in the key are escaped, as they will be used in the value attribute of the checkbox, and unescaped quotes will break the HTML
+					$val_array['key'] = str_replace("\"", "\\\"", $keys[$key]);
+
+					/**
+					 * This is only used for calculations where the key is the value that should be fed to the calculation,
+					 * and the value is the human readable value shown to the user.
+					 */
+				}
 			}
 
 			if(is_array($val)){
@@ -482,6 +493,7 @@ EOF;
 		id="{$id}"
 		name="{$name}"
 		value="{$value}"
+		key="{$key}"
 		{$class_tag}
 		{$style_tag}
 		{$disabled}
