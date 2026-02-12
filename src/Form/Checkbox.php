@@ -480,6 +480,14 @@ EOF;
         # Style
         $style_tag = str::getAttrTag("style", $style);
 
+		# Key value
+		$key_tag = str::getAttrTag("key", $key);
+		/**
+		 * This is the key value from the form field options, it is used in calculations,
+		 * but not submitted with the form, as opposed to the value attribute which is
+		 * submitted with the form.
+		 */
+
         # $data
 		$data = self::getInputData($a);
 
@@ -493,7 +501,7 @@ EOF;
 		id="{$id}"
 		name="{$name}"
 		value="{$value}"
-		key="{$key}"
+		{$key_tag}
 		{$class_tag}
 		{$style_tag}
 		{$disabled}
