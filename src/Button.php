@@ -872,6 +872,7 @@ EOF;
 		}
 
 		return Dropdown::generateRootUl([
+			"id" => $a['id'] . "-dropdown",
 			"items" => [[
 				"title" => self::generate($a),
 				"children" => $children,

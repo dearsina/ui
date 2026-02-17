@@ -47,13 +47,14 @@ class Dropdown {
 
 			# If the line item has html instead of children
 			if($item['html']){
+				$id = str::getAttrTag("id", $meta['id']);
 				$class_array = str::getAttrArray(self::getDirectionClass($item, $level), $default_class);
 				$class = str::getAttrTag("class", $class_array);
 				$parent_div = self::generateParentDiv($item);
 				$content = self::generateMenuContent($item);
 				$script = str::getScriptTag($item['script']);
 				$data = str::getDataAttr($item['data']);
-				$html .= "<{$tag}{$class}{$data}>{$parent_div}{$content}</{$tag}>{$script}";
+				$html .= "<{$tag}{$id}{$class}{$data}>{$parent_div}{$content}</{$tag}>{$script}";
 				continue;
 			}
 
@@ -107,6 +108,8 @@ class Dropdown {
 			$style = str::getAttrTag("style", $item['style']);
 		}
 
+		$id = str::getAttrTag("id", $meta['id']);
+
 		$button_class = str::getAttrTag("class", ["dropdown-item dropdown-toggle", $item['button_class']]);
 		$menu = self::generateUl($item);
 
@@ -117,7 +120,7 @@ class Dropdown {
 		$script = str::getScriptTag($item['script']);
 
 		return <<<EOF
-<div{$class}{$style}>
+<div{$id}{$class}{$style}>
   <button{$button_class}{$alt} type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
     {$icon}<div class="dropdown-item-title">{$title}</div>
   </button>
