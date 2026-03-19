@@ -6,6 +6,9 @@
 {
   margin-right: 0.5rem;
   margin-left: unset;
+
+  // Add a slight shadow to handle flags with white sections
+  box-shadow: rgb(0 0 0 / 40%) 0px 1px 2.5px -1px;
 }
 
 .select2-container:not(.text-rtl) i.fa-light
