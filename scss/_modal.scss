@@ -18,19 +18,16 @@
  * Fix for Bootstrap 5.3.0
  * to avoid an extra scrollbar.
  */
-.modal
-{
-  overflow-y : hidden;
+.modal {
+  overflow-y: hidden;
 }
 
 /**
  * XXL modals
  */
-@include media-breakpoint-up(xxl)
-{
-  .modal-xxl
-  {
-    max-width : $modal-xxl;
+@include media-breakpoint-up(xxl) {
+  .modal-xxl {
+    max-width: $modal-xxl;
   }
 }
 
@@ -38,98 +35,86 @@
  * Ensure modal headers and footers are aligned with the body
  */
 .modal-header,
-.modal-footer-tabs
-{
-  padding : 1rem 5px;
+.modal-footer-tabs {
+  padding: 1rem 5px;
   // We need the padding for modals with tabs
 }
 
-.modal-footer
-{
-  padding : 0.5rem 0.25rem
+.modal-footer {
+  padding: 0.5rem 0.25rem
 }
 
-.modal-footer-tabs > .container
-{
-  display         : flex;
-  justify-content : space-between;
-  align-items     : center;
+.modal-footer-tabs > .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.modal-footer-tabs > .container > .footer-content
-{
-  padding-left : 0.5rem;
+.modal-footer-tabs > .container > .footer-content {
+  padding-left: 0.5rem;
 }
 
 /**
  * So that it is apparent that you can drag draggable modals.
  */
-.modal-header-draggable
-{
-  cursor : move;
+.modal-header-draggable {
+  cursor: move;
 }
 
 /**
  * Make modals look like cards
  */
-.modal-content
-{
-  box-shadow : 0 1px 3px rgba(0, 0, 0, .3);
-  border     : 1px solid #ffffff;
+.modal-content {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
+  border: 1px solid #ffffff;
 }
 
 /**
  * Not 100% sure about any repercussions, but
  * without it, button dropdowns drown.
  */
-.modal-dialog-scrollable .modal-content
-{
-  overflow : unset;
+.modal-dialog-scrollable .modal-content {
+  overflow: unset;
 }
 
 /**
  * The container for tabs in modals
  */
-.modal-tabs
-{
-  padding       : 0.7rem;
-  background    : $header-footer-bg;
-  border-radius : var(--bs-modal-border-radius);
-  height        : 100%;
+.modal-tabs {
+  padding: 0.7rem;
+  background: $header-footer-bg;
+  border-radius: var(--bs-modal-border-radius);
+  height: 100%;
   // Part of Tabs 2.0
 }
 
-.modal-tabs > .row
-{
+.modal-tabs > .row {
   //height: calc(100% - 45px);
-  height : calc(100% - 60px);
+  height: calc(100% - 60px);
   // Part of Tabs 2.0
 }
 
-.modal-tab .modal-footer
-{
+.modal-tab .modal-footer {
   border-top: unset;
 }
 
 /**
  * Make the header text stand out a little
  */
-.modal-header
-{
+.modal-header {
   //font-weight: 600;
   //background: $header-footer-bg;
 
-  text-transform : uppercase;
-  letter-spacing : 1.5px;
-  font-weight    : 400;
-  font-size      : smaller;
-  background     : hsla(210, 20%, 99%, 1);
-  border-bottom  : .9px solid $border-color;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-weight: 400;
+  font-size: smaller;
+  background: hsla(210, 20%, 99%, 1);
+  border-bottom: .9px solid $border-color;
 }
 
-.modal-title > .far
-{
-  font-weight : 100 !important;
+.modal-title > .far {
+  font-weight: 100 !important;
 }
 
 /**
@@ -137,60 +122,63 @@
  * be placed all the way to the right.
  * Padding and margins must be reset.
  */
-.modal-header .btn-close
-{
-  float   : right;
-  padding : 0;
-  margin  : 0;
+.modal-header .btn-close {
+  float: right;
+  padding: 0;
+  margin: 0;
 }
 
 /**
  * Give the main modal icon in the header
  * a little breathing room.
  */
-.modal-header .modal-title i:first-of-type
-{
-  margin-right : .5rem;
+.modal-header .modal-title i:first-of-type {
+  margin-right: .5rem;
 }
 
 //.modal-title{
 //  margin-bottom: 0; //Undoing Bootstrap
 //}
 
-.modal-body > *
-{
-  width : 100%; // For Microsoft Edge
-  width : -webkit-fill-available;
-  width : -moz-fill-available;
-  width : fill-available;
+.modal-body {
+  > * {
+    width: 100%; // For Microsoft Edge
+    width: -webkit-fill-available;
+    width: -moz-fill-available;
+    width: fill-available;
+  }
+
+  code {
+    font-size: 90%;
+    font-weight: normal;
+    font-family: "Roboto Mono", monospace !important;
+    word-wrap: break-word;
+    color: unset;
+  }
+
+  /**
+   * Set the body class to col-scroll to
+   * enable col-scrolling in one of the columns.
+   */
+  &.col-scroll {
+    display: flex;
+  }
+
+  /**
+   * Identifies the column to enable col-scrolling.
+   */
+  .col-scroll {
+    overflow-y: auto;
+    max-height: 100%;
+  }
 }
 
-/**
- * Set the body class to col-scroll to
- * enable col-scrolling in one of the columns.
- */
-.modal-body.col-scroll
-{
-  display : flex;
+.modal-footer {
+  background: $header-footer-bg;
 }
 
-/**
- * Identifies the column to enable col-scrolling.
- */
-.modal-body .col-scroll
-{
-  overflow-y : auto;
-  max-height : 100%;
-}
-
-.modal-footer
-{
-  background : $header-footer-bg;
-}
-
-.modal-footer > *
-{
-  margin : 0.25rem 0;
+.modal-footer > * {
+  margin: 0.25rem 0;
 }
 
 //.modal-footer > .container
@@ -208,46 +196,39 @@
  * The content sits behind the tabs.
  * This will give it the same background color.
  */
-.modal-tab > .modal-content
-{
-  background : $header-footer-bg;
+.modal-tab > .modal-content {
+  background: $header-footer-bg;
 }
 
-.modal-tab .modal-footer
-{
+.modal-tab .modal-footer {
   //margin : -14px 16px 11px 0;
 }
 
-.modal-tab .modal-footer > .container
-{
-  margin-top    : 12px;
-  margin-bottom : -12px;
-  margin-right  : -27px;
+.modal-tab .modal-footer > .container {
+  margin-top: 12px;
+  margin-bottom: -12px;
+  margin-right: -27px;
 }
 
 /**
  * A div that sits inside the modal-footer container.
  * Only visible when the footer is overwritten by forms.
  */
-.modal-footer > .container > .footer-content
-{
-  width : 50%;
+.modal-footer > .container > .footer-content {
+  width: 50%;
 }
 
 /**
  * Opening the QR code on small screens,
  * ensure the whole code is shown
  */
-@media (max-width : 576px)
-{
-  #qr-code .modal-content
-  {
-    min-height : 90vh;
+@media (max-width: 576px) {
+  #qr-code .modal-content {
+    min-height: 90vh;
   }
 }
 
-iframe.picker.shr-bb-shr-cb-shr-cc.picker-dialog-bg, div.picker.shr-bb-shr-cb.picker-dialog, div.picker.shr-bb-shr-cb-shr-cc.picker-dialog-bg
-{
+iframe.picker.shr-bb-shr-cb-shr-cc.picker-dialog-bg, div.picker.shr-bb-shr-cb.picker-dialog, div.picker.shr-bb-shr-cb-shr-cc.picker-dialog-bg {
   z-index: 1050 !important;
 }
 
