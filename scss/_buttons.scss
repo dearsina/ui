@@ -22,11 +22,13 @@ a.disabled-waiting{
 }
 
 /**
- * Create a more uniform min-size for the btn-sm size
+ * If mid-sized buttons don't have text, they shrink in height.
+ * This aims to address it.
  */
-.btn-m
+.btn-m .fa-fw
 {
-  padding: 0.62rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
 }
 
 .btn-sm
