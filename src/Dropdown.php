@@ -101,6 +101,7 @@ class Dropdown {
 			// If we're at the root, and a meta array has been passed
 			$class = str::getAttrTag("class", [$direction, $meta['class']]);
 			$style = str::getAttrTag("style", $meta['style']);
+			$data = str::getDataAttr($meta['data']);
 		}
 
 		else {
@@ -120,7 +121,7 @@ class Dropdown {
 		$script = str::getScriptTag($item['script']);
 
 		return <<<EOF
-<div{$id}{$class}{$style}>
+<div{$id}{$class}{$style}{$data}>
   <button{$button_class}{$alt} type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
     {$icon}<div class="dropdown-item-title">{$title}</div>
   </button>

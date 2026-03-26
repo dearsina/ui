@@ -956,6 +956,9 @@ EOF;
 			"class" => $class,
 			"style" => $parent_style,
 			"script" => $a['script'],
+			"data" => [
+				"narrative" => $a['narrative']
+			]
 		]);
 	}
 
