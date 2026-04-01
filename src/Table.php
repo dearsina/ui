@@ -218,7 +218,7 @@ EOF;
 			// If there is an "id" column, assume this is an order-able table that we're updating
 			return [
 				"order" => true,
-				"rel_table" => true
+				"rel_table" => true,
 				// As we don't know the rel_table, and we only need it to "be", set it to true
 			];
 		}
@@ -272,7 +272,7 @@ EOF;
 				"style" => $col['header_style'],
 				"icon" => $col['header_icon'],
 				"buttons" => $col['header_buttons'],
-				"button" => $col['header_button']
+				"button" => $col['header_button'],
 			];
 		}
 		return $header_cols;
@@ -315,12 +315,12 @@ EOF;
 
 		# Add the custom sortable "row" (as the first row)
 		$html = array_merge(["<!--SORTABLE-->" => [
-				"class" => $id ? "sortable-handlebars" : "",
-				"sm" => 1,
-				"header_style" => [
-					"max-width" => "2.5rem",
-				],
+			"class" => $id ? "sortable-handlebars" : "",
+			"sm" => 1,
+			"header_style" => [
+				"max-width" => "2.5rem",
 			],
+		],
 		], $html);
 
 		$meta['html'] = $html;
@@ -378,12 +378,18 @@ EOF;
 	private static function getOnDemandAttr($a)
 	{
 		foreach($a as $key => $val){
+			# Ignore the hash key root key, as it's used to generate the other data-attrs
 			if($key == 'hash'){
 				continue;
 			}
+
+			# For all other keys, load them as vars
 			$a['hash']['vars'][$key] = $val;
+
 			unset($a[$key]);
 		}
+
+		# Set the start to be zero
 		$a['hash']['vars']['start'] = 0;
 
 		/**
@@ -489,8 +495,8 @@ EOF;
 		$count_query = $base_query;
 
 		# If there is an offset (header row for example), remove it for the count, but keep the number
-		if($count_query['offset']){
-			$count_query_offset = $count_query['offset'];
+		if($count_query['offset'] || $offset){
+			$count_query_offset = $count_query['offset'] ?: $offset;
 			unset($count_query['offset']);
 		}
 
@@ -536,21 +542,11 @@ EOF;
 		}
 
 		$rows_query = $base_query;
+		self::setOrderBy($rows_query, $a);
+		self::setOffsetCte($rows_query, $a);
+
 		$rows_query['start'] = $start;
 		$rows_query['length'] = $length;
-
-		if($order_by_col && $order_by_dir){
-			//only if a col and dir have been given, otherwise use default
-			$complex_order_by = explode(".", $order_by_col);
-
-			if(count($complex_order_by) == 2){
-				$complex_order_by[] = $order_by_dir;
-				$rows_query['order_by'] = [$complex_order_by];
-			}
-			else {
-				$rows_query['order_by'] = [$order_by_col => $order_by_dir];
-			}
-		}
 
 		$rows = $sql->select($rows_query);
 
@@ -580,6 +576,56 @@ EOF;
 		return true;
 	}
 
+	public static function setOffsetCte(array &$rows_query, array $a): void
+	{
+		extract($a);
+
+		if(!$offset){
+			//only if an offset has been given, otherwise use the default
+			return;
+		}
+
+		$rows_query['cte'] = [
+			"offset" => [
+				"db" => $rows_query['db'],
+				"table" => $rows_query['table'],
+				"offset" => $offset,
+			],
+		];
+
+		$rows_query['db'] = NULL;
+		$rows_query['table'] = "offset";
+	}
+
+	private static function setOrderBy(array &$rows_query, array $a): void
+	{
+		extract($a);
+
+		if(!$order_by_col){
+			//only if a col has been given, otherwise use the default
+			return;
+		}
+
+		# If no direction is given, assume ASC
+		if(!$order_by_dir){
+			$order_by_dir = "ASC";
+		}
+
+		# Handle complex order bys (joining tables)
+		$complex_order_by = explode(".", $order_by_col);
+
+		if(count($complex_order_by) == 2){
+			$complex_order_by[] = $order_by_dir;
+			$rows_query['order_by'] = [$complex_order_by];
+			return;
+		}
+
+		# Set the order by
+		$rows_query['order_by'] = [
+			$order_by_col => $order_by_dir
+		];
+	}
+
 	public static function manageJsonRequest(array $a, ?array $base_query, ?object $row_handler, ?array $laps = NULL): bool
 	{
 		extract($a);
@@ -590,7 +636,7 @@ EOF;
 		$output_vars['id'] = $vars['id'];
 		// This is the grid ID
 
-		Output::getInstance()->setVar("query",  $sql->select($base_query, true));
+		Output::getInstance()->setVar("query", $sql->select($base_query, true));
 
 		# Run the query
 		if(!$rows = $sql->select($base_query)){
@@ -646,7 +692,7 @@ EOF;
 		$hash = $overrides['hash'] ?: [
 			"rel_table" => $overrides['rel_table'] ?: $rel_table,
 			"action" => $overrides['action'] ?: "new",
-			"vars" => $overrides['vars']
+			"vars" => $overrides['vars'],
 		];
 
 		return [
