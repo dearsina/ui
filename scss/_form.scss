@@ -100,6 +100,35 @@ form
   font-weight : 500;
 }
 
+.input-group-floating {
+  position: relative;
+}
+
+.input-group-floating input {
+  height: 60px;
+  padding: 20px 10px 5px 15px;
+}
+
+.input-group-floating label {
+  position: absolute;
+  left: 17px;
+  top: 17px;
+  padding-inline: .3em;
+  transition: transform 200ms;
+  pointer-events: none;
+  transform-origin: left;
+  translate: -.3em;
+}
+
+.input-group-floating input::placeholder {
+  opacity: 0;
+}
+
+.input-group-floating input:focus + label,
+.input-group-floating input:not(:placeholder-shown) + label {
+  transform: translateY(calc(10% - .75rem)) scale(0.7);
+}
+
 /**
  * Ensure label icons have space
  */
