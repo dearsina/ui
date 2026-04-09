@@ -69,6 +69,7 @@ $theme-colors                          : (
   //"maroon":	#85144b,
   "fuchsia":	#f012be,
   "purple":		#b10dc9,
+  "white":	    map-get($grays, "50"),
   "black":		map-get($grays, "900"), //#111111,
   "dark":		map-get($grays, "800"), //$dark,
   "gray":		map-get($grays, "600"), //#999999,
