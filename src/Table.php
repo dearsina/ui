@@ -299,7 +299,7 @@ EOF;
 			$html = $row;
 		}
 
-		if(!key_exists("id", $html)){
+		if(!array_key_exists("id", $html)){
 			throw new \Exception("To prepare a sortable table, an <code>id</code> key must be included per row.
 			This is different from a <code>row_id</code> key.");
 		}

@@ -256,7 +256,7 @@ class Button {
 		}
 
 		# If the common name is passed as an array key
-		if(key_exists("common", $a)){
+		if(array_key_exists("common", $a)){
 			$a = array_merge($a, Button::COMMON[$a['common']]);
 			unset($a['common']);
 		}
@@ -469,7 +469,7 @@ class Button {
 			return;
 		}
 
-		if(key_exists("approve", $a)){
+		if(array_key_exists("approve", $a)){
 			if(!is_array($a['approve'])){
 				$a['approve'] = [];
 			}

@@ -35,7 +35,7 @@ class Window extends Card{
 		$a['header']['controls'] = $this->windowControlIcons($a).$a['header']['html'];
 
 		# Default is true, but can be set to false
-		$a['resizable'] = key_exists("resizable", $a) ? $a['resizable'] : true;
+		$a['resizable'] = array_key_exists("resizable", $a) ? $a['resizable'] : true;
 
 		parent::__construct($a);
 

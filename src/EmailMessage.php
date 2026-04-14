@@ -1329,7 +1329,7 @@ EOF;
 	 *
 	 * @return string|null
 	 */
-	private function getPreheaderHTML(string $preheader = NULL): ?string
+	private function getPreheaderHTML(?string $preheader = NULL): ?string
 	{
 		if(!$preheader = $preheader ?: $this->preheader){
 			return NULL;

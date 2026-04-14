@@ -114,7 +114,7 @@ class Icon {
 		}
 
 		# If a default name has been given
-		if(key_exists($icon, self::DEFAULTS)){
+		if(array_key_exists($icon, self::DEFAULTS)){
 			$icon_array = self::DEFAULTS[$icon];
 			$icon_array['type'] = self::getType($icon_array['type']);
 			return $icon_array;

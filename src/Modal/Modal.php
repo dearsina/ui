@@ -536,7 +536,7 @@ EOF;
 			return NULL;
 		}
 
-		if(!key_exists("rows", $this->elements['rows'])){
+		if(!array_key_exists("rows", $this->elements['rows'])){
 			$this->elements['rows'] = [
 				"rows" => $this->elements['rows'],
 			];
@@ -595,7 +595,7 @@ EOF;
 			return NULL;
 		}
 
-		if(!key_exists("items", $this->elements['items'])){
+		if(!array_key_exists("items", $this->elements['items'])){
 			$this->elements['items'] = [
 				"items" => $this->elements['items'],
 			];

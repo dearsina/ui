@@ -128,7 +128,7 @@ class Copy {
 	 */
 	public static function generateButton(array &$a): void
 	{
-		if(!key_exists("copy", $a)){
+		if(!array_key_exists("copy", $a)){
 			return;
 		}
 
