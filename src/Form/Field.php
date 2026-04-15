@@ -130,11 +130,12 @@ class Field {
 	 * @param int|string|null $for   If set, will be the ID that this element's label is "for"
 	 * @param bool|null       $all   If set, will add a checkbox so that all values can be selected. Only used by
 	 *                               checkboxes.
+	 * @param string|null     $type  If set, will add a class to the label in the format "field-label-{type}", to allow for type-specific styling of labels, e.g. checkboxes.
 	 *
 	 * @return false|string
 	 * @throws \Exception
 	 */
-	static function getLabel($label, $title, $name, $id, ?string $for = NULL, ?bool $all = NULL)
+	static function getLabel($label, $title, $name, $id, ?string $for = NULL, ?bool $all = NULL, ?string $type = NULL)
 	{
 		if($label === false){
 			return false;
@@ -166,6 +167,10 @@ class Field {
 
 		# Class
 		$class_array = str::getAttrArray($l['class'], "field-label", $l['only_class']);
+		if($type){
+			$class_array[] = "field-label-{$type}";
+			//to allow for type-specific styling of labels, e.g. checkboxes
+		}
 		$class = str::getAttrTag("class", $class_array);
 
 		# Style

@@ -246,7 +246,7 @@ EOF;
 	{
 		extract($a);
 
-		$parent_label = self::getLabel($label, $parent_title, $name, $id, NULL, $all);
+		$parent_label = self::getLabel($label, $parent_title, $name, $id, NULL, $all, $type);
 
 		$parent_class = str::getAttrArray($parent_class, "mb-3", $only_parent_class);
 		$parent_style = str::getAttrArray($parent_style, NULL, $only_parent_style);

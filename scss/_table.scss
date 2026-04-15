@@ -138,6 +138,11 @@
   padding        : 0.25rem;
 }
 
+// So that we can see what row we're hovering over
+.table-body:hover {
+  background: #f9fafa;
+}
+
 /**
  * Remove the paragraph margin bottom.
  */

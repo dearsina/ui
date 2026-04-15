@@ -43,6 +43,10 @@
 .modal-footer {
   padding: 0.5rem 0.25rem
 }
+.modal-footer > .container > .row > .col-auto {
+  display: flex;
+  align-items: center;
+}
 
 .modal-footer-tabs > .container {
   display: flex;

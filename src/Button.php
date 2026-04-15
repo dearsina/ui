@@ -599,6 +599,8 @@ class Button {
 
 		$href = href::generate($a);
 
+		$target = str::getAttrTag("target", $target);
+
 		# Style with override
 		$style_array = str::getAttrArray($style, false, $only_style);
 
@@ -779,6 +781,7 @@ class Button {
 <{$tag_type}
 {$id_tag}
 {$href}
+{$target}
 {$name}
 {$value}
 {$class_tag}
@@ -956,6 +959,9 @@ EOF;
 			"class" => $class,
 			"style" => $parent_style,
 			"script" => $a['script'],
+			"data" => [
+				"narrative" => $a['narrative']
+			]
 		]);
 	}
 

@@ -413,7 +413,7 @@ class Grid {
 	 *
 	 * @return string Returns HTML
 	 */
-	public static function generate(array $cells, ?object $formatter = NULL): string
+	public static function generate(array $cells, ?object $formatter = NULL): ?string
 	{
 		$grid = new Grid([
 			"formatter" => $formatter,
@@ -450,6 +450,8 @@ class Grid {
 		if($rows['breakpoint'] === false){
 			$row_class[] = "row-cols-2";
 		}
+
+		$grid = [];
 
 		foreach($rows['rows'] as $key => $value){
 			# Formatting of the left side of the row
