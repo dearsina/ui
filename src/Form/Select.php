@@ -62,9 +62,17 @@ class Select extends Field implements FieldInterface {
 		# Other
 		$other = self::getOther($a);
 
+		# Give selects with "other" support a stable display name when the value
+		# is temporarily carried by the companion text input.
+		if($other && !$multiple){
+			$a['data']['display_name'] = "{$id}-display-only";
+		}
+
 		# Name
-		$name = self::otherValueSelected($a) ? NULL : $name;
-		// If an "other" value is selected, remove the name from the main select
+		if(self::otherValueSelected($a)){
+			$name = $a['data']['display_name'];
+			$a['data']['display_field'] = true;
+		}
 
 		# Settings
 		$data = self::getSelectData($a);
