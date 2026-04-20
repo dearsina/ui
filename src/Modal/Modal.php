@@ -583,7 +583,7 @@ EOF;
 
 		$class = str::getAttrTag("class", ["modal-tabs"]);
 
-		return "<div{$class}{$style}>{$html}</html>";
+		return "<div{$class}>{$html}</html>";
 	}
 
 	/**

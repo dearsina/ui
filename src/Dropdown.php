@@ -133,6 +133,7 @@ EOF;
 
 	public static function getChildrenList(array $children): ?string
 	{
+        $level = 0;
 		foreach($children as $child){
 			# If the child itself has children or is to be loaded via AJAX
 			if($child['children'] || $child['ajax']){
@@ -194,7 +195,7 @@ EOF;
 <div{$ul_class}{$ul_id}{$ul_data}>
 	<div class="dropdown-menu-up">{$icon_up}</div>
 	<div class="dropdown-menu-container">
-		<ul{$div_class}{$div_style}>{$lis}</ul>
+		<ul{$div_class}>{$lis}</ul>
 	</div>
 	<div class="dropdown-menu-down" key="val">{$icon_down}</div>
 </div>
@@ -306,7 +307,7 @@ EOF;
 			$title = "<span>{$title}</span>";
 		}
 
-		return "<div data-bs-toggle=\"dropdown\" data-bs-auto-close=\"outside\"{$data}{$auto_close}{$class}{$alt}>{$icon}{$title}</div>";
+		return "<div data-bs-toggle=\"dropdown\" data-bs-auto-close=\"outside\"{$data}{$class}{$alt}>{$icon}{$title}</div>";
 	}
 
 	/**

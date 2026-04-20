@@ -15,6 +15,9 @@ class MySQL extends Prototype implements \App\Common\Example\ExampleInterface {
 	 */
 	public function getHTML($a = NULL)
 	{
+        if (is_array($a)) {
+            extract($a);
+        }
 		$grid = new Grid();
 
 		$examples[] = [
@@ -73,7 +76,7 @@ class MySQL extends Prototype implements \App\Common\Example\ExampleInterface {
 					"subscription_id" => "123",
 					[
 						"subscription_id" => NULL,
-						$workflow['person'] ? "person" : "multiselect" => true,
+                        ($workflow['person'] ?? false) ? "person" : "multiselect" => true,
 					],
 					//					[
 					//						"subscription_id" => NULL,

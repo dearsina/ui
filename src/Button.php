@@ -226,7 +226,7 @@ class Button {
 		}
 
 		# Localise
-		self::ajaxify($button, $rel_table, $rel_id, $action, $vars);
+		self::ajaxify($button, $rel_table, $rel_id, $action ?? null, $vars);
 
 		# Apply overrides
 		if($overrides){

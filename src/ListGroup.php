@@ -88,6 +88,8 @@ class ListGroup {
 			}
 		}
 
+        $html = "";
+
 		# If there is a cap on the number of items that can be display per line
 		if($a['cap'] && count($a['items']) > $a['cap']){
 			while(!empty($a['items'])) {
@@ -191,7 +193,7 @@ class ListGroup {
 		# Accordion
 
 		# Title + Subtitle + Body
-		$html .= $item['title'] ? self::generateTitle($item['title']) : NULL;
+		$html = $item['title'] ? self::generateTitle($item['title']) : NULL;
 		$html .= $item['subtitle'] ? self::generateSubtitle($item['subtitle']) : NULL;
 		$html .= $item['body'] ? self::generateBody($item['body']) : NULL;
 

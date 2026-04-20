@@ -60,8 +60,9 @@ class Accordion {
 		}
 
 		# This is the accordion wrapper ID
-		$id = $id ?: str::id("accordion");
+		$id = $id ?? str::id("accordion");
 
+        $html = "";
 		foreach($a as $collapsable){
 			$html .= self::generateCollapsable($collapsable, $id);
 		}

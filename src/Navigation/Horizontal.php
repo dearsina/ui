@@ -178,7 +178,7 @@ EOF;
 	 */
 	public function getHTML(): string
 	{
-		$html .= $this->getLevel1HTML();
+		$html = $this->getLevel1HTML();
 		$html .= $this->getLevel2HTML();
 		return $html;
 	}
@@ -190,7 +190,7 @@ EOF;
 	 */
 	public function getFooterHTML(): string
 	{
-		$html .= $this->getLevel2FooterHTML();
+		$html = $this->getLevel2FooterHTML();
 		$html .= $this->getLevel1FooterHTML();
 		return $html;
 	}

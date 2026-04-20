@@ -785,7 +785,8 @@ EOF;
 				"label" => $label,
 				"options" => $options,
 				"name" => "{$column}[]",
-				"checked" => in_array($id, $vars[$column] ?: []),
+                // TODO: Review logic here
+//				"checked" => in_array($id, $vars[$column] ?: []),
 			];
 		}
 

@@ -5,6 +5,7 @@ namespace App\UI\Examples;
 
 class Gridstack {
 	function getHTML(){
+        $buttons = [];
 		for($i = 0;$i < 10; $i++){
 			$buttons[] = [
 				"title" => "Title {$i}",
