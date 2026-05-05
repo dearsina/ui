@@ -352,6 +352,110 @@ $step                  : 0;
   @include striped-border($design, $colour-name, $colour-value);
 }
 
+/**
+ * Process flow group colour nodes.
+ *
+ * These use the subscription theme palette like the border-colour nodes,
+ * but retain the fully filled node treatment used by groups.
+ */
+.drawflow_content_node > .card.process-flow-group-colour
+{
+  color            : var(--process-flow-group-text, inherit);
+  border-color     : var(--process-flow-group-colour) !important;
+  background-color : var(--process-flow-group-colour);
+}
+
+.drawflow_content_node > .card.process-flow-group-colour .ui-icon
+{
+  filter : var(--process-flow-group-icon-filter, none);
+}
+
+.drawflow-node.selected .process-flow-group-colour
+{
+  border-color     : var(--process-flow-group-header) !important;
+  background-color : var(--process-flow-group-header);
+}
+
+.process-flow-group-colour > .card-header
+{
+  background-color : var(--process-flow-group-header);
+  color            : white;
+}
+
+.process-flow-group-colour > .card-header *
+{
+  color : inherit !important;
+}
+
+.process-flow-group-colour > .card-header .ui-icon
+{
+  filter : invert(1);
+}
+
+.drawflow-node.selected .process-flow-group-colour > .card-header
+{
+  background-color   : var(--process-flow-group-colour);
+  color              : black;
+  box-shadow         : 0px 0px 5px 0px hsl(0deg 0% 0% / 20%);
+  -webkit-box-shadow : 0px 0px 5px 0px hsl(0deg 0% 0% / 20%);
+  -moz-box-shadow    : 0px 0px 5px 0px hsl(0deg 0% 0% / 20%);
+}
+
+.drawflow-node.selected .process-flow-group-colour > .card-header *
+{
+  color : inherit !important;
+}
+
+.drawflow-node.selected .process-flow-group-colour > .card-header .ui-icon
+{
+  filter : none;
+}
+
+.process-flow-group-colour > .container > .list-group,
+.process-flow-group-colour .masonry-grid-tile-inner
+{
+  background-color   : var(--process-flow-group-subtle);
+  margin-bottom      : 1.2rem;
+  font-size          : 75%;
+  box-shadow         : inset 0px 0px 5px 0px hsl(0deg 0% 0% / 20%);
+  -webkit-box-shadow : inset 0px 0px 5px 0px hsl(0deg 0% 0% / 20%);
+  -moz-box-shadow    : inset 0px 0px 5px 0px hsl(0deg 0% 0% / 20%);
+}
+
+.drawflow-node.selected .process-flow-group-colour > .container > .list-group,
+.drawflow-node.selected .process-flow-group-colour .masonry-grid-tile-inner
+{
+  background-color   : var(--process-flow-group-colour);
+  box-shadow         : 0px 0px 5px 0px hsl(0deg 0% 0% / 20%);
+  -webkit-box-shadow : 0px 0px 5px 0px hsl(0deg 0% 0% / 20%);
+  -moz-box-shadow    : 0px 0px 5px 0px hsl(0deg 0% 0% / 20%);
+}
+
+.process-flow-group-colour > .container > .list-group > .list-group-item
+{
+  background-color : unset;
+  padding          : 5px;
+}
+
+@each $colour-name, $colour-value in $theme-colors
+{
+  .node-group-colour-#{$colour-name}
+  {
+    --process-flow-group-colour : var(--bs-#{$colour-name});
+    --process-flow-group-header : var(--bs-#{$colour-name}-header);
+    --process-flow-group-subtle : #ffffff;
+  }
+}
+
+@each $colour-name in ("plum", "red", "rust", "meadow", "pine", "navy", "blue", "black")
+{
+  .node-group-colour-#{$colour-name}
+  {
+    --process-flow-group-text        : white;
+    --process-flow-group-icon-filter : invert(1);
+  }
+}
+
 // Set any root colours
 :root
 {
