@@ -135,6 +135,11 @@ EOF;
 	{
         $level = 0;
 		foreach($children as $child){
+			# Failsafe
+			if(!is_array($child) && !is_bool($child) && !is_null($child)){
+				continue;
+			}
+
 			# If the child itself has children or is to be loaded via AJAX
 			if($child['children'] || $child['ajax']){
 				$lis .= "<li>" . self::generateChildren($child, $level + 1) . "</li>";
