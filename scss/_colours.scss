@@ -122,7 +122,26 @@ $theme-colors                          : (
     --bs-#{$color}-border-subtle: #{tint-color($value, 60%)};
     --bs-#{$color}-text-emphasis: #{shade-color($value, 60%)};
   }
+
+  /**
+   * Special variations for the process flow form group node headers
+   */
+  --bs-red-header: hsl(358 70% 58% / 1);
+  --bs-rust-header: #c4591f;
+  --bs-orange-header: #e06227;
+  --bs-salmon-header: hsl(13 69% 58% / 1);
+  --bs-amber-header: #e09d2d;
+  --bs-yellow-header: #debf30;
+  --bs-meadow-header: #65ab69;
+  --bs-green-header: hsl(142 58% 44% / 1);
+  --bs-pine-header: hsl(162 81% 28% / 1);
+  --bs-navy-header: #0062d0;
+  --bs-blue-header: #5496c0;
+  --bs-sky-header: hsl(203 33% 63% / 1);
+  --bs-grey-header: hsl(203 5% 45% / 1);
 }
+
+
 
 //$success-bg-subtle:       #dff0d8;
 $info-bg-subtle                        : #d9edf7;
@@ -162,6 +181,22 @@ $utilities                             : (
                 )
         ),
 );
+
+/**
+ * Increase a colour's HSL lightness by the requested amount.
+ *
+ * Sass normalises colour values internally, so hex input is converted
+ * automatically before the lightness adjustment is applied.
+ */
+@function increase-hsl-lightness($colour, $amount: 20%)
+{
+  @if type-of($colour) != "color"
+  {
+    @error "increase-hsl-lightness expects a colour value. Got `#{$colour}`.";
+  }
+
+  @return adjust-color($colour, $lightness: $amount);
+}
 
 /**
  * Create the .text-[COLOUR] classes.
