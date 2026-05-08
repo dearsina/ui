@@ -72,7 +72,8 @@ class Dropdown {
 	private static function generateChildren(array $item, ?int $level = 0, ?array $meta = NULL): string
 	{
 		$icon = Icon::generate($item['icon']);
-		$title = $item['title'];
+		$title = self::generateDropdownTitle($item);
+		$wrapper_data = NULL;
 
 		switch($item['direction']) {
 		case 'left':
@@ -101,7 +102,7 @@ class Dropdown {
 			// If we're at the root, and a meta array has been passed
 			$class = str::getAttrTag("class", [$direction, $meta['class']]);
 			$style = str::getAttrTag("style", $meta['style']);
-			$data = str::getDataAttr($meta['data']);
+			$wrapper_data = str::getDataAttr($meta['data']);
 		}
 
 		else {
@@ -112,6 +113,14 @@ class Dropdown {
 		$id = str::getAttrTag("id", $meta['id']);
 
 		$button_class = str::getAttrTag("class", ["dropdown-item dropdown-toggle", $item['button_class']]);
+		$button_data = [
+			"bs-toggle" => "dropdown",
+			"bs-auto-close" => $item['auto_close'] ?: "outside",
+		];
+		if(is_array($item['data'])){
+			$button_data = array_merge($button_data, $item['data']);
+		}
+		$button_data = str::getDataAttr($button_data);
 		$menu = self::generateUl($item);
 
 		# Add a title attribute if one is set
@@ -121,9 +130,9 @@ class Dropdown {
 		$script = str::getScriptTag($item['script']);
 
 		return <<<EOF
-<div{$id}{$class}{$style}{$data}>
-  <button{$button_class}{$alt} type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
-    {$icon}<div class="dropdown-item-title">{$title}</div>
+<div{$id}{$class}{$style}{$wrapper_data}>
+  <button{$button_class}{$alt}{$button_data} type="button" aria-expanded="false">
+    {$icon}{$title}
   </button>
   {$menu}
 </div>
@@ -289,6 +298,48 @@ EOF;
 		return $level ? "dropend" : "dropdown";
 	}
 
+	private static function getDropdownTooltip(array $item): ?array
+	{
+		if(!$tooltip = $item['tooltip']){
+			return NULL;
+		}
+
+		if(is_bool($tooltip)){
+			return [
+				"title" => $item['alt'] ?: $item['title'],
+			];
+		}
+
+		if(!is_array($tooltip)){
+			return ["title" => $tooltip];
+		}
+
+		return $tooltip;
+	}
+
+	private static function generateDropdownTitle(array $item, ?string $title = NULL): string
+	{
+		$title = $title ?: $item['title'];
+
+		if(!$tooltip = self::getDropdownTooltip($item)){
+			return "<div class=\"dropdown-item-title\">{$title}</div>";
+		}
+
+		$data = [
+			"bs-original-title" => htmlentities($tooltip['title']),
+			"bs-toggle" => "tooltip",
+			"bs-html" => "true",
+			"bs-placement" => $tooltip['placement'] ?: "top",
+		];
+		if($tooltip['class']){
+			$data['bs-custom-class'] = $tooltip['class'];
+		}
+
+		$data = str::getDataAttr($data);
+
+		return "<div class=\"dropdown-item-title tooltip-trigger\"{$data}>{$title}</div>";
+	}
+
 	/**
 	 * Separated out to avoid confusion as some attributes
 	 * are shared with the parent <li> tag.
@@ -299,11 +350,16 @@ EOF;
 	 */
 	private static function generateParentDiv(array $item): string
 	{
-		$data = str::getDataAttr([
-			"bs-auto-close" => $item['auto_close'],
-		]);
+		$data = [
+			"bs-toggle" => "dropdown",
+			"bs-auto-close" => $item['auto_close'] ?: "outside",
+		];
+		if(is_array($item['data'])){
+			$data = array_merge($data, $item['data']);
+		}
+		$data = str::getDataAttr($data);
 		$alt = str::getAttrTag("title", $item['alt'] ?: trim(strip_tags($item['title'])));
-		$class = str::getAttrTag("class", "dropdown-item dropdown-toggle");
+		$class = str::getAttrTag("class", ["dropdown-item dropdown-toggle", $item['class']]);
 		$icon = Icon::generate($item['icon']);
 		$title = $item['title'];
 
@@ -312,7 +368,9 @@ EOF;
 			$title = "<span>{$title}</span>";
 		}
 
-		return "<div data-bs-toggle=\"dropdown\" data-bs-auto-close=\"outside\"{$data}{$class}{$alt}>{$icon}{$title}</div>";
+		$title = self::generateDropdownTitle($item, $title);
+
+		return "<div{$data}{$class}{$alt}>{$icon}{$title}</div>";
 	}
 
 	/**
