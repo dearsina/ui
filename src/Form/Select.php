@@ -21,6 +21,29 @@ class Select extends Field implements FieldInterface {
 
 		# Label
 		$label = self::getLabel($label, $title, $name, $id, $for);
+		$floating_label = NULL;
+
+		# Floating label
+		if(self::useFloatingLabel($a, $label)){
+			$floating_label = $label;
+			$label = NULL;
+			$a['_use_floating_label'] = true;
+			$default_parent_class = [
+				"input-group",
+				"input-group-floating",
+				"input-group-floating-select",
+				"mb-3",
+			];
+
+			if($multiple){
+				$default_parent_class[] = "input-group-floating-select-multiple";
+			}
+		}
+
+		# Non-floating label
+		else {
+			$default_parent_class = ["input-group", "mb-3"];
+		}
 
 		# Options
 		$options_html = self::getOptionsHTML($a);
@@ -29,7 +52,7 @@ class Select extends Field implements FieldInterface {
 		$multiple = str::getAttrTag("multiple", $multiple ? "multiple" : false);
 
 		# Parent class
-		$parent_class_array = str::getAttrArray($parent_class, ["input-group mb-3", $disabled_parent_class], $only_parent_class);
+		$parent_class_array = str::getAttrArray($parent_class, array_merge($default_parent_class, [$disabled_parent_class]), $only_parent_class);
 		$parent_class = str::getAttrTag("class", $parent_class_array);
 
 		# Parent style
@@ -95,6 +118,7 @@ class Select extends Field implements FieldInterface {
 	>
 	{$options_html}
 	</select>
+	{$floating_label}
 	{$desc}
 	{$other}
 </div>
@@ -202,7 +226,7 @@ EOF;
 		extract($a);
 		$class_array = str::getAttrArray($class, "select2js", $only_class);
 		$settings['containerCssClass'] = str::getAttrTag(false, $class_array);
-		$settings['placeholder'] = self::getPlaceholder($placeholder);
+		$settings['placeholder'] = !empty($a['_use_floating_label']) && !$multiple ? " " : self::getPlaceholder($placeholder);
 		$settings['ajax'] = $ajax;
 		$settings['value'] = $value;
 
@@ -238,6 +262,15 @@ EOF;
 			"onChange" => self::getOnChange($a),
 			"onDemand" => $onDemand ?: $ondemand,
 		]));
+	}
+
+	private static function useFloatingLabel(array $a, ?string $label): bool
+	{
+		if(empty($a['floating_label']) || $label === NULL || trim(strip_tags($label)) === ""){
+			return false;
+		}
+
+		return true;
 	}
 
 	/**

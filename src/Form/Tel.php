@@ -42,6 +42,10 @@ class Tel extends Field implements FieldInterface {
 		# Generate the ID for the a field up front
 		$a['id'] = $a['id'] ?: str::id($a['type']);
 
+		if(!empty($a['floating_label'])){
+			$a['parent_class'] = str::getAttrArray($a['parent_class'], "input-group-floating-tel");
+		}
+
 		/**
 		 * The b-field is a hidden field that will carry
 		 * the actual telephone number value.
