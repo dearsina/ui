@@ -104,6 +104,14 @@ form
   position: relative;
 }
 
+/**
+ * Make an exception for when the field is being edited
+ */
+.grid-stack .input-group-floating
+{
+  width: calc(100% - 1.5rem);
+}
+
 .input-group-floating input {
   height: 60px;
   padding: 20px 10px 5px 15px;
