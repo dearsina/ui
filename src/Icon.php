@@ -114,7 +114,7 @@ class Icon {
 		}
 
 		# If a default name has been given
-		if(key_exists($icon, self::DEFAULTS)){
+		if(array_key_exists($icon, self::DEFAULTS)){
 			$icon_array = self::DEFAULTS[$icon];
 			$icon_array['type'] = self::getType($icon_array['type']);
 			return $icon_array;
@@ -196,27 +196,27 @@ class Icon {
 		return "<span {$class} {$style}>" . implode("\r\n", $icon_stack) . "</span>";
 	}
 
-	/**
-	 * Returns the actual i-tag HTMl that is the icon..
-	 *  Requires either an array of icon information,
-	 *  or a string with the icon name.
-	 *
-	 *  <code>
-	 *  $icon_html = Icon::generate([
-	 *     "name" => "copy",
-	 *     "type" => "light",
-	 *     "transform" => "left-8"
-	 *  ]);
-	 *
-	 *  $icon_html = Icon::generate("copy");
-	 *  </code>
-	 *
-	 * @param $a array|string|null The icon information could be as little as a string name, or a full array of icon data,
-	 *                             or an array of icon data arrays to stack.
-	 *
-	 * @return string|null
-	 */
-	static function generate($a = NULL): ?string
+    /**
+     * Returns the actual i-tag HTMl that is the icon..
+     *  Requires either an array of icon information,
+     *  or a string with the icon name.
+     *
+     *  <code>
+     *  $icon_html = Icon::generate([
+     *     "name" => "copy",
+     *     "type" => "light",
+     *     "transform" => "left-8"
+     *  ]);
+     *
+     *  $icon_html = Icon::generate("copy");
+     *  </code>
+     *
+     * @param array|string|null $a array|string|null The icon information could be as little as a string name, or a full array of icon data,
+     *                             or an array of icon data arrays to stack.
+     *
+     * @return string|null
+     */
+	static function generate(array|string|null $a = NULL): ?string
 	{
 		if(!$a){
 			return NULL;

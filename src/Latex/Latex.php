@@ -17,7 +17,7 @@ class Latex {
 		// Remove % for PHP evaluation
 		$phpCalc = str_replace('%', '', $formula);
 		eval('$result = ' . $phpCalc . ';');
-		$result = number_format($result, 2);
+		$result = number_format($result ?? 0, 2);
 
 		$formula = str_replace('%', '\%', $formula);
 

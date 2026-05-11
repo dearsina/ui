@@ -536,7 +536,7 @@ EOF;
 			return NULL;
 		}
 
-		if(!key_exists("rows", $this->elements['rows'])){
+		if(!array_key_exists("rows", $this->elements['rows'])){
 			$this->elements['rows'] = [
 				"rows" => $this->elements['rows'],
 			];
@@ -583,7 +583,7 @@ EOF;
 
 		$class = str::getAttrTag("class", ["modal-tabs"]);
 
-		return "<div{$class}{$style}>{$html}</html>";
+		return "<div{$class}>{$html}</html>";
 	}
 
 	/**
@@ -595,7 +595,7 @@ EOF;
 			return NULL;
 		}
 
-		if(!key_exists("items", $this->elements['items'])){
+		if(!array_key_exists("items", $this->elements['items'])){
 			$this->elements['items'] = [
 				"items" => $this->elements['items'],
 			];

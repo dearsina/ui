@@ -8,7 +8,7 @@ class Grid {
 	function getHTML(){
 		$grid = new \App\UI\Grid();
 		$grid->set("<div style='background-color:red;'>This is a string</div>");
-		$html .= $grid->getHTML();
+		$html = $grid->getHTML();
 
 		$html .= "<hr/>";
 

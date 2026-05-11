@@ -161,6 +161,7 @@ class Form extends Prototype implements ExampleInterface {
 			"required" => true
 		];
 
+        $estimate = $estimate ?? null;
 		$fields[] = [
 			"type" => "range",
 			"name" => "estimate",

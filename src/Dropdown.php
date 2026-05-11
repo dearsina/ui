@@ -142,6 +142,7 @@ EOF;
 
 	public static function getChildrenList(array $children): ?string
 	{
+        $level = 0;
 		foreach($children as $child){
 			# Failsafe
 			if(!is_array($child) && !is_bool($child) && !is_null($child)){
@@ -208,7 +209,7 @@ EOF;
 <div{$ul_class}{$ul_id}{$ul_data}>
 	<div class="dropdown-menu-up">{$icon_up}</div>
 	<div class="dropdown-menu-container">
-		<ul{$div_class}{$div_style}>{$lis}</ul>
+		<ul{$div_class}>{$lis}</ul>
 	</div>
 	<div class="dropdown-menu-down" key="val">{$icon_down}</div>
 </div>

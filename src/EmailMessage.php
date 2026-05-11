@@ -400,6 +400,7 @@ EOF;
 			//If unable to open the app css
 			return;
 		}
+        $contents = "";
 		while(!feof($handle)) {
 			$contents .= fread($handle, 100);
 			if(preg_match("/:root,[\r\n]{1,2}\[[^\]]+\]\s+{([^}]+)}/", $contents, $matches)){
@@ -1329,7 +1330,7 @@ EOF;
 	 *
 	 * @return string|null
 	 */
-	private function getPreheaderHTML(string $preheader = NULL): ?string
+	private function getPreheaderHTML(?string $preheader = NULL): ?string
 	{
 		if(!$preheader = $preheader ?: $this->preheader){
 			return NULL;

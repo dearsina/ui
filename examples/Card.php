@@ -82,7 +82,7 @@ class Card extends Prototype implements ExampleInterface {
 			"body" => "This is the body."
 		]);
 
-		$html .= $card->getHTML();
+		$html = $card->getHTML();
 
 		$card = new \App\UI\Card\Card([
 			"header" => [

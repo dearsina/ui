@@ -333,7 +333,7 @@ class Page {
 	public function getHTML()
 	{
 
-		$html .= $this->getScriptHTML();
+		$html = $this->getScriptHTML();
 
 		if($this->sm){
 			$html .= Grid::generate([[

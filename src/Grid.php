@@ -427,7 +427,7 @@ class Grid {
 			return NULL;
 		}
 
-		if(!key_exists("rows", $rows)){
+		if(!array_key_exists("rows", $rows)){
 			$rows = [
 				"rows" => $rows,
 			];
