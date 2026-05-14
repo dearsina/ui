@@ -97,11 +97,15 @@ class Chart {
 			is_array($hash) ? 'chartjs-ondemand' : NULL,
 		], $only_class));
 		$style_attr = str::getAttrTag('style', str::getAttrArray($style, [], $only_style));
-		$stage_style_attr = str::getAttrTag('style', array_merge([
+		$stage_style_array = array_merge([
 			'height' => $height ?: '320px',
 			'position' => 'relative',
 			'width' => '100%',
-		], $stage_style ?: []));
+		], $stage_style ?: []);
+		$stage_style_attr = str::getAttrTag('style', $stage_style_array);
+		$loading_style_attr = str::getAttrTag('style', array_merge($stage_style_array, [
+			'display' => 'none',
+		]));
 		$data_attr = str::getDataAttr([
 			'settings' => $config ? base64_encode(json_encode($config)) : NULL,
 			'hash' => $hash,
@@ -110,6 +114,7 @@ class Chart {
 			'loading_message' => $loading_message ?: 'Loading chart...',
 			'summary' => $summary ?: NULL,
 		], true);
+		$loading_html = Wait::get($loading_message ?: 'Loading chart');
 		$empty_html = $empty_message ?: 'No chart data is available for the selected filters.';
 		$summary_html = $summary ?: '&nbsp;';
 		$script_tag = str::getScriptTag($script);
@@ -119,6 +124,7 @@ class Chart {
 	<div class="chartjs-chart-stage"{$stage_style_attr}>
 		<canvas class="chartjs-chart-canvas"></canvas>
 	</div>
+	<div class="chartjs-chart-loading"{$loading_style_attr}>{$loading_html}</div>
 	<div class="chartjs-chart-empty text-muted small" style="display:none; margin-top:0.75rem;">{$empty_html}</div>
 	<div class="chartjs-chart-summary text-muted smallest" style="margin-top:0.75rem;">{$summary_html}</div>
 </div>{$script_tag}
