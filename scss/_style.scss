@@ -894,3 +894,32 @@ a.masonry-grid-tile-inner:hover
 {
   margin-left: 0;
 }
+
+/**
+ * Shared form fields search
+ */
+#shared-form-fields .mb-3 {
+  margin: 0 !important;
+}
+#shared-form-fields .shared-form-fields-search-area {
+  padding-bottom: 1rem;
+}
+#shared-form-fields .shared-form-fields-search {
+  margin: 0 0 1rem !important;
+}
+#shared-form-fields .shared-form-fields-search-input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+  background: center / 1rem 1rem no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath fill='%23888888' d='M14.348 5.652a.9.9 0 0 0-1.272 0L10 8.727 6.924 5.652a.9.9 0 1 0-1.272 1.272L8.727 10l-3.075 3.076a.9.9 0 1 0 1.272 1.272L10 11.273l3.076 3.075a.9.9 0 1 0 1.272-1.272L11.273 10l3.075-3.076a.9.9 0 0 0 0-1.272Z'/%3E%3C/svg%3E");
+}
+#shared-form-fields .shared-form-fields-search-input::-webkit-search-cancel-button:hover {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath fill='%23ff0000' d='M14.348 5.652a.9.9 0 0 0-1.272 0L10 8.727 6.924 5.652a.9.9 0 1 0-1.272 1.272L8.727 10l-3.075 3.076a.9.9 0 1 0 1.272 1.272L10 11.273l3.076 3.075a.9.9 0 1 0 1.272-1.272L11.273 10l3.075-3.076a.9.9 0 0 0 0-1.272Z'/%3E%3C/svg%3E");
+}
+#shared-form-fields .shared-form-fields-search-empty {
+  display: none;
+  font-size: 80%;
+  padding-bottom: 1rem;
+}
