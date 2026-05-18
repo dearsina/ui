@@ -398,7 +398,8 @@ EOF;
 		$grand_parent_class = str::getAttrTag("class", $grand_parent_class_array);
 
 		# Grandparent style
-		$grand_parent_style = str::getAttrTag("style", $a['grand_parent_style']);
+		$grand_parent_style_array = str::getAttrArray($a['grand_parent_style'], NULL, $a['only_grand_parent_style']);
+		$grand_parent_style = str::getAttrTag("style", $grand_parent_style_array);
 
 		$html = self::getCheckboxHTML($a);
 		return /** @lang HTML */ <<<EOF
