@@ -590,6 +590,8 @@ EOF;
 				"db" => $rows_query['db'],
 				"table" => $rows_query['table'],
 				"offset" => $offset,
+				"include_removed" => $rows_query['include_removed'],
+				// Carried over from the base query
 			],
 		];
 
