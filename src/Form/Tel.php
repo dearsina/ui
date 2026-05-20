@@ -64,6 +64,7 @@ class Tel extends Field implements FieldInterface {
 		# The visible tel widget still needs a stable name so jQuery Validate
 		# does not collapse it with other temporary/unnamed fields.
 		$a['name'] = "{$a['id']}-display-only";
+		$a['placeholder'] = $a['placeholder'] ?: false;
 
 		$b['data'] = $a['data'];
 		self::setTelSettings($a, $b['id']);

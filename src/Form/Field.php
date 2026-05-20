@@ -297,7 +297,7 @@ class Field {
 		if($placeholder === false){
 			return false;
 		}
-		if($placeholder){
+		if(strlen($placeholder)){
 			return trim(strip_tags($placeholder));
 		}
 		if(!$name){
