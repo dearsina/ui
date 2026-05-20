@@ -646,7 +646,7 @@ $node-border-thickness : 1px;
 .drawflow .drawflow-node .output.output_1::before,
 .drawflow .drawflow-node .output.output_2::before
 {
-  font-family : "Font Awesome 6 Pro";
+  font-family : "Font Awesome 7 Pro";
   font-weight : 300;
   color       : var(--node-border-colour);
 
@@ -704,7 +704,7 @@ $node-border-thickness : 1px;
 
 .drawflow-delete::before
 {
-  font-family : "Font Awesome 6 Pro";
+  font-family : "Font Awesome 7 Pro";
   font-weight : 600;
   content     : "\d7"; /* xmark */
   margin-left : .5px;
