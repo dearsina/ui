@@ -12,6 +12,51 @@ use App\Common\str;
  */
 class Copy {
 	/**
+	 * Returns a generated badge with a copy button.
+	 *
+	 * @param string|array $a
+	 * @param bool|null    $return_array
+	 *
+	 * @return string|array
+	 * @throws \Exception
+	 */
+	public static function getBadge(string|array $a, ?bool $return_array = NULL): string|array
+	{
+		if(is_array($a)){
+			$badge = $a;
+		} else {
+			$badge = [
+				"text" => $a,
+				"title" => $a
+			];
+		}
+
+		$truncated_text = self::getTruncatedText([
+			"text" => $badge['text'],
+			"secret" => $badge['secret']
+		]);
+
+		$badge = array_merge([
+			"style" => [
+				"padding" => "5px",
+				"cursor" => "pointer"
+			],
+			"icon" => "copy",
+			"class" => "clipboard",
+			"alt" => "Copy {$truncated_text} to clipboard",
+			"data" => [
+				"clipboard-text" => $badge['text'],
+				"clipboard-text-truncated" => $truncated_text
+			]
+		], $badge);
+
+		if($return_array){
+			return $badge;
+		}
+
+		return Badge::generate($badge);
+	}
+	/**
 	 * Returns copy button for the text asked to copy.
 	 * Can take the following parameters:
 	 * <code>
