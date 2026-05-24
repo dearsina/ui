@@ -700,7 +700,19 @@ li.mapping:hover
   z-index       : 1001;
   position      : inherit;
   border-bottom : unset;
-  clip-path     : polygon(0 0, 100% 0, 100% 90%, 0% 100%);
+  clip-path     : polygon(0 0, 100% 0, 100% 98%, 0% 100%);
+}
+
+/**
+ * How the controller tounges are connected to the header
+ */
+.controller-button > .dropdown > .dropdown-item.show + .dropdown-menu.show
+{
+  margin-top: -4px !important;
+}
+.controller-button > .dropdown > .dropdown-item.show + .dropdown-menu.show > .card
+{
+  border-top-left-radius: 0;
 }
 
 .controller-button-title

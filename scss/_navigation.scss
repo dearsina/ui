@@ -53,7 +53,7 @@ li:not(.list-group-item) > .dropstart > .dropdown-toggle::before
 /**
  * Drop-end caret
  */
-li > .dropdown > .dropdown-toggle::after,
+li > .dropdown:not(.dropstart) > .dropdown-toggle::after,
 li > .dropup > .dropdown-toggle::after,
 li > .dropend > .dropdown-toggle::after
 {
@@ -93,6 +93,10 @@ li > .dropend > .dropdown-toggle
   display        : flex;
   flex-direction : row;
   align-items    : center;
+
+  // Hacky way to ensure everything is on one line
+  min-width: 100%;
+  width: max-content;
 }
 
 #navbar-level2 > .navbar-nav > .dropdown li dropdown-item-title
