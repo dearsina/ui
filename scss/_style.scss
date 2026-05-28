@@ -839,6 +839,21 @@ a.masonry-grid-tile-inner:hover
   margin-bottom : 0.75rem;
 }
 
+.jconfirm.jconfirm-material .jconfirm-box.jconfirm-type-red
+{
+  border-top-width : 8px;
+}
+
+.jconfirm.jconfirm-material .jconfirm-box.jconfirm-type-red .jconfirm-title
+{
+  color : map-get($theme-colors, "danger");
+}
+
+.jconfirm.jconfirm-material .jconfirm-box.jconfirm-type-red div.jconfirm-closeIcon:hover
+{
+  color : map-get($theme-colors, "danger");
+}
+
 .search-filter-dropdowns > div
 {
   width   : auto;
