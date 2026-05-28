@@ -36,7 +36,7 @@ LATEX;
 		// Write LaTeX file
 		file_put_contents("{$filename}.tex", $latex);
 		# Compile LaTeX to PDF
-		str::exec("pdflatex --shell-escape {$filename}.tex", $output);
+		str::exec("/usr/bin/pdflatex --shell-escape {$filename}.tex", $output);
 
 		# Check if PDF was created
 		if (!file_exists("{$filename}.pdf")) {
