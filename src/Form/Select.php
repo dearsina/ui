@@ -358,7 +358,16 @@ EOF;
 		// Ensures value is an array
 
 		# Remove NULL, false and empty strings, but keep 0 (nil) float and values
-		$value_array = @array_filter($value_array, "strlen");
+        $value_array = array_filter(
+            $value_array,
+            /**
+             * Filters out arrays from array_values
+             * Ensures that all non-string values are kept, ie. floats, booleans, and 0 (nil)
+             * Strings are ensured that they are not empty
+             */
+            static fn($v) => !is_array($v) && (!is_string($v) || strlen((string)$v) > 0)
+        );
+//        $value_array = @array_filter($value_array, "strlen");
 		// Suppressing any issues, just in case
 
 		/**
