@@ -7,6 +7,22 @@ $btn-padding-x-xs:      .25rem;
 $btn-font-size-xs:      $font-size-xs;
 $btn-border-radius-xs:  $border-radius-xs;
 
+.btn {
+  &-link {
+    font:inherit;
+
+    &:hover {
+      text-decoration:none;
+      background:inherit;
+    }
+
+    &:active {
+      text-decoration:none;
+      background:inherit!important;
+    }
+  }
+}
+
 .btn-xs {
   @include button-size($btn-padding-y-xs, $btn-padding-x-xs, $btn-font-size-xs, $btn-border-radius-xs);
 }
