@@ -468,6 +468,11 @@ $step                  : 0;
   height : 100%;
 }
 
+.drawflow
+{
+  transform-origin : 0 0;
+}
+
 .drawflow .connection .main-path
 {
   stroke       : map-get($theme-colors, "primary");;
