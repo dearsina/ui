@@ -141,13 +141,20 @@ box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 
  */
 .card-header .col-buttons
 {
-  //height          : 0;
-  //display         : flex;
-  //justify-content : flex-end;
-  //align-items     : center;
-  //margin-top      : 10px;
-  //padding         : 0;
-  //margin-right    : 10px;
+  height          : 0;
+  display         : flex;
+  justify-content : flex-end;
+  align-items     : center;
+  margin-top      : 10px;
+  padding         : 0;
+  margin-right    : 10px;
+}
+
+/**
+ * Need to treat drawflow nodes a little different.
+ */
+.drawflow-node .card-header .col-buttons
+{
   height: 0;
   display: flex;
   padding: 0;
