@@ -92,6 +92,12 @@ box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 
   letter-spacing : 1.5px;
   font-weight    : 400;
   font-size      : smaller;
+
+  overflow: hidden;
+  max-width: calc(100% - 20px);
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
 }
 
 .drawflow-node .card-header .card-title
@@ -135,16 +141,19 @@ box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 
  */
 .card-header .col-buttons
 {
-  height          : 0;
-
-  display         : flex;
-  justify-content : flex-end;
-  align-items     : center;
-  margin-top      : 10px;
-
-  // Experimental, fixes an issue where the header text is so long the buttons fall below
-  padding         : 0;
-  margin-right    : 10px;
+  //height          : 0;
+  //display         : flex;
+  //justify-content : flex-end;
+  //align-items     : center;
+  //margin-top      : 10px;
+  //padding         : 0;
+  //margin-right    : 10px;
+  height: 0;
+  display: flex;
+  padding: 0;
+  width: 0;
+  align-items: center;
+  justify-content: flex-end;
 }
 
 .drawflow-node.request-doc-group .card-header .col-buttons,
