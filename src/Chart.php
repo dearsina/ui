@@ -191,6 +191,8 @@ class Chart {
 		$empty_message = $a['empty_message'] ?? NULL;
 		$loading_message = $a['loading_message'] ?? NULL;
 		$summary = $a['summary'] ?? NULL;
+		$summary_target = $a['summary_target'] ?? NULL;
+		$render_summary = array_key_exists('render_summary', $a) ? (bool)$a['render_summary'] : true;
 		$script = $a['script'] ?? NULL;
 
 		$id = $id ?: str::id('chart');
@@ -216,10 +218,12 @@ class Chart {
 			'empty_message' => $empty_message ?: 'No chart data is available for the selected filters.',
 			'loading_message' => $loading_message ?: 'Loading chart...',
 			'summary' => $summary ?: NULL,
+			'summary_target' => $summary_target ?: NULL,
 		], true);
 		$loading_html = Wait::get($loading_message ?: 'Loading chart');
 		$empty_html = $empty_message ?: 'No chart data is available for the selected filters.';
 		$summary_html = $summary ?: '&nbsp;';
+		$summary_block = $render_summary ? "\n\t<div class=\"chartjs-chart-summary text-muted smallest\" style=\"margin-top:0.75rem;\">{$summary_html}</div>" : '';
 		$script_tag = str::getScriptTag($script);
 
 		return <<<HTML
@@ -229,7 +233,7 @@ class Chart {
 	</div>
 	<div class="chartjs-chart-loading"{$loading_style_attr}>{$loading_html}</div>
 	<div class="chartjs-chart-empty text-muted small" style="display:none; margin-top:0.75rem;">{$empty_html}</div>
-	<div class="chartjs-chart-summary text-muted smallest" style="margin-top:0.75rem;">{$summary_html}</div>
+{$summary_block}
 </div>{$script_tag}
 HTML;
 	}
