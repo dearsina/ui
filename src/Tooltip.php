@@ -13,7 +13,7 @@ class Tooltip {
 	 *
 	 * <code>
 	 * Tooltip::generateHtmlWrapper([
-	 *    "title" => $service['desc'], //The tooltip itself
+	 *    "title" => "Tooltip narrative", //The tooltip itself
 	 *    "placement" => "top",
 	 *      "tag" => "span",
 	 *    "html" => $html, //The HTML that will trigger the tooltip on hover
