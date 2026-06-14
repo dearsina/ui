@@ -389,6 +389,9 @@ EOF;
 				font-weight: 400;
 				font-size: smaller;
 			}
+			.header, .header-line, .header-left, .header-centre, .header-right {
+				font-style: normal;
+			}
 			.header-left{
 				float: left;
 				height: 0;
@@ -402,6 +405,13 @@ EOF;
 			}
 			.header-right{
 				float:right;
+			}
+			footer {
+				position: fixed;
+				bottom: 0;
+				width: 100%;
+				color: black;
+				background: white;
 			}
 		}
 		

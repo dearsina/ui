@@ -939,3 +939,14 @@ textarea.monospace
 {
   width : 100%;
 }
+
+
+/**
+ * Fixes a conflict between select2.js and Bootstrap,
+ * preventing modal content from shifting when an option
+ * is selected.
+ */
+.input-group > .form-control.select2-hidden-accessible
+{
+  position: unset !important;
+}
