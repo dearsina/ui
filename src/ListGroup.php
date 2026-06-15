@@ -162,6 +162,10 @@ class ListGroup {
 			$item = ["html" => $item];
 		}
 
+		if(is_array($item['html'])){
+			$item['html'] = Grid::generate($item['html']);
+		}
+
 		$default_class[] = "list-group-item";
 
 		if($href = href::generate($item)){
