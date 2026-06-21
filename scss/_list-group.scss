@@ -137,3 +137,17 @@ a.list-group-item:hover
 {
   background-color : unset !important;
 }
+
+/* Targets a visible item that does not have another visible item after it */
+.list-group-item:not([style*="display: none"]):not([style*="display:none"]):not(:has(~ .list-group-item:not([style*="display: none"]):not([style*="display:none"]))) {
+  border-bottom-right-radius: inherit;
+  border-bottom-left-radius: inherit;
+}
+
+/**
+ * Override a default setting for text-titles
+ */
+.list-group-item .text-title
+{
+  line-height: unset;
+}

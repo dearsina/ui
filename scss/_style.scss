@@ -1105,3 +1105,99 @@ a.masonry-grid-tile-inner:hover
   border-color : rgba(var(--bs-danger-rgb), 0.55);
   background   : rgba(var(--bs-danger-rgb), 0.06);
 }
+
+/**
+ * Used in the SubscriptionAgreement totals card
+ */
+.text-underlined {
+  border-bottom: 1px solid hsl(205deg, 28%, 88%);
+  padding-bottom: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+.text-underlined strong {
+  font-family: "Roboto Mono", monospace;
+}
+
+.text-number
+{
+  font-family: "Roboto Mono", monospace;
+  display:inline-block;
+  min-width:17ch;
+  text-align:right;
+  white-space:pre;
+  font-variant-numeric:tabular-nums;
+}
+
+
+// ----------------------------------------
+// STYLES THAT MAKE THE TORN RECEIPT EFFECT
+// ----------------------------------------
+.paper-receipt {
+  $triangle-size: 4px;
+  $stop1: $triangle-size * 1.42;
+  $stop2: $triangle-size * 0.7;
+  $stop1r: $stop1 + 0.01;
+  $stop2r: $stop2 + 0.01;
+  background:
+          linear-gradient(135deg, transparent #{$stop1}, white #{$stop1r}) top left,
+          linear-gradient(45deg, white #{$stop2}, transparent #{$stop2r}) top left,
+          linear-gradient(135deg, white #{$stop2}, transparent #{$stop2r}) bottom left,
+          linear-gradient(45deg, transparent #{$stop1}, white #{$stop1r}) bottom left;
+  background-repeat: repeat-x;
+  background-size: ($triangle-size * 2) $triangle-size;
+  padding: $triangle-size 0;
+
+  &-list {
+    // You could add another linear-gradient for the white background
+    // but background on this child div keeps the code MUCH simpler
+    background-color: white;
+  }
+}
+
+.paper-receipt {
+  filter: drop-shadow(0 2px 1px rgba(#000, 0.1));
+  width: 48ch !important;
+  margin: 0 auto;
+  overflow: hidden;
+  zoom: 85%;
+
+  &-list {
+    background-color: #fff;
+    padding: 30px;
+  }
+
+  &-item {
+    border-bottom: 0.5px dashed #ccc;
+    line-height: 1;
+    overflow: hidden;
+    font-family: monospace;
+    font-size: 16px;
+
+    &:not(:first-child) {
+      margin-top: 1rem;
+    }
+  }
+
+  &-label { float: left; }
+  &-value { float: right; }
+}
+
+.paper-receipt-content {
+  padding: 1.5ch;
+  overflow: hidden;
+  background: white;
+  margin: 0;
+  width: 45ch;
+  white-space: pre-wrap;
+  word-break: break-all;
+  font-family: "Roboto Mono", monospace;
+}
+
+.paper-receipt-wrapper
+{
+  max-height: 150px;
+  overflow: hidden;
+  width: auto;
+  padding: 0.5rem;
+  zoom: 50%;
+}
