@@ -138,10 +138,18 @@ a.list-group-item:hover
   background-color : unset !important;
 }
 
+/**
+ * For list groups that cannot inherit
+ */
+.list-group-item:first-child {
+  border-top-left-radius: var(--bs-list-group-border-radius);
+  border-top-right-radius: var(--bs-list-group-border-radius);
+}
+
 /* Targets a visible item that does not have another visible item after it */
 .list-group-item:not([style*="display: none"]):not([style*="display:none"]):not(:has(~ .list-group-item:not([style*="display: none"]):not([style*="display:none"]))) {
-  border-bottom-right-radius: inherit;
-  border-bottom-left-radius: inherit;
+  border-bottom-right-radius: var(--bs-list-group-border-radius);
+  border-bottom-left-radius: var(--bs-list-group-border-radius);
 }
 
 /**
