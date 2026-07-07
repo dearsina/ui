@@ -17,12 +17,12 @@ class AgGrid {
 	private array $data = [];
 
 	/**
-	 * The height of the grid in pixels.
-	 * Default is 400px.
+	 * The height of the grid.
+	 * Defaults to 400px.
 	 *
-	 * @var int
+	 * @var string
 	 */
-	private int $height = 400;
+	private string $height = "400px";
 	public function __construct(?string $id = NULL)
 	{
 		$this->setId($id);
@@ -67,15 +67,19 @@ class AgGrid {
 	}
 
 	/**
-	 * Sets the height of the grid in pixels.
+	 * Sets the height of the grid.
 	 *
-	 * @param int $height
+	 * @param int|string $height
 	 *
 	 * @return void
 	 */
-	public function setHeight(int $height): void
+	public function setHeight($height): void
 	{
-		$this->height = $height;
+		if(is_numeric($height)){
+			$height .= "px";
+		}
+
+		$this->height = (string)$height;
 	}
 
 	/**
@@ -103,7 +107,7 @@ class AgGrid {
 
 		$id = str::getAttrTag("id", $this->getId());
 		$class = str::getAttrTag("class", [self::DEFAULT_THEME]);
-		$style = str::getAttrTag("style", ["height: ".$this->height."px;"]);
+		$style = str::getAttrTag("style", ["height: {$this->height};"]);
 		$data = str::getDataAttr($this->data);
 
 		return "<div{$id}{$class}{$style}{$data}></div>";
