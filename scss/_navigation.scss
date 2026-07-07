@@ -64,7 +64,7 @@ li > .dropend > .dropdown-toggle::after
   display     : inline;
 }
 
-li > .dropdown > .dropdown-toggle,
+li > .dropdown:not(.drop-float-right) > .dropdown-toggle,
 li > .dropup > .dropdown-toggle,
 li > .dropend > .dropdown-toggle
 {
