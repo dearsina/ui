@@ -1128,6 +1128,83 @@ a.masonry-grid-tile-inner:hover
   font-variant-numeric:tabular-nums;
 }
 
+/**
+ *
+ */
+.salesman-client-activity
+{
+  &__window-buttons .btn
+  {
+    margin-left : 0;
+  }
+
+  &__list
+  {
+    display        : flex;
+    flex-direction : column;
+    gap            : .5rem;
+  }
+
+  &__company
+  {
+    align-items           : center;
+    border-bottom         : 1px solid rgba(15, 23, 42, .08);
+    display               : grid;
+    gap                   : .65rem;
+    grid-template-columns : 42px minmax(0, 1fr) auto;
+    padding               : .45rem 0;
+
+    &:last-child
+    {
+      border-bottom : 0;
+    }
+  }
+
+  &__logo
+  {
+    align-items     : center;
+    background      : #f8fafc;
+    border          : 1px solid rgba(15, 23, 42, .08);
+    border-radius   : 6px;
+    display         : flex;
+    height          : 42px;
+    justify-content : center;
+    width           : 42px;
+  }
+
+  &__company-body
+  {
+    min-width : 0;
+  }
+
+  &__company-title
+  {
+    font-weight   : 600;
+    overflow      : hidden;
+    text-overflow : ellipsis;
+    white-space   : nowrap;
+  }
+
+  &__owner
+  {
+    font-size     : .75rem;
+    overflow      : hidden;
+    text-overflow : ellipsis;
+    white-space   : nowrap;
+  }
+
+  &__count
+  {
+    font-weight : 700;
+    text-align  : right;
+  }
+
+  &__empty
+  {
+    padding : 1rem 0;
+  }
+}
+
 
 // ----------------------------------------
 // STYLES THAT MAKE THE TORN RECEIPT EFFECT
