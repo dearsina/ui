@@ -1128,9 +1128,48 @@ a.masonry-grid-tile-inner:hover
   font-variant-numeric:tabular-nums;
 }
 
+.client-search-card
+{
+  &__footer
+  {
+    align-items           : center;
+    display               : grid;
+    gap                   : .75rem;
+    grid-template-columns : minmax(0, 1fr) minmax(260px, 34%);
+  }
+
+  &__subscription .row
+  {
+    margin : 0;
+  }
+
+  &__subscription-field
+  {
+    margin-bottom : 0 !important;
+  }
+
+  @media (max-width: 767.98px)
+  {
+    &__footer
+    {
+      grid-template-columns : 1fr;
+    }
+  }
+}
+
 /**
  *
  */
+.salesman-client-activity-tabs
+{
+  margin-top : 1rem;
+
+  &__content
+  {
+    padding-top : 1rem;
+  }
+}
+
 .salesman-client-activity
 {
   &__window-buttons .btn
