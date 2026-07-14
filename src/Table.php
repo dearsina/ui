@@ -16,6 +16,30 @@ use App\UI\Form\Form;
  */
 class Table {
 	/**
+	 * Number of rows sent in the first AG Grid batch.
+	 *
+	 * The first batch is intentionally small so the browser can render useful data
+	 * quickly while the remaining rows continue loading.
+	 */
+	public const AG_GRID_INITIAL_BATCH_SIZE = 100;
+
+	/**
+	 * Default row count for generic AG Grid batches after the first batch.
+	 *
+	 * Population-specific streaming may choose a different later-batch size when it
+	 * can do so safely, but this value remains the default for the shared table loader.
+	 */
+	public const AG_GRID_BATCH_SIZE = 500;
+
+	/**
+	 * Upper bound for caller-supplied AG Grid batch sizes.
+	 *
+	 * Request variables are allowed to tune batch sizes, but this cap prevents a caller
+	 * from accidentally recreating the original very-large-payload behaviour.
+	 */
+	public const AG_GRID_MAX_BATCH_SIZE = 5000;
+
+	/**
 	 * Given an output from a SQL request, formats as a table,
 	 * with sortable column headers.
 	 *
@@ -628,11 +652,38 @@ EOF;
 		];
 	}
 
+	/**
+	 * Handles an AG Grid JSON request by reading, formatting, and emitting rows in batches.
+	 *
+	 * This method is the generic AG Grid table loader. It keeps the caller's base SQL query
+	 * intact, applies LIMIT windows to that query, formats rows through the optional row
+	 * handler, and sends each batch to the browser via loadAgGrid(). The first batch is
+	 * intentionally small so the UI can render early; subsequent batches use the normal
+	 * AG Grid batch size.
+	 *
+	 * When worker recipient information is available, batches are pushed immediately to
+	 * the active browser connection rather than being buffered until worker shutdown. The
+	 * batch metadata includes request_id, initial/append flags, completion state, loaded
+	 * row count, and, when available, a stable total count.
+	 *
+	 * This loader still pages the final result query. It does not move batching into any
+	 * upstream source-table or CTE construction; callers that need deeper streaming should
+	 * implement that before delegating here or bypass this method with a domain-specific
+	 * streaming method.
+	 *
+	 * @param array       $a Request payload containing vars.id and optional AG Grid batch vars.
+	 * @param array|null  $base_query Shared SQL select-array used as the source for every batch.
+	 * @param object|null $row_handler Optional callable object used to convert raw SQL rows to AG Grid rows.
+	 * @param array|null  $laps Optional timing/debug lines attached to the final batch in dev mode.
+	 *
+	 * @return bool TRUE after all available rows have been emitted.
+	 */
 	public static function manageJsonRequest(array $a, ?array $base_query, ?object $row_handler, ?array $laps = NULL): bool
 	{
 		extract($a);
 
 		$sql = Factory::getInstance();
+		$vars = $a['vars'] ?? [];
 
 		# Include the ID in the response
 		$output_vars['id'] = $vars['id'];
@@ -640,31 +691,219 @@ EOF;
 
 		Output::getInstance()->setVar("query", $sql->select($base_query, true));
 
-		# Run the query
-		if(!$rows = $sql->select($base_query)){
-			//if no results are found
-			self::compressAndSetOutputVars($output_vars);
-			return true;
-		}
+		# Workers normally buffer output until the request completes.
+		# Supplying recipients makes each batch speak to the browser immediately.
+		$recipients = self::getCurrentOutputRecipients();
+		$request_id = $vars['ag_grid_request_id'] ?? NULL;
+		$initial_batch_size = self::getAgGridBatchSize($vars['ag_grid_initial_batch_size'] ?? NULL, self::AG_GRID_INITIAL_BATCH_SIZE);
+		$batch_size = self::getAgGridBatchSize($vars['ag_grid_batch_size'] ?? NULL, self::AG_GRID_BATCH_SIZE);
+		# Count the same result set once so the UI can show a stable denominator.
+		# If counting fails for a non-client table, the loader still works without a total.
+		$total = self::getAgGridTotal($sql, $base_query);
+		$offset = 0;
+		$loaded_count = 0;
+		$batch_number = 0;
+		$current_batch_size = $initial_batch_size;
 
-		if(is_object($row_handler)){
-			//if a custom row handler has been included
-			foreach($rows as $id => $row){
-				$output_vars['rows'][$id] = ($row_handler)($row);
-				//run the row handler through each row
+		do {
+			# Clone the caller's query and page it. This keeps existing filtering/order clauses intact
+			# while avoiding one huge selected/transformed/compressed payload.
+			$rows_query = $base_query;
+			$rows_query['limit'] = [$offset, $current_batch_size];
+			unset($rows_query['start'], $rows_query['length'], $rows_query['offset']);
+
+			$rows = $sql->select($rows_query);
+			$is_initial_batch = $batch_number == 0;
+
+			if(!$rows){
+				$output_vars['rows'] = $is_initial_batch ? NULL : [];
+				$batch = [
+					"request_id" => $request_id,
+					"initial" => $is_initial_batch,
+					"append" => !$is_initial_batch,
+					"complete" => true,
+					"loaded" => $loaded_count,
+				];
+
+				# An empty final batch is still useful: it tells the browser the stream is complete.
+				# When a count was unavailable, loaded_count is the best final denominator.
+				if($total !== NULL){
+					$batch['total'] = $total;
+				}
+				else {
+					$batch['total'] = $loaded_count;
+				}
+
+				$output_vars['batch'] = $batch;
+
+				if(str::isDev() && $laps){
+					$output_vars['laps'] = $laps;
+				}
+
+				self::compressAndSetOutputVars($output_vars, $recipients);
+				return true;
 			}
-		}
 
-		if(str::isDev() && $laps){
-			Output::getInstance()->setVar("laps", $laps);
-		}
+			# Existing callers may return either one associative row or a numeric list of rows.
+			# Normalise before running the row handler so the batch metadata uses consistent counts.
+			if(!str::isNumericArray($rows)){
+				$rows = [$rows];
+			}
 
-		self::compressAndSetOutputVars($output_vars);
+			$batch_rows = [];
+			foreach($rows as $id => $row){
+				$batch_rows[$id] = is_object($row_handler) ? ($row_handler)($row) : $row;
+			}
+
+			$loaded_count += count($batch_rows);
+			# If the total is known, avoid sending an extra empty completion batch when the result count
+			# is exactly divisible by the batch size.
+			$is_complete = count($rows) < $current_batch_size || ($total !== NULL && $loaded_count >= $total);
+
+			$output_vars['rows'] = $batch_rows;
+			$batch = [
+				"request_id" => $request_id,
+				"initial" => $is_initial_batch,
+				"append" => !$is_initial_batch,
+				"complete" => $is_complete,
+				"loaded" => $loaded_count,
+			];
+
+			if($total !== NULL){
+				$batch['total'] = $total;
+			}
+
+			$output_vars['batch'] = $batch;
+
+			if($is_complete && str::isDev() && $laps){
+				$output_vars['laps'] = $laps;
+			}
+
+			self::compressAndSetOutputVars($output_vars, $recipients);
+
+			$offset += $current_batch_size;
+			$current_batch_size = $batch_size;
+			$batch_number++;
+		} while(!$is_complete);
 
 		return true;
 	}
 
-	public static function compressAndSetOutputVars(array $output_vars): void
+	/**
+	 * Resolves a safe AG Grid batch size from request input.
+	 *
+	 * Request variables can override default batch sizes, but they are not trusted blindly.
+	 * Non-positive values fall back to the caller-provided default and large values are
+	 * capped at AG_GRID_MAX_BATCH_SIZE.
+	 *
+	 * @param mixed $requested_size Raw requested batch size, usually from request vars.
+	 * @param int   $default_size Batch size to use when no valid override is supplied.
+	 *
+	 * @return int Sanitised batch size.
+	 */
+	public static function getAgGridBatchSize($requested_size, int $default_size): int
+	{
+		$batch_size = (int)($requested_size ?: $default_size);
+
+		# Fall back on invalid/zero values rather than trusting request vars.
+		if($batch_size < 1){
+			return $default_size;
+		}
+
+		# Cap the batch size so a caller cannot accidentally reintroduce very large browser payloads.
+		return min($batch_size, self::AG_GRID_MAX_BATCH_SIZE);
+	}
+
+	/**
+	 * Returns the best available recipient selector for immediate worker output.
+	 *
+	 * CLI/worker requests normally accumulate Output until the request exits. Batching only
+	 * improves perceived load time if each batch can be sent while the worker is still
+	 * running, so this method reconstructs the recipient array from globals carried into
+	 * the worker by Process::request().
+	 *
+	 * The current connection is preferred to avoid sending batches to another open tab for
+	 * the same user. Session and user fallbacks preserve older async-output behaviour when
+	 * no connection id is present.
+	 *
+	 * @return array|null Recipient selector accepted by Output/PA, or NULL to buffer normally.
+	 */
+	public static function getCurrentOutputRecipients(): ?array
+	{
+		global $connection_id;
+		global $session_id;
+		global $user_id;
+
+		# Prefer the exact connection when available. This prevents overlapping tabs/sessions for
+		# the same user from receiving batches intended for the visible grid request.
+		if($connection_id){
+			$recipients['connection_id'] = $connection_id;
+		}
+
+		# Session/user fallbacks preserve the older worker-output behaviour when no connection id exists.
+		if($session_id){
+			$recipients['session_id'] = $session_id;
+		}
+		else if($user_id){
+			$recipients['user_id'] = $user_id;
+		}
+
+		return $recipients ?? NULL;
+	}
+
+	/**
+	 * Attempts to count the full AG Grid result set represented by a base query.
+	 *
+	 * The count is used only for progress display. If a count cannot be computed safely,
+	 * batching still proceeds and the browser falls back to a "loaded so far" narrative.
+	 *
+	 * The current generic AG Grid usages are client-row based, so this method counts
+	 * distinct client_id after removing row-page-only clauses such as columns, order_by,
+	 * and limit. Future non-client_id queries may fail this count; the exception is
+	 * intentionally swallowed to keep row loading functional.
+	 *
+	 * @param mixed      $sql SQL factory/connection object exposing select().
+	 * @param array|null $base_query Base SQL select-array for the grid result.
+	 *
+	 * @return int|null Stable row total when available, otherwise NULL.
+	 */
+	private static function getAgGridTotal($sql, ?array $base_query): ?int
+	{
+		if(!$base_query){
+			return NULL;
+		}
+
+		# Build a count query from the same base query, removing clauses that only make sense for row pages.
+		# Current AG Grid population-style queries are client based, so distinct client_id is the stable row count.
+		$count_query = $base_query;
+		unset($count_query['columns'], $count_query['order_by'], $count_query['limit'], $count_query['start'], $count_query['length'], $count_query['offset']);
+		$count_query['distinct'] = true;
+		$count_query['count'] = 'client_id';
+
+		try {
+			return (int)$sql->select($count_query);
+		}
+		catch(\Throwable $e) {
+			# Keep batching functional for any future non-client_id AG Grid query.
+			# The UI will fall back to a loaded-so-far narrative when no total is supplied.
+			return NULL;
+		}
+	}
+
+	/**
+	 * Compresses an AG Grid payload and sends it to the browser loader.
+	 *
+	 * The browser-side loadAgGrid() function expects a base64-encoded gzipped JSON payload.
+	 * This method also adds the elapsed seconds field used by the browser console timing
+	 * output. When recipients are supplied, Output sends the function call immediately to
+	 * those recipients; otherwise it is stored in the normal request output buffer.
+	 *
+	 * @param array      $output_vars Payload containing id, rows, and optional batch/laps metadata.
+	 * @param array|null $recipients Optional recipient selector for immediate async output.
+	 *
+	 * @return void
+	 */
+	public static function compressAndSetOutputVars(array $output_vars, ?array $recipients = NULL): void
 	{
 		$output_vars['seconds'] = round(str::stopTimer(), 2);
 
@@ -674,7 +913,7 @@ EOF;
 		$output_vars_base64 = base64_encode($output_vars_compressed);
 
 		# Load the response
-		Output::getInstance()->function("loadAgGrid", $output_vars_base64);
+		Output::getInstance()->function("loadAgGrid", $output_vars_base64, $recipients);
 	}
 
 
