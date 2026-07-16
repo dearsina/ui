@@ -196,7 +196,7 @@ form .btn i
 }
 
 .card .btn-float-right .disabled-wrapper:has(.btn),
-.modal .btn-float-right .disabled-wrapper:has(.btn),
+.modal-footer .btn-float-right .disabled-wrapper:has(.btn),
 .tab-pane .btn-float-right .disabled-wrapper:has(.btn)
 {
     float: right;

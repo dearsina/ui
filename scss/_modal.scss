@@ -136,7 +136,7 @@
  * Give the main modal icon in the header
  * a little breathing room.
  */
-.modal-header .modal-title i:first-of-type {
+.modal-header .modal-title > i:first-of-type {
   margin-right: .5rem;
 }
 
