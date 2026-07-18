@@ -100,17 +100,20 @@ form
   font-weight : 500;
 }
 
-.input-group-floating {
-  position: relative;
+.input-group-floating
+{
+  position : relative;
 }
 
-.grid-stack-item .input-group-floating {
-  margin-right: 1.5rem;
+.grid-stack-item .input-group-floating
+{
+  margin-right : 1.5rem;
 }
 
-.input-group-floating input {
-  height: 60px;
-  padding: 20px 10px 5px 15px;
+.input-group-floating input
+{
+  height  : 60px;
+  padding : 20px 10px 5px 15px;
 }
 
 /**
@@ -118,32 +121,35 @@ form
  */
 .iti__search-input-wrapper input
 {
-  padding: 0.5rem 0 0.5rem 2rem;
-  height: unset;
+  padding : 0.5rem 0 0.5rem 2rem;
+  height  : unset;
 }
 
 
 /**
  * Floating labels (inside the field)
  */
-.input-group-floating label {
-  position: absolute;
-  left: 17px;
-  top: 17px;
-  padding-inline: .3em;
-  transition: transform 200ms;
-  pointer-events: none;
-  transform-origin: left;
-  translate: -.3em;
+.input-group-floating label
+{
+  position         : absolute;
+  left             : 17px;
+  top              : 17px;
+  padding-inline   : .3em;
+  transition       : transform 200ms;
+  pointer-events   : none;
+  transform-origin : left;
+  translate        : -.3em;
 }
 
-.input-group-floating input::placeholder {
-  opacity: 0;
+.input-group-floating input::placeholder
+{
+  opacity : 0;
 }
 
 .input-group-floating input:focus + label,
-.input-group-floating input:not(:placeholder-shown) + label {
-  transform: translateY(calc(10% - .75rem)) scale(0.7);
+.input-group-floating input:not(:placeholder-shown) + label
+{
+  transform : translateY(calc(10% - .75rem)) scale(0.7);
 }
 
 .input-group-floating-tel label
@@ -217,7 +223,7 @@ label > i.fa-fw:first-of-type
 /**
  * Fix so that the select2.js select box fits in to Bootstrap 4.x
  */
-.select2js
+.select2-selection
 {
   border-radius : .25rem !important;
   padding       : 0 !important;
@@ -242,24 +248,26 @@ label > i.fa-fw:first-of-type
   z-index : 1099;
 }
 
-.select2js .select2-selection__rendered
+.select2-selection .select2-selection__rendered
 {
   border-radius : 0 !important;
   padding       : 0.15rem 0.75rem !important;
 }
 
-.select2js .select2-selection__arrow
+.select2-selection .select2-selection__arrow
 {
   top   : 4px !important;
   right : 4px !important;
 }
 
-.select2js .select2-selection__clear
+.select2-selection .select2-selection__clear
 {
   color        : #888888 !important;
-  margin-right : 10px;
-  margin-top   : -1px;
-  font-size    : x-large;
+  margin-right : 25px !important;
+  font-size    : x-large !important;
+  height       : 10px !important;
+  line-height  : 1.2;
+  font-size    : x-large !important;
 
   &:hover
   {
@@ -952,5 +960,5 @@ textarea.monospace
  */
 .input-group > .form-control.select2-hidden-accessible
 {
-  position: unset !important;
+  position : unset !important;
 }
