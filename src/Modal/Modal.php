@@ -573,6 +573,13 @@ EOF;
 		if(empty($this->elements['tabs'])){
 			return NULL;
 		}
+		
+		if(array_key_exists("tabs", $this->elements['tabs'])){
+			$tabs = $this->elements['tabs']['tabs'];
+			unset($this->elements['tabs']['tabs']);
+			$meta = $this->elements['tabs'];
+			$this->elements['tabs'] = $tabs;
+		}
 
 		$html = Grid::generate([[
 			"tabs" => [
@@ -581,9 +588,13 @@ EOF;
 			],
 		]]);
 
-		$class = str::getAttrTag("class", ["modal-tabs"]);
+		$class_array = str::getAttrArray($meta['class'], "modal-tabs", $meta['only_class']);
+		$class = str::getAttrTag("class", $class_array);
 
-		return "<div{$class}>{$html}</html>";
+		$style_array = str::getAttrArray($meta['style'], NULL, $meta['only_style']);
+		$style = str::getAttrTag("style", $style_array);
+
+		return "<div{$class}{$style}>{$html}</html>";
 	}
 
 	/**
