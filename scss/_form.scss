@@ -251,7 +251,6 @@ label > i.fa-fw:first-of-type
 .select2-selection .select2-selection__rendered
 {
   border-radius : 0 !important;
-  padding       : 0.15rem 0.75rem !important;
 }
 
 .select2-selection .select2-selection__arrow
@@ -284,23 +283,41 @@ label > i.fa-fw:first-of-type
 /**
  * Multi-select only.
  */
-.select2-container .select2-selection--multiple .select2-selection__rendered
+.select2-container .select2-selection--multiple .select2-selection__clear
 {
-  margin : -3px 0 2px -7px;
+  margin: 0 10px 0 0 !important;
+}
+.select2-container .select2-search--inline .select2-search__field
+{
+  font-family: unset;
+  line-height: 1;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice__display
+{
+  padding-left: 8px;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice__display .tooltip-trigger
+{
+  padding: 0px 0px 0px 14px !important;
 }
 
-.select2-container--default .select2-selection--multiple .select2-selection__clear
-{
-  margin : -4px -9px -4px 0;
-}
 
 /**
- * So that the little X is to the right, not the left of the text
+ * Formatting the little X, that insists on being to the left for some resaon
  */
 .select2-container--default .select2-selection--multiple .select2-selection__choice__remove
 {
-  margin-left : 4px;
-  float       : right;
+  padding-left: 4px;
+  padding-right: 4px;
+  width: 22px;
+}
+/**
+ * On hover
+ */
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover
+{
+  color: red;
+  background: var(--bs-error-bg-subtle);
 }
 
 /**
