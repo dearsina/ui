@@ -26,18 +26,20 @@ class Wait {
 	 *
 	 * @return string
 	 */
-	public static function get(?string $narrative = "Processing file"): string
+	public static function get(?string $narrative = "Processing file", ?array $style = []): string
 	{
+		$style = array_merge([
+			"min-height" => "20vh",
+			"align-items" => "center",
+			"text-align" => "center",
+		], $style);
+
 		return Grid::generate([[
 			"html" => implode("<br>", array_filter([
 				self::getIcon(),
 				$narrative
 			])),
-			"row_style" => [
-				"min-height" => "20vh",
-				"align-items" => "center",
-				"text-align" => "center",
-			],
+			"row_style" => $style
 		]]);
 	}
 
