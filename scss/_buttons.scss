@@ -226,7 +226,11 @@ form .btn i
   float: right !important;
 }
 
-
+.btn-group > .btn:not(:last-child):not(.dropdown-toggle).btn-sm
+{
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+}
 
 .card:not(.card-window) .card-footer .btn-float-right .btn:first-child,
 .modal .btn-float-right .btn:first-child,
