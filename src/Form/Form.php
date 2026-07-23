@@ -57,6 +57,14 @@ class Form {
 	private $style;
 
 	/**
+	 * The row style is applied to the root row wrapper div,
+	 * that is wrapping the form fields. It's completely optional.
+	 *
+	 * @var mixed
+	 */
+	private mixed $row_style;
+
+	/**
 	 * Meta properties.
 	 * @var string
 	 */
@@ -137,6 +145,9 @@ class Form {
 
 		# Style
 		$this->style = str::getAttrArray($style, []);
+
+		# The row style is for the row wrapper for the fields
+		$this->row_style = $row_style;
 
 		return true;
 	}
@@ -505,7 +516,10 @@ class Form {
 			}
 		}
 
-		$html[] = $grid->getHTML($this->fields);
+		$html[] = $grid->getHTML([[
+			"row_style" => $this->row_style,
+			"html" => $this->fields
+		]]);
 
 		return implode("", $html);
 	}
