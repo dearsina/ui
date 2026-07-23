@@ -675,12 +675,17 @@ EOF;
 	 * @param array|null  $base_query Shared SQL select-array used as the source for every batch.
 	 * @param object|null $row_handler Optional callable object used to convert raw SQL rows to AG Grid rows.
 	 * @param array|null  $laps Optional timing/debug lines attached to the final batch in dev mode.
+	 * @param object|null $continue_handler Optional callable checked before expensive work and each send.
 	 *
 	 * @return bool TRUE after all available rows have been emitted.
 	 */
-	public static function manageJsonRequest(array $a, ?array $base_query, ?object $row_handler, ?array $laps = NULL): bool
+	public static function manageJsonRequest(array $a, ?array $base_query, ?object $row_handler, ?array $laps = NULL, ?object $continue_handler = NULL): bool
 	{
 		extract($a);
+
+		if(is_object($continue_handler) && !($continue_handler)()){
+			return false;
+		}
 
 		$sql = Factory::getInstance();
 		$vars = $a['vars'] ?? [];
@@ -706,6 +711,10 @@ EOF;
 		$current_batch_size = $initial_batch_size;
 
 		do {
+			if(is_object($continue_handler) && !($continue_handler)()){
+				return false;
+			}
+
 			# Clone the caller's query and page it. This keeps existing filtering/order clauses intact
 			# while avoiding one huge selected/transformed/compressed payload.
 			$rows_query = $base_query;
@@ -738,6 +747,10 @@ EOF;
 
 				if(str::isDev() && $laps){
 					$output_vars['laps'] = $laps;
+				}
+
+				if(is_object($continue_handler) && !($continue_handler)()){
+					return false;
 				}
 
 				self::compressAndSetOutputVars($output_vars, $recipients);
@@ -777,6 +790,10 @@ EOF;
 
 			if($is_complete && str::isDev() && $laps){
 				$output_vars['laps'] = $laps;
+			}
+
+			if(is_object($continue_handler) && !($continue_handler)()){
+				return false;
 			}
 
 			self::compressAndSetOutputVars($output_vars, $recipients);
