@@ -62,7 +62,7 @@ class Form {
 	 *
 	 * @var mixed
 	 */
-	private mixed $row_style;
+	private mixed $row_style = [];
 
 	/**
 	 * Meta properties.
@@ -516,10 +516,17 @@ class Form {
 			}
 		}
 
-		$html[] = $grid->getHTML([[
-			"row_style" => $this->row_style,
-			"html" => $this->fields
-		]]);
+		if($this->row_style){
+			$html[] = $grid->getHTML([[
+				"row_style" => $this->row_style,
+				"html" => $this->fields
+			]]);
+		}
+		else {
+			$html[] = $grid->getHTML($this->fields);
+		}
+
+
 
 		return implode("", $html);
 	}
