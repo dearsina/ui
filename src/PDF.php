@@ -529,13 +529,14 @@ EOF;
 		//<!DOCTYPE html>
 		//<html>
 		//	<head>
-		//		<link rel="stylesheet" type="text/css" href="https://{$_ENV['app_subdomain']}.{$_ENV['domain']}/css/app.css">
+		//		<link rel="stylesheet" type="text/css" href="https://{$_ENV['app_subdomain']}." . str::getRegisteredDomain() . "/css/app.css">
 		//	</head>
 		//	<body style="background-color: unset !important; height: unset !important;margin:0;padding:0;">
 		//		{$html}
 		//	</body>
 		//</html>
 		//EOF;
+		$registeredDomain = str::getRegisteredDomain();
 		return <<<EOF
 <!DOCTYPE html>
 <html>
@@ -546,7 +547,7 @@ EOF;
 		  body { margin: 1.6cm; }
 		}
 		</style>
-		<link rel="stylesheet" type="text/css" href="https://{$_ENV['app_subdomain']}.{$_ENV['domain']}/css/app.css">
+		<link rel="stylesheet" type="text/css" href="https://{$_ENV['app_subdomain']}.{$registeredDomain}/css/app.css">
 	</head>
 	<body style="background-color: unset !important; height: unset !important;margin:20px;padding:20px;">
 		{$html}
