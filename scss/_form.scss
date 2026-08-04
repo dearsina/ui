@@ -294,7 +294,15 @@ label > i.fa-fw:first-of-type
 }
 .select2-container--default .select2-selection--multiple .select2-selection__choice__display
 {
-  padding-left: 8px;
+  padding: 0px 0px 0px 9px;
+  margin: 0px 5px 0px 0px;
+  max-width: 30vh;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  float: left;
+  display: flex;
+  align-items: center;
 }
 .select2-container--default .select2-selection--multiple .select2-selection__choice__display .tooltip-trigger
 {
