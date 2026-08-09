@@ -27,6 +27,9 @@ class Accordion {
 	 * or an array of arrays containing those elements.
 	 * Both the `header` and the `body` can be either strings
 	 * or arrays or attributes (id, class, style, etc).
+	 * The `header` can also define `ignore_class` as a string
+	 * or array of class names that should not trigger the accordion
+	 * when clicked.
 	 *
 	 * <code>
 	 * Accordion::generate([
@@ -132,7 +135,13 @@ class Accordion {
 		$title = $title . $header . $html;
 		//TODO Bring together so only one word (header?) is used
 
-		$id = str::getAttrTag("id", $id);
+		$ignore_selector = self::getIgnoreSelector($ignore_class ?? NULL);
+		$header_id = $id ?? NULL;
+		if($ignore_selector && !$header_id){
+			$header_id = str::id("accordion-header");
+		}
+
+		$id = str::getAttrTag("id", $header_id);
 		$icon = Icon::generate($icon);
 		$badge = Badge::generate($badge);
 		$button = Button::generate($button);
@@ -150,6 +159,8 @@ class Accordion {
 		$style = str::getAttrTag("style", $style);
 
 		$alt = str::getAttrTag("title", $alt);
+		$collapse_attrs = self::getCollapseAttrs($data_target_id, $aria_expanded, $ignore_selector);
+		$script = $ignore_selector ? self::getIgnoreClassScript($header_id, $data_target_id) : NULL;
 
 		# Handle headers that are also links
 		if($hash){
@@ -172,14 +183,12 @@ class Accordion {
 		{$class}
 		{$style}
 		{$alt}
-		data-bs-toggle="collapse"
-		data-bs-target="#{$data_target_id}"
-		aria-expanded="{$aria_expanded}"
-		aria-controls="{$data_target_id}"
+		{$collapse_attrs}
 	>
 		{$button}
 	</div>
 </div>
+{$script}
 EOF;
 		}
 
@@ -189,17 +198,139 @@ EOF;
 	{$class}
 	{$style}
 	{$alt}
-	data-bs-toggle="collapse"
-	data-bs-target="#{$data_target_id}"
-	aria-expanded="{$aria_expanded}"
-	aria-controls="{$data_target_id}"
+	{$collapse_attrs}
 >
 	{$icon}
 	{$title}
 	{$badge}
 	{$button}
 </div>
+{$script}
 EOF;
+	}
+
+	/**
+	 * Build the accordion trigger attributes.
+	 *
+	 * When ignored child classes are configured, the Bootstrap data toggle cannot be
+	 * used because Bootstrap's delegated listener would still receive clicks that
+	 * bubble from those children. In that case a small local click handler handles
+	 * the collapse toggle only after checking the ignore selector.
+	 *
+	 * @param string      $data_target_id  The ID of the element to toggle.
+	 * @param string      $aria_expanded   Initial aria-expanded value.
+	 * @param string|null $ignore_selector CSS selector for child elements to ignore.
+	 *
+	 * @return string Rendered HTML attributes.
+	 */
+	private static function getCollapseAttrs(string $data_target_id, string $aria_expanded, ?string $ignore_selector = NULL): string
+	{
+		$attrs[] = str::getAttrTag("data-bs-target", "#{$data_target_id}");
+		$attrs[] = str::getAttrTag("aria-expanded", $aria_expanded);
+		$attrs[] = str::getAttrTag("aria-controls", $data_target_id);
+
+		if(!$ignore_selector){
+			array_unshift($attrs, str::getAttrTag("data-bs-toggle", "collapse"));
+
+			return implode("", array_filter($attrs));
+		}
+
+		$target_id = json_encode($data_target_id, JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_SLASHES);
+		$ignore_selector = json_encode($ignore_selector, JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_SLASHES);
+		$on_click = <<<JS
+if(event.target.closest({$ignore_selector})){return;}const target=document.getElementById({$target_id});if(target&&window.bootstrap&&bootstrap.Collapse){bootstrap.Collapse.getOrCreateInstance(target,{toggle:false}).toggle();}
+JS;
+
+		$attrs[] = str::getAttrTag("onClick", $on_click);
+
+		return implode("", array_filter($attrs));
+	}
+
+	/**
+	 * Convert one or more ignore class names to a CSS selector.
+	 *
+	 * @param array|string|null $ignore_class Class name or names to ignore.
+	 *
+	 * @return string|null CSS selector such as ".class, .other-class".
+	 */
+	private static function getIgnoreSelector($ignore_class): ?string
+	{
+		if(!$ignore_class){
+			return NULL;
+		}
+
+		$classes = self::getIgnoreClasses($ignore_class);
+		if(!$classes){
+			return NULL;
+		}
+
+		return implode(", ", array_map(
+			fn($class) => ".{$class}",
+			array_unique($classes)
+		));
+	}
+
+	/**
+	 * Normalise ignored class input.
+	 *
+	 * @param array|string $ignore_class Class name or names to ignore.
+	 *
+	 * @return array<int,string> Normalised class names without the leading dot.
+	 */
+	private static function getIgnoreClasses($ignore_class): array
+	{
+		$classes = [];
+		foreach((array)$ignore_class as $class){
+			if(is_array($class)){
+				$classes = array_merge($classes, self::getIgnoreClasses($class));
+				continue;
+			}
+
+			foreach(preg_split('/[\s,]+/', (string)$class) as $item){
+				$item = trim($item);
+				if(!$item){
+					continue;
+				}
+
+				$classes[] = ltrim($item, ".");
+			}
+		}
+
+		return array_values(array_unique($classes));
+	}
+
+	/**
+	 * Keep custom ignore-class accordion headers in sync with their collapse body.
+	 *
+	 * @param string $header_id      Header element ID.
+	 * @param string $data_target_id Collapse body ID.
+	 *
+	 * @return string Script tag.
+	 */
+	private static function getIgnoreClassScript(string $header_id, string $data_target_id): string
+	{
+		$header_id = json_encode($header_id, JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_SLASHES);
+		$data_target_id = json_encode($data_target_id, JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_SLASHES);
+
+		return str::getScriptTag(<<<JS
+(function(){
+	const header = document.getElementById({$header_id});
+	const body = document.getElementById({$data_target_id});
+	if(!header || !body){
+		return;
+	}
+	const sync = shown => {
+		header.classList.toggle('collapsed', !shown);
+		header.classList.toggle('show', shown);
+		header.setAttribute('aria-expanded', shown ? 'true' : 'false');
+	};
+	body.addEventListener('show.bs.collapse', () => sync(true));
+	body.addEventListener('shown.bs.collapse', () => sync(true));
+	body.addEventListener('hide.bs.collapse', () => sync(false));
+	body.addEventListener('hidden.bs.collapse', () => sync(false));
+	sync(body.classList.contains('show'));
+})();
+JS);
 	}
 
 	/**
