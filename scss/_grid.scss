@@ -156,10 +156,21 @@ $container-max-widths : (
   margin-left: 0 !important;
   flex-wrap: unset !important;
 
+  @media screen and (max-width: map-get($grid-breakpoints, "md")) {
+    flex-wrap: balance !important;
+  }
+
   > .col,
   > [class*="col-"] {
     padding-right: 0;
     padding-left: 0;
+  }
+}
+
+@media screen and (max-width: map-get($grid-breakpoints, "md")) {
+  .no-gutters > div[class*="col-"]
+  {
+    margin-bottom: 0.5rem;
   }
 }
 

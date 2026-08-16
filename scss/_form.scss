@@ -251,6 +251,8 @@ label > i.fa-fw:first-of-type
 .select2-selection .select2-selection__rendered
 {
   border-radius : 0 !important;
+  height: 100%;
+  align-content: center;
 }
 
 .select2-selection .select2-selection__arrow
@@ -986,4 +988,12 @@ textarea.monospace
 .input-group > .form-control.select2-hidden-accessible
 {
   position : unset !important;
+}
+
+/**
+ * For when button post has a dropdown button
+ */
+.input-group > .dropdown:last-child
+{
+  margin-left: 0 !important;
 }
