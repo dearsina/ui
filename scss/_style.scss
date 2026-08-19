@@ -1317,3 +1317,17 @@ a.masonry-grid-tile-inner:hover
   padding: 0.5rem;
   zoom: 50%;
 }
+
+.code-preview {
+  pre {
+    display: flex;
+    align-items: center;
+    max-height: 1rem;
+  }
+
+  .code-mute:hover pre {
+    max-height: none;
+    position: fixed;
+    align-self: center;
+  }
+}
