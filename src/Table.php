@@ -293,13 +293,34 @@ EOF;
 				"sm" => $col['sm'],
 				"class" => $header_class,
 				"data" => $data,
-				"style" => $col['header_style'],
+				"style" => self::getHeaderStyle($col),
 				"icon" => $col['header_icon'],
 				"buttons" => $col['header_buttons'],
 				"button" => $col['header_button'],
 			];
 		}
 		return $header_cols;
+	}
+
+	private static function getHeaderStyle(array $col): ?array
+	{
+		if($col['header_style']){
+			return $col['header_style'];
+		}
+
+		if(!is_array($col['style'])){
+			return NULL;
+
+		}
+		$header_style = [];
+
+		foreach($col['style'] as $style_name => $style_value){
+			if(stripos($style_name, "width") !== false){
+				$header_style[$style_name] = $style_value;
+			}
+		}
+
+		return $header_style;
 	}
 
 	/**
@@ -648,7 +669,7 @@ EOF;
 
 		# Set the order by
 		$rows_query['order_by'] = [
-			$order_by_col => $order_by_dir
+			$order_by_col => $order_by_dir,
 		];
 	}
 
@@ -671,10 +692,10 @@ EOF;
 	 * implement that before delegating here or bypass this method with a domain-specific
 	 * streaming method.
 	 *
-	 * @param array       $a Request payload containing vars.id and optional AG Grid batch vars.
-	 * @param array|null  $base_query Shared SQL select-array used as the source for every batch.
-	 * @param object|null $row_handler Optional callable object used to convert raw SQL rows to AG Grid rows.
-	 * @param array|null  $laps Optional timing/debug lines attached to the final batch in dev mode.
+	 * @param array       $a                Request payload containing vars.id and optional AG Grid batch vars.
+	 * @param array|null  $base_query       Shared SQL select-array used as the source for every batch.
+	 * @param object|null $row_handler      Optional callable object used to convert raw SQL rows to AG Grid rows.
+	 * @param array|null  $laps             Optional timing/debug lines attached to the final batch in dev mode.
 	 * @param object|null $continue_handler Optional callable checked before expensive work and each send.
 	 *
 	 * @return bool TRUE after all available rows have been emitted.
@@ -814,7 +835,7 @@ EOF;
 	 * capped at AG_GRID_MAX_BATCH_SIZE.
 	 *
 	 * @param mixed $requested_size Raw requested batch size, usually from request vars.
-	 * @param int   $default_size Batch size to use when no valid override is supplied.
+	 * @param int   $default_size   Batch size to use when no valid override is supplied.
 	 *
 	 * @return int Sanitised batch size.
 	 */
@@ -879,7 +900,7 @@ EOF;
 	 * and limit. Future non-client_id queries may fail this count; the exception is
 	 * intentionally swallowed to keep row loading functional.
 	 *
-	 * @param mixed      $sql SQL factory/connection object exposing select().
+	 * @param mixed      $sql        SQL factory/connection object exposing select().
 	 * @param array|null $base_query Base SQL select-array for the grid result.
 	 *
 	 * @return int|null Stable row total when available, otherwise NULL.
@@ -916,7 +937,7 @@ EOF;
 	 * those recipients; otherwise it is stored in the normal request output buffer.
 	 *
 	 * @param array      $output_vars Payload containing id, rows, and optional batch/laps metadata.
-	 * @param array|null $recipients Optional recipient selector for immediate async output.
+	 * @param array|null $recipients  Optional recipient selector for immediate async output.
 	 *
 	 * @return void
 	 */
@@ -1043,8 +1064,8 @@ EOF;
 				"label" => $label,
 				"options" => $options,
 				"name" => "{$column}[]",
-                // TODO: Review logic here
-//				"checked" => in_array($id, $vars[$column] ?: []),
+				// TODO: Review logic here
+				//				"checked" => in_array($id, $vars[$column] ?: []),
 			];
 		}
 

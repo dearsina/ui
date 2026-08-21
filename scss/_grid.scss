@@ -154,10 +154,12 @@ $container-max-widths : (
 .no-gutters {
   margin-right: 0 !important;
   margin-left: 0 !important;
-  flex-wrap: unset !important;
+  // flex-wrap: unset !important;
+  flex-wrap: nowrap !important; // Keeps items inline on desktop by default
 
   @media screen and (max-width: map-get($grid-breakpoints, "md")) {
-    flex-wrap: balance !important;
+    // flex-wrap: balance !important;
+    flex-wrap: wrap !important; // Allows columns to properly stack on mobile devices
   }
 
   > .col,
