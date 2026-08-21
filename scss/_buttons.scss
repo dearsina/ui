@@ -215,7 +215,7 @@ form .btn i
 }
 
 // Bootstrap override for split buttons
-.btn-group > .btn:not(:first-child) {
+.btn-group:is(.dropdown, .dropup) > .btn:not(:first-child) {
   margin-left: -0.5px !important;
 }
 
@@ -226,7 +226,7 @@ form .btn i
   float: right !important;
 }
 
-.btn-group > .btn:not(:last-child):not(.dropdown-toggle).btn-sm
+.btn-group:is(.dropdown, .dropup) > .btn:not(:last-child):not(.dropdown-toggle).btn-sm
 {
   border-top-left-radius: 6px;
   border-bottom-left-radius: 6px;

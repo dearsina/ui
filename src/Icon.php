@@ -75,6 +75,7 @@ class Icon {
 		case 'duotone':
 		case 'thin':
 		case 'brands':
+		case 'kit':
 			return "fa-{$type}";
 
 		case 'brand':
