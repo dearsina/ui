@@ -939,7 +939,7 @@ EOF;
 				"html" => "&nbsp;",
 			]);
 		}
-		//<td valign="top" style="padding: 40px 0 0 0;" class="mobile-hide"><a href="https://litmus.com/community" target="_blank"><img src="https://kycdd.co.za/assets/img/salt/litmus-logo.png" alt="Litmus" width="105" height="105" border="0" style="display: block; font-family: Arial; color: #666666; font-size: 14px; width: 105px; height: 105px;"></a></td>
+		//<td valign="top" style="padding: 40px 0 0 0;" class="mobile-hide"><a href="https://litmus.com/community" target="_blank"><img src="https://app.kycdd.co.za/assets/img/salt/litmus-logo.png" alt="Litmus" width="105" height="105" border="0" style="display: block; font-family: Arial; color: #666666; font-size: 14px; width: 105px; height: 105px;"></a></td>
 
 		if($pretitle){
 			if(!is_array($pretitle)){

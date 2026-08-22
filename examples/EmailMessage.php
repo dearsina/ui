@@ -35,7 +35,7 @@ class EmailMessage extends Prototype implements ExampleInterface {
 				"header" => [
 					"logo" => [
 						"logo_url" => "https://kycdd.co.za",
-						"logo_src" => "https://kycdd.co.za/assets/img/kycdd_logo_v4_black.png",
+						"logo_src" => "https://app.kycdd.co.za/assets/img/kycdd_logo_v4_black.png",
 						"image_height" => 30,
 						"image_width" => 100,
 						"alt" => "Click here to go to KYCDD"
@@ -44,7 +44,7 @@ class EmailMessage extends Prototype implements ExampleInterface {
 				"body" => [[
 					"bg_colour" => "silent",
 					"image" => [
-						"src" => "https://kycdd.co.za/assets/img/welcome_v1.png",
+						"src" => "https://app.kycdd.co.za/assets/img/welcome_v1.png",
 					],
 					"copy" => [
 						"title" => [
@@ -102,7 +102,7 @@ class EmailMessage extends Prototype implements ExampleInterface {
 					],
 					"logo" => [
 						"logo_url" => "https://kycdd.co.za",
-						"logo_src" => "https://kycdd.co.za/assets/img/kycdd_logo_v4_black.png",
+						"logo_src" => "https://app.kycdd.co.za/assets/img/kycdd_logo_v4_black.png",
 						"image_height" => 30,
 						"image_width" => 100,
 						"alt" => "Click here to go to KYCDD"
@@ -118,7 +118,7 @@ class EmailMessage extends Prototype implements ExampleInterface {
 //				"colour" => "orange",
 				"body" => [[
 					"image" => [
-						"src" => "https://kycdd.co.za/assets/img/salt/responsive-email.png",
+						"src" => "https://app.kycdd.co.za/assets/img/salt/responsive-email.png",
 						"alt" => "Can an email really be responsive?",
 						"url" => "https://kycdd.co.za",
 					],
@@ -150,7 +150,7 @@ class EmailMessage extends Prototype implements ExampleInterface {
 				"body" => [[
 					"articles" => [[
 						"image" => [
-							"src" => "https://kycdd.co.za/assets/img/salt/litmus-logo.png",
+							"src" => "https://app.kycdd.co.za/assets/img/salt/litmus-logo.png",
 							"alt" => "Litmus",
 							"url" => "https://kycdd.co.za",
 						],
@@ -164,7 +164,7 @@ class EmailMessage extends Prototype implements ExampleInterface {
 						]
 					],[
 						//						"image" => [
-						//							"src" => "https://kycdd.co.za/assets/img/salt/litmus-logo.png",
+						//							"src" => "https://app.kycdd.co.za/assets/img/salt/litmus-logo.png",
 						//							"alt" => "Litmus",
 						//							"url" => "https://kycdd.co.za",
 						//						],
@@ -178,7 +178,7 @@ class EmailMessage extends Prototype implements ExampleInterface {
 						]
 					],[
 						"image" => [
-							"src" => "https://kycdd.co.za/assets/img/salt/litmus-logo.png",
+							"src" => "https://app.kycdd.co.za/assets/img/salt/litmus-logo.png",
 							"alt" => "Litmus",
 							"url" => "https://kycdd.co.za",
 						],
@@ -219,7 +219,7 @@ class EmailMessage extends Prototype implements ExampleInterface {
 						"title" => "Left title",
 						"body" => "This row has images also.",
 						"image" => [
-							"src" => "https://kycdd.co.za/assets/img/salt/fluid-images.png",
+							"src" => "https://app.kycdd.co.za/assets/img/salt/fluid-images.png",
 							"alt" => "Can an email really be responsive?",
 							"url" => "https://kycdd.co.za",
 						],
@@ -228,7 +228,7 @@ class EmailMessage extends Prototype implements ExampleInterface {
 						"title" => "Right title",
 						"body" => "Right body.",
 						"image" => [
-							"src" => "https://kycdd.co.za/assets/img/salt/fluid-images.png",
+							"src" => "https://app.kycdd.co.za/assets/img/salt/fluid-images.png",
 							"alt" => "Can an email really be responsive?",
 							"url" => "https://kycdd.co.za",
 						],
@@ -265,7 +265,7 @@ class EmailMessage extends Prototype implements ExampleInterface {
 					"title" => "Right aligned header text<br> with line break and own colour.",
 					"logo" => [
 						"logo_url" => "https://kycdd.co.za",
-						"logo_src" => "https://kycdd.co.za/assets/img/kycdd_logo_v4_black.png",
+						"logo_src" => "https://app.kycdd.co.za/assets/img/kycdd_logo_v4_black.png",
 						"image_height" => 30,
 						"image_width" => 100,
 						"alt" => "Click here to go to KYCDD"
@@ -274,7 +274,7 @@ class EmailMessage extends Prototype implements ExampleInterface {
 				"body" => [[
 					"colour" => "#000",
 					"image" => [
-						"src" => "https://kycdd.co.za/assets/img/salt/responsive-email.png",
+						"src" => "https://app.kycdd.co.za/assets/img/salt/responsive-email.png",
 						"alt" => "Can an email really be responsive?",
 						"url" => "https://kycdd.co.za",
 					],
@@ -329,7 +329,7 @@ class EmailMessage extends Prototype implements ExampleInterface {
 						"title" => "Left title",
 						"body" => "Left body.",
 						"image" => [
-							"src" => "https://kycdd.co.za/assets/img/salt/fluid-images.png",
+							"src" => "https://app.kycdd.co.za/assets/img/salt/fluid-images.png",
 							"alt" => "Can an email really be responsive?",
 							"url" => "https://kycdd.co.za",
 						],
@@ -338,7 +338,7 @@ class EmailMessage extends Prototype implements ExampleInterface {
 						"title" => "Right title",
 						"body" => "Right body.",
 						"image" => [
-							"src" => "https://kycdd.co.za/assets/img/salt/fluid-images.png",
+							"src" => "https://app.kycdd.co.za/assets/img/salt/fluid-images.png",
 							"alt" => "Can an email really be responsive?",
 							"url" => "https://kycdd.co.za",
 						],
@@ -375,7 +375,7 @@ class EmailMessage extends Prototype implements ExampleInterface {
 						"url" => "https://kycdd.co.za",
 					],
 					"image" => [
-						"src" => "https://kycdd.co.za/assets/img/salt/responsive-email.png",
+						"src" => "https://app.kycdd.co.za/assets/img/salt/responsive-email.png",
 						"alt" => "Can an email really be responsive?",
 						"url" => "https://kycdd.co.za",
 					],
@@ -383,7 +383,7 @@ class EmailMessage extends Prototype implements ExampleInterface {
 					"bg_colour" => "silent",
 					"articles" => [[
 						"image" => [
-							"src" => "https://kycdd.co.za/assets/img/salt/litmus-logo.png",
+							"src" => "https://app.kycdd.co.za/assets/img/salt/litmus-logo.png",
 							"alt" => "Litmus",
 							"url" => "https://kycdd.co.za",
 						],
@@ -397,7 +397,7 @@ class EmailMessage extends Prototype implements ExampleInterface {
 						]
 					],[
 //						"image" => [
-//							"src" => "https://kycdd.co.za/assets/img/salt/litmus-logo.png",
+//							"src" => "https://app.kycdd.co.za/assets/img/salt/litmus-logo.png",
 //							"alt" => "Litmus",
 //							"url" => "https://kycdd.co.za",
 //						],
@@ -411,7 +411,7 @@ class EmailMessage extends Prototype implements ExampleInterface {
 						]
 					],[
 						"image" => [
-							"src" => "https://kycdd.co.za/assets/img/salt/litmus-logo.png",
+							"src" => "https://app.kycdd.co.za/assets/img/salt/litmus-logo.png",
 							"alt" => "Litmus",
 							"url" => "https://kycdd.co.za",
 						],
