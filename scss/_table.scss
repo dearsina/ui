@@ -144,6 +144,18 @@
 }
 
 /**
+  * The last row of the table body
+  * has rounded corners on hover if required
+ */
+.card-body .table-body:last-child:hover,
+.modal-body .table-body:last-child:hover
+{
+  border-bottom-right-radius: var(--bs-card-border-radius);
+  border-bottom-left-radius: var(--bs-card-border-radius);
+}
+
+
+/**
  * Remove the paragraph margin bottom.
  */
 .table-body > .col > p
