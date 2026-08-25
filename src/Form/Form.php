@@ -479,10 +479,14 @@ class Form {
 
 		# Slightly hacky way to add a class to the modal tab header to allow for draggable (if enabled)
 		if($this->tabsAreInUse() && $this->modal){
+			$first_field = reset($this->fields);
 			$this->fields = [[
+				"id" => $first_field['id'],
+				"class" => $first_field['class'],
+				"style" => $first_field['style'],
+				// If id, class and style are passed _with_ the tabs
 				"tabs" => [
-					"id" => reset($this->fields)['id'],
-					"tabs" => reset($this->fields)['tabs'],
+					"tabs" => $first_field['tabs'],
 					"class" => "modal-header-draggable",
 				],
 			]];
