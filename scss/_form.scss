@@ -827,6 +827,14 @@ textarea.monospace
 }
 
 /**
+ * To not mess up tables
+ */
+.table-body > .col > .tokenized-element
+{
+  flex-wrap : balance;
+}
+
+/**
  * So that the element sits right
  * inside a badge (and a potential icon
  * to the left).
