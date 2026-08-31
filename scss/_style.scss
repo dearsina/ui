@@ -1317,3 +1317,32 @@ a.masonry-grid-tile-inner:hover
   padding: 0.5rem;
   zoom: 50%;
 }
+
+.service-test-lab-history-criteria {
+  min-width: 0;
+
+  &__header {
+    color: var(--bs-secondary-color);
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__body {
+    margin-top: 0.5rem;
+  }
+
+  &__code-wrapper {
+    max-width: 100%;
+  }
+
+  &__code {
+    max-height: 24rem;
+    overflow: auto;
+  }
+
+  &__code-content {
+    white-space: break-spaces;
+  }
+}
