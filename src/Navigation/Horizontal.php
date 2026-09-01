@@ -100,30 +100,38 @@ EOF;
 	private function getLevel2HTML(): ?string
 	{
 		# If there are no items, omit the entire level 2 navbar
-		if(!$this->levels[2]['items']){
-			return NULL;
-		}
+		if($this->levels[2]['items']){
+			foreach($this->levels[2]['items'] as &$item){
+				$item['direction'] = "down";
+			}
 
-		foreach($this->levels[2]['items'] as &$item){
-			$item['direction'] = "down";
+			$level2_items = Dropdown::generateRootUl($this->levels[2]['items'], NULL, "li", "nav-item");
 		}
-
-		$items = Dropdown::generateRootUl($this->levels[2]['items'], NULL, "li", "nav-item");
 
 		if($level1_items = Dropdown::generateRootUl($this->levels[1]['items'])){
-			$items = <<<EOF
-				{$items}
-				<div class="level1-items-in-level2">{$level1_items}</div>
+			$level1_items = "<div class=\"level1-items-in-level2\">{$level1_items}</div>";
+		}
+
+		if($level2_items){
+			return <<<EOF
+<div class="collapse navbar-collapse" id="navbar-level2">
+	<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+		{$level2_items}
+		{$level1_items}
+	</ul>
+</div>
 EOF;
 		}
 
 		return <<<EOF
 <div class="collapse navbar-collapse" id="navbar-level2">
-	<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-		{$items}
+	<ul class="navbar-nav me-auto" style="padding: 0;">
+	{$level1_items}
 	</ul>
 </div>
 EOF;
+
+
 	}
 
 	/**
