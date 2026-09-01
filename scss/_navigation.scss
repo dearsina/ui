@@ -43,27 +43,34 @@
  * Drop-start caret
  */
 li:not(.list-group-item) > .dropstart > .dropdown-toggle.show::before
-//li > .dropup > .dropdown-toggle.show::before,
-//li > .dropend > .dropdown-toggle.show::before
 {
   content     : "‹";
   float       : right;
   margin-left : 1rem;
   border      : none;
+  margin-right: 0;
 }
 
 /**
  * Drop-end caret
  */
-li > .dropdown:not(.dropstart) > .dropdown-toggle:not(.show)::after,
-li > .dropup > .dropdown-toggle:not(.show)::after,
-li > .dropend > .dropdown-toggle:not(.show)::after
+li > .dropstart .dropdown-toggle::before,
+li > .dropdown:not(.dropstart) > .dropdown-toggle::after,
+li > .dropup > .dropdown-toggle::after,
+li > .dropend > .dropdown-toggle::after {
+  content: "›";
+  float: right;
+  margin-left: 1rem;
+  border: none;
+  display: inline;
+}
+
+/**
+ * Display needs to be block otherwise it messes with the size
+ */
+.dropstart .dropdown-toggle::before
 {
-  content     : "›";
-  float       : right;
-  margin-left : 1rem;
-  border      : none;
-  display     : inline;
+  display: block !important;
 }
 
 li > .dropdown:not(.drop-float-right) > .dropdown-toggle,
@@ -93,8 +100,8 @@ li > .dropend > .dropdown-toggle
   align-items    : center;
 
   // Hacky way to ensure everything is on one line
-  min-width: 100%;
-  width: max-content;
+  min-width      : 100%;
+  width          : max-content;
 }
 
 #navbar-level2 > .navbar-nav > .dropdown li dropdown-item-title
@@ -212,18 +219,20 @@ a.navbar-level1-logo > object
 
   #navbar-level2
   {
-    padding: 0;
+    padding : 0;
   }
 
-  div:is(.dropdown, .dropstart) .dropdown-menu[data-bs-popper] {
-    margin: 1rem 1rem 0.5rem 1rem !important;
-    overflow: hidden;
+  div:is(.dropdown, .dropstart) .dropdown-menu[data-bs-popper]
+  {
+    margin   : 1rem 1rem 0.5rem 1rem !important;
+    overflow : hidden;
   }
   div:is(.dropdown, .dropstart) .dropdown-menu-list li > a,
-  div:is(.dropdown, .dropstart) .dropdown-menu-list li > div > button {
-    border-bottom: 1px solid #dfdfdf;
-    padding: 0.5rem 0.75rem !important;
-    border-radius: unset !important;
+  div:is(.dropdown, .dropstart) .dropdown-menu-list li > div > button
+  {
+    border-bottom : 1px solid #dfdfdf;
+    padding       : 0.5rem 0.75rem !important;
+    border-radius : unset !important;
   }
 
   .level1-items-in-level2
@@ -232,41 +241,47 @@ a.navbar-level1-logo > object
   }
   .level1-items-in-level2 button.dropdown-item
   {
-    padding: 0.75rem 0.75rem 0rem 0.25rem;
-    margin: 0;
-    border-radius: unset !important;
+    padding       : 0.75rem 0.75rem 0rem 0.75rem;
+    margin        : 0;
+    border-radius : unset !important;
   }
   .level1-items-in-level2 > .dropstart
   {
-    padding-bottom: 0.75rem;
-    border-bottom: 1px solid #dfdfdf;
+    padding-bottom : 0.75rem;
+    border-bottom  : 1px solid #dfdfdf;
+  }
+
+  li:not(.list-group-item) > .dropstart > .dropdown-toggle.show::before,
+  li > .dropstart .dropdown-toggle::before
+  {
+    content: "";
   }
 
   .level1-items-in-level2 .dropstart > button.dropdown-item.dropdown-toggle:not(.show):after,
-  .navbar-collapse .dropdown > button.dropdown-item.dropdown-toggle:not(.show):after
+  .navbar-collapse .dropdown > button.dropdown-item.dropdown-toggle:not(.show):after,
+  .navbar-collapse .dropstart > button.dropdown-item.dropdown-toggle:not(.show):after
   {
-    content: "›";
-    float: right;
-    margin-left: 1rem;
-    margin-right: 0.5rem;
-    border: none;
-    display: inline;
+    content      : "›";
+    float        : right;
+    margin-left  : 1rem;
+    border       : none;
+    display      : inline;
   }
   .level1-items-in-level2 > .dropstart > button.dropdown-item.dropdown-toggle.show:after,
-  .navbar-collapse .dropdown > button.dropdown-item.dropdown-toggle.show:after
+  .navbar-collapse .dropdown > button.dropdown-item.dropdown-toggle.show:after,
+  .navbar-collapse .dropstart > button.dropdown-item.dropdown-toggle.show:after
   {
-    content: "‹";
-    float: right;
-    margin-left: 1rem;
-    margin-right: 0.5rem;
-    border: none;
-    display: inline;
+    content      : "‹";
+    float        : right;
+    margin-left  : 1rem;
+    border       : none;
+    display      : inline;
   }
 
   #navbar-level2 > ul
   {
-    padding : 0 !important;
-    margin-bottom: 0 !important;
+    padding       : 0 !important;
+    margin-bottom : 0 !important;
   }
 
   /**
@@ -275,8 +290,8 @@ a.navbar-level1-logo > object
    */
   .dropdown-divider
   {
-    opacity: 0;
-    margin: 0;
+    opacity : 0;
+    margin  : 0;
   }
 
   #navbar-level2 > ul > .dropdown,

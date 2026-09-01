@@ -323,6 +323,7 @@ EOF;
 			if(is_array($item['title'])){
 				$title = $item['title']['title'];
 				$class_array = str::getAttrArray($item['title']['class'], ["dropdown-item-title"]);
+				$style_array = str::getAttrArray($item['title']['style']);
 			}
 			else {
 				$title = $item['title'];
@@ -335,11 +336,13 @@ EOF;
 
 		if(!$tooltip = self::getDropdownTooltip($item)){
 			$class = str::getAttrTag("class", $class_array);
-			return "<div{$class}>{$title}</div>";
+			$style = str::getAttrTag("style", $style_array);
+			return "<div{$class}{$style}>{$title}</div>";
 		}
 
 		$class[] = "tooltip-trigger";
 		$class = str::getAttrTag("class", $class_array);
+		$style = str::getAttrTag("style", $style_array);
 
 		$data = [
 			"bs-original-title" => htmlentities($tooltip['title']),
@@ -354,7 +357,7 @@ EOF;
 
 		$data = str::getDataAttr($data);
 
-		return "<div{$class}{$data}>{$title}</div>";
+		return "<div{$class}{$style}{$data}>{$title}</div>";
 	}
 
 	/**
