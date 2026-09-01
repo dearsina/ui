@@ -319,11 +319,27 @@ EOF;
 
 	private static function generateDropdownTitle(array $item, ?string $title = NULL): string
 	{
-		$title = $title ?: $item['title'];
+		if(!$title){
+			if(is_array($item['title'])){
+				$title = $item['title']['title'];
+				$class_array = str::getAttrArray($item['title']['class'], ["dropdown-item-title"]);
+			}
+			else {
+				$title = $item['title'];
+				$class_array = str::getAttrArray(NULL, ["dropdown-item-title"]);
+			}
+		}
+		else {
+			$class_array = str::getAttrArray(NULL, ["dropdown-item-title"]);
+		}
 
 		if(!$tooltip = self::getDropdownTooltip($item)){
-			return "<div class=\"dropdown-item-title\">{$title}</div>";
+			$class = str::getAttrTag("class", $class_array);
+			return "<div{$class}>{$title}</div>";
 		}
+
+		$class[] = "tooltip-trigger";
+		$class = str::getAttrTag("class", $class_array);
 
 		$data = [
 			"bs-original-title" => htmlentities($tooltip['title']),
@@ -331,13 +347,14 @@ EOF;
 			"bs-html" => "true",
 			"bs-placement" => $tooltip['placement'] ?: "top",
 		];
+
 		if($tooltip['class']){
 			$data['bs-custom-class'] = $tooltip['class'];
 		}
 
 		$data = str::getDataAttr($data);
 
-		return "<div class=\"dropdown-item-title tooltip-trigger\"{$data}>{$title}</div>";
+		return "<div{$class}{$data}>{$title}</div>";
 	}
 
 	/**

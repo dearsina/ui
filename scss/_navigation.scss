@@ -212,9 +212,36 @@ a.navbar-level1-logo > object
     display : none;
   }
 
+  #navbar-level2
+  {
+    padding: 0;
+  }
+
+  div:is(.dropdown, .dropstart) .dropdown-menu[data-bs-popper] {
+    margin: 1rem 1rem 0.5rem 1rem !important;
+    overflow: hidden;
+  }
+  div:is(.dropdown, .dropstart) .dropdown-menu-list li > a,
+  div:is(.dropdown, .dropstart) .dropdown-menu-list li > div > button {
+    border-bottom: 1px solid #dfdfdf;
+    padding: 0.5rem 0.75rem !important;
+    border-radius: unset !important;
+  }
+
   .level1-items-in-level2
   {
     display : unset;
+  }
+  .level1-items-in-level2 button.dropdown-item
+  {
+    padding: 0.75rem 0.25rem 0rem 0.25rem;
+    margin: 0;
+    border-radius: unset !important;
+  }
+  .level1-items-in-level2 > .dropstart
+  {
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #dfdfdf;
   }
 
   #navbar-level2 > ul > .dropdown,
