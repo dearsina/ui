@@ -42,7 +42,9 @@
 /**
  * Drop-start caret
  */
-li:not(.list-group-item) > .dropstart > .dropdown-toggle::before
+li:not(.list-group-item) > .dropstart > .dropdown-toggle.show::before
+//li > .dropup > .dropdown-toggle.show::before,
+//li > .dropend > .dropdown-toggle.show::before
 {
   content     : "‹";
   float       : right;
@@ -53,9 +55,9 @@ li:not(.list-group-item) > .dropstart > .dropdown-toggle::before
 /**
  * Drop-end caret
  */
-li > .dropdown:not(.dropstart) > .dropdown-toggle::after,
-li > .dropup > .dropdown-toggle::after,
-li > .dropend > .dropdown-toggle::after
+li > .dropdown:not(.dropstart) > .dropdown-toggle:not(.show)::after,
+li > .dropup > .dropdown-toggle:not(.show)::after,
+li > .dropend > .dropdown-toggle:not(.show)::after
 {
   content     : "›";
   float       : right;
@@ -71,14 +73,10 @@ li > .dropend > .dropdown-toggle
   margin-right : 2rem;
 }
 
-#navbar-level2 > .navbar-nav > .dropdown > button > i:not(.fa-bars)
+#navbar-level2 > .navbar-nav > .dropdown > button > i:not(.fa-bars),
+.level1-items-in-level2 > .dropstart > button > i:not(.fa-bars)
 {
   margin-right : 0.5rem;
-}
-
-#navbar-level2 > .navbar-nav > .dropdown li
-{
-
 }
 
 #navbar-level2 > .navbar-nav > .dropdown li .badge
@@ -234,7 +232,7 @@ a.navbar-level1-logo > object
   }
   .level1-items-in-level2 button.dropdown-item
   {
-    padding: 0.75rem 0.25rem 0rem 0.25rem;
+    padding: 0.75rem 0.75rem 0rem 0.25rem;
     margin: 0;
     border-radius: unset !important;
   }
@@ -242,6 +240,43 @@ a.navbar-level1-logo > object
   {
     padding-bottom: 0.75rem;
     border-bottom: 1px solid #dfdfdf;
+  }
+
+  .level1-items-in-level2 .dropstart > button.dropdown-item.dropdown-toggle:not(.show):after,
+  .navbar-collapse .dropdown > button.dropdown-item.dropdown-toggle:not(.show):after
+  {
+    content: "›";
+    float: right;
+    margin-left: 1rem;
+    margin-right: 0.5rem;
+    border: none;
+    display: inline;
+  }
+  .level1-items-in-level2 > .dropstart > button.dropdown-item.dropdown-toggle.show:after,
+  .navbar-collapse .dropdown > button.dropdown-item.dropdown-toggle.show:after
+  {
+    content: "‹";
+    float: right;
+    margin-left: 1rem;
+    margin-right: 0.5rem;
+    border: none;
+    display: inline;
+  }
+
+  #navbar-level2 > ul
+  {
+    padding : 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  /**
+   * The dropdown menu divider is hidden
+   * in the mobile view.
+   */
+  .dropdown-divider
+  {
+    opacity: 0;
+    margin: 0;
   }
 
   #navbar-level2 > ul > .dropdown,

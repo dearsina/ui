@@ -450,7 +450,7 @@ ul.dropdown-menu-list > li:last-child a:focus{
  */
 @include media-breakpoint-up(md) {
   .btn-mobile-only {
-    display: none;
+    display: none !important;
   }
 
   .btn-text-mobile-only {
