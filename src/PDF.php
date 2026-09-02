@@ -15,7 +15,7 @@ class PDF {
 	 * or temporary file name.
 	 *
 	 * @param             $url
-	 * @param int|null    $seconds
+	 * @param int|null    $seconds The number of seconds to wait for the page to load before printing
 	 * @param string|null $filename The filename is used for the print run window
 	 * @param bool|null   $return_tmp_filename_only
 	 * @param int|null    $rerun
