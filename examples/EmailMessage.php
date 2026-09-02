@@ -77,8 +77,8 @@ class EmailMessage extends Prototype implements ExampleInterface {
 				"footer" => [
 					"colour" => "grey",
 					"footer" => [
-						"Sent by KYC DD (Pty) Limited
-                    <br>Office 203, 139 Greenway, Greenside, Johannesburg, 2193.
+						"Sent by ".str::getRegisteredCompany()."
+                    <br>135 Rivonia Road, Johannesburg, 2196.
                     <br>Incorporated in South Africa, 2020/181847/07.
                     <br>Copyright © {$year}, All rights reserved.",
 						"Next row"
