@@ -555,7 +555,10 @@ EOF;
 			# Run the count query
 			$total_results = $sql->select($count_query);
 
-			$output_vars['query'] = $_SESSION['query'];
+			# The query should only be visible in DEV
+			if(str::isDev()){
+				$output_vars['query'] = $_SESSION['query'];
+			}
 
 			# If rows are returned, ensure the total results take into account any offset
 			if($total_results){
@@ -595,8 +598,11 @@ EOF;
 
 		$rows = $sql->select($rows_query);
 
-		$output_vars['query_parameters'] = $rows_query;
-		$output_vars['query'] = $_SESSION['query'];
+		# Query params should not be visible in PROD
+		if(str::isDev()){
+			$output_vars['query_parameters'] = $rows_query;
+			$output_vars['query'] = $_SESSION['query'];
+		}
 
 		if(!$rows){
 			//if no results are found
