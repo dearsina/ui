@@ -110,7 +110,7 @@ class Tel extends Field implements FieldInterface {
 				"onlyCountries" => $a['data']['only_countries'],
 				"excludeCountries" => $a['data']['except_countries'],
 				"initialCountry" => $a['data']['initial_country_code'] ?: $geolocation['country_code'],
-				"preferredCountries" => [
+				"countryOrder" => [
 					$geolocation['country_code']
 				]
 			],
