@@ -54,7 +54,7 @@ li:not(.list-group-item) > .dropstart > .dropdown-toggle.show::before
 /**
  * Drop-end caret
  */
-li > .dropstart .dropdown-toggle::before,
+li:not(.drag-drawflow) > .dropstart .dropdown-toggle::before,
 li > .dropdown:not(.dropstart) > .dropdown-toggle::after,
 li > .dropup > .dropdown-toggle::after,
 li > .dropend > .dropdown-toggle::after {
