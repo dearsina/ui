@@ -444,6 +444,21 @@ ul.dropdown-menu-list > li:last-child a:focus{
   }
 }
 
+@include media-breakpoint-down(3xl) {
+  .btn-wide-screen-only {
+    display: none;
+  }
+
+  .btn-text-wide-screen-only {
+    //display: flex;
+    //align-items: center;
+  }
+
+  .btn-text-wide-screen-only .btn-text {
+    display: none;
+  }
+}
+
 /**
  * For buttons and button text
  * that is to be hidden on desktop devices
