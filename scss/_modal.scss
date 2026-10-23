@@ -177,6 +177,18 @@
   }
 }
 
+/**
+ * Keep table searches available while scrolling a modal body.
+ */
+.modal-row-search {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  background: var(--bs-modal-bg);
+}
+
 .modal-footer {
   background: $header-footer-bg;
 }
