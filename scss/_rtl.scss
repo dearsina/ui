@@ -135,9 +135,28 @@ i.fa-check
 }
 
 /**
+ * Specifically for the AgGrid
+ */
+.ag-script-arabic {
+  font-family: "Rubik", sans-serif;
+  font-weight: 300;
+  direction: rtl;
+}
+
+/**
  * Cyrillic script
  */
 .script-cyrillic
+{
+  font-family: "Rubik", sans-serif;
+  font-weight: 300;
+  font-size: 95%;
+}
+
+/**
+ * Specifically for the AgGrid
+ */
+.ag-script-cyrillic
 {
   font-family: "Rubik", sans-serif;
   font-weight: 300;
