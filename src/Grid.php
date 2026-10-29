@@ -7,12 +7,16 @@ use App\Common\href;
 use App\Common\str;
 use App\UI\Form\Field;
 use App\UI\Tab\Tabs;
+use Stringable;
 
 /**
  * Class Grid
  * @package App\UI
  */
 class Grid {
+	public const FLOW_COLUMN = "column";
+	public const FLOW_ROW = "row";
+
 	private $grid;
 	private $unstackable;
 	private ?object $formatter;
@@ -419,6 +423,247 @@ class Grid {
 			"formatter" => $formatter,
 		]);
 		return $grid->getAllRowsHtml($cells);
+	}
+
+	/**
+	 * Render arbitrary UI fragments in a modern responsive CSS Grid.
+	 *
+	 * This API is independent of the legacy Bootstrap row/column methods in this
+	 * class. It is intended for reusable component composition: cards, panels,
+	 * data points, media, forms, or any other rendered HTML may be supplied.
+	 *
+	 * Each item may be a trusted HTML string, scalar, Stringable object, nested
+	 * array of fragments, or an associative definition containing `html` plus
+	 * item settings. Item definitions support `span` (`all` or 1-12), `stretch`,
+	 * and common element settings such as class, style, data, ARIA, and custom
+	 * attributes.
+	 *
+	 * Layout settings:
+	 * - `columns`: Column count from 1-12. Defaults to 2.
+	 * - `flow`: `row` (default) or `column`. Column-major flow calculates the
+	 *   required row count while retaining supplied DOM order.
+	 * - `gap`: `none`, `xs`, `sm`, `md`, `lg`, or `xl`. A raw CSS length is also
+	 *   accepted through a custom property. Defaults to `md`.
+	 * - `collapse_at`: `sm`, `md`, `lg`, `xl`, `xxl`, or FALSE. The grid becomes
+	 *   one column at and below that breakpoint. Defaults to `md`.
+	 * - `responsive`: Backwards-friendly boolean alias; FALSE disables collapse.
+	 * - `align`: `start`, `center`, `end`, or `stretch`.
+	 * - `stretch`: Makes every item's direct child fill its grid area.
+	 * - Standard `tag`, `id`, `class`, `only_class`, `style`, `only_style`,
+	 *   `data`, `alt`, `tooltip`, `role`, `tabindex`, `rtl`, `aria`, and custom
+	 *   `attributes` settings.
+	 *
+	 * Example:
+	 * <code>
+	 * Grid::responsive([
+	 *     ["html" => $overview, "span" => "all"],
+	 *     $left_panel,
+	 *     $right_panel,
+	 * ], [
+	 *     "columns" => 2,
+	 *     "gap" => "lg",
+	 *     "collapse_at" => "lg",
+	 *     "stretch" => TRUE,
+	 * ]);
+	 * </code>
+	 *
+	 * @param array<int,mixed>    $items    Rendered fragments or item definitions.
+	 * @param array<string,mixed> $settings Layout and root element settings.
+	 *
+	 * @return string Responsive grid HTML, or an empty string when no items render.
+	 */
+	public static function responsive(array $items, array $settings = []): string
+	{
+		$rendered = [];
+		foreach($items as $item){
+			$html = self::responsiveItem($item, (bool)($settings['stretch'] ?? false));
+			if($html !== ""){
+				$rendered[] = $html;
+			}
+		}
+
+		if(!$rendered){
+			return "";
+		}
+
+		$columns = max(1, min(12, (int)($settings['columns'] ?? 2)));
+		$flow = strtolower((string)($settings['flow'] ?? self::FLOW_ROW));
+		$flow = $flow === self::FLOW_COLUMN ? self::FLOW_COLUMN : self::FLOW_ROW;
+		$rows = max(1, (int)ceil(count($rendered) / $columns));
+		$align = self::responsiveModifier(
+			(string)($settings['align'] ?? (($settings['stretch'] ?? false) ? "stretch" : "start")),
+			["start", "center", "end", "stretch"],
+			"start"
+		);
+		$gap = strtolower(trim((string)($settings['gap'] ?? "md")));
+		$gap_class = in_array($gap, ["none", "xs", "sm", "md", "lg", "xl"], true) ? $gap : "custom";
+
+		$responsive = !array_key_exists('responsive', $settings) || (bool)$settings['responsive'];
+		$collapse_at = $responsive ? strtolower((string)($settings['collapse_at'] ?? "md")) : "";
+		$collapse_at = in_array($collapse_at, ["sm", "md", "lg", "xl", "xxl"], true) ? $collapse_at : "";
+
+		$classes = [
+			"ui-responsive-grid",
+			"ui-responsive-grid--columns-{$columns}",
+			"ui-responsive-grid--{$flow}-major",
+			"ui-responsive-grid--gap-{$gap_class}",
+			"ui-responsive-grid--align-{$align}",
+			$collapse_at ? "ui-responsive-grid--collapse-{$collapse_at}" : NULL,
+		];
+		$styles = $flow === self::FLOW_COLUMN ? ["--ui-responsive-grid-rows" => $rows] : [];
+		if($gap_class === "custom"){
+			$styles['--ui-responsive-grid-gap'] = $gap ?: ".75rem";
+		}
+
+		if($settings['tooltip'] ?? NULL){
+			Tooltip::generate($settings);
+		}
+
+		$tag = self::responsiveTag((string)($settings['tag'] ?? "div"), "div");
+		$attributes = self::responsiveAttributes($settings, $classes, $styles, true);
+
+		return "<{$tag}{$attributes}>" . implode("", $rendered) . "</{$tag}>";
+	}
+
+	/** Render one responsive-grid item and its layout wrapper. */
+	private static function responsiveItem(mixed $item, bool $default_stretch): string
+	{
+		$settings = [];
+		if(is_array($item) && !str::isNumericArray($item) && array_key_exists('html', $item)){
+			$settings = $item;
+			$item = $settings['html'];
+			unset($settings['html']);
+		}
+
+		$html = self::responsiveContent($item);
+		if($html === ""){
+			return "";
+		}
+
+		$span = strtolower(trim((string)($settings['span'] ?? "1")));
+		$span = $span === "all" ? "all" : (string)max(1, min(12, (int)$span));
+		$classes = [
+			"ui-responsive-grid__item",
+			"ui-responsive-grid__item--span-{$span}",
+			($settings['stretch'] ?? $default_stretch) ? "ui-responsive-grid__item--stretch" : NULL,
+		];
+		$tag = self::responsiveTag((string)($settings['tag'] ?? "div"), "div");
+		$attributes = self::responsiveAttributes($settings, $classes);
+
+		return "<{$tag}{$attributes}>{$html}</{$tag}>";
+	}
+
+	/** Flatten trusted rendered fragments for a grid item. */
+	private static function responsiveContent(mixed $content): string
+	{
+		if($content === NULL || $content === false){
+			return "";
+		}
+		if(is_array($content)){
+			return implode("", array_map([self::class, 'responsiveContent'], $content));
+		}
+		if(is_string($content) || is_numeric($content)){
+			return (string)$content;
+		}
+		if($content === true){
+			return "true";
+		}
+
+		return $content instanceof Stringable ? (string)$content : "";
+	}
+
+	/** Generate common root/item attributes for the responsive API. */
+	private static function responsiveAttributes(
+		array $settings,
+		array $default_class,
+		array $default_style = [],
+		bool $root = false
+	): string {
+		$class = str::getAttrTag("class", str::getAttrArray(
+			$settings['class'] ?? NULL,
+			$default_class,
+			$settings['only_class'] ?? NULL
+		));
+		$style = str::getAttrTag("style", str::getAttrArray(
+			$settings['style'] ?? NULL,
+			$default_style,
+			$settings['only_style'] ?? NULL
+		));
+		$id = str::getAttrTag("id", $settings['id'] ?? NULL);
+		$data = str::getDataAttr($settings['data'] ?? NULL);
+		$role = str::getAttrTag("role", $settings['role'] ?? NULL);
+		$tabindex = str::getAttrTag("tabindex", $settings['tabindex'] ?? NULL);
+		$dir = $root && ($settings['rtl'] ?? false) ? str::getAttrTag("dir", "rtl") : NULL;
+		$aria = self::responsivePrefixedAttributes("aria", $settings['aria'] ?? NULL);
+		$other = self::responsiveCustomAttributes($settings['attributes'] ?? NULL);
+		$title = $root && !($settings['tooltip'] ?? NULL)
+			? str::getAttrTag("title", strip_tags((string)($settings['alt'] ?? "")))
+			: NULL;
+
+		return "{$id}{$class}{$style}{$title}{$data}{$role}{$tabindex}{$dir}{$aria}{$other}";
+	}
+
+	private static function responsiveModifier(string $value, array $allowed, string $fallback): string
+	{
+		$value = strtolower(trim($value));
+		return in_array($value, $allowed, true) ? $value : $fallback;
+	}
+
+	private static function responsiveTag(string $tag, string $fallback): string
+	{
+		$tag = strtolower(trim($tag));
+		return $tag && preg_match('/^[a-z][a-z0-9-]*$/', $tag) ? $tag : $fallback;
+	}
+
+	private static function responsivePrefixedAttributes(string $prefix, mixed $attributes): string
+	{
+		if(!is_array($attributes)){
+			return "";
+		}
+
+		$html = [];
+		foreach($attributes as $name => $value){
+			$name = self::responsiveAttributeName((string)$name);
+			if($name){
+				$html[] = str::getAttrTag("{$prefix}-{$name}", self::responsiveAttributeValue($value));
+			}
+		}
+
+		return implode("", array_filter($html));
+	}
+
+	private static function responsiveCustomAttributes(mixed $attributes): string
+	{
+		if(!is_array($attributes)){
+			return "";
+		}
+
+		$reserved = ["id", "class", "style", "title", "data", "role", "tabindex", "dir"];
+		$html = [];
+		foreach($attributes as $name => $value){
+			$name = self::responsiveAttributeName((string)$name);
+			if(!$name || in_array($name, $reserved, true) || str_starts_with($name, "aria-")){
+				continue;
+			}
+
+			$html[] = str::getAttrTag($name, self::responsiveAttributeValue($value), $value === true);
+		}
+
+		return implode("", array_filter($html));
+	}
+
+	private static function responsiveAttributeName(string $name): string
+	{
+		$name = strtolower(trim($name));
+		return preg_match('/^[a-z][a-z0-9_.:-]*$/', $name) ? $name : "";
+	}
+
+	private static function responsiveAttributeValue(mixed $value): mixed
+	{
+		if(is_bool($value)){
+			return $value ? "true" : "false";
+		}
+		return is_array($value) ? json_encode($value) : $value;
 	}
 
 	public static function generateRows(?array $rows): ?string

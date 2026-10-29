@@ -27,6 +27,11 @@ class Accordion {
 	 * or an array of arrays containing those elements.
 	 * Both the `header` and the `body` can be either strings
 	 * or arrays or attributes (id, class, style, etc).
+	 * An optional `item` settings array wraps a header/body pair in a semantic
+	 * element. This is useful for card-like accordion items and accepts `tag`,
+	 * `id`, `class`, `only_class`, `style`, `only_style`, `data`, `alt`, `role`,
+	 * `tabindex`, `rtl`, `aria`, and `attributes`. Without `item`, the historic
+	 * unwrapped output is retained.
 	 * The `header` can also define `ignore_class` as a string
 	 * or array of class names that should not trigger the accordion
 	 * when clicked.
@@ -40,6 +45,7 @@ class Accordion {
 	 * Accordion::generate([[
 	 *    "header" => "Header",
 	 *    "body" => "Body",
+	 *    "item" => ["tag" => "article", "class" => "accordion-card card"],
 	 * ],[
 	 *    "header" => "Header",
 	 *    "body" => "Body",
@@ -63,7 +69,7 @@ class Accordion {
 		}
 
 		# This is the accordion wrapper ID
-		$id = $id ?? str::id("accordion");
+		$id = str::id("accordion");
 
         $html = "";
 		foreach($a as $collapsable){
@@ -89,13 +95,15 @@ class Accordion {
 	 */
 	private static function generateCollapsable(array $a, ?string $parent_id = NULL): string
 	{
-		extract($a);
+		$header = $a['header'] ?? NULL;
+		$body = $a['body'] ?? NULL;
+		$id = $a['id'] ?? NULL;
 
 		# If set to true, allows for the accordion to start open
-		self::$show = $show;
+		self::$show = (bool)($a['show'] ?? false);
 
 		# This ID ties the two pieces together
-		if(is_array($body) && $body['id']){
+		if(is_array($body) && !empty($body['id'])){
 			$id = $body['id'];
 		}
 		else if(!$id){
@@ -108,10 +116,100 @@ class Accordion {
 		}
 		// This is to prevent querySelector from throwing an error
 		
-		$html .= self::generateHeaderHTML($header, $id);
+		$html = self::generateHeaderHTML($header, $id);
 		$html .= self::generateBodyHTML($body, $id, $parent_id);
 
-		return $html;
+		return self::generateItemHTML($html, $a['item'] ?? NULL);
+	}
+
+	/**
+	 * Optionally wrap one complete accordion pair in a caller-configured element.
+	 *
+	 * The wrapper is deliberately presentation-neutral. Callers can combine it
+	 * with shared classes such as `card` and `accordion-card`, while the header
+	 * and body continue to own the Bootstrap collapse behaviour. Passing NULL or
+	 * FALSE preserves the original unwrapped Accordion output.
+	 *
+	 * @param string           $html     Rendered accordion header and collapse body.
+	 * @param array|false|null $settings Common element settings for the optional wrapper.
+	 *
+	 * @return string Wrapped or original accordion-pair HTML.
+	 */
+	private static function generateItemHTML(string $html, array|false|null $settings): string
+	{
+		if($settings === NULL || $settings === false){
+			return $html;
+		}
+
+		$tag = strtolower(trim((string)($settings['tag'] ?? "div")));
+		if(!preg_match('/^[a-z][a-z0-9-]*$/', $tag)){
+			$tag = "div";
+		}
+
+		$id = str::getAttrTag("id", $settings['id'] ?? NULL);
+		$class = str::getAttrTag("class", str::getAttrArray(
+			$settings['class'] ?? NULL,
+			NULL,
+			$settings['only_class'] ?? NULL
+		));
+		$style = str::getAttrTag("style", str::getAttrArray(
+			$settings['style'] ?? NULL,
+			NULL,
+			$settings['only_style'] ?? NULL
+		));
+		$data = str::getDataAttr($settings['data'] ?? NULL);
+		$title = str::getAttrTag("title", strip_tags((string)($settings['alt'] ?? "")));
+		$role = str::getAttrTag("role", $settings['role'] ?? NULL);
+		$tabindex = str::getAttrTag("tabindex", $settings['tabindex'] ?? NULL);
+		$dir = ($settings['rtl'] ?? false) ? str::getAttrTag("dir", "rtl") : NULL;
+		$aria = self::generatePrefixedAttributes("aria", $settings['aria'] ?? NULL);
+		$attributes = self::generateCustomAttributes($settings['attributes'] ?? NULL);
+
+		return "<{$tag}{$id}{$class}{$style}{$data}{$title}{$role}{$tabindex}{$dir}{$aria}{$attributes}>{$html}</{$tag}>";
+	}
+
+	/** Render validated `aria-*` attributes for an accordion item wrapper. */
+	private static function generatePrefixedAttributes(string $prefix, mixed $attributes): string
+	{
+		if(!is_array($attributes)){
+			return "";
+		}
+
+		$html = [];
+		foreach($attributes as $name => $value){
+			$name = strtolower(trim((string)$name));
+			if(!preg_match('/^[a-z][a-z0-9_.:-]*$/', $name)){
+				continue;
+			}
+			$html[] = str::getAttrTag("{$prefix}-{$name}", is_bool($value) ? ($value ? "true" : "false") : $value);
+		}
+
+		return implode("", array_filter($html));
+	}
+
+	/** Render safe, non-reserved custom attributes for an accordion item wrapper. */
+	private static function generateCustomAttributes(mixed $attributes): string
+	{
+		if(!is_array($attributes)){
+			return "";
+		}
+
+		$reserved = ["id", "class", "style", "title", "data", "role", "tabindex", "dir"];
+		$html = [];
+		foreach($attributes as $name => $value){
+			$name = strtolower(trim((string)$name));
+			if(!preg_match('/^[a-z][a-z0-9_.:-]*$/', $name)
+				|| in_array($name, $reserved, true)
+				|| str_starts_with($name, "aria-")){
+				continue;
+			}
+			if(is_bool($value)){
+				$value = $value ? "true" : "false";
+			}
+			$html[] = str::getAttrTag($name, $value);
+		}
+
+		return implode("", array_filter($html));
 	}
 
 	/**
@@ -129,6 +227,8 @@ class Accordion {
 			throw new Exception("A accordion item must have a title of some sort.");
 		}
 		$a = is_array($a) ? $a : ["title" => $a];
+		$title = $header = $html = $id = $icon = $badge = $button = NULL;
+		$class = $only_class = $style = $alt = $hash = NULL;
 		extract($a);
 
 		# All three words are valid
@@ -347,6 +447,7 @@ JS);
 	private static function generateBodyHTML($a, string $data_target_id, ?string $data_parent_id): string
 	{
 		$a = is_array($a) ? $a : ["html" => $a];
+		$html = $icon = $badge = $button = $class = $only_class = $style = $data = NULL;
 		extract($a);
 
 		$id = str::getAttrTag("id", $data_target_id);

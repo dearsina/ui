@@ -46,6 +46,15 @@ code {
   overflow-y: auto;
 }
 
-.tooltip-wide .tooltip-inner {
-  max-width: 25vh;
+.tooltip-wide
+{
+  // Bootstrap reads this custom property when sizing `.tooltip-inner`. Width
+  // must follow the horizontal viewport; the previous 25vh cap made long
+  // narratives unnecessarily narrow on portrait and tall desktop screens.
+  --bs-tooltip-max-width: min(36rem, calc(100vw - 2rem));
+}
+
+.tooltip-wide .tooltip-inner
+{
+  max-width: var(--bs-tooltip-max-width);
 }

@@ -367,3 +367,75 @@ box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 
 {
   margin : 10px -5px 0 0;
 }
+
+/**
+ * Reusable card surface and composition variants.
+ */
+.card-variant-soft > .card-body
+{
+  background: $page-bg;
+}
+
+.card-variant-flush > .card-body
+{
+  padding : 0;
+  overflow: hidden;
+}
+
+.card-variant-emphasis
+{
+  overflow  : hidden;
+}
+
+@each $color, $value in $theme-colors
+{
+  .card-variant-emphasis.card-bg-#{$color}
+  {
+    $emphasis-accent: $value;
+    $emphasis-dark  : shade-color($value, 28%);
+    $emphasis-tint  : rgba($value, .1);
+
+    --card-emphasis-foreground: #{color-contrast($emphasis-accent)};
+
+    border: 1px solid $emphasis-accent;
+
+    > .card-header
+    {
+      color        : var(--card-emphasis-foreground);
+      background   : linear-gradient(320deg, $emphasis-accent, $emphasis-dark);
+      border-bottom: 1px solid $emphasis-dark;
+
+      .card-title
+      {
+        display    : flex;
+        align-items: center;
+      }
+
+      .card-title > i:first-child
+      {
+        margin-inline-end: .55rem;
+      }
+
+      .card-title,
+      .card-title > i
+      {
+        color: var(--card-emphasis-foreground) !important;
+      }
+    }
+
+    > .card-body
+    {
+      background: linear-gradient(180deg, $emphasis-tint, #f6f8fb 34%);
+    }
+  }
+}
+
+/**
+ * Force light heading content for emphasis colours whose visual treatment is
+ * intentionally dark. Direct-child icon targeting leaves nested badges free
+ * to retain their own semantic colours.
+ */
+.card-variant-emphasis.card-variant-inverse
+{
+  --card-emphasis-foreground: #{$white};
+}

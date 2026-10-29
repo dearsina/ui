@@ -1,0 +1,299 @@
+/**
+ * Opt-in print compositions for component-heavy reports.
+ *
+ * Screen layouts still follow their normal responsive breakpoints. Wrapping a
+ * report in `.ui-print-layout--dense` preserves the column counts already
+ * declared by ResponsiveGrid and SplitView when the printable A4 viewport is
+ * narrower than a desktop breakpoint. The same wrapper reduces whitespace and
+ * keeps individual panels intact where practical.
+ */
+@media print
+{
+  .ui-print-layout--dense
+  {
+    width    : 100%;
+    min-width: 0;
+
+    /**
+     * Responsive breakpoints use the print viewport width and would otherwise
+     * collapse every nested grid. Restore the component's declared columns,
+     * flow, row count, and item spans inside this opt-in print composition.
+     */
+    .ui-responsive-grid
+    {
+      gap: .45rem;
+    }
+
+    @for $columns from 1 through 12
+    {
+      .ui-responsive-grid--columns-#{$columns}
+      {
+        grid-template-columns: repeat($columns, minmax(0, 1fr));
+      }
+    }
+
+    .ui-responsive-grid--row-major
+    {
+      grid-auto-flow   : row;
+      grid-template-rows: none;
+    }
+
+    .ui-responsive-grid--column-major
+    {
+      grid-auto-flow   : column;
+      grid-template-rows: repeat(var(--ui-responsive-grid-rows, 1), auto);
+    }
+
+    @for $span from 1 through 12
+    {
+      .ui-responsive-grid__item--span-#{$span}
+      {
+        grid-column: span $span;
+      }
+    }
+
+    .ui-responsive-grid__item--span-all
+    {
+      grid-column: 1 / -1;
+    }
+
+    /**
+     * Split views need the same treatment as grids. Their declared ratio is
+     * retained, while oversized media panes are shortened for an A4 page.
+     */
+    .ui-split-view--ratio-equal
+    {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .ui-split-view--ratio-1-2
+    {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    }
+
+    .ui-split-view--ratio-2-1
+    {
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    }
+
+    .ui-split-view--reverse-on-collapse > .ui-split-view__pane
+    {
+      order: initial;
+    }
+
+    .ui-split-view--height-sm { min-height: 9rem; }
+    .ui-split-view--height-md { min-height: 11rem; }
+    .ui-split-view--height-lg { min-height: 13rem; }
+    .ui-split-view--height-xl { min-height: 16rem; }
+
+    /**
+     * Reduce only whitespace, not information. Font sizes remain comfortably
+     * readable after the report renderer's existing print zoom is applied.
+     */
+    .card
+    {
+      margin-block-end: .5rem;
+    }
+
+    .card-header
+    {
+      padding: .5rem .7rem;
+    }
+
+    .card-body
+    {
+      padding: .55rem;
+    }
+
+    .card-footer
+    {
+      padding: .4rem .7rem;
+    }
+
+    /**
+     * Remove a grouping Card's print-only visual shell while preserving every
+     * component inside its body. This is intended for containers whose child
+     * records already provide their own Cards, such as a paginated directory.
+     * The section heading and optional footer are screen-level chrome and are
+     * therefore omitted together with the outer border and surface.
+     */
+    .card.ui-print-card--shellless
+    {
+      margin          : 0;
+      overflow        : visible;
+      border          : 0;
+      background      : transparent;
+      box-shadow      : none;
+
+      > .card-header,
+      > .card-footer
+      {
+        display: none;
+      }
+
+      > .card-body
+      {
+        padding   : 0;
+        background: transparent;
+      }
+    }
+
+    // One officer may span several pages, so only its child panels are kept
+    // together. Avoiding a break around the whole accordion wastes a page.
+    .accordion-card
+    {
+      break-inside     : auto;
+      page-break-inside: auto;
+    }
+
+    /**
+     * A page sequence is useful for repeated records such as people, assets,
+     * or transactions. The sequence starts on a fresh page and each marked
+     * record ends its page, except the final record so no blank page is added.
+     * Records remain fragmentable when their content is taller than one page.
+     */
+    .ui-print-page-sequence
+    {
+      break-before     : page;
+      page-break-before: always;
+      break-inside     : auto;
+      page-break-inside: auto;
+    }
+
+    .ui-print-page
+    {
+      break-inside     : auto;
+      page-break-inside: auto;
+    }
+
+    .ui-print-page:not(:last-child)
+    {
+      break-after    : page;
+      page-break-after: always;
+    }
+
+    .accordion-card > .card-header .card-title
+    {
+      gap      : .35rem;
+      font-size: .82rem;
+    }
+
+    .accordion-card__name
+    {
+      line-height : 1.2;
+      white-space : normal;
+    }
+
+    .accordion-card__status
+    {
+      gap                 : .25rem;
+      padding-inline-start: .4rem;
+    }
+
+    .ui-panel
+    {
+      padding          : .55rem;
+      break-inside     : avoid;
+      page-break-inside: avoid;
+    }
+
+    .ui-panel__header
+    {
+      gap             : .4rem;
+      margin-block-end: .45rem;
+    }
+
+    .ui-panel__icon
+    {
+      flex     : 0 0 1.45rem;
+      width    : 1.45rem;
+      height   : 1.45rem;
+      font-size: .62rem;
+    }
+
+    .ui-panel__title
+    {
+      font-size: .68rem;
+    }
+
+    .data-point-matrix
+    {
+      gap: .35rem;
+    }
+
+    .data-point
+    {
+      padding          : .42rem .5rem;
+      break-inside     : avoid;
+      page-break-inside: avoid;
+    }
+
+    .data-point--inline
+    {
+      padding: 0;
+    }
+
+    .data-point__header
+    {
+      gap             : .4rem;
+      margin-block-end: .18rem;
+    }
+
+    .data-point__title,
+    .data-point__comparison-title
+    {
+      font-size  : .6rem;
+      line-height: 1.2;
+    }
+
+    .data-point__value
+    {
+      font-size  : .82rem;
+      line-height: 1.25;
+    }
+
+    .data-point__comparison
+    {
+      margin-block-start : .35rem;
+      padding-block-start: .3rem;
+    }
+
+    .data-point__comparison-value
+    {
+      margin-block-start: .08rem;
+      font-size         : .72rem;
+    }
+
+    .data-point__leading-icon
+    {
+      flex     : 0 0 1.55rem;
+      width    : 1.55rem;
+      height   : 1.55rem;
+      font-size: .68rem;
+    }
+
+    .data-point__link-title
+    {
+      font-size: .78rem;
+    }
+
+    .data-point__link-subtitle
+    {
+      font-size: .64rem;
+    }
+
+    .status-badge
+    {
+      gap      : .28rem;
+      padding  : .15rem .38rem;
+      font-size: .68rem;
+    }
+
+    .ui-timeline__item
+    {
+      padding-block-end: .45rem;
+      break-inside     : avoid;
+      page-break-inside: avoid;
+    }
+  }
+}

@@ -1,0 +1,121 @@
+/**
+ * Vertical sequence of arbitrary content cards.
+ */
+.ui-timeline
+{
+  --ui-timeline-item-gap     : .8rem;
+  --ui-timeline-marker-centre: 1.15rem;
+
+  margin : 0;
+  padding: 0;
+  list-style: none;
+
+  &__item
+  {
+    position             : relative;
+    display              : grid;
+    grid-template-columns: 1.4rem minmax(0, 1fr);
+    padding-block-end    : var(--ui-timeline-item-gap);
+  }
+
+  &__rail
+  {
+    position       : relative;
+    display        : flex;
+    justify-content: flex-start;
+  }
+
+  &__item:not(:last-child) &__rail::after
+  {
+    content   : "";
+    position  : absolute;
+    z-index   : 0;
+    top       : var(--ui-timeline-marker-centre);
+    bottom    : calc(0rem - var(--ui-timeline-item-gap) - var(--ui-timeline-marker-centre));
+    inset-inline-start: .42rem;
+    width     : 2px;
+    background: map-get($grays, "300");
+  }
+
+  &__marker
+  {
+    position       : relative;
+    z-index        : 1;
+    display        : grid;
+    width          : .9rem;
+    height         : .9rem;
+    margin-block-start: .7rem;
+    place-items    : center;
+    border-radius  : 50%;
+  }
+
+  &__dot
+  {
+    width        : .9rem;
+    height       : .9rem;
+    border       : 3px solid rgba(map-get($theme-colors, "primary"), .25);
+    border-radius: 50%;
+    background   : map-get($theme-colors, "primary");
+  }
+
+  &__content
+  {
+    min-width    : 0;
+    padding      : .68rem .8rem;
+    background   : $white;
+    border       : 1px solid $border-color;
+    border-radius: $border-radius;
+  }
+
+  &__head
+  {
+    display        : flex;
+    min-width      : 0;
+    align-items    : flex-start;
+    justify-content: space-between;
+    gap            : .75rem;
+  }
+
+  &__title
+  {
+    min-width    : 0;
+    color        : map-get($theme-colors, "dark");
+    font-weight  : 650;
+    overflow-wrap: anywhere;
+  }
+
+  &__aside { flex: 0 0 auto; }
+
+  &__meta
+  {
+    margin-block-start: .2rem;
+    color             : map-get($grays, "600");
+    font-size         : .78rem;
+  }
+
+  &__body { margin-block-start: .55rem; }
+
+  &__footer
+  {
+    margin-block-start : .62rem;
+    padding-block-start: .58rem;
+    border-block-start : 1px dashed $border-color;
+  }
+
+  &--compact { --ui-timeline-item-gap: .45rem; }
+  &--compact &__content { padding: .5rem .65rem; }
+}
+
+@each $colour, $value in $theme-colors
+{
+  .ui-timeline__item--#{$colour} .ui-timeline__dot
+  {
+    border-color: rgba($value, .25);
+    background  : $value;
+  }
+
+  .ui-timeline__item--#{$colour} .ui-timeline__marker
+  {
+    color: $value;
+  }
+}

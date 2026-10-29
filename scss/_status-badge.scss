@@ -1,0 +1,69 @@
+/**
+ * Compact semantic status indicators.
+ */
+.status-badge
+{
+  display         : inline-flex;
+  align-items     : center;
+  gap             : .4rem;
+  padding         : .25rem .55rem;
+  // Unthemed badges inherit their text colour, so mix it towards white here.
+  // Theme modifiers below use exact HSL saturation/lightness scaling.
+  border          : .5px solid color-mix(in srgb, currentColor 60%, white);
+  border-radius   : $border-radius;
+  font-size       : .78rem;
+  font-weight     : 650;
+  line-height     : 1.2;
+  text-decoration : none;
+  vertical-align  : middle;
+
+  &__icon
+  {
+    display     : inline-flex;
+    align-items : center;
+  }
+
+  &__icon i
+  {
+    margin : 0;
+  }
+
+  &__dot
+  {
+    display      : inline-block;
+    flex         : 0 0 .45rem;
+    width        : .45rem;
+    height       : .45rem;
+    background   : currentColor;
+    border-radius: 50%;
+  }
+
+  &__text
+  {
+    min-width : 0;
+  }
+}
+
+@each $colour, $value in $theme-colors
+{
+  .status-badge--#{$colour}
+  {
+    $text-colour     : shade-color($value, 20%);
+    color            : $text-colour;
+    // Keep the semantic tint stable on both light and coloured parents.
+    background-color : tint-color($value, 90%);
+    border-color     : scale-color($text-colour, $saturation: -30%, $lightness: 75%);
+  }
+
+  a.status-badge--#{$colour}:hover
+  {
+    color            : shade-color($value, 30%);
+    background-color : tint-color($value, 84%);
+  }
+}
+
+.status-badge--surface-raised
+{
+  background-color: rgba($white, .92);
+  box-shadow      : 0 1px 2px rgba(#172033, .12);
+}

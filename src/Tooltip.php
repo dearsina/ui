@@ -15,6 +15,7 @@ class Tooltip {
 	 * Tooltip::generateHtmlWrapper([
 	 *    "title" => "Tooltip narrative", //The tooltip itself
 	 *    "placement" => "top",
+	 *    "tooltip_class" => "tooltip-wide", //Optional class on the generated tooltip
 	 *      "tag" => "span",
 	 *    "html" => $html, //The HTML that will trigger the tooltip on hover
 	 *    "style" => [
@@ -23,7 +24,12 @@ class Tooltip {
 	 * ]);
 	 * </code>
 	 *
-	 * @param array $a
+	 * The wrapper's `class` setting applies to the trigger element. Use
+	 * `tooltip_class` when the generated Bootstrap tooltip itself needs a custom
+	 * presentation class, for example a larger maximum width. The value is
+	 * emitted as Bootstrap's `data-bs-custom-class` option.
+	 *
+	 * @param array<string,mixed> $a Wrapper content, placement, classes, and element settings.
 	 *
 	 * @return string|null
 	 */
@@ -35,6 +41,7 @@ class Tooltip {
 
 		$data = [
 			"bs-placement" => $placement ?: "top",
+			"bs-custom-class" => ($tooltip_class ?? NULL) ?: NULL,
 		];
 
 		$data = str::getDataAttr($data);
@@ -116,7 +123,7 @@ class Tooltip {
 	 */
 	public static function generate(array &$a): void
 	{
-		if(!$tooltip = $a['tooltip']){
+		if(!$tooltip = ($a['tooltip'] ?? NULL)){
 			return;
 		}
 
@@ -126,7 +133,7 @@ class Tooltip {
 		 */
 		if(is_bool($tooltip)){
 			$tooltip = [
-				"title" => $a['alt'] ?: $a['title'],
+				"title" => ($a['alt'] ?? NULL) ?: ($a['title'] ?? NULL),
 			];
 		}
 
@@ -135,8 +142,8 @@ class Tooltip {
 		}
 
 		# Add the tooltip trigger class
-		if(!is_array($a['class'])){
-			$a['class'] .= " tooltip-trigger";
+		if(!is_array($a['class'] ?? NULL)){
+			$a['class'] = ($a['class'] ?? "") . " tooltip-trigger";
 		}
 		else {
 			$a['class'][] = "tooltip-trigger";
@@ -148,10 +155,10 @@ class Tooltip {
 		# Settings
 		$a['data']['bs-toggle'] = "tooltip";
 		$a['data']['bs-html'] = "true";
-		$a['data']['bs-placement'] = $tooltip['placement'] ?: "top";
+		$a['data']['bs-placement'] = ($tooltip['placement'] ?? NULL) ?: "top";
 
 		# Tooltips can also have their own custom classes
-		if($tooltip['class']){
+		if($tooltip['class'] ?? NULL){
 			$a['data']['bs-custom-class'] = $tooltip['class'];
 		}
 	}

@@ -1,0 +1,355 @@
+/**
+ * Labelled values with optional comparison context.
+ */
+.data-point
+{
+  position      : relative;
+  min-width     : 0;
+  padding       : .78rem .85rem;
+  color         : map-get($theme-colors, "dark");
+  background    : $white;
+  border        : 1px solid $border-color;
+  border-radius : $border-radius;
+
+  &--compared
+  {
+    border-inline-start-width : 0.25rem;
+  }
+
+  &--match
+  {
+    border-inline-start-color : map-get($theme-colors, "green");
+  }
+
+  &--near-match
+  {
+    border-inline-start-color : map-get($theme-colors, "amber");
+  }
+
+  &--mismatch
+  {
+    border-inline-start-color : map-get($theme-colors, "red");
+  }
+
+  &--unassessed
+  {
+    border-inline-start-color : map-get($grays, "400");
+  }
+
+  &--inline
+  {
+    display       : inline-flex;
+    width         : auto;
+    min-width     : 0;
+    align-items   : center;
+    gap           : .55rem;
+    padding       : 0;
+    background    : transparent;
+    border        : 0;
+    border-radius : 0;
+  }
+
+  &--inline &__header
+  {
+    margin: 0;
+  }
+
+  &--inline &__value
+  {
+    display    : inline-flex;
+    align-items: center;
+  }
+
+  &--inline-heading
+  {
+    gap           : .65rem;
+    line-height   : 1.2;
+    vertical-align: middle;
+  }
+
+  &--inline-heading &__title
+  {
+    color         : rgba($white, .78);
+    font-size     : .64rem;
+    font-weight   : 650;
+    letter-spacing: .1em;
+  }
+
+  &--inverse,
+  &--inverse &__title,
+  &--inverse &__value
+  {
+    color: $white;
+  }
+
+  // A heading label is intentionally quieter than its value on an inverse
+  // surface, so this composition-specific colour follows the general inverse
+  // rule in the cascade.
+  &--inline-heading#{&}--inverse &__title
+  {
+    color: rgba($white, .78);
+  }
+
+  &--link
+  {
+    display     : flex;
+    align-items : center;
+    gap         : .75rem;
+    transition  : border-color .15s ease, box-shadow .15s ease, transform .15s ease;
+  }
+
+  &__header
+  {
+    display         : flex;
+    align-items     : flex-start;
+    justify-content : space-between;
+    gap             : .75rem;
+    margin-block-end: .35rem;
+  }
+
+  &__title,
+  &__comparison-title
+  {
+    color          : map-get($grays, "500");
+    font-size      : .68rem;
+    font-weight    : 600;
+    letter-spacing : .025em;
+    line-height    : 1.3;
+    text-transform : uppercase;
+  }
+
+  &__comparison-indicator
+  {
+    display     : inline-flex;
+    flex        : 0 0 auto;
+    align-items : center;
+    font-size   : 1rem;
+  }
+
+  &__comparison-action
+  {
+    display        : inline-flex;
+    padding        : .2rem;
+    align-items    : center;
+    justify-content: center;
+    border-radius  : 50%;
+    text-decoration: none;
+    transition     : background-color .15s ease, transform .15s ease;
+  }
+
+  &__comparison-action:hover,
+  &__comparison-action:focus-visible
+  {
+    background-color: rgba(map-get($theme-colors, "primary"), .08);
+    text-decoration : none;
+    transform       : scale(1.08);
+  }
+
+  &__comparison-action:focus-visible
+  {
+    outline       : 2px solid rgba(map-get($theme-colors, "primary"), .35);
+    outline-offset: 1px;
+  }
+
+  &__header-actions
+  {
+    display    : inline-flex;
+    flex       : 0 0 auto;
+    align-items: center;
+    gap        : .45rem;
+  }
+
+  &__copy
+  {
+    display         : inline-grid;
+    width           : 1.25rem;
+    height          : 1.25rem;
+    padding         : 0;
+    place-items     : center;
+    color           : map-get($grays, "500");
+    background      : transparent;
+    border          : 0;
+    border-radius   : $border-radius;
+    opacity         : 0;
+    pointer-events  : none;
+    transition      : color .15s ease, background-color .15s ease, opacity .15s ease;
+  }
+
+  &:hover &__copy,
+  &:focus-within &__copy,
+  &__copy:focus-visible
+  {
+    opacity       : .65;
+    pointer-events: auto;
+  }
+
+  &__copy:hover,
+  &__copy:focus-visible
+  {
+    color     : map-get($theme-colors, "primary");
+    background: rgba(map-get($theme-colors, "primary"), .08);
+    opacity   : 1;
+  }
+
+  &__copy:focus-visible
+  {
+    outline       : 2px solid rgba(map-get($theme-colors, "primary"), .35);
+    outline-offset: 1px;
+  }
+
+  &__copy.clipboard:not(.btn, .dropdown-item, .badge)::after
+  {
+    margin   : 0;
+    opacity  : 1;
+    font-size: .78rem;
+  }
+
+  &--inverse &__copy
+  {
+    color: rgba($white, .8);
+  }
+
+  &__value
+  {
+    min-width     : 0;
+    overflow-wrap : anywhere;
+  }
+
+  &__comparison
+  {
+    margin-block-start : .62rem;
+    padding-block-start: .58rem;
+    border-block-start : 1px dashed $border-color;
+  }
+
+  &__comparison-value
+  {
+    margin-block-start: .12rem;
+    font-size         : .82rem;
+    font-weight       : 560;
+    overflow-wrap     : anywhere;
+  }
+
+  &__leading-icon
+  {
+    display         : grid;
+    flex            : 0 0 2rem;
+    width           : 2rem;
+    height          : 2rem;
+    place-items     : center;
+    color           : map-get($theme-colors, "primary");
+    background      : rgba(map-get($theme-colors, "primary"), .09);
+    border-radius   : $border-radius;
+  }
+
+  &__link-copy
+  {
+    display       : flex;
+    flex          : 1 1 auto;
+    min-width     : 0;
+    flex-direction: column;
+  }
+
+  &__link-title
+  {
+    color        : map-get($theme-colors, "dark");
+    font-size    : .88rem;
+    font-weight  : 650;
+    line-height  : 1.3;
+    overflow-wrap: anywhere;
+  }
+
+  &__link-subtitle
+  {
+    margin-block-start: .12rem;
+    color             : map-get($grays, "500");
+    font-size         : .72rem;
+    line-height       : 1.35;
+    overflow-wrap     : anywhere;
+  }
+
+  &__trailing-icon
+  {
+    display    : inline-flex;
+    flex       : 0 0 auto;
+    align-items: center;
+    color      : map-get($grays, "500");
+  }
+
+  &__value--type-code,
+  &__comparison-value--type-code
+  {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+}
+
+// Keep the copy action in the lower corner, away from the comparison state in
+// the header. The final visible value reserves enough inline space for the
+// button so long values wrap instead of rendering underneath it.
+.data-point--copyable:not(.data-point--inline)
+{
+  .data-point__copy
+  {
+    position        : absolute;
+    z-index         : 1;
+    inset-inline-end: .65rem;
+    inset-block-end : .65rem;
+  }
+
+  .data-point__value
+  {
+    padding-inline-end: 1.7rem;
+  }
+
+  &.data-point--compared
+  {
+    .data-point__value
+    {
+      padding-inline-end: 0;
+    }
+
+    .data-point__comparison-value
+    {
+      padding-inline-end: 1.7rem;
+    }
+  }
+}
+
+@media (hover: none)
+{
+  .data-point__copy
+  {
+    opacity       : .65;
+    pointer-events: auto;
+  }
+}
+
+a.data-point
+{
+  color          : inherit;
+  text-decoration: none;
+}
+
+// The repeated component class outranks the global a:not(.btn):hover underline.
+a.data-point__comparison-action.data-point__comparison-action:hover,
+a.data-point__comparison-action.data-point__comparison-action:focus-visible
+{
+  text-decoration: none;
+}
+
+// The repeated component class outranks the global a:not(.btn):hover underline.
+a.data-point.data-point--link:hover,
+a.data-point.data-point--link:focus-visible
+{
+  color          : inherit;
+  border-color   : rgba(map-get($theme-colors, "primary"), .55);
+  box-shadow     : 0 5px 14px rgba(map-get($theme-colors, "primary"), .11);
+  text-decoration: none;
+  transform      : translateY(-1px);
+}
+
+a.data-point.data-point--link:focus-visible
+{
+  outline       : 2px solid rgba(map-get($theme-colors, "primary"), .35);
+  outline-offset: 2px;
+}

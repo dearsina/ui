@@ -1,0 +1,97 @@
+/**
+ * Linked or static media with a graceful empty state.
+ */
+.media-preview
+{
+  position       : relative;
+  display        : block;
+  width          : 100%;
+  min-width      : 0;
+  margin         : 0;
+  overflow       : hidden;
+  color          : inherit;
+  text-decoration: none;
+
+  &--height-sm { min-height: 10rem; }
+  &--height-md { min-height: 16rem; }
+  &--height-lg { min-height: 20.625rem; }
+  &--height-xl { min-height: 28rem; }
+
+  &--surface-muted { background: map-get($grays, "200"); }
+  &--surface-soft  { background: $page-bg; }
+  &--surface-dark  { background: map-get($grays, "800"); }
+  &--surface-white { background: $white; }
+
+  &--stretch { height: 100%; }
+
+  &__media,
+  &__image,
+  &__fallback
+  {
+    display   : flex;
+    width     : 100%;
+    min-height: inherit;
+  }
+
+  &__media,
+  &__image
+  {
+    height: 100%;
+  }
+
+  &__image
+  {
+    display   : block;
+    transition: transform .3s ease;
+  }
+
+  &--fit-cover &__image { object-fit: cover; }
+  &--fit-contain &__image { object-fit: contain; }
+
+  &--zoom:hover &__image,
+  &--zoom:hover &__media > :first-child
+  {
+    transform: scale(1.02);
+  }
+
+  &__fallback
+  {
+    min-height     : inherit;
+    align-items    : center;
+    justify-content: center;
+    flex-direction : column;
+    gap            : .35rem;
+    padding        : 2rem;
+    color          : map-get($grays, "700");
+    background     : linear-gradient(145deg, map-get($grays, "100"), map-get($grays, "200"));
+    text-align     : center;
+  }
+
+  &__fallback-icon
+  {
+    display         : grid;
+    width           : 3rem;
+    height          : 3rem;
+    margin-block-end: .25rem;
+    place-items     : center;
+    color           : map-get($theme-colors, "primary");
+    background      : rgba($white, .8);
+    border-radius   : 50%;
+    font-size       : 1.2rem;
+  }
+
+  &__fallback-subtitle { color: map-get($grays, "600"); }
+}
+
+a.media-preview:hover,
+a.media-preview:focus-visible
+{
+  color          : inherit;
+  text-decoration: none;
+}
+
+@include media-breakpoint-down(lg)
+{
+  .media-preview--height-lg { min-height: 16.25rem; }
+  .media-preview--height-xl { min-height: 20.625rem; }
+}

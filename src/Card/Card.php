@@ -36,6 +36,17 @@ class Card extends \App\Common\Prototype {
 	public $only_class;
 	public $class;
 	public $accent;
+	/**
+	 * Optional reusable presentation variant, or an array of variants.
+	 *
+	 * The UI stylesheet currently supplies `soft`, `flush`, `emphasis`, and the
+	 * `inverse` companion for light content on dark emphasis headers.
+	 * Custom safe names are emitted as `card-variant-{name}` so an application
+	 * can add a variant without changing this renderer.
+	 *
+	 * @var string|array<int,string>|null
+	 */
+	public string|array|null $variant = NULL;
 	public $buttons;
 	public $style;
 	public $data;
@@ -47,6 +58,7 @@ class Card extends \App\Common\Prototype {
 	 * <code>
 	 *    $card = new card([
 	 *    "accent" => "blue",
+	 *    "variant" => "soft", //Or ["soft", "emphasis", "inverse"]
 	 *    "header" => [
 	 *        "title" => "Sign in to your account.",
 	 *        "buttons" => [[
@@ -686,6 +698,16 @@ EOF;
 		# Add the (optional) accent colour
 		if($this->accent){
 			$class_array[] = "card-bg-{$this->accent}";
+		}
+
+		# Add one or more reusable presentation variants.
+		$variants = is_array($this->variant) ? $this->variant : [$this->variant];
+		foreach($variants as $variant){
+			$variant = strtolower(trim((string)$variant));
+			$variant = trim((string)preg_replace('/[^a-z0-9_-]+/', '-', $variant), '-');
+			if($variant){
+				$class_array[] = "card-variant-{$variant}";
+			}
 		}
 		
 		return str::getAttrTag("class", $class_array);

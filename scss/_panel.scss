@@ -1,0 +1,94 @@
+/**
+ * Lightweight content sections with an integrated heading and optional footer.
+ */
+.ui-panel
+{
+  min-width     : 0;
+  padding       : .9rem;
+  color         : #344054;
+  background    : rgba($white, .72);
+  border        : 1px solid rgba(#667085, .16);
+  border-radius : $border-radius;
+
+  &--stretch
+  {
+    height: 100%;
+  }
+
+  &__header
+  {
+    display         : flex;
+    min-width       : 0;
+    align-items     : center;
+    gap             : .55rem;
+    margin-block-end: .75rem;
+  }
+
+  &__icon
+  {
+    display      : inline-grid;
+    flex         : 0 0 1.8rem;
+    width        : 1.8rem;
+    height       : 1.8rem;
+    place-items  : center;
+    border-radius: .5rem;
+    font-size    : .72rem;
+  }
+
+  &__icon i
+  {
+    margin: 0;
+  }
+
+  &__title
+  {
+    min-width     : 0;
+    margin        : 0;
+    color         : #344054;
+    font-size     : .76rem;
+    font-weight   : 500;
+    letter-spacing: .055em;
+    line-height   : 1.3;
+    overflow-wrap : anywhere;
+    text-transform: uppercase;
+  }
+
+  &__body,
+  &__footer
+  {
+    min-width: 0;
+  }
+
+  &__footer
+  {
+    margin-block-start: .9rem;
+  }
+
+  &--footer-separated &__footer
+  {
+    padding-block-start: .8rem;
+    border-block-start : 1px solid $border-color;
+  }
+}
+
+@each $colour, $value in $theme-colors
+{
+  .ui-panel--#{$colour} > .ui-panel__header > .ui-panel__icon
+  {
+    color     : shade-color($value, 12%);
+    background: rgba($value, .1);
+  }
+}
+
+// Status surfaces use a deliberately calmer palette than action controls.
+.ui-panel--green > .ui-panel__header > .ui-panel__icon
+{
+  color     : #16834b;
+  background: #edf9f2;
+}
+
+.ui-panel--red > .ui-panel__header > .ui-panel__icon
+{
+  color     : #c4322b;
+  background: #fff2f1;
+}

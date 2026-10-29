@@ -1,0 +1,90 @@
+/**
+ * Generic responsive layout for arbitrary UI fragments.
+ */
+.ui-responsive-grid
+{
+  display  : grid;
+  min-width: 0;
+  gap      : var(--ui-responsive-grid-gap, .75rem);
+
+  @for $columns from 1 through 12
+  {
+    &--columns-#{$columns}
+    {
+      grid-template-columns: repeat($columns, minmax(0, 1fr));
+    }
+  }
+
+  &--row-major { grid-auto-flow: row; }
+
+  &--column-major
+  {
+    grid-auto-flow   : column;
+    grid-template-rows: repeat(var(--ui-responsive-grid-rows, 1), auto);
+  }
+
+  &--gap-none { --ui-responsive-grid-gap: 0; }
+  &--gap-xs   { --ui-responsive-grid-gap: .25rem; }
+  &--gap-sm   { --ui-responsive-grid-gap: .5rem; }
+  &--gap-md   { --ui-responsive-grid-gap: .75rem; }
+  &--gap-lg   { --ui-responsive-grid-gap: 1rem; }
+  &--gap-xl   { --ui-responsive-grid-gap: 1.5rem; }
+
+  &--align-start   { align-items: start; }
+  &--align-center  { align-items: center; }
+  &--align-end     { align-items: end; }
+  &--align-stretch { align-items: stretch; }
+}
+
+.ui-responsive-grid__item
+{
+  min-width: 0;
+
+  > .card
+  {
+    margin-block-end: 0;
+  }
+
+  @for $span from 1 through 12
+  {
+    &--span-#{$span} { grid-column: span $span; }
+  }
+
+  &--span-all { grid-column: 1 / -1; }
+
+  &--stretch > * { height: 100%; }
+}
+
+@mixin responsive-grid-collapse
+{
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows   : none;
+  grid-auto-flow       : row;
+
+  > .ui-responsive-grid__item { grid-column: auto; }
+}
+
+@include media-breakpoint-down(sm)
+{
+  .ui-responsive-grid--collapse-sm { @include responsive-grid-collapse; }
+}
+
+@include media-breakpoint-down(md)
+{
+  .ui-responsive-grid--collapse-md { @include responsive-grid-collapse; }
+}
+
+@include media-breakpoint-down(lg)
+{
+  .ui-responsive-grid--collapse-lg { @include responsive-grid-collapse; }
+}
+
+@include media-breakpoint-down(xl)
+{
+  .ui-responsive-grid--collapse-xl { @include responsive-grid-collapse; }
+}
+
+@include media-breakpoint-down(xxl)
+{
+  .ui-responsive-grid--collapse-xxl { @include responsive-grid-collapse; }
+}

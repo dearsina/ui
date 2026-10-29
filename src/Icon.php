@@ -110,7 +110,7 @@ class Icon {
 	{
 		# If complex icon instructions have been given
 		if(is_array($icon)){
-			$icon['type'] = self::getType($icon['type']);
+			$icon['type'] = self::getType($icon['type'] ?? NULL);
 			return $icon;
 		}
 
@@ -143,23 +143,26 @@ class Icon {
 	static function getClass($icon_array)
 	{
 		extract(Icon::getArray($icon_array));
+		$size = $size ?? NULL;
+		$class = $class ?? NULL;
+		$squared = $squared ?? NULL;
 
-		if(!$name){
+		if(!($name ?? NULL)){
 			return false;
 		}
 
 		$name = strtolower($name);
 		//Names are case-sensitive, they're all lowercase
 
-		if($size){
+		if($size ?? NULL){
 			$size = " fa-{$size}";
 		}
 
-		if($class){
+		if($class ?? NULL){
 			$class = " {$class}";
 		}
 
-		if($type == "flag"){
+		if(($type ?? NULL) == "flag"){
 			//if this is an flag-icon-css type icon
 			$squared = $squared ? " flag-icon-squared" : "";
 			return "flag-icon flag-icon-{$name}{$class}{$squared}";
@@ -237,7 +240,7 @@ class Icon {
 		}
 
 		# SVG icons need to be treated like images
-		if($icon_array['svg']){
+		if($icon_array['svg'] ?? NULL){
 			# A custom default style must be applied
 			$default_style_array = [
 				"width" => "1.25em",
@@ -260,7 +263,7 @@ class Icon {
 			return Img::generate($icon_array);
 		}
 
-		if($icon_array['src']){
+		if($icon_array['src'] ?? NULL){
 			# A custom default style must be applied
 			$default_style_array = [
 				"width" => "1.25em",
@@ -283,7 +286,9 @@ class Icon {
 		}
 
 		# Tooltips
-		Tooltip::generate($icon_array);
+		if($icon_array['tooltip'] ?? NULL){
+			Tooltip::generate($icon_array);
+		}
 
 		extract(Icon::getArray($icon_array));
 
@@ -291,11 +296,11 @@ class Icon {
 			return NULL;
 		}
 
-		if($colour){
+		if($colour ?? NULL){
 			$default[] = " text-{$colour}";
 		}
 
-		if($approve){
+		if($approve ?? NULL){
 			//if an approval dialogue is to prepend the action
 			$id = $id ?: str::id("icon");
 			// We'll need an ID
@@ -304,27 +309,34 @@ class Icon {
 			$default[] = "approve-decision";
 		}
 
-		$class_array = str::getAttrArray($class, $default, $only_class);
+		$class_array = str::getAttrArray($class ?? NULL, $default, $only_class ?? NULL);
 
-		$title = str::getAttrTag("title", $alt ?: $title);
+		$title = str::getAttrTag("title", ($alt ?? NULL) ?: ($title ?? NULL));
 
-		if($href = href::generate($icon_array)){
-			$a_pre = "<a {$href}>";
-			$a_post = "</a>";
+		$a_pre = $a_post = NULL;
+		$link_keys = ["url", "uri", "href", "hash", "onclick", "onClick", "div"];
+		$has_link = array_any($link_keys, static function(string $key) use ($icon_array): bool {
+			return isset($icon_array[$key]) && $icon_array[$key] !== "";
+		});
+		if($has_link){
+			if($href = href::generate($icon_array)){
+				$a_pre = "<a {$href}>";
+				$a_post = "</a>";
+			}
 		}
 
-		$id = str::getAttrTag("id", $id);
-		$style = str::getAttrTag("style", $style);
-		$transform = str::getAttrTag("data-fa-transform", $transform);
+		$id = str::getAttrTag("id", $id ?? NULL);
+		$style = str::getAttrTag("style", $style ?? NULL);
+		$transform = str::getAttrTag("data-fa-transform", $transform ?? NULL);
 
-		if($rotate){
+		if($rotate ?? NULL){
 			$class_array[] = "fa-rotate-{$rotate}";
 		}
 
 		$class = str::getAttrTag("class", $class_array);
-		$data = str::getDataAttr($data);
+		$data = str::getDataAttr($data ?? NULL);
 
-		return "{$a_pre}<i{$id}{$class}{$style}{$transform}{$title}{$approve_attr}{$data} aria-hidden=\"true\"></i>{$a_post}";
+		return "{$a_pre}<i{$id}{$class}{$style}{$transform}{$title}" . ($approve_attr ?? NULL) . "{$data} aria-hidden=\"true\"></i>{$a_post}";
 	}
 
 	/**

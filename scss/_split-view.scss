@@ -1,0 +1,68 @@
+/**
+ * Responsive two-pane composition for arbitrary UI content.
+ */
+.ui-split-view
+{
+  display  : grid;
+  min-width: 0;
+
+  &--ratio-equal { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  &--ratio-1-2   { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); }
+  &--ratio-2-1   { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); }
+
+  &--gap-none { gap: 0; }
+  &--gap-sm   { gap: .5rem; }
+  &--gap-md   { gap: .75rem; }
+  &--gap-lg   { gap: 1rem; }
+
+  &--height-sm { min-height: 12rem; }
+  &--height-md { min-height: 16rem; }
+  &--height-lg { min-height: 20.625rem; }
+  &--height-xl { min-height: 28rem; }
+
+  &__pane
+  {
+    display  : flex;
+    min-width: 0;
+
+    &--padding-none { padding: 0; }
+    &--padding-sm   { padding: .5rem; }
+    &--padding-md   { padding: 1rem; }
+    &--padding-lg   { padding: 1.5rem; }
+
+    &--surface-none  { background: transparent; }
+    &--surface-white { background: $white; }
+    &--surface-soft  { background: $page-bg; }
+    &--surface-muted { background: map-get($grays, "200"); }
+
+    &--align-start   { align-items: flex-start; }
+    &--align-center  { align-items: center; }
+    &--align-end     { align-items: flex-end; }
+    &--align-stretch { align-items: stretch; }
+
+    &--overflow-visible { overflow: visible; }
+    &--overflow-hidden  { overflow: hidden; }
+    &--overflow-auto    { overflow: auto; }
+
+    > *
+    {
+      width    : 100%;
+      min-width: 0;
+    }
+  }
+}
+
+@mixin split-view-collapse
+{
+  min-height           : 0;
+  grid-template-columns: minmax(0, 1fr);
+
+  &.ui-split-view--reverse-on-collapse > .ui-split-view__pane--first { order: 2; }
+  &.ui-split-view--reverse-on-collapse > .ui-split-view__pane--second { order: 1; }
+}
+
+@include media-breakpoint-down(sm) { .ui-split-view--collapse-sm { @include split-view-collapse; } }
+@include media-breakpoint-down(md) { .ui-split-view--collapse-md { @include split-view-collapse; } }
+@include media-breakpoint-down(lg) { .ui-split-view--collapse-lg { @include split-view-collapse; } }
+@include media-breakpoint-down(xl) { .ui-split-view--collapse-xl { @include split-view-collapse; } }
+@include media-breakpoint-down(xxl) { .ui-split-view--collapse-xxl { @include split-view-collapse; } }

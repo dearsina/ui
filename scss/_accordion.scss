@@ -37,6 +37,76 @@
 }
 
 /**
+ * Card-composed accordion items.
+ *
+ * Accordion::generate() can wrap a header/body pair with the reusable `card`
+ * and `accordion-card` classes. The collapse wrapper remains transparent so
+ * the card header, body, and optional footer read as one continuous surface.
+ */
+.accordion-card
+{
+  overflow : hidden;
+}
+
+.accordion-card > .card-header.collapse-toggle
+{
+  display     : flex;
+  align-items : center;
+  width       : 100%;
+}
+
+.accordion-card > .card-header.collapse-toggle::after
+{
+  float                : none;
+  flex                  : 0 0 auto;
+  margin-inline-start   : auto;
+  margin-inline-end     : .75rem;
+}
+
+.accordion-card > .card-header .card-title
+{
+  display     : inline-flex;
+  flex        : 1 1 auto;
+  align-items : center;
+  min-width   : 0;
+  gap         : .5rem;
+}
+
+.accordion-card > .card-header .card-title > i:first-child
+{
+  margin-inline-end : 0;
+}
+
+.accordion-card__name
+{
+  min-width     : 0;
+  overflow      : hidden;
+  text-overflow : ellipsis;
+  white-space   : nowrap;
+  font-weight   : 600;
+}
+
+.accordion-card__status
+{
+  display              : inline-flex;
+  align-items          : center;
+  gap                  : .4rem;
+  flex                 : 0 0 auto;
+  margin-inline-start  : auto;
+  padding-inline-start : .75rem;
+}
+
+.accordion-card > .collapse > .card-body
+{
+  background : $page-bg;
+}
+
+.accordion > .accordion-card:last-child
+{
+  margin-bottom : 0;
+}
+
+/**
  * When there are more than one collapsable item in the set,
  * differentiate them by a little padding and a line.
  */
