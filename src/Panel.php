@@ -10,8 +10,8 @@ use Stringable;
  *
  * A Panel sits between a Card and a ListGroup item: it has one continuous
  * surface and border, a compact heading containing an optional padded icon and
- * required title, an unrestricted body, and an optional footer. Header, body,
- * and footer are deliberately not separated unless `footer_separator` is TRUE.
+ * required trusted-HTML title, an unrestricted body, and an optional footer
+ * presented as the panel's own lower surface.
  *
  * Panel is content-agnostic. Its body and footer can contain DataPoint matrices,
  * StatusBadges, tables, forms, messages, images, or any other rendered HTML.
@@ -49,9 +49,6 @@ class Panel
 	 *   other settings supported by Icon.
 	 * - `footer`: Optional footer content accepting the same content types as the
 	 *   body. An empty footer is omitted completely.
-	 * - `footer_separator` (`bool`): Adds a subtle divider and extra inset above
-	 *   the footer. Defaults to FALSE so all regions share one uninterrupted
-	 *   surface.
 	 * - `stretch` (`bool`): Makes the panel fill the available block-size of its
 	 *   parent or grid cell. This is useful when sibling panels should have equal
 	 *   heights without a service-specific height class. Defaults to FALSE.
@@ -59,10 +56,6 @@ class Panel
 	 *   `primary`. It becomes a safe `ui-panel--{colour}` modifier; theme colours
 	 *   are styled by `_panel.scss`, while custom modifiers can be styled by the
 	 *   consuming application.
-	 * - `title_html` (`bool`): Render trusted HTML in the title. Defaults to FALSE,
-	 *   which escapes the title with htmlspecialchars().
-	 * - `heading_tag` (`string`): Semantic title tag from `h1` through `h6` or
-	 *   `div`. Defaults to `h3`.
 	 * - `rtl` (`bool`): Emits `dir="rtl"`; logical spacing automatically places
 	 *   the optional icon and content correctly for right-to-left languages.
 	 *
@@ -74,41 +67,64 @@ class Panel
 	 * - `role`, `tabindex`, `aria`, and explicitly named `attributes`.
 	 *
 	 * Region settings:
-	 * - `header_settings`, `title_settings`, `body_settings`, and
-	 *   `footer_settings` accept the common `id`, `class`, `only_class`, `style`,
+	 * - `header_settings`, `body_settings`, and `footer_settings` accept the
+	 *   common `id`, `class`, `only_class`, `style`,
 	 *   `only_style`, `data`, `aria`, and `attributes` element overrides.
 	 * - Region settings affect only their named wrapper and never alter content.
 	 *
+	 * Title composition:
+	 * - A string title is trusted HTML and is rendered without escaping. Escape
+	 *   untrusted values before passing them to Panel.
+	 * - An array title contains its trusted content in `html` or `title`, plus
+	 *   settings for the title element itself: `tag`/`heading_tag`, `id`, `class`,
+	 *   `only_class`, `style`, `only_style`, `data`, `aria`, `attributes`,
+	 *   `role`, `tabindex`, `tooltip`, and `alt`.
+	 * - `badge` accepts the same string, settings array, or list of settings as
+	 *   Badge::generate() and renders the badge after the title content.
+	 *
 	 * Complete example:
 	 * <code>
-	 * Panel::generate("Verification results", [
+	 * Panel::generate([
+	 *     "html" => "Verification <strong>results</strong>",
+	 *     "class" => "verification-panel__title",
+	 *     "tag" => "h4",
+	 *     "badge" => ["title" => "Verified", "colour" => "green"],
+	 * ], [
 	 *     DataPoint::generate("Name", "Example Limited"),
 	 *     $additional_html,
 	 * ], [
 	 *     "icon" => ["name" => "shield-check", "type" => "solid"],
 	 *     "colour" => "green",
 	 *     "footer" => StatusBadge::positive("Verified"),
-	 *     "footer_separator" => TRUE,
 	 *     "class" => "verification-panel",
 	 *     "body_settings" => ["class" => "verification-panel__content"],
 	 * ]);
 	 * </code>
 	 *
-	 * @param string              $title    Required user-facing panel title.
+	 * @param string|array<string,mixed> $title Required trusted-HTML title or title-element definition.
 	 * @param mixed               $body     Trusted body content or nested rendered fragments.
 	 * @param array<string,mixed> $settings Component, content, and element settings.
 	 *
 	 * @return string Complete panel HTML.
 	 */
-	public static function generate(string $title, mixed $body, array $settings = []): string
+	public static function generate(string|array $title, mixed $body, array $settings = []): string
 	{
+		$title_definition = is_array($title) ? $title : [];
+		$title_content = is_array($title)
+			? self::renderContent($title['html'] ?? $title['title'] ?? "")
+			: $title;
+		if($badge = Badge::generate($title_definition['badge'] ?? NULL)){
+			$title_content .= " {$badge}";
+		}
+		if($title_definition['tooltip'] ?? NULL){
+			Tooltip::generate($title_definition);
+		}
 		$footer = self::renderContent($settings['footer'] ?? NULL);
 		$colour = self::normaliseModifier((string)($settings['colour'] ?? self::DEFAULT_COLOUR), self::DEFAULT_COLOUR);
 		$classes = [
 			"ui-panel",
 			"ui-panel--{$colour}",
 			($settings['stretch'] ?? false) ? "ui-panel--stretch" : NULL,
-			$footer && ($settings['footer_separator'] ?? false) ? "ui-panel--footer-separated" : NULL,
 		];
 
 		if($settings['tooltip'] ?? NULL){
@@ -122,7 +138,7 @@ class Panel
 			["ui-panel__header"]
 		);
 		$title_attributes = self::elementAttributes(
-			self::regionSettings($settings, 'title_settings'),
+			$title_definition,
 			["ui-panel__title"]
 		);
 		$body_attributes = self::elementAttributes(
@@ -130,10 +146,7 @@ class Panel
 			["ui-panel__body"]
 		);
 
-		$heading_tag = self::normaliseHeadingTag((string)($settings['heading_tag'] ?? "h3"));
-		$title_html = ($settings['title_html'] ?? false)
-			? $title
-			: htmlspecialchars($title, ENT_QUOTES | ENT_SUBSTITUTE, "UTF-8");
+		$heading_tag = self::normaliseHeadingTag((string)($title_definition['tag'] ?? $title_definition['heading_tag'] ?? "h3"));
 		$icon_html = self::renderIcon($settings['icon'] ?? NULL);
 		$body_html = self::renderContent($body);
 		$footer_html = "";
@@ -150,7 +163,7 @@ class Panel
 <{$tag}{$attributes}>
     <header{$header_attributes}>
         {$icon_html}
-        <{$heading_tag}{$title_attributes}>{$title_html}</{$heading_tag}>
+		<{$heading_tag}{$title_attributes}>{$title_content}</{$heading_tag}>
     </header>
     <div{$body_attributes}>{$body_html}</div>
     {$footer_html}
@@ -243,7 +256,7 @@ HTML;
 		$dir = $root && ($settings['rtl'] ?? false) ? str::getAttrTag("dir", "rtl") : NULL;
 		$aria = self::prefixedAttributes("aria", $settings['aria'] ?? NULL);
 		$other = self::customAttributes($settings['attributes'] ?? NULL);
-		$title = $root && !($settings['tooltip'] ?? NULL)
+		$title = !($settings['tooltip'] ?? NULL)
 			? str::getAttrTag("title", strip_tags((string)($settings['alt'] ?? "")))
 			: NULL;
 

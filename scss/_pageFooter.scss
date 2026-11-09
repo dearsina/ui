@@ -1,0 +1,51 @@
+/**
+ * The application page footer.
+ *
+ * Keep these rules scoped to the page-level mount point. Components such as
+ * Panel and Timeline also use semantic footer elements and must not inherit
+ * page-footer presentation.
+ */
+#ui-footer
+{
+  margin-top      : 2rem;
+  color           : map-get($grays, "500");
+  background-color: $footer-bg;
+  font-size       : smaller;
+
+  ul
+  {
+    padding-left   : 0;
+    list-style-type: none;
+    line-height    : 1.7;
+  }
+
+  .footer-main
+  {
+    padding         : 2rem 1rem 1rem;
+    background-color: $footer-level2-bg; //#606976;
+  }
+
+  .footer-footer
+  {
+    padding         : 1rem 0;
+    background-color: $footer-level1-bg; //#393e46;
+  }
+
+  a
+  {
+    color          : map-get($grays, "200");
+    text-decoration: none;
+
+    &:hover
+    {
+      color          : map-get($grays, "200");
+      text-decoration: underline;
+    }
+  }
+
+  .copyright
+  {
+    color    : rgba(255, 255, 255, .5);
+    font-size: small;
+  }
+}
