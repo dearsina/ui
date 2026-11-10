@@ -40,6 +40,8 @@ class MediaPreview
 	 * - `height`: `auto` (default), `sm`, `md`, `lg`, or `xl`.
 	 * - `surface`: `muted` (default), `soft`, `dark`, or `white`.
 	 * - `zoom`: Gently scales image/media on hover. Defaults to FALSE.
+	 * - `interactive`: Prepares the surface for pointer-driven pan, wheel zoom,
+	 *   and pinch zoom supplied by the consumer. Defaults to FALSE.
 	 * - `stretch`: Fills the parent's width and height. Defaults to FALSE.
 	 *
 	 * Link settings (`url`, `uri`, `href`, `hash`, `onclick`, `onClick`, or
@@ -64,6 +66,7 @@ class MediaPreview
 			"media-preview--height-{$height}",
 			"media-preview--surface-{$surface}",
 			($settings['zoom'] ?? false) ? "media-preview--zoom" : NULL,
+			($settings['interactive'] ?? false) ? "media-preview--interactive" : NULL,
 			($settings['stretch'] ?? false) ? "media-preview--stretch" : NULL,
 		];
 
