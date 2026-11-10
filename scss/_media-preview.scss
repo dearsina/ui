@@ -24,6 +24,19 @@
 
   &--stretch { height: 100%; }
 
+  /** Interactive document viewer: wheel/pinch zoom and drag pan are handled by JS. */
+  &--interactive
+  {
+    display     : grid;
+    min-height  : 20rem;
+    overflow    : hidden;
+    place-items : center;
+    touch-action: none;
+    cursor      : grab;
+  }
+
+  &--interactive:active { cursor: grabbing; }
+
   &__media,
   &__image,
   &__fallback
@@ -43,6 +56,15 @@
   {
     display   : block;
     transition: transform .3s ease;
+  }
+
+  &--interactive &__image
+  {
+    max-height      : 70vh;
+    transition      : none;
+    transform-origin: center center;
+    user-select     : none;
+    will-change     : transform;
   }
 
   &--fit-cover &__image { object-fit: cover; }

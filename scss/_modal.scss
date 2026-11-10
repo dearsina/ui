@@ -22,6 +22,11 @@
   overflow-y: hidden;
 }
 
+/** Keep nested modal workflows from scrolling the page behind their body. */
+.modal-contained-scroll .modal-body {
+  overscroll-behavior: contain;
+}
+
 /**
  * XXL modals
  */
