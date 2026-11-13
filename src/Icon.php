@@ -365,4 +365,39 @@ class Icon {
 		}
 		return $icon[$rel_table]['icon'] ?: $rel_table;
 	}
+
+	public static function generateEqIcon(string $eq): ? string
+	{
+		switch($eq){
+		case "eq":
+			$name = "equals";
+			break;
+		case "neq":
+			$name = "not-equal";
+			break;
+		case "gt":
+		case ">":
+			$name = "greater-than";
+			break;
+		case "gte":
+		case ">=":
+			$name =  "greater-than-equal";
+			break;
+		case "lt":
+		case "<":
+			$name = "less-than";
+			break;
+		case "lte":
+		case "<=":
+			$name = "less-than-equal";
+			break;
+		default:
+			return NULL;
+		}
+
+		return self::generate([
+			"name" => $name,
+			"type" => "light",
+		]);
+	}
 }
